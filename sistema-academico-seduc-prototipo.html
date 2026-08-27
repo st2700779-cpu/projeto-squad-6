@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Acadêmico · SEDUC/SE</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: { DEFAULT: '#1F2A3C', soft: '#2B3A52', softer: '#374863' },
+          paper: { DEFAULT: '#F4F5F0', card: '#FFFFFF' },
+          carimbo: { DEFAULT: '#4B4A8F', light: '#E9E8F6' },
+          aprovado: { DEFAULT: '#2F8F5B', light: '#DEF1E5' },
+          pendente: { DEFAULT: '#C98A1F', light: '#FBEBD1' },
+          recusado: { DEFAULT: '#B5473A', light: '#F5DEDA' },
+          slate2: '#5B6178'
+        },
+        fontFamily: {
+          display: ['"Libre Franklin"', 'sans-serif'],
+          body: ['Inter', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-display { font-family: 'Libre Franklin', sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #C9C7BB; border-radius: 8px; }
+
+  a, button, input, select, [tabindex] { outline-offset: 2px; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid #4B4A8F;
+    border-radius: 4px;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .role-tab { position: relative; }
+  .role-tab.active { color: #1F2A3C; background: #F4F5F0; }
+  .role-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 3px;
+    background: #4B4A8F;
+    border-radius: 2px 2px 0 0;
+  }
+
+  .carimbo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 2px solid currentColor;
+    border-radius: 9999px;
+    padding: 3px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transform: rotate(-2deg);
+  }
+
+  @keyframes toast-in {
+    from { transform: translateY(16px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes toast-out {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(16px); opacity: 0; }
+  }
+  .toast-enter { animation: toast-in 260ms ease-out forwards; }
+  .toast-exit { animation: toast-out 260ms ease-in forwards; }
+
+  .bar-fill { transition: width 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+
+  .attend-btn { transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
+
+  table.zebra tbody tr:nth-child(even) { background: #FAFAF7; }
+</style>
+</head>
+<body class="bg-paper text-ink font-body antialiased">
+
+<header class="sticky top-0 z-40 border-b border-black/10 bg-ink text-paper">
+  <div class="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="flex h-9 w-9 items-center justify-center rounded-md bg-carimbo font-display text-sm font-bold text-white">SE</span>
+        <div>
+          <p class="font-display text-sm font-bold leading-tight sm:text-base">Sistema Acadêmico</p>
+          <p class="font-mono text-[11px] uppercase tracking-wider text-paper/50">SEDUC · Rede Estadual de Ensino de Sergipe</p>
+        </div>
+      </div>
+      <button id="btn-logout" class="rounded-md border border-paper/20 px-3 py-1.5 text-xs font-medium text-paper/80 hover:bg-ink-soft">Sair</button>
+    </div>
+  </div>
+
+  <nav class="mx-auto flex max-w-7xl gap-1 px-4 sm:px-6 lg:px-8" aria-label="Selecionar visão por perfil">
+    <button data-role="aluno" class="role-tab active flex items-center gap-2 rounded-t-lg px-4 py-2.5 text-sm font-medium text-paper/70 hover:text-paper">
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.42A12.083 12.083 0 0121 13.5a12.083 12.083 0 01-2.84 4.42L12 21l-6.16-3.08A12.083 12.083 0 013 13.5c0-1.62.395-3.14 1.09-4.42L12 14z"/></svg>
+      Aluno
+    </button>
+    <button data-role="professor" class="role-tab flex items-center gap-2 rounded-t-lg px-4 py-2.5 text-sm font-medium text-paper/70 hover:text-paper">
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Professor
+    </button>
+    <button data-role="secretaria" class="role-tab flex items-center gap-2 rounded-t-lg px-4 py-2.5 text-sm font-medium text-paper/70 hover:text-paper">
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2M19 21H5m0 0H3m9-14v.01M12 11v.01M12 15v.01M8 11v.01M8 15v.01M16 11v.01M16 15v.01"/></svg>
+      Secretaria
+    </button>
+  </nav>
+</header>
+
+<main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+
+  <section id="view-aluno" class="view active">
+    <header class="mb-6">
+      <p class="font-mono text-xs uppercase tracking-widest text-slate2">Matrícula 2026101347 · Escola Estadual Prof. Ivo do Prado</p>
+      <h1 class="font-display text-2xl font-bold text-ink sm:text-3xl">Boletim de Ana Beatriz Costa</h1>
+      <p class="text-sm text-slate2">9º Ano B · Ensino Fundamental · Turno matutino</p>
+    </header>
+
+    <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Frequência global</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-aprovado">94%</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Média geral</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-ink">8,2</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="mb-2 text-xs font-medium text-slate2">Situação</p>
+        <span class="carimbo-badge text-aprovado">Matriculado</span>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Faltas no trimestre</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-pendente">3</p>
+      </div>
+    </div>
+
+    <div class="mb-6 overflow-hidden rounded-xl border border-black/5 bg-paper-card shadow-sm">
+      <div class="border-b border-black/5 px-5 py-3">
+        <h2 class="font-display text-base font-semibold text-ink">Boletim · 2º trimestre</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="zebra w-full text-sm">
+          <thead>
+            <tr class="text-left text-xs uppercase tracking-wide text-slate2">
+              <th class="px-5 py-2 font-medium">Disciplina</th>
+              <th class="px-5 py-2 font-medium">Nota</th>
+              <th class="px-5 py-2 font-medium">Frequência</th>
+              <th class="px-5 py-2 font-medium">Situação</th>
+            </tr>
+          </thead>
+          <tbody id="boletim-body" class="text-ink"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div class="lg:col-span-2">
+        <h2 class="mb-3 font-display text-base font-semibold text-ink">Próximas atividades</h2>
+        <ul class="space-y-3 rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+          <li class="flex items-start gap-3">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-pendente-light text-pendente">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+            </span>
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-ink">Avaliação de Matemática — Frações</p>
+              <p class="text-xs text-slate2">Segunda-feira, 24/08</p>
+            </div>
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-carimbo-light text-carimbo">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            </span>
+            <div class="min-w-0">
+              <p class="text-sm font-medium text-ink">Reunião de pais e mestres</p>
+              <p class="text-xs text-slate2">Sexta-feira, 28/08, 18h</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="mb-3 font-display text-base font-semibold text-ink">Documentos</h2>
+        <div class="space-y-3 rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+          <p class="text-xs text-slate2">Solicite documentos escolares diretamente à secretaria.</p>
+          <button id="btn-solicitar-historico" class="w-full rounded-lg bg-carimbo px-4 py-2.5 text-sm font-semibold text-white hover:bg-carimbo/90">Solicitar histórico escolar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-professor" class="view">
+    <header class="mb-6">
+      <p class="font-mono text-xs uppercase tracking-widest text-slate2">Matrícula funcional 5583201 · Escola Estadual Prof. Ivo do Prado</p>
+      <h1 class="font-display text-2xl font-bold text-ink sm:text-3xl">Diário de classe de Roberto Almeida Souza</h1>
+      <p class="text-sm text-slate2">Matemática · 9º Ano B · Aula de hoje, 24/08</p>
+    </header>
+
+    <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Alunos na turma</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-ink">28</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Presentes hoje</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-aprovado" id="stat-presentes">26</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Ausentes hoje</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-recusado" id="stat-ausentes">2</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Média da turma</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-carimbo" id="stat-media">7,4</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+      <div class="overflow-hidden rounded-xl border border-black/5 bg-paper-card shadow-sm">
+        <div class="flex items-center justify-between border-b border-black/5 px-5 py-3">
+          <h2 class="font-display text-base font-semibold text-ink">Chamada</h2>
+          <button id="btn-salvar-frequencia" class="rounded-lg bg-carimbo px-3 py-1.5 text-xs font-semibold text-white hover:bg-carimbo/90">Salvar frequência</button>
+        </div>
+        <div id="chamada-list" class="divide-y divide-black/5"></div>
+      </div>
+
+      <div class="overflow-hidden rounded-xl border border-black/5 bg-paper-card shadow-sm">
+        <div class="flex items-center justify-between border-b border-black/5 px-5 py-3">
+          <h2 class="font-display text-base font-semibold text-ink">Lançar notas · 2º trimestre</h2>
+          <button id="btn-salvar-notas" class="rounded-lg bg-carimbo px-3 py-1.5 text-xs font-semibold text-white hover:bg-carimbo/90">Salvar notas</button>
+        </div>
+        <div id="notas-list" class="divide-y divide-black/5"></div>
+        <p id="notas-error" class="hidden px-5 py-3 text-xs text-recusado">Preencha uma nota de 0 a 10 para todos os alunos antes de salvar.</p>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <h2 class="mb-3 font-display text-base font-semibold text-ink">Calendário de aulas</h2>
+      <ul class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <li class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+          <p class="font-mono text-xs uppercase tracking-wide text-slate2">Hoje · 24/08</p>
+          <p class="mt-1 text-sm font-medium text-ink">9º Ano B — Frações, 2 aulas</p>
+        </li>
+        <li class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+          <p class="font-mono text-xs uppercase tracking-wide text-slate2">Amanhã · 25/08</p>
+          <p class="mt-1 text-sm font-medium text-ink">7º Ano A — Equações, 1 aula</p>
+        </li>
+        <li class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+          <p class="font-mono text-xs uppercase tracking-wide text-slate2">Quarta · 26/08</p>
+          <p class="mt-1 text-sm font-medium text-ink">9º Ano B — Avaliação, 2 aulas</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="view-secretaria" class="view">
+    <header class="mb-6">
+      <p class="font-mono text-xs uppercase tracking-widest text-slate2">Painel da rede · Escola Estadual Prof. Ivo do Prado</p>
+      <h1 class="font-display text-2xl font-bold text-ink sm:text-3xl">Painel da secretaria</h1>
+      <p class="text-sm text-slate2">Visão consolidada de matrícula, turmas e desempenho.</p>
+    </header>
+
+    <div class="mb-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Alunos matriculados</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-ink">1.284</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Professores ativos</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-ink">87</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Turmas ativas</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-ink">42</p>
+      </div>
+      <div class="rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
+        <p class="text-xs font-medium text-slate2">Taxa de aprovação</p>
+        <p class="mt-1 font-mono text-2xl font-bold text-aprovado">91%</p>
+      </div>
+    </div>
+
+    <div class="mb-6 overflow-hidden rounded-xl border border-black/5 bg-paper-card shadow-sm">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-black/5 px-5 py-3">
+        <h2 class="font-display text-base font-semibold text-ink">Fila de pré-matrícula</h2>
+        <span class="font-mono text-xs text-slate2" id="fila-count">4 solicitações pendentes</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="zebra w-full text-sm">
+          <thead>
+            <tr class="text-left text-xs uppercase tracking-wide text-slate2">
+              <th class="px-5 py-2 font-medium">Aluno</th>
+              <th class="px-5 py-2 font-medium">Escola pretendida</th>
+              <th class="px-5 py-2 font-medium">Ano/série</th>
+              <th class="px-5 py-2 font-medium">Situação</th>
+              <th class="px-5 py-2 font-medium">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="matricula-body" class="text-ink"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="mb-3 font-display text-base font-semibold text-ink">Relatórios</h2>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <button data-report="Boletim consolidado" class="report-btn flex items-center gap-3 rounded-xl border border-black/5 bg-paper-card p-4 text-left shadow-sm hover:-translate-y-0.5 hover:shadow-md">
+          <svg class="h-5 w-5 shrink-0 text-carimbo" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span class="text-sm font-medium text-ink">Boletim consolidado</span>
+        </button>
+        <button data-report="Histórico escolar" class="report-btn flex items-center gap-3 rounded-xl border border-black/5 bg-paper-card p-4 text-left shadow-sm hover:-translate-y-0.5 hover:shadow-md">
+          <svg class="h-5 w-5 shrink-0 text-aprovado" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span class="text-sm font-medium text-ink">Histórico escolar</span>
+        </button>
+        <button data-report="Censo Escolar (Educacenso)" class="report-btn flex items-center gap-3 rounded-xl border border-black/5 bg-paper-card p-4 text-left shadow-sm hover:-translate-y-0.5 hover:shadow-md">
+          <svg class="h-5 w-5 shrink-0 text-pendente" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+          <span class="text-sm font-medium text-ink">Censo Escolar (Educacenso)</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div id="toast" class="pointer-events-none fixed bottom-5 left-1/2 z-[60] hidden w-[92%] max-w-sm -translate-x-1/2 items-center gap-3 rounded-xl bg-ink px-4 py-3 text-paper shadow-lg sm:left-auto sm:right-5 sm:translate-x-0">
+  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-carimbo text-white">
+    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+  </span>
+  <div class="min-w-0">
+    <p id="toast-title" class="text-sm font-semibold">Ação registrada</p>
+    <p id="toast-body" class="text-xs text-paper/70">Concluído com sucesso.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  document.querySelectorAll('[data-role]').forEach(function (tab) {
+    tab.addEventListener('click', function () { switchRole(tab.getAttribute('data-role')); });
+  });
+
+  function switchRole(role) {
+    document.querySelectorAll('.role-tab').forEach(function (t) {
+      t.classList.toggle('active', t.getAttribute('data-role') === role);
+    });
+    document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
+    document.getElementById('view-' + role).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(title, body) {
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-body').textContent = body;
+    toastEl.classList.remove('hidden');
+    toastEl.classList.add('flex');
+    toastEl.classList.remove('toast-exit');
+    toastEl.classList.add('toast-enter');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove('toast-enter');
+      toastEl.classList.add('toast-exit');
+      setTimeout(function () {
+        toastEl.classList.add('hidden');
+        toastEl.classList.remove('flex');
+      }, 260);
+    }, 3200);
+  }
+
+  var boletim = [
+    { disciplina: 'Língua Portuguesa', nota: 8.5, frequencia: 96, situacao: 'aprovado' },
+    { disciplina: 'Matemática', nota: 7.0, frequencia: 92, situacao: 'aprovado' },
+    { disciplina: 'Ciências', nota: 9.0, frequencia: 98, situacao: 'aprovado' },
+    { disciplina: 'História', nota: 8.0, frequencia: 90, situacao: 'aprovado' },
+    { disciplina: 'Geografia', nota: 6.5, frequencia: 88, situacao: 'pendente' },
+    { disciplina: 'Educação Física', nota: 9.5, frequencia: 100, situacao: 'aprovado' }
+  ];
+
+  function situacaoLabel(s) {
+    if (s === 'aprovado') return { text: 'Aprovado', cls: 'text-aprovado' };
+    if (s === 'pendente') return { text: 'Recuperação', cls: 'text-pendente' };
+    return { text: 'Reprovado', cls: 'text-recusado' };
+  }
+
+  function renderBoletim() {
+    var body = document.getElementById('boletim-body');
+    body.innerHTML = '';
+    boletim.forEach(function (row) {
+      var tr = document.createElement('tr');
+      var sit = situacaoLabel(row.situacao);
+      tr.innerHTML =
+        '<td class="px-5 py-2.5 font-medium">' + row.disciplina + '</td>' +
+        '<td class="px-5 py-2.5 font-mono">' + row.nota.toFixed(1).replace('.', ',') + '</td>' +
+        '<td class="px-5 py-2.5 font-mono">' + row.frequencia + '%</td>' +
+        '<td class="px-5 py-2.5"><span class="carimbo-badge ' + sit.cls + '">' + sit.text + '</span></td>';
+      body.appendChild(tr);
+    });
+  }
+  renderBoletim();
+
+  document.getElementById('btn-solicitar-historico').addEventListener('click', function () {
+    showToast('Solicitação enviada', 'O histórico escolar será emitido pela secretaria.');
+  });
+
+  var alunosTurma = [
+    { id: 1, nome: 'Beatriz Nunes Lima', presente: true, nota: '' },
+    { id: 2, nome: 'Caio Santos Ferreira', presente: true, nota: '' },
+    { id: 3, nome: 'Davi Melo Oliveira', presente: false, nota: '' },
+    { id: 4, nome: 'Emanuelly Rocha Dias', presente: true, nota: '' },
+    { id: 5, nome: 'Felipe Andrade Souza', presente: false, nota: '' },
+    { id: 6, nome: 'Giovanna Prado Cruz', presente: true, nota: '' }
+  ];
+
+  function renderChamada() {
+    var list = document.getElementById('chamada-list');
+    list.innerHTML = '';
+    alunosTurma.forEach(function (aluno) {
+      var row = document.createElement('div');
+      row.className = 'flex items-center justify-between gap-3 px-5 py-3';
+      var presenteCls = aluno.presente ? 'bg-aprovado text-white border-aprovado' : 'bg-transparent text-slate2 border-black/10 hover:border-aprovado';
+      var ausenteCls = !aluno.presente ? 'bg-recusado text-white border-recusado' : 'bg-transparent text-slate2 border-black/10 hover:border-recusado';
+      row.innerHTML =
+        '<span class="min-w-0 truncate text-sm font-medium text-ink">' + aluno.nome + '</span>' +
+        '<span class="flex shrink-0 gap-2">' +
+        '<button data-attend="' + aluno.id + '" data-present="true" class="attend-btn rounded-md border px-2.5 py-1 text-xs font-semibold ' + presenteCls + '">Presente</button>' +
+        '<button data-attend="' + aluno.id + '" data-present="false" class="attend-btn rounded-md border px-2.5 py-1 text-xs font-semibold ' + ausenteCls + '">Ausente</button>' +
+        '</span>';
+      list.appendChild(row);
+    });
+
+    list.querySelectorAll('[data-attend]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = Number(btn.getAttribute('data-attend'));
+        var present = btn.getAttribute('data-present') === 'true';
+        alunosTurma.forEach(function (a) { if (a.id === id) a.presente = present; });
+        renderChamada();
+        updateAttendanceStats();
+      });
+    });
+  }
+
+  function updateAttendanceStats() {
+    var presentes = alunosTurma.filter(function (a) { return a.presente; }).length;
+    document.getElementById('stat-presentes').textContent = presentes;
+    document.getElementById('stat-ausentes').textContent = alunosTurma.length - presentes;
+  }
+
+  document.getElementById('btn-salvar-frequencia').addEventListener('click', function () {
+    showToast('Frequência salva', 'A chamada de hoje foi registrada no diário de classe.');
+  });
+
+  function renderNotas() {
+    var list = document.getElementById('notas-list');
+    list.innerHTML = '';
+    alunosTurma.forEach(function (aluno) {
+      var row = document.createElement('div');
+      row.className = 'flex items-center justify-between gap-3 px-5 py-3';
+      row.innerHTML =
+        '<span class="min-w-0 truncate text-sm font-medium text-ink">' + aluno.nome + '</span>' +
+        '<input data-nota="' + aluno.id + '" type="number" min="0" max="10" step="0.1" value="' + aluno.nota + '" placeholder="0,0" class="w-20 rounded-md border border-black/10 px-2 py-1 text-right font-mono text-sm focus:border-carimbo" />';
+      list.appendChild(row);
+    });
+
+    list.querySelectorAll('[data-nota]').forEach(function (input) {
+      input.addEventListener('input', function () {
+        var id = Number(input.getAttribute('data-nota'));
+        alunosTurma.forEach(function (a) { if (a.id === id) a.nota = input.value; });
+        document.getElementById('notas-error').classList.add('hidden');
+      });
+    });
+  }
+
+  document.getElementById('btn-salvar-notas').addEventListener('click', function () {
+    var invalido = alunosTurma.some(function (a) {
+      var n = parseFloat(a.nota);
+      return a.nota === '' || isNaN(n) || n < 0 || n > 10;
+    });
+    if (invalido) {
+      document.getElementById('notas-error').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('notas-error').classList.add('hidden');
+    var soma = alunosTurma.reduce(function (acc, a) { return acc + parseFloat(a.nota); }, 0);
+    var media = soma / alunosTurma.length;
+    document.getElementById('stat-media').textContent = media.toFixed(1).replace('.', ',');
+    showToast('Notas salvas', 'As notas do 2º trimestre foram lançadas no diário de classe.');
+  });
+
+  renderChamada();
+  renderNotas();
+  updateAttendanceStats();
+
+  var filaMatricula = [
+    { id: 1, nome: 'Heitor Batista Rocha', escola: 'E. E. Prof. Ivo do Prado', serie: '6º Ano', status: 'pendente' },
+    { id: 2, nome: 'Isabela Farias Melo', escola: 'E. E. Prof. Ivo do Prado', serie: '1ª Série EM', status: 'pendente' },
+    { id: 3, nome: 'João Pedro Vieira', escola: 'E. E. Prof. Ivo do Prado', serie: '9º Ano', status: 'pendente' },
+    { id: 4, nome: 'Larissa Cavalcante', escola: 'E. E. Prof. Ivo do Prado', serie: '7º Ano', status: 'pendente' }
+  ];
+
+  function renderMatriculas() {
+    var body = document.getElementById('matricula-body');
+    body.innerHTML = '';
+    filaMatricula.forEach(function (item) {
+      var tr = document.createElement('tr');
+      var statusHtml;
+      var actionsHtml;
+      if (item.status === 'pendente') {
+        statusHtml = '<span class="carimbo-badge text-pendente">Pendente</span>';
+        actionsHtml =
+          '<button data-approve="' + item.id + '" class="mr-2 rounded-md bg-aprovado px-2.5 py-1 text-xs font-semibold text-white hover:bg-aprovado/90">Aprovar</button>' +
+          '<button data-reject="' + item.id + '" class="rounded-md border border-recusado px-2.5 py-1 text-xs font-semibold text-recusado hover:bg-recusado/10">Recusar</button>';
+      } else if (item.status === 'aprovado') {
+        statusHtml = '<span class="carimbo-badge text-aprovado">Matriculado</span>';
+        actionsHtml = '<span class="text-xs text-slate2">—</span>';
+      } else {
+        statusHtml = '<span class="carimbo-badge text-recusado">Recusado</span>';
+        actionsHtml = '<span class="text-xs text-slate2">—</span>';
+      }
+      tr.innerHTML =
+        '<td class="px-5 py-2.5 font-medium">' + item.nome + '</td>' +
+        '<td class="px-5 py-2.5 text-slate2">' + item.escola + '</td>' +
+        '<td class="px-5 py-2.5 font-mono">' + item.serie + '</td>' +
+        '<td class="px-5 py-2.5">' + statusHtml + '</td>' +
+        '<td class="px-5 py-2.5">' + actionsHtml + '</td>';
+      body.appendChild(tr);
+    });
+
+    body.querySelectorAll('[data-approve]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = Number(btn.getAttribute('data-approve'));
+        filaMatricula.forEach(function (i) { if (i.id === id) i.status = 'aprovado'; });
+        renderMatriculas();
+        updateFilaCount();
+        showToast('Matrícula aprovada', 'O aluno foi vinculado à turma correspondente.');
+      });
+    });
+    body.querySelectorAll('[data-reject]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = Number(btn.getAttribute('data-reject'));
+        filaMatricula.forEach(function (i) { if (i.id === id) i.status = 'recusado'; });
+        renderMatriculas();
+        updateFilaCount();
+        showToast('Solicitação recusada', 'A família será notificada sobre a decisão.');
+      });
+    });
+  }
+
+  function updateFilaCount() {
+    var pendentes = filaMatricula.filter(function (i) { return i.status === 'pendente'; }).length;
+    document.getElementById('fila-count').textContent = pendentes + ' solicitações pendentes';
+  }
+
+  renderMatriculas();
+  updateFilaCount();
+
+  document.querySelectorAll('.report-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      showToast('Gerando relatório', '"' + btn.getAttribute('data-report') + '" será baixado em instantes.');
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
