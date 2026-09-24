@@ -1,7 +1,7 @@
 // Turmas (HU13, HU14): criação bloqueada sem ato vigente; aprovação ou devolução pela direção.
 import { iniciar, falhaDados } from '../app.js';
 import { esc, etiqueta, pedirTexto, avisar } from '../ui.js';
-import { carregar, turmasEscola } from '../dados.js';
+import { carregar, turmasEscola, salvar as salvarDados } from '../dados.js';
 import { definir, obter } from '../estado.js';
 import { SERIES, etapaDaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
 
@@ -39,7 +39,9 @@ function desenhar(erro = '') {
         ${!coord && t.situacao === 'Pendente de aprovação' ? `<button type="button" class="botao" data-aprovar="${t.id}">Aprovar</button><button type="button" class="botao botao-perigo" data-devolver="${t.id}">Devolver</button>` : ''}
       </div></div>`; }).join('')}`;
 }
-function salvar(msg) { definir('turmas', turmas); desenhar(); avisar(msg); }
+async function salvar(msg) {
+  try { await salvarDados('turmas', turmas); desenhar(); avisar(msg); } catch { avisar('Não foi possível salvar. Tente de novo.'); mostrar(); }
+}
 main.addEventListener('click', async (e) => {
   const b = e.target.closest('button');
   if (!b) return;

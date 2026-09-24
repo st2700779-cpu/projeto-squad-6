@@ -1,8 +1,7 @@
 // Pedidos de matrícula (HU12): confirmar ou recusar com motivo. Recusar libera a vaga.
 import { iniciar, falhaDados } from '../app.js';
 import { esc, etiqueta, pedirTexto, avisar } from '../ui.js';
-import { matriculas, vagas as lerVagas } from '../dados.js';
-import { definir } from '../estado.js';
+import { matriculas, vagas as lerVagas, salvar } from '../dados.js';
 
 const ESCOLA = 'e1';
 const main = await iniciar({ perfil: 'escola', pagina: 'escola/matriculas.html', assistente: true });
@@ -33,18 +32,23 @@ main.addEventListener('click', async (e) => {
   const b = e.target.closest('button');
   if (!b) return;
   if (b.dataset.filtro) { filtro = b.dataset.filtro; desenhar(); }
-  if (b.dataset.confirmar) {
-    pedidos.find((p) => p.protocolo === b.dataset.confirmar).situacao = 'Confirmada';
-    definir('matriculas', pedidos); desenhar(); avisar('Matrícula confirmada.');
-  }
-  if (b.dataset.recusar) {
-    const motivo = await pedirTexto({ titulo: 'Recusar matrícula', rotulo: 'Motivo (a família verá este texto)' });
-    if (motivo === null) return;
-    const p = pedidos.find((x) => x.protocolo === b.dataset.recusar);
-    Object.assign(p, { situacao: 'Recusada', motivo });
-    const v = await lerVagas();
-    if (v[p.escolaId]?.[p.serie] !== undefined) { v[p.escolaId][p.serie] += 1; definir('vagas', v); }
-    definir('matriculas', pedidos); desenhar(); avisar('Matrícula recusada. A vaga foi liberada.');
+  try {
+    if (b.dataset.confirmar) {
+      pedidos.find((p) => p.protocolo === b.dataset.confirmar).situacao = 'Confirmada';
+      await salvar('matriculas', pedidos); desenhar(); avisar('Matrícula confirmada.');
+    }
+    if (b.dataset.recusar) {
+      const motivo = await pedirTexto({ titulo: 'Recusar matrícula', rotulo: 'Motivo (a família verá este texto)' });
+      if (motivo === null) return;
+      const p = pedidos.find((x) => x.protocolo === b.dataset.recusar);
+      Object.assign(p, { situacao: 'Recusada', motivo });
+      const v = await lerVagas();
+      if (v[p.escolaId]?.[p.serie] !== undefined) { v[p.escolaId][p.serie] += 1; await salvar('vagas', v); }
+      await salvar('matriculas', pedidos); desenhar(); avisar('Matrícula recusada. A vaga foi liberada.');
+    }
+  } catch {
+    avisar('Não foi possível salvar. Tente de novo.');
+    mostrar();
   }
 });
 mostrar();

@@ -1,8 +1,7 @@
 // Diário de classe (HU11): validação no próprio campo e gravação no estado da sessão.
 import { iniciar, falhaDados } from '../app.js';
 import { esc, avisar, icone } from '../ui.js';
-import { carregar, diario } from '../dados.js';
-import { definir } from '../estado.js';
+import { carregar, diario, salvar as salvarDados } from '../dados.js';
 import { presenca } from '../regras.js';
 
 const main = await iniciar({ perfil: 'professor', pagina: 'professor/diario.html', assistente: true });
@@ -33,7 +32,7 @@ function desenhar() {
     <div id="erro-diario" role="alert"></div>
     <div class="linha-botoes" style="margin-top:1rem"><button type="button" class="botao" id="salvar">${icone('ok', 20)}Salvar diário</button><span class="texto-suave">As notas salvas aparecem para a família.</span></div>`;
 }
-function salvar() {
+async function salvar() {
   const campos = [...main.querySelectorAll('[data-aluno]')];
   campos.forEach((c) => c.removeAttribute('aria-invalid'));
   const caixa = main.querySelector('#erro-diario');
@@ -54,9 +53,13 @@ function salvar() {
     const v = Number(c.value.replace(',', '.'));
     a[c.dataset.campo] = c.dataset.campo === 'faltas' ? v : Math.round(v * 10) / 10;
   }
-  definir('diario', dados);
-  desenhar();
-  avisar('Diário salvo.');
+  try {
+    await salvarDados('diario', dados);
+    desenhar();
+    avisar('Diário salvo.');
+  } catch {
+    caixa.innerHTML = `<p class="alerta-erro">${icone('alerta', 20)}<span>Não foi possível salvar o diário. Tente de novo.</span></p>`;
+  }
 }
 main.addEventListener('click', (e) => { if (e.target.closest('#salvar')) salvar(); });
 main.addEventListener('change', (e) => { if (e.target.id === 'turma') { turmaId = e.target.value; desenhar(); } });

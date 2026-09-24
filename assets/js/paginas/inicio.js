@@ -1,6 +1,6 @@
 import { iniciar, link } from '../app.js';
 import { icone } from '../ui.js';
-import { reiniciar } from '../estado.js';
+import { reiniciarDados } from '../dados.js';
 import { avisar } from '../ui.js';
 
 const main = await iniciar();
@@ -17,4 +17,6 @@ main.innerHTML = `
     ${perfis.map(([h, t, d, i]) => `<div class="col-12 col-md-6"><div class="bloco" style="height:100%;margin:0"><a href="${link(h)}"><span class="icone">${icone(i, 30)}</span><span><strong>${t}</strong><small>${d}</small></span></a></div></div>`).join('')}
   </div>
   <p class="texto-suave" style="margin-top:2rem;font-size:.9rem">Squad 6 · Residência RiseUp · <button type="button" class="botao botao-secundario" id="reiniciar" style="min-height:36px;padding:.2rem .7rem">Reiniciar demonstração</button></p>`;
-main.querySelector('#reiniciar').addEventListener('click', () => { reiniciar(); avisar('Demonstração reiniciada.'); });
+main.querySelector('#reiniciar').addEventListener('click', async () => {
+  try { await reiniciarDados(); avisar('Demonstração reiniciada.'); } catch { avisar('Não foi possível reiniciar. Tente de novo.'); }
+});

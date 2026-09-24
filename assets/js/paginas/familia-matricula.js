@@ -2,8 +2,7 @@
 import { iniciar, link, falhaDados } from '../app.js';
 import { esc, icone, hojeBR } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
-import { carregar, matriculas, vagas as lerVagas } from '../dados.js';
-import { definir, proximoProtocolo } from '../estado.js';
+import { carregar, matriculas, vagas as lerVagas, salvar, novoProtocolo } from '../dados.js';
 import { SERIES, etapaDaSerie, motivoBloqueio } from '../regras.js';
 
 const main = await iniciar({ perfil: 'familia', assistente: true });
@@ -122,11 +121,11 @@ function validar() {
 
 async function enviarPedido() {
   const pedidos = await matriculas();
-  d.protocolo = proximoProtocolo('MAT');
+  d.protocolo = await novoProtocolo('MAT');
   pedidos.unshift({ protocolo: d.protocolo, estudante: d.estudante, responsavel: d.responsavel, serie: d.serie, tipo: d.tipo === 'transferencia' ? 'Transferência' : 'Matrícula nova', escolaId: d.escolaId, situacao: 'Aguardando confirmação', data: hojeBR(), meu: true });
-  definir('matriculas', pedidos);
+  await salvar('matriculas', pedidos);
   base.vagas[d.escolaId][d.serie] -= 1; // reserva a vaga até a escola confirmar ou recusar
-  definir('vagas', base.vagas);
+  await salvar('vagas', base.vagas);
 }
 
 main.addEventListener('click', async (e) => {
@@ -140,7 +139,10 @@ main.addEventListener('click', async (e) => {
     guardarCampos();
     const erro = validar();
     if (erro) { desenhar(erro); return; }
-    if (passo === 5) await enviarPedido();
+    if (passo === 5) {
+      alvo.disabled = true;
+      try { await enviarPedido(); } catch { desenhar('Não foi possível enviar o pedido agora. Tente de novo.'); return; }
+    }
     passo += 1;
     desenhar();
     window.scrollTo(0, 0);

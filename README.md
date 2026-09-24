@@ -27,7 +27,21 @@ Pré-requisitos: VS Code com a extensão **Live Server** (ou qualquer servidor e
 
 Sem mais nada configurado, o assistente funciona em **modo sem IA**: responde pelas perguntas frequentes da base (`data/base-conhecimento.json`).
 
-Alternativa no VS Code sem Live Server: aperte **F5** ("Abrir portal (servidor local)"). O `tools/servidor.ps1` sobe um servidor em `http://localhost:5500` sem precisar de Node nem Python.
+**Jeito mais fácil (Windows):** dê dois cliques em `iniciar.bat`. Ele sobe o servidor com a API em `http://localhost:5500` e abre o navegador. Para parar, feche a janela preta. No VS Code, **F5** faz o mesmo. Não precisa de Node nem de Python.
+
+### API de dados
+
+Com o `iniciar.bat` (ou F5), as páginas leem e gravam pela API do `tools/servidor.ps1`, e as alterações (matrículas, vagas, turmas, diário) ficam salvas em disco na pasta `dados-salvos/`. Elas continuam lá depois de fechar o navegador e valem para qualquer navegador na mesma máquina. O botão **Reiniciar demonstração** apaga essa pasta.
+
+| Método | Endereço | O que faz |
+| --- | --- | --- |
+| `GET` | `/api/saude` | Confere se a API está no ar |
+| `GET` | `/api/{nome}` | Lê um conjunto de dados (`escolas`, `atos`, `matriculas`, `vagas`, `turmas`, `diario`, `calendario`…) |
+| `PUT` | `/api/{nome}` | Grava `matriculas`, `vagas`, `turmas` ou `diario` (os demais são só leitura) |
+| `POST` | `/api/protocolo/MAT` | Gera o próximo número de protocolo |
+| `DELETE` | `/api/dados` | Apaga todas as alterações salvas |
+
+Sem a API (Live Server, `python -m http.server`, GitLab Pages), o portal continua funcionando: lê `data/*.json` e guarda as alterações no navegador (localStorage).
 
 Alternativa sem VS Code: `python3 -m http.server 5500` na pasta do projeto.
 
