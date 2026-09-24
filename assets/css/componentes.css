@@ -120,7 +120,7 @@ textarea.entrada { min-height: 100px; resize: vertical; }
 .protocolo strong { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 2rem; letter-spacing: .02em; }
 
 /* Tabelas */
-.tabela-rolagem { overflow-x: auto; border: 1.5px solid var(--linha); border-radius: 14px; background: var(--superficie); margin-bottom: 1rem; }
+.tabela-rolagem { position: relative; overflow-x: auto; border: 1.5px solid var(--linha); border-radius: 14px; background: var(--superficie); margin-bottom: 1rem; }
 .tabela { width: 100%; border-collapse: collapse; min-width: 560px; }
 .tabela th, .tabela td { padding: .7rem .9rem; border-bottom: 1px solid var(--linha-suave); text-align: left; vertical-align: middle; }
 .tabela thead th { background: var(--fundo-claro); color: var(--suave); font-size: .88rem; border-bottom: 2px solid var(--linha); }
@@ -169,7 +169,65 @@ textarea.entrada { min-height: 100px; resize: vertical; }
 .carregando { color: var(--suave); padding: 2rem 0; text-align: center; }
 .vazio { color: var(--suave); text-align: center; padding: 2rem 1rem; }
 
-/* Botão de modo escuro: mostra a lua no modo claro e o sol no modo escuro. */
-.icone-sol { display: none; }
-:root[data-tema="escuro"] .icone-sol { display: block; }
-:root[data-tema="escuro"] .icone-lua { display: none; }
+/* Painel "Exibição" do cabeçalho: modo escuro e alto contraste (assets/js/tema-inicial.js). */
+.exibicao { position: relative; }
+.painel-exibicao { position: absolute; right: 0; top: calc(100% + .5rem); z-index: 45; width: min(280px, calc(100vw - 2rem)); background: var(--superficie); border: 2px solid var(--linha); border-radius: 16px; padding: .9rem; box-shadow: 0 10px 28px rgba(0,0,0,.18); display: grid; gap: .4rem; }
+.painel-exibicao[hidden] { display: none; }
+.painel-exibicao > strong { font-size: 1rem; margin-bottom: .2rem; }
+.chave { display: flex; align-items: center; gap: .6rem; width: 100%; min-height: 52px; padding: .4rem .6rem; border: 0; border-radius: 12px; background: transparent; color: var(--tinta); font: inherit; font-weight: 700; cursor: pointer; text-align: left; }
+.chave:hover { background: var(--fundo-claro); }
+.chave > span:first-of-type { flex: 1; }
+.chave-trilho { width: 48px; height: 28px; border-radius: 999px; border: 2px solid var(--tinta); position: relative; flex: none; }
+.chave-trilho span { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--tinta); transition: left .15s; }
+.chave[aria-checked="true"] .chave-trilho { background: var(--tinta); }
+.chave[aria-checked="true"] .chave-trilho span { left: 23px; background: var(--sobre-tinta); }
+
+/* Estado vazio */
+.estado-vazio { display: flex; flex-direction: column; align-items: center; gap: .35rem; text-align: center; color: var(--suave); padding: 2rem 1rem; border: 2px dashed var(--linha-suave); border-radius: 18px; margin-bottom: 1rem; }
+.estado-vazio strong { color: var(--tinta); font-size: 1.1rem; }
+
+/* Barra de ferramentas das tabelas de gestão: busca, filtros e exportação */
+.ferramentas-tabela { display: flex; flex-wrap: wrap; gap: .6rem; align-items: flex-end; margin-bottom: 1rem; }
+.ferramentas-tabela .campo { margin: 0; flex: 1 1 220px; }
+.campo-busca { position: relative; }
+.campo-busca svg { position: absolute; left: .8rem; bottom: 15px; color: var(--suave); pointer-events: none; }
+.campo-busca .entrada { padding-left: 2.6rem; }
+.contagem { color: var(--suave); font-size: .92rem; margin: -.4rem 0 .8rem; }
+.registro { display: flex; gap: .4rem; align-items: center; color: var(--suave); font-size: .88rem; }
+
+/* Seletor de estudante (família com mais de um filho) */
+.seletor-estudante { display: flex; gap: .6rem; overflow-x: auto; margin-bottom: 1rem; padding-bottom: .2rem; }
+.seletor-estudante button { display: flex; align-items: center; gap: .6rem; min-height: 64px; padding: .5rem 1rem .5rem .6rem; border: 2px solid var(--linha); border-radius: 18px; background: var(--superficie); color: var(--tinta); font: inherit; font-weight: 700; cursor: pointer; text-align: left; flex: none; }
+.seletor-estudante button small { display: block; font-weight: 400; color: var(--suave); font-size: .85rem; }
+.seletor-estudante button[aria-pressed="true"] { border: 4px solid var(--tinta); padding: .35rem .85rem .35rem .45rem; }
+.seletor-estudante .avatar { width: 40px; height: 40px; font-size: 1rem; }
+.cartao.destaque { border: 3px solid var(--tinta); }
+
+/* Declaração para imprimir */
+.folha { position: relative; background: #fff; color: #111; border: 1.5px solid var(--linha); border-radius: 6px; padding: 2.2rem 2rem; margin: 1rem 0; font-size: 1.02rem; line-height: 1.7; overflow: hidden; }
+.folha h2 { text-align: center; font-size: 1.25rem; letter-spacing: .04em; margin: 1.2rem 0; color: #111; }
+.folha .cabecalho-folha { text-align: center; font-size: .9rem; line-height: 1.4; }
+.folha .assinatura { margin-top: 3rem; text-align: center; font-size: .92rem; line-height: 1.4; }
+.folha .assinatura span { display: block; width: 70%; margin: 0 auto .3rem; border-top: 1px solid #111; }
+.folha .rodape-folha { margin-top: 2rem; font-size: .8rem; color: #444; border-top: 1px solid #bbb; padding-top: .6rem; }
+.folha .marca-dagua { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; font-size: clamp(1.4rem, 6vw, 2.6rem); font-weight: 700; color: rgba(160, 0, 0, .12); transform: rotate(-24deg); text-align: center; line-height: 1.2; }
+@media print {
+  .topo, .assistente-botao, .assistente-painel, .nao-imprimir, .aviso-rapido { display: none !important; }
+  body, .conteudo { background: #fff !important; padding: 0 !important; max-width: none !important; }
+  .folha { border: 0; margin: 0; padding: 0; }
+}
+
+/* Chamada rápida do professor */
+.chamada-rapida { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .5rem; }
+.chamada-rapida button { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .1rem .5rem; min-height: 60px; padding: .5rem .7rem; border: 2px solid var(--linha); border-radius: 14px; background: var(--superficie); color: var(--tinta); font: inherit; font-weight: 700; text-align: left; cursor: pointer; }
+.chamada-rapida button small { grid-column: 2; font-weight: 400; color: var(--suave); font-size: .82rem; }
+.chamada-rapida button[aria-pressed="true"] { border: 3px solid var(--vermelho); background: var(--vermelho-claro); color: var(--vermelho); }
+.chamada-rapida button[aria-pressed="true"] small { color: var(--vermelho); font-weight: 700; }
+.lista-simples { list-style: none; padding: 0; margin: .7rem 0 0; }
+.lista-simples li { display: flex; justify-content: space-between; align-items: center; gap: .6rem; padding: .5rem 0; border-top: 1px solid var(--linha-suave); }
+/* Tabelas largas rolam dentro da própria moldura, sem esticar a página no celular. */
+.com-menu { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .com-menu { grid-template-columns: 250px minmax(0, 1fr); } }
+#pagina, .ferramentas-tabela .campo { min-width: 0; }
+select.entrada { max-width: 100%; text-overflow: ellipsis; }
+h2 .etiqueta { white-space: normal; }

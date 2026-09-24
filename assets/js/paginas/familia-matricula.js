@@ -1,23 +1,59 @@
 // Matrícula em 5 passos (HU04, HU07; wireframes W3 e W4). Uma decisão por tela;
 // regras de ato e vaga aplicadas na escolha da escola.
+// Com ?rematricula=<id>, é a rematrícula em um toque: dados preenchidos, só confirmar.
 import { iniciar, link, falhaDados, acoesDoTopo } from '../app.js';
 import { esc, icone, hojeBR } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
-import { carregar, matriculas, vagas as lerVagas, salvar, novoProtocolo } from '../dados.js';
-import { SERIES, etapaDaSerie, serieCompleta, nomeCurto, motivoBloqueio } from '../regras.js';
+import { carregar, matriculas, vagas as lerVagas, salvar, novoProtocolo, estudantes, registrarAcao } from '../dados.js';
+import { SERIES, etapaDaSerie, serieCompleta, nomeCurto, motivoBloqueio, proximaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
 
 const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Matrícula', voltar: 'familia/index.html' });
 const TOTAL = 5;
 let passo = 1;
 const d = {};
 let base;
+const idRematricula = new URLSearchParams(location.search).get('rematricula');
 
 async function preparar() {
   try {
-    const [escolas, atos, vagas] = await Promise.all([carregar('escolas'), carregar('atos'), lerVagas()]);
+    const [escolas, atos, vagas, { lista }] = await Promise.all([carregar('escolas'), carregar('atos'), lerVagas(), estudantes()]);
     base = { escolas, atos, vagas };
-    desenhar();
+    const est = idRematricula && lista.find((e) => e.id === idRematricula);
+    if (est && proximaSerie(est.serie)) {
+      Object.assign(d, { tipo: 'rematricula', estudanteId: est.id, estudante: est.nome, nascimento: est.nascimento, responsavel: est.responsavel, serie: proximaSerie(est.serie), escolaId: est.escolaId, turno: est.turno });
+      desenharRematricula();
+    } else desenhar();
   } catch { falhaDados(main, preparar); }
+}
+
+// Rematrícula em um toque: uma tela de conferência com os dados que a rede já tem.
+function desenharRematricula(erro = '') {
+  const escola = base.escolas.find((e) => e.id === d.escolaId);
+  const ato = atoDaEtapa(base.atos, d.escolaId, d.serie);
+  const bloqueio = !ato || !situacaoAto(ato).vigente;
+  const nome = d.estudante.split(' ')[0];
+  acoesDoTopo().innerHTML = botaoOuvir(`Rematrícula de ${d.estudante} para 2027, na ${serieCompleta(d.serie)}, em ${escola.nome}. Se estiver tudo certo, toque em Confirmar rematrícula.`, '');
+  main.innerHTML = `
+    <h1 tabindex="-1">Rematrícula de ${esc(nome)} para 2027</h1>
+    <p style="font-size:1.05rem">Os dados já estão preenchidos. Se estiver tudo certo, é só confirmar.</p>
+    <dl class="cartao" style="font-size:1.05rem">
+      <dt class="texto-suave">Estudante</dt><dd><strong>${esc(d.estudante)}</strong></dd>
+      <dt class="texto-suave">Série em 2027</dt><dd><strong>${esc(serieCompleta(d.serie))}</strong></dd>
+      <dt class="texto-suave">Escola</dt><dd><strong>${esc(escola.nome)}</strong></dd>
+      <dt class="texto-suave">Turno</dt><dd><strong>${esc(d.turno)}</strong></dd>
+      <dt class="texto-suave">Responsável</dt><dd style="margin:0"><strong>${esc(d.responsavel)}</strong></dd>
+    </dl>
+    ${bloqueio ? `<p class="alerta-erro">${icone('alerta', 20)}<span>Esta escola não tem autorização vigente para a ${esc(serieCompleta(d.serie))}. Faça a matrícula completa para escolher outra escola.</span></p>` : '<p class="texto-suave">A vaga de quem já estuda na escola fica reservada. Não é preciso levar documentos, a menos que a secretaria peça.</p>'}
+    <p class="erro" role="alert" id="erro-passo">${esc(erro)}</p>
+    <div class="barra-acoes"><a class="botao botao-secundario botao-grande" href="${link('familia/matricula.html')}">Mudar algo</a>${bloqueio ? '' : `<button type="button" class="botao botao-grande" data-rematricular>${icone('ok', 22)}Confirmar rematrícula</button>`}</div>`;
+  main.querySelector('h1').focus();
+}
+async function enviarRematricula() {
+  const pedidos = await matriculas();
+  d.protocolo = await novoProtocolo('MAT');
+  pedidos.unshift({ protocolo: d.protocolo, estudante: d.estudante, estudanteId: d.estudanteId, responsavel: d.responsavel, serie: d.serie, tipo: 'Rematrícula', escolaId: d.escolaId, situacao: 'Aguardando confirmação', data: hojeBR(), meu: true });
+  await salvar('matriculas', pedidos);
+  await registrarAcao('Família', 'Pediu rematrícula', d.protocolo);
 }
 
 const documentos = () => [
@@ -50,7 +86,7 @@ function desenhar(erro = '') {
         <h1 tabindex="-1">Pedido enviado</h1>
       </div>
       <div class="protocolo"><span>Protocolo</span><strong>${esc(d.protocolo)}</strong></div>
-      <p style="font-size:1.1rem">A escola vai conferir e confirmar a matrícula. Leve os documentos à secretaria da escola em até 5 dias úteis.</p>
+      <p style="font-size:1.1rem">${d.tipo === 'rematricula' ? 'A escola vai confirmar a rematrícula. Não é preciso levar documentos, a menos que a secretaria peça.' : 'A escola vai conferir e confirmar a matrícula. Leve os documentos à secretaria da escola em até 5 dias úteis.'}</p>
       <div style="display:grid;gap:.8rem">
         ${botaoOuvir(`Pedido de matrícula enviado. O protocolo é ${d.protocolo.split('').join(' ')}. Leve os documentos à secretaria da escola em até 5 dias úteis.`)}
         <a class="botao botao-secundario botao-grande" href="${link('familia/documentos.html')}">${icone('documento', 22)}Ver lista de documentos</a>
@@ -150,11 +186,20 @@ async function enviarPedido() {
   await salvar('matriculas', pedidos);
   base.vagas[d.escolaId][d.serie] -= 1; // reserva a vaga até a escola confirmar ou recusar
   await salvar('vagas', base.vagas);
+  await registrarAcao('Família', 'Pediu matrícula', d.protocolo);
 }
 
 main.addEventListener('click', async (e) => {
   const alvo = e.target.closest('button');
   if (!alvo) return;
+  if ('rematricular' in alvo.dataset) {
+    alvo.disabled = true;
+    try { await enviarRematricula(); } catch { desenharRematricula('Não foi possível confirmar agora. Tente de novo.'); return; }
+    passo = 6;
+    desenhar();
+    window.scrollTo(0, 0);
+    return;
+  }
   if (alvo.dataset.tipo) { guardarCampos(); d.tipo = alvo.dataset.tipo; desenhar(); }
   if (alvo.dataset.serie) { d.serie = alvo.dataset.serie; d.escolaId = null; desenhar(); }
   if (alvo.dataset.escola) { d.escolaId = alvo.dataset.escola; desenhar(); }

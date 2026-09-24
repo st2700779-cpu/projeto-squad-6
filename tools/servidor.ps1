@@ -1,5 +1,6 @@
 # Servidor local do portal: entrega o site e a API de dados, sem Node nem Python.
-# Uso: powershell -ExecutionPolicy Bypass -File tools/servidor.ps1 [-Porta 5500] [-Abrir]
+# Uso: powershell -ExecutionPolicy Bypass -File tools/servidor.ps1 [-Porta 5500] [-Abrir] [-Celular]
+#   -Abrir abre o portal no navegador; com -Celular, numa janela do tamanho de um celular (Edge ou Chrome).
 # Chamado pelo iniciar.bat e pelo VS Code (F5, via .vscode/tasks.json).
 #
 # API (JSON):
@@ -8,20 +9,39 @@
 #   PUT    /api/{nome}                -> salva matriculas, vagas, turmas ou diario em dados-salvos/
 #   POST   /api/protocolo/{PREFIXO}   -> { protocolo: "MAT-2026-0003" }
 #   DELETE /api/dados                 -> apaga as alteracoes salvas (reinicia a demonstracao)
-param([int]$Porta = 5500, [switch]$Abrir)
+param([int]$Porta = 5500, [switch]$Abrir, [switch]$Celular)
 
 $raiz = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\') + '\'
 $pastaDados = Join-Path $raiz 'data'
 $pastaSalvos = Join-Path $raiz 'dados-salvos'
 $prefixo = "http://localhost:$Porta/"
 $utf8 = New-Object System.Text.UTF8Encoding $false
-$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario')
+$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias')
 $LIMITE_CORPO = 1MB
+
+# Abre o portal. Com -Celular, usa uma janela de app do Edge/Chrome com perfil proprio,
+# para o tamanho de celular valer mesmo com o navegador ja aberto.
+function AbrirNavegador {
+  if ($Celular) {
+    $navegador = @(
+      "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
+      "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
+      "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+      "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"
+    ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if ($navegador) {
+      Start-Process $navegador -ArgumentList "--app=$prefixo", "--window-size=412,915", "--window-position=100,40", "--user-data-dir=$env:LOCALAPPDATA\PortalAcademicoCelular", "--no-first-run"
+      return
+    }
+    Write-Host "Edge e Chrome nao encontrados: abrindo no navegador padrao (F12 e Ctrl+Shift+M simulam o celular)."
+  }
+  Start-Process $prefixo
+}
 
 # Se ja houver um servidor na porta (outra execucao ou o Live Server), so abre o navegador e sai.
 if (Get-NetTCPConnection -LocalPort $Porta -State Listen -ErrorAction SilentlyContinue) {
   Write-Host "Servidor pronto em $prefixo (porta ja estava em uso)"
-  if ($Abrir) { Start-Process $prefixo }
+  if ($Abrir) { AbrirNavegador }
   exit 0
 }
 
@@ -135,7 +155,7 @@ $ouvinte = New-Object System.Net.HttpListener
 $ouvinte.Prefixes.Add($prefixo)
 $ouvinte.Start()
 Write-Host "Servidor pronto em $prefixo (API em ${prefixo}api/) - feche esta janela ou aperte Ctrl+C para parar"
-if ($Abrir) { Start-Process $prefixo }
+if ($Abrir) { AbrirNavegador }
 
 try {
   while ($ouvinte.IsListening) {

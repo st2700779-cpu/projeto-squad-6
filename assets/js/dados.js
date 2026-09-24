@@ -35,6 +35,20 @@ export const matriculas = () => alteravel('matriculas', () => carregar('matricul
 export const vagas = () => alteravel('vagas', () => carregar('vagas'));
 export const turmasEscola = () => alteravel('turmas', () => carregar('turmas'));
 export const diario = () => alteravel('diario', async () => (await carregar('professor')).diario);
+// Demais conjuntos alteráveis, cada um com arquivo-base em data/:
+// chamadas, historico, enturmacao, alocacoes, renovacoes, equivalencias.
+export const conjunto = (nome) => alteravel(nome, () => carregar(nome));
+
+// Histórico de ações: quem fez o quê, em quê e quando. O mais recente fica no topo.
+export async function registrarAcao(quem, acao, alvo) {
+  const lista = await conjunto('historico');
+  lista.unshift({ quando: new Date().toISOString(), quem, acao, alvo });
+  await salvar('historico', lista.slice(0, 200));
+}
+// Última ação registrada sobre um alvo (ex.: um protocolo), ou null.
+export async function ultimaAcao(alvo) {
+  return (await conjunto('historico')).find((h) => h.alvo === alvo) || null;
+}
 
 // Salva um conjunto alterável (matriculas, vagas, turmas ou diario). Lança erro se a API recusar.
 export async function salvar(nome, valor) {
@@ -60,3 +74,11 @@ export async function reiniciarDados() {
     if (!r.ok) throw new Error('FALHA_AO_SALVAR');
   }
 }
+
+// Família com mais de um estudante: lista e estudante escolhido no seletor do topo.
+export async function estudantes() {
+  const lista = await carregar('estudantes');
+  const id = obter('estudanteId', lista[0].id);
+  return { lista, atual: lista.find((e) => e.id === id) || lista[0] };
+}
+export const escolherEstudante = (id) => definir('estudanteId', id);

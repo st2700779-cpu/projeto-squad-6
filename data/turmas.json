@@ -5,18 +5,40 @@
     "serie": "1ª série EM",
     "turno": "Manhã",
     "sala": "Sala 04 (40 lugares)",
+    "capacidade": 40,
+    "matriculados": 38,
     "situacao": "Aprovada",
     "historico": [
-      [
-        "Coordenação",
-        "Criou a turma",
-        ""
-      ],
-      [
-        "Direção",
-        "Aprovou",
-        ""
-      ]
+      ["Coordenação", "Criou a turma", ""],
+      ["Direção", "Aprovou", ""]
+    ]
+  },
+  {
+    "id": "tt5",
+    "nome": "1ª série B",
+    "serie": "1ª série EM",
+    "turno": "Tarde",
+    "sala": "Sala 01 (40 lugares)",
+    "capacidade": 40,
+    "matriculados": 24,
+    "situacao": "Aprovada",
+    "historico": [
+      ["Coordenação", "Criou a turma", ""],
+      ["Direção", "Aprovou", ""]
+    ]
+  },
+  {
+    "id": "tt4",
+    "nome": "2ª série A",
+    "serie": "2ª série EM",
+    "turno": "Manhã",
+    "sala": "Sala 05 (35 lugares)",
+    "capacidade": 35,
+    "matriculados": 35,
+    "situacao": "Aprovada",
+    "historico": [
+      ["Coordenação", "Criou a turma", ""],
+      ["Direção", "Aprovou", ""]
     ]
   },
   {
@@ -25,18 +47,12 @@
     "serie": "1ª série EM",
     "turno": "Tarde",
     "sala": "Sala 07 (35 lugares)",
+    "capacidade": 35,
+    "matriculados": 0,
     "situacao": "Pendente de aprovação",
     "historico": [
-      [
-        "Coordenação",
-        "Criou a turma",
-        ""
-      ],
-      [
-        "Coordenação",
-        "Enviou para aprovação",
-        ""
-      ]
+      ["Coordenação", "Criou a turma", ""],
+      ["Coordenação", "Enviou para aprovação", ""]
     ]
   },
   {
@@ -45,23 +61,13 @@
     "serie": "2ª série EM",
     "turno": "Noite",
     "sala": "Sala 02 (30 lugares)",
+    "capacidade": 30,
+    "matriculados": 0,
     "situacao": "Devolvida",
     "historico": [
-      [
-        "Coordenação",
-        "Criou a turma",
-        ""
-      ],
-      [
-        "Coordenação",
-        "Enviou para aprovação",
-        ""
-      ],
-      [
-        "Direção",
-        "Devolveu",
-        "A sala 02 está em reforma até dezembro. Escolher outra sala."
-      ]
+      ["Coordenação", "Criou a turma", ""],
+      ["Coordenação", "Enviou para aprovação", ""],
+      ["Direção", "Devolveu", "A sala 02 está em reforma até dezembro. Escolher outra sala."]
     ]
   }
 ]

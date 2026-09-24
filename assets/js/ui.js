@@ -24,7 +24,14 @@ const PATHS = {
   camadas: 'M12 3l9 5-9 5-9-5zM3 13l9 5 9-5',
   pessoas: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M16 3.5a4 4 0 0 1 0 7.5M22 21a7 7 0 0 0-4-6.3',
   caixa: 'M3 13l3-9h12l3 9v7H3zM3 13h5l1 3h6l1-3h5',
-  megafone: 'M3 10v4l11 5V5zM14 8h2a4 4 0 0 1 0 8h-2M6 14l1.2 5H10l-1-4'
+  megafone: 'M3 10v4l11 5V5zM14 8h2a4 4 0 0 1 0 8h-2M6 14l1.2 5H10l-1-4',
+  baixar: 'M12 4v11M7 10l5 5 5-5M5 20h14',
+  busca: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM21 21l-5-5',
+  imprimir: 'M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z',
+  relogio: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
+  trocar: 'M4 7h13l-3-3M20 17H7l3 3',
+  cadeado: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',
+  mais: 'M12 5v14M5 12h14'
 };
 export const icone = (nome, tam = 22) =>
   `<svg width="${tam}" height="${tam}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none"><path d="${PATHS[nome]}"/></svg>`;
@@ -93,3 +100,54 @@ export const numeroBR = (n, casas = 1) => Number(n).toLocaleString('pt-BR', { mi
 export function etiqueta(texto, tipo = 'neutra') {
   return `<span class="etiqueta etiqueta-${tipo}">${esc(texto)}</span>`;
 }
+
+export const dataHoraBR = (iso) => new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+// Confirmação antes de ações que não dá para desfazer. Devolve true ou false.
+export function confirmar({ titulo, texto, botao = 'Confirmar', perigo = false }) {
+  return new Promise((resolver) => {
+    const fundo = document.createElement('div');
+    fundo.className = 'fundo-janela';
+    fundo.innerHTML = `
+      <div class="janela" role="alertdialog" aria-modal="true" aria-labelledby="confirmar-titulo" aria-describedby="confirmar-texto">
+        <h2 id="confirmar-titulo" style="margin-top:0">${esc(titulo)}</h2>
+        <p id="confirmar-texto">${esc(texto)}</p>
+        <div class="linha-botoes" style="justify-content:flex-end">
+          <button type="button" class="botao botao-secundario" data-acao="nao">Cancelar</button>
+          <button type="button" class="botao${perigo ? ' botao-perigo' : ''}" data-acao="sim">${esc(botao)}</button>
+        </div>
+      </div>`;
+    const anterior = document.activeElement;
+    document.body.appendChild(fundo);
+    $('[data-acao="nao"]', fundo).focus();
+    const fechar = (valor) => { fundo.remove(); anterior?.focus?.(); resolver(valor); };
+    fundo.addEventListener('click', (e) => {
+      const acao = e.target.closest('[data-acao]')?.dataset.acao;
+      if (e.target === fundo || acao === 'nao') fechar(false);
+      if (acao === 'sim') fechar(true);
+    });
+    fundo.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(false); });
+  });
+}
+
+// Estado vazio com explicação do que aparece ali e, se houver, o próximo passo.
+export const vazio = (titulo, texto, nomeIcone = 'info') =>
+  `<div class="estado-vazio">${icone(nomeIcone, 32)}<strong>${esc(titulo)}</strong><span>${esc(texto)}</span></div>`;
+
+// Exporta linhas para CSV que abre direto no Excel em português (ponto e vírgula e BOM UTF-8).
+export function baixarCSV(nomeArquivo, cabecalho, linhas) {
+  const celula = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const texto = [cabecalho, ...linhas].map((l) => l.map(celula).join(';')).join('\r\n');
+  const url = URL.createObjectURL(new Blob(['\ufeff' + texto], { type: 'text/csv;charset=utf-8' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nomeArquivo;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// Busca sem acento e sem diferença de maiúsculas.
+export const normalizar = (s) => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+export const combina = (termo, ...campos) => !termo || campos.some((c) => normalizar(c).includes(normalizar(termo)));

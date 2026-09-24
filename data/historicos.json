@@ -1,0 +1,37 @@
+{
+  "MAT-2026-0002": {
+    "escolaOrigem": "Colégio Horizonte (Recife/PE), rede privada",
+    "serieCursada": "1ª série EM",
+    "componentes": [
+      ["Língua Portuguesa e Literatura", 4, 8.0],
+      ["Matemática", 4, 7.5],
+      ["Física", 2, 6.8],
+      ["Química", 2, 5.2],
+      ["Biologia", 2, 8.2],
+      ["História", 2, 7.9],
+      ["Geografia", 1, 8.0],
+      ["Filosofia", 1, 9.0],
+      ["Língua Inglesa", 2, 8.5],
+      ["Educação Física", 2, 10.0],
+      ["Espanhol", 1, 8.0]
+    ]
+  },
+  "MAT-2025-0102": {
+    "escolaOrigem": "Escola Estadual Monte Alegre (Maceió/AL)",
+    "serieCursada": "1ª série EM (1º semestre)",
+    "componentes": [
+      ["Português", 4, 7.0],
+      ["Matemática", 3, 6.5],
+      ["Física", 2, 7.0],
+      ["Química", 2, 7.5],
+      ["Biologia", 2, 6.0],
+      ["História", 2, 8.0],
+      ["Geografia", 2, 7.0],
+      ["Sociologia", 1, 8.0],
+      ["Filosofia", 1, 7.5],
+      ["Inglês", 2, 6.5],
+      ["Educação Física", 2, 9.0],
+      ["Artes", 1, 8.5]
+    ]
+  }
+}

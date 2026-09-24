@@ -24,7 +24,7 @@ As telas seguem os wireframes e fluxos da Squad 6 (W1–W17). O layout é **mobi
 - **Família (W1–W5):** feita para o celular. Telas internas têm cabeçalho com voltar e título, e a matrícula tem os botões Voltar/Continuar fixos no rodapé.
 - **Assistente (W6–W12):** no celular ocupa a tela inteira; no computador abre como coluna à direita. Segue o fluxo W17: validação no navegador, IA pelo proxy e, em qualquer falha, as perguntas frequentes locais.
 - **Professor, escola e rede (W13–W15):** menu lateral no computador; no celular o menu vira abas roláveis, e o diário de classe mostra um cartão por estudante.
-- **Modo escuro:** botão com a lua no cabeçalho (portal e protótipo). A escolha vale para as duas versões e fica salva no navegador; sem escolha, segue o modo do sistema.
+- **Exibição (modo escuro e alto contraste):** botão no cabeçalho, ao lado do A+ (portal e protótipo). As escolhas valem para as duas versões e ficam salvas no navegador; sem escolha, o modo escuro segue o sistema.
 
 ## Rodar no computador
 
@@ -124,6 +124,13 @@ O script faz as 30 perguntas de `prompts/testes/perguntas-teste.json`, mostra ac
 - Na transferência, o estudante fica na mesma série.
 - Turmas: a coordenação cria e envia; a direção aprova ou devolve com justificativa.
 - Notas de 0 a 10 e faltas até o total de aulas dadas; presença mínima de 75% e média 6 para aprovação.
+- Enturmação só em turma aprovada da mesma série e sem passar da capacidade da sala.
+- Alocação bloqueada quando o professor não é habilitado no componente (concurso e formação) ou passaria da carga horária semanal.
+- Equivalências por regras: mesmo componente (com sinônimos) e carga de pelo menos 75% da rede é equivalente; carga menor pede complementação; componente não cursado ou nota abaixo de 6 vira pendência de adaptação.
+- Ato autorizativo entra em alerta a 120 dias do vencimento, com botão para iniciar a renovação.
+- Rematrícula mantém a escola e passa para a série seguinte, sem consumir vaga nova.
+- Declarações de matrícula, frequência e transferência numeradas (DEC-ano-número), com marca-d’água de documento simulado.
+- Ações irreversíveis pedem confirmação, e confirmações, recusas, aprovações, enturmações, alocações, chamadas e declarações ficam no histórico de ações (quem e quando).
 
 ## Padrões da equipe
 

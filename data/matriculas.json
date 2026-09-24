@@ -18,5 +18,35 @@
     "escolaId": "e1",
     "situacao": "Aguardando confirmação",
     "data": "21/09/2026"
+  },
+  {
+    "protocolo": "MAT-2025-0091",
+    "estudante": "Ana Júlia Prado",
+    "responsavel": "Célia Prado",
+    "serie": "1ª série EM",
+    "tipo": "Matrícula nova",
+    "escolaId": "e1",
+    "situacao": "Confirmada",
+    "data": "10/09/2026"
+  },
+  {
+    "protocolo": "MAT-2025-0102",
+    "estudante": "Rafael Lima Couto",
+    "responsavel": "Denise Couto",
+    "serie": "1ª série EM",
+    "tipo": "Transferência",
+    "escolaId": "e1",
+    "situacao": "Confirmada",
+    "data": "12/09/2026"
+  },
+  {
+    "protocolo": "MAT-2025-0107",
+    "estudante": "Beatriz Moura Alves",
+    "responsavel": "Jorge Alves",
+    "serie": "2ª série EM",
+    "tipo": "Matrícula nova",
+    "escolaId": "e1",
+    "situacao": "Confirmada",
+    "data": "15/09/2026"
   }
 ]

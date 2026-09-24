@@ -1,6 +1,6 @@
 // W1 · Seleção de perfil.
 import { iniciar, link } from '../app.js';
-import { icone, avisar } from '../ui.js';
+import { icone, avisar, confirmar } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { reiniciarDados } from '../dados.js';
 
@@ -19,5 +19,6 @@ main.innerHTML = `
   </div>
   <p class="texto-suave" style="margin-top:2rem;font-size:.9rem">Squad 6 · Residência RiseUp · Dados fictícios · <button type="button" class="botao botao-secundario" id="reiniciar" style="min-height:36px;padding:.2rem .7rem;border-width:1.5px">Reiniciar demonstração</button></p>`;
 main.querySelector('#reiniciar').addEventListener('click', async () => {
+  if (!(await confirmar({ titulo: 'Reiniciar a demonstração?', texto: 'Apaga tudo o que foi feito: pedidos enviados, confirmações, turmas, notas lançadas, chamadas e declarações. Os dados voltam ao início.', botao: 'Reiniciar', perigo: true }))) return;
   try { await reiniciarDados(); avisar('Demonstração reiniciada.'); } catch { avisar('Não foi possível reiniciar. Tente de novo.'); }
 });

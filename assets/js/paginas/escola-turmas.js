@@ -1,7 +1,7 @@
 // Turmas (HU13, HU14): criação bloqueada sem ato vigente; aprovação ou devolução pela direção.
 import { iniciar, falhaDados } from '../app.js';
-import { esc, etiqueta, pedirTexto, avisar } from '../ui.js';
-import { carregar, turmasEscola, salvar as salvarDados } from '../dados.js';
+import { esc, etiqueta, pedirTexto, avisar, confirmar } from '../ui.js';
+import { carregar, turmasEscola, salvar as salvarDados, registrarAcao } from '../dados.js';
 import { definir, obter } from '../estado.js';
 import { SERIES, etapaDaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
 
@@ -39,8 +39,9 @@ function desenhar(erro = '') {
         ${!coord && t.situacao === 'Pendente de aprovação' ? `<button type="button" class="botao" data-aprovar="${t.id}">Aprovar</button><button type="button" class="botao botao-perigo" data-devolver="${t.id}">Devolver</button>` : ''}
       </div></div>`; }).join('')}`;
 }
-async function salvar(msg) {
-  try { await salvarDados('turmas', turmas); desenhar(); avisar(msg); } catch { avisar('Não foi possível salvar. Tente de novo.'); mostrar(); }
+// Salva as turmas e registra no histórico de ações quem fez o quê.
+async function salvar(msg, quem, acao, alvo) {
+  try { await salvarDados('turmas', turmas); await registrarAcao(quem, acao, alvo); desenhar(); avisar(msg); } catch { avisar('Não foi possível salvar. Tente de novo.'); mostrar(); }
 }
 main.addEventListener('click', async (e) => {
   const b = e.target.closest('button');
@@ -53,16 +54,21 @@ main.addEventListener('click', async (e) => {
     const ato = atoDaEtapa(atos, ESCOLA, serie);
     if (!ato) return desenhar(`Esta escola não tem autorização para ${etapaDaSerie(serie)}.`);
     if (!situacaoAto(ato).vigente) return desenhar(`A autorização para ${etapaDaSerie(serie)} (${ato.numero}) está vencida. Sem ato vigente, não é possível abrir turma nessa etapa.`);
-    turmas.unshift({ id: 'tt' + Date.now(), nome, serie, turno: main.querySelector('#nt-turno').value, sala: main.querySelector('#nt-sala').value, situacao: 'Rascunho', historico: [['Coordenação', 'Criou a turma', '']] });
-    salvar('Turma salva como rascunho.');
+    const sala = main.querySelector('#nt-sala').value;
+    // A capacidade vem do nome da sala ("Sala 01 (40 lugares)") e limita a enturmação.
+    turmas.unshift({ id: 'tt' + Date.now(), nome, serie, turno: main.querySelector('#nt-turno').value, sala, capacidade: Number(/\((\d+)/.exec(sala)?.[1] || 0), matriculados: 0, situacao: 'Rascunho', historico: [['Coordenação', 'Criou a turma', '']] });
+    salvar('Turma salva como rascunho.', 'Coordenação', 'Criou a turma', nome);
   }
   const t = turmas.find((x) => x.id === (b.dataset.enviar || b.dataset.aprovar || b.dataset.devolver));
-  if (b.dataset.enviar) { t.situacao = 'Pendente de aprovação'; t.historico.push(['Coordenação', 'Enviou para aprovação', '']); salvar('Turma enviada para a direção.'); }
-  if (b.dataset.aprovar) { t.situacao = 'Aprovada'; t.historico.push(['Direção', 'Aprovou', '']); salvar('Turma aprovada.'); }
+  if (b.dataset.enviar) { t.situacao = 'Pendente de aprovação'; t.historico.push(['Coordenação', 'Enviou para aprovação', '']); salvar('Turma enviada para a direção.', 'Coordenação', 'Enviou para aprovação', t.nome); }
+  if (b.dataset.aprovar) {
+    if (!(await confirmar({ titulo: 'Aprovar a turma?', texto: `A ${t.nome} passa a aparecer para professores e estudantes e já pode receber alunos na enturmação.`, botao: 'Aprovar turma' }))) return;
+    t.situacao = 'Aprovada'; t.historico.push(['Direção', 'Aprovou', '']); salvar('Turma aprovada.', 'Direção', 'Aprovou', t.nome);
+  }
   if (b.dataset.devolver) {
     const j = await pedirTexto({ titulo: 'Devolver turma', rotulo: 'O que a coordenação precisa ajustar?' });
     if (j === null) return;
-    t.situacao = 'Devolvida'; t.historico.push(['Direção', 'Devolveu', j]); salvar('Turma devolvida.');
+    t.situacao = 'Devolvida'; t.historico.push(['Direção', 'Devolveu', j]); salvar('Turma devolvida.', 'Direção', 'Devolveu', t.nome);
   }
 });
 mostrar();
