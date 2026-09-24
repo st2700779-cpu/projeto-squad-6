@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1F2A3C">
 <title>Sistema Acadêmico · SEDUC/SE</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,6 +94,16 @@
   .attend-btn { transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
 
   table.zebra tbody tr:nth-child(even) { background: #FAFAF7; }
+
+  /* Versão mobile: barra de navegação fixa no rodapé, acima da área segura do iPhone. */
+  .nav-mobile { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .nav-mobile button[aria-current="page"] { color: #4B4A8F; }
+  .nav-mobile button[aria-current="page"] .nav-icone { background: #E9E8F6; }
+  .espaco-nav { padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); }
+  @media (min-width: 640px) { .espaco-nav { padding-bottom: 2rem; } }
+  /* No celular o carimbo não gira: fica mais legível em telas pequenas. */
+  @media (max-width: 639px) { .carimbo-badge { transform: none; } }
+  input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
 </style>
 </head>
 <body class="bg-paper text-ink font-body antialiased">
@@ -104,14 +115,15 @@
         <span class="flex h-9 w-9 items-center justify-center rounded-md bg-carimbo font-display text-sm font-bold text-white">SE</span>
         <div>
           <p class="font-display text-sm font-bold leading-tight sm:text-base">Sistema Acadêmico</p>
-          <p class="font-mono text-[11px] uppercase tracking-wider text-paper/50">SEDUC · Rede Estadual de Ensino de Sergipe</p>
+          <p class="font-mono text-[11px] uppercase tracking-wider text-paper/50"><span class="sm:hidden">SEDUC · Sergipe</span><span class="hidden sm:inline">SEDUC · Rede Estadual de Ensino de Sergipe</span></p>
         </div>
       </div>
-      <button id="btn-logout" class="rounded-md border border-paper/20 px-3 py-1.5 text-xs font-medium text-paper/80 hover:bg-ink-soft">Sair</button>
+      <button id="btn-logout" class="min-h-[44px] rounded-md border border-paper/20 px-4 text-sm font-medium text-paper/80 hover:bg-ink-soft sm:min-h-0 sm:px-3 sm:py-1.5 sm:text-xs">Sair</button>
     </div>
   </div>
 
-  <nav class="mx-auto flex max-w-7xl gap-1 px-4 sm:px-6 lg:px-8" aria-label="Selecionar visão por perfil">
+  <!-- Abas do topo: só a partir de 640px. No celular a navegação fica no rodapé (nav-mobile). -->
+  <nav class="mx-auto hidden max-w-7xl gap-1 px-4 sm:flex sm:px-6 lg:px-8" aria-label="Selecionar visão por perfil">
     <button data-role="aluno" class="role-tab active flex items-center gap-2 rounded-t-lg px-4 py-2.5 text-sm font-medium text-paper/70 hover:text-paper">
       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.42A12.083 12.083 0 0121 13.5a12.083 12.083 0 01-2.84 4.42L12 21l-6.16-3.08A12.083 12.083 0 013 13.5c0-1.62.395-3.14 1.09-4.42L12 14z"/></svg>
       Aluno
@@ -127,7 +139,7 @@
   </nav>
 </header>
 
-<main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+<main class="espaco-nav mx-auto max-w-7xl px-4 pt-5 sm:px-6 sm:pt-6 lg:px-8 lg:pt-8">
 
   <section id="view-aluno" class="view active">
     <header class="mb-6">
@@ -159,7 +171,9 @@
       <div class="border-b border-black/5 px-5 py-3">
         <h2 class="font-display text-base font-semibold text-ink">Boletim · 2º trimestre</h2>
       </div>
-      <div class="overflow-x-auto">
+      <!-- Celular: uma linha por disciplina, sem rolagem lateral. -->
+      <ul id="boletim-cards" class="divide-y divide-black/5 sm:hidden"></ul>
+      <div class="hidden overflow-x-auto sm:block">
         <table class="zebra w-full text-sm">
           <thead>
             <tr class="text-left text-xs uppercase tracking-wide text-slate2">
@@ -203,7 +217,7 @@
         <h2 class="mb-3 font-display text-base font-semibold text-ink">Documentos</h2>
         <div class="space-y-3 rounded-xl border border-black/5 bg-paper-card p-4 shadow-sm">
           <p class="text-xs text-slate2">Solicite documentos escolares diretamente à secretaria.</p>
-          <button id="btn-solicitar-historico" class="w-full rounded-lg bg-carimbo px-4 py-2.5 text-sm font-semibold text-white hover:bg-carimbo/90">Solicitar histórico escolar</button>
+          <button id="btn-solicitar-historico" class="min-h-[48px] w-full rounded-lg bg-carimbo px-4 py-2.5 text-sm font-semibold text-white hover:bg-carimbo/90">Solicitar histórico escolar</button>
         </div>
       </div>
     </div>
@@ -239,7 +253,7 @@
       <div class="overflow-hidden rounded-xl border border-black/5 bg-paper-card shadow-sm">
         <div class="flex items-center justify-between border-b border-black/5 px-5 py-3">
           <h2 class="font-display text-base font-semibold text-ink">Chamada</h2>
-          <button id="btn-salvar-frequencia" class="rounded-lg bg-carimbo px-3 py-1.5 text-xs font-semibold text-white hover:bg-carimbo/90">Salvar frequência</button>
+          <button id="btn-salvar-frequencia" class="min-h-[44px] rounded-lg bg-carimbo px-4 text-sm font-semibold text-white hover:bg-carimbo/90 sm:min-h-0 sm:px-3 sm:py-1.5 sm:text-xs">Salvar frequência</button>
         </div>
         <div id="chamada-list" class="divide-y divide-black/5"></div>
       </div>
@@ -247,7 +261,7 @@
       <div class="overflow-hidden rounded-xl border border-black/5 bg-paper-card shadow-sm">
         <div class="flex items-center justify-between border-b border-black/5 px-5 py-3">
           <h2 class="font-display text-base font-semibold text-ink">Lançar notas · 2º trimestre</h2>
-          <button id="btn-salvar-notas" class="rounded-lg bg-carimbo px-3 py-1.5 text-xs font-semibold text-white hover:bg-carimbo/90">Salvar notas</button>
+          <button id="btn-salvar-notas" class="min-h-[44px] rounded-lg bg-carimbo px-4 text-sm font-semibold text-white hover:bg-carimbo/90 sm:min-h-0 sm:px-3 sm:py-1.5 sm:text-xs">Salvar notas</button>
         </div>
         <div id="notas-list" class="divide-y divide-black/5"></div>
         <p id="notas-error" class="hidden px-5 py-3 text-xs text-recusado">Preencha uma nota de 0 a 10 para todos os alunos antes de salvar.</p>
@@ -304,7 +318,9 @@
         <h2 class="font-display text-base font-semibold text-ink">Fila de pré-matrícula</h2>
         <span class="font-mono text-xs text-slate2" id="fila-count">4 solicitações pendentes</span>
       </div>
-      <div class="overflow-x-auto">
+      <!-- Celular: um cartão por solicitação, com botões grandes. -->
+      <ul id="matricula-cards" class="divide-y divide-black/5 sm:hidden"></ul>
+      <div class="hidden overflow-x-auto sm:block">
         <table class="zebra w-full text-sm">
           <thead>
             <tr class="text-left text-xs uppercase tracking-wide text-slate2">
@@ -341,7 +357,25 @@
 
 </main>
 
-<div id="toast" class="pointer-events-none fixed bottom-5 left-1/2 z-[60] hidden w-[92%] max-w-sm -translate-x-1/2 items-center gap-3 rounded-xl bg-ink px-4 py-3 text-paper shadow-lg sm:left-auto sm:right-5 sm:translate-x-0">
+<!-- Navegação do celular: fixa no rodapé, ao alcance do polegar. -->
+<nav class="nav-mobile fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-paper-card shadow-[0_-4px_16px_rgba(0,0,0,0.06)] sm:hidden" aria-label="Selecionar visão por perfil">
+  <div class="grid grid-cols-3">
+    <button data-role="aluno" aria-current="page" class="flex min-h-[64px] flex-col items-center justify-center gap-1 text-xs font-semibold text-slate2">
+      <span class="nav-icone flex h-8 w-14 items-center justify-center rounded-full"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.42A12.083 12.083 0 0121 13.5a12.083 12.083 0 01-2.84 4.42L12 21l-6.16-3.08A12.083 12.083 0 013 13.5c0-1.62.395-3.14 1.09-4.42L12 14z"/></svg></span>
+      Aluno
+    </button>
+    <button data-role="professor" class="flex min-h-[64px] flex-col items-center justify-center gap-1 text-xs font-semibold text-slate2">
+      <span class="nav-icone flex h-8 w-14 items-center justify-center rounded-full"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
+      Professor
+    </button>
+    <button data-role="secretaria" class="flex min-h-[64px] flex-col items-center justify-center gap-1 text-xs font-semibold text-slate2">
+      <span class="nav-icone flex h-8 w-14 items-center justify-center rounded-full"><svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2M19 21H5m0 0H3m9-14v.01M12 11v.01M12 15v.01M8 11v.01M8 15v.01M16 11v.01M16 15v.01"/></svg></span>
+      Secretaria
+    </button>
+  </div>
+</nav>
+
+<div id="toast" class="pointer-events-none fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom,0px))] left-1/2 z-[60] hidden w-[92%] max-w-sm -translate-x-1/2 items-center gap-3 rounded-xl bg-ink px-4 py-3 text-paper shadow-lg sm:bottom-5 sm:left-auto sm:right-5 sm:translate-x-0">
   <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-carimbo text-white">
     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
   </span>
@@ -361,6 +395,10 @@
   function switchRole(role) {
     document.querySelectorAll('.role-tab').forEach(function (t) {
       t.classList.toggle('active', t.getAttribute('data-role') === role);
+    });
+    document.querySelectorAll('.nav-mobile [data-role]').forEach(function (b) {
+      if (b.getAttribute('data-role') === role) b.setAttribute('aria-current', 'page');
+      else b.removeAttribute('aria-current');
     });
     document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
     document.getElementById('view-' + role).classList.add('active');
@@ -415,6 +453,21 @@
         '<td class="px-5 py-2.5"><span class="carimbo-badge ' + sit.cls + '">' + sit.text + '</span></td>';
       body.appendChild(tr);
     });
+
+    var cards = document.getElementById('boletim-cards');
+    cards.innerHTML = '';
+    boletim.forEach(function (row) {
+      var sit = situacaoLabel(row.situacao);
+      var li = document.createElement('li');
+      li.className = 'flex items-center justify-between gap-3 px-4 py-3';
+      li.innerHTML =
+        '<div class="min-w-0"><p class="font-medium text-ink">' + row.disciplina + '</p>' +
+        '<p class="text-xs text-slate2">Frequência <span class="font-mono">' + row.frequencia + '%</span></p></div>' +
+        '<div class="flex shrink-0 flex-col items-end gap-1.5">' +
+        '<span class="font-mono text-lg font-bold text-ink" aria-label="Nota ' + row.nota.toFixed(1).replace('.', ',') + '">' + row.nota.toFixed(1).replace('.', ',') + '</span>' +
+        '<span class="carimbo-badge ' + sit.cls + '">' + sit.text + '</span></div>';
+      cards.appendChild(li);
+    });
   }
   renderBoletim();
 
@@ -436,14 +489,15 @@
     list.innerHTML = '';
     alunosTurma.forEach(function (aluno) {
       var row = document.createElement('div');
-      row.className = 'flex items-center justify-between gap-3 px-5 py-3';
+      // Celular: nome em cima e os dois botões lado a lado, com área de toque de 44px.
+      row.className = 'flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-5';
       var presenteCls = aluno.presente ? 'bg-aprovado text-white border-aprovado' : 'bg-transparent text-slate2 border-black/10 hover:border-aprovado';
       var ausenteCls = !aluno.presente ? 'bg-recusado text-white border-recusado' : 'bg-transparent text-slate2 border-black/10 hover:border-recusado';
       row.innerHTML =
-        '<span class="min-w-0 truncate text-sm font-medium text-ink">' + aluno.nome + '</span>' +
-        '<span class="flex shrink-0 gap-2">' +
-        '<button data-attend="' + aluno.id + '" data-present="true" class="attend-btn rounded-md border px-2.5 py-1 text-xs font-semibold ' + presenteCls + '">Presente</button>' +
-        '<button data-attend="' + aluno.id + '" data-present="false" class="attend-btn rounded-md border px-2.5 py-1 text-xs font-semibold ' + ausenteCls + '">Ausente</button>' +
+        '<span class="min-w-0 text-sm font-medium text-ink sm:truncate">' + aluno.nome + '</span>' +
+        '<span class="flex shrink-0 gap-2" role="group" aria-label="Frequência de ' + aluno.nome + '">' +
+        '<button data-attend="' + aluno.id + '" data-present="true" aria-pressed="' + aluno.presente + '" class="attend-btn min-h-[44px] flex-1 rounded-md border px-3 text-sm font-semibold sm:min-h-0 sm:flex-none sm:px-2.5 sm:py-1 sm:text-xs ' + presenteCls + '">Presente</button>' +
+        '<button data-attend="' + aluno.id + '" data-present="false" aria-pressed="' + !aluno.presente + '" class="attend-btn min-h-[44px] flex-1 rounded-md border px-3 text-sm font-semibold sm:min-h-0 sm:flex-none sm:px-2.5 sm:py-1 sm:text-xs ' + ausenteCls + '">Ausente</button>' +
         '</span>';
       list.appendChild(row);
     });
@@ -474,10 +528,10 @@
     list.innerHTML = '';
     alunosTurma.forEach(function (aluno) {
       var row = document.createElement('div');
-      row.className = 'flex items-center justify-between gap-3 px-5 py-3';
+      row.className = 'flex items-center justify-between gap-3 px-4 py-3 sm:px-5';
       row.innerHTML =
-        '<span class="min-w-0 truncate text-sm font-medium text-ink">' + aluno.nome + '</span>' +
-        '<input data-nota="' + aluno.id + '" type="number" min="0" max="10" step="0.1" value="' + aluno.nota + '" placeholder="0,0" class="w-20 rounded-md border border-black/10 px-2 py-1 text-right font-mono text-sm focus:border-carimbo" />';
+        '<label for="nota-' + aluno.id + '" class="min-w-0 text-sm font-medium text-ink sm:truncate">' + aluno.nome + '</label>' +
+        '<input id="nota-' + aluno.id + '" data-nota="' + aluno.id + '" type="number" inputmode="decimal" min="0" max="10" step="0.1" value="' + aluno.nota + '" placeholder="0,0" class="h-11 w-24 shrink-0 rounded-md border border-black/10 px-2 text-right font-mono text-base focus:border-carimbo sm:h-auto sm:w-20 sm:py-1 sm:text-sm" />';
       list.appendChild(row);
     });
 
@@ -545,7 +599,28 @@
       body.appendChild(tr);
     });
 
-    body.querySelectorAll('[data-approve]').forEach(function (btn) {
+    var cards = document.getElementById('matricula-cards');
+    cards.innerHTML = '';
+    filaMatricula.forEach(function (item) {
+      var li = document.createElement('li');
+      li.className = 'px-4 py-4';
+      var badge = item.status === 'pendente' ? '<span class="carimbo-badge text-pendente">Pendente</span>'
+        : item.status === 'aprovado' ? '<span class="carimbo-badge text-aprovado">Matriculado</span>'
+        : '<span class="carimbo-badge text-recusado">Recusado</span>';
+      li.innerHTML =
+        '<div class="flex items-start justify-between gap-3">' +
+        '<div class="min-w-0"><p class="font-medium text-ink">' + item.nome + '</p>' +
+        '<p class="text-xs text-slate2">' + item.escola + ' · <span class="font-mono">' + item.serie + '</span></p></div>' +
+        '<span class="shrink-0">' + badge + '</span></div>' +
+        (item.status === 'pendente'
+          ? '<div class="mt-3 grid grid-cols-2 gap-2">' +
+            '<button data-approve="' + item.id + '" class="min-h-[44px] rounded-lg bg-aprovado text-sm font-semibold text-white">Aprovar</button>' +
+            '<button data-reject="' + item.id + '" class="min-h-[44px] rounded-lg border border-recusado text-sm font-semibold text-recusado">Recusar</button></div>'
+          : '');
+      cards.appendChild(li);
+    });
+
+    document.querySelectorAll('#matricula-body [data-approve], #matricula-cards [data-approve]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var id = Number(btn.getAttribute('data-approve'));
         filaMatricula.forEach(function (i) { if (i.id === id) i.status = 'aprovado'; });
@@ -554,7 +629,7 @@
         showToast('Matrícula aprovada', 'O aluno foi vinculado à turma correspondente.');
       });
     });
-    body.querySelectorAll('[data-reject]').forEach(function (btn) {
+    document.querySelectorAll('#matricula-body [data-reject], #matricula-cards [data-reject]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var id = Number(btn.getAttribute('data-reject'));
         filaMatricula.forEach(function (i) { if (i.id === id) i.status = 'recusado'; });
