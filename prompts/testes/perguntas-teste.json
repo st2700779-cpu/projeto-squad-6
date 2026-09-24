@@ -1,0 +1,329 @@
+[
+  {
+    "id": 1,
+    "pergunta": "Quando é a rematrícula?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "3",
+        "28 de novembro"
+      ],
+      "acao": "matricula"
+    }
+  },
+  {
+    "id": 2,
+    "pergunta": "quando começa a rematricula",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "novembro"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 3,
+    "pergunta": "oq levar pra matricula",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "certidão",
+        "comprovante"
+      ],
+      "acao": "documentos"
+    }
+  },
+  {
+    "id": 4,
+    "pergunta": "quais documentos preciso pra matricular meu neto",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "certidão"
+      ],
+      "acao": "documentos"
+    }
+  },
+  {
+    "id": 5,
+    "pergunta": "tenho quantos dias pra levar os documentos?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "5 dias"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 6,
+    "pergunta": "quero matricular minha filha",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [],
+      "acao": "matricula"
+    }
+  },
+  {
+    "id": 7,
+    "pergunta": "quando é a matrícula nova?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "dezembro"
+      ],
+      "acao": "matricula"
+    }
+  },
+  {
+    "id": 8,
+    "pergunta": "como pedir transferência?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "mesma série"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 9,
+    "pergunta": "meu filho pode ir pro 2º ano se mudar de escola?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "mesma série"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 10,
+    "pergunta": "o que preciso levar na transferência?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "declaração"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 11,
+    "pergunta": "a escola não tem vaga, e agora?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "vaga"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 12,
+    "pergunta": "qual a média pra passar de ano?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "6"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 13,
+    "pergunta": "quantas faltas pode ter?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "75"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 14,
+    "pergunta": "onde vejo as notas do meu filho?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "notas"
+      ],
+      "acao": "notas"
+    }
+  },
+  {
+    "id": 15,
+    "pergunta": "perdi a prova, o que faço?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "segunda chamada"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 16,
+    "pergunta": "quando são as provas?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "13",
+        "17 de outubro"
+      ],
+      "acao": "calendario"
+    }
+  },
+  {
+    "id": 17,
+    "pergunta": "quando acaba o ano letivo?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "18 de dezembro"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 18,
+    "pergunta": "tem aula no feriado de novembro?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "novembro"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 19,
+    "pergunta": "que horas a secretaria abre?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "7h"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 20,
+    "pergunta": "esqueci minha senha",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "secretaria"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 21,
+    "pergunta": "como consigo o ônibus da escola?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "secretaria"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 22,
+    "pergunta": "o que é matriz curricular?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "matérias"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 23,
+    "pergunta": "como acompanho meu pedido?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "protocolo"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 24,
+    "pergunta": "e se for transferência, muda o documento?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "declaração"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 25,
+    "pergunta": "a escola dá uniforme?",
+    "espera": {
+      "na_base": false,
+      "deve_conter": [
+        "secretaria"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 26,
+    "pergunta": "tem merenda no fim de semana?",
+    "espera": {
+      "na_base": false,
+      "deve_conter": [
+        "secretaria"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 27,
+    "pergunta": "qual o salário do professor?",
+    "espera": {
+      "na_base": false,
+      "deve_conter": [],
+      "acao": null
+    }
+  },
+  {
+    "id": 28,
+    "pergunta": "quem vai ganhar a eleição?",
+    "espera": {
+      "na_base": false,
+      "deve_conter": [],
+      "acao": null
+    }
+  },
+  {
+    "id": 29,
+    "pergunta": "meu filho vai passar de ano?",
+    "espera": {
+      "na_base": true,
+      "deve_conter": [
+        "escola"
+      ],
+      "acao": null
+    }
+  },
+  {
+    "id": 30,
+    "pergunta": "vocês garantem a vaga do meu filho?",
+    "espera": {
+      "na_base": null,
+      "deve_conter": [
+        "escola"
+      ],
+      "acao": null
+    }
+  }
+]

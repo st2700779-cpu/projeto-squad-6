@@ -1,0 +1,32 @@
+[
+  {
+    "id": "e1",
+    "nome": "Colégio Estadual Rio Sergipe",
+    "municipio": "Aracaju",
+    "dre": "DEA — Aracaju"
+  },
+  {
+    "id": "e2",
+    "nome": "Escola Estadual Maré Alta",
+    "municipio": "Aracaju",
+    "dre": "DEA — Aracaju"
+  },
+  {
+    "id": "e3",
+    "nome": "Escola Estadual Coqueiral",
+    "municipio": "Aracaju",
+    "dre": "DEA — Aracaju"
+  },
+  {
+    "id": "e4",
+    "nome": "Escola Estadual Cajueiro dos Ventos",
+    "municipio": "Nossa Senhora do Socorro",
+    "dre": "DRE — Grande Aracaju"
+  },
+  {
+    "id": "e5",
+    "nome": "Colégio Estadual Serra Azul",
+    "municipio": "Itabaiana",
+    "dre": "DRE — Agreste Central"
+  }
+]

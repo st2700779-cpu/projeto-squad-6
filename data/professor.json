@@ -1,0 +1,137 @@
+{
+  "nome": "Profa. Ana Lúcia Menezes",
+  "concurso": "Professor de Matemática",
+  "formacao": "Licenciatura em Matemática",
+  "habilitacao": [
+    "Matemática"
+  ],
+  "cargaHorariaSemanal": 30,
+  "aulasDadas": 80,
+  "turmas": [
+    {
+      "id": "t1",
+      "nome": "1ª série A",
+      "componente": "Matemática",
+      "aulasSemana": 4,
+      "escolaId": "e1"
+    },
+    {
+      "id": "t2",
+      "nome": "1ª série B",
+      "componente": "Matemática",
+      "aulasSemana": 4,
+      "escolaId": "e1"
+    },
+    {
+      "id": "t3",
+      "nome": "2ª série A",
+      "componente": "Matemática",
+      "aulasSemana": 4,
+      "escolaId": "e1"
+    },
+    {
+      "id": "t4",
+      "nome": "3ª série A",
+      "componente": "Matemática",
+      "aulasSemana": 4,
+      "escolaId": "e1"
+    },
+    {
+      "id": "t5",
+      "nome": "2ª série B",
+      "componente": "Matemática",
+      "aulasSemana": 4,
+      "escolaId": "e2"
+    },
+    {
+      "id": "t6",
+      "nome": "3ª série B",
+      "componente": "Matemática",
+      "aulasSemana": 6,
+      "escolaId": "e2"
+    }
+  ],
+  "diario": {
+    "t1": [
+      {
+        "id": "a1",
+        "nome": "Ana Clara Souza",
+        "n1": 8.5,
+        "n2": 8.0,
+        "faltas": 4
+      },
+      {
+        "id": "a2",
+        "nome": "Bruno Henrique Lima",
+        "n1": 5.0,
+        "n2": 3.8,
+        "faltas": 22
+      },
+      {
+        "id": "a3",
+        "nome": "Carla Vitória Santos",
+        "n1": 7.0,
+        "n2": 6.4,
+        "faltas": 9
+      },
+      {
+        "id": "a4",
+        "nome": "Davi Lucas Oliveira",
+        "n1": 4.5,
+        "n2": 4.0,
+        "faltas": 14
+      },
+      {
+        "id": "a5",
+        "nome": "Emanuelly Rocha",
+        "n1": 9.0,
+        "n2": 9.2,
+        "faltas": 2
+      },
+      {
+        "id": "a6",
+        "nome": "Felipe Andrade",
+        "n1": 6.0,
+        "n2": 4.2,
+        "faltas": 11
+      },
+      {
+        "id": "a7",
+        "nome": "Gabriela Nunes",
+        "n1": 7.8,
+        "n2": 7.5,
+        "faltas": 16
+      },
+      {
+        "id": "a8",
+        "nome": "Heitor Menezes",
+        "n1": 6.5,
+        "n2": 6.8,
+        "faltas": 5
+      }
+    ],
+    "t2": [
+      {
+        "id": "b1",
+        "nome": "Igor Batista",
+        "n1": 7.0,
+        "n2": 7.4,
+        "faltas": 3
+      },
+      {
+        "id": "b2",
+        "nome": "Júlia Prado",
+        "n1": 8.2,
+        "n2": 8.8,
+        "faltas": 1
+      },
+      {
+        "id": "b3",
+        "nome": "Kauã Ribeiro",
+        "n1": 5.4,
+        "n2": 6.1,
+        "faltas": 10
+      }
+    ]
+  }
+}

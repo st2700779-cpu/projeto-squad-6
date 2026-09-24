@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            // As páginas usam módulos ES e fetch, que não funcionam em file://.
+            "label": "Servidor do portal",
+            "type": "shell",
+            "command": "powershell",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}/tools/servidor.ps1", "-Porta", "5500"],
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "servidor-portal",
+                "pattern": { "regexp": "^__nunca__$" },
+                "background": {
+                    "activeBegins": true,
+                    "beginsPattern": "^.",
+                    "endsPattern": "Servidor pronto em"
+                }
+            }
+        }
+    ]
+}

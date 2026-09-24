@@ -1,0 +1,67 @@
+[
+  {
+    "id": "tt1",
+    "nome": "1ª série A",
+    "serie": "1ª série EM",
+    "turno": "Manhã",
+    "sala": "Sala 04 (40 lugares)",
+    "situacao": "Aprovada",
+    "historico": [
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Direção",
+        "Aprovou",
+        ""
+      ]
+    ]
+  },
+  {
+    "id": "tt2",
+    "nome": "1ª série C",
+    "serie": "1ª série EM",
+    "turno": "Tarde",
+    "sala": "Sala 07 (35 lugares)",
+    "situacao": "Pendente de aprovação",
+    "historico": [
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Coordenação",
+        "Enviou para aprovação",
+        ""
+      ]
+    ]
+  },
+  {
+    "id": "tt3",
+    "nome": "2ª série B",
+    "serie": "2ª série EM",
+    "turno": "Noite",
+    "sala": "Sala 02 (30 lugares)",
+    "situacao": "Devolvida",
+    "historico": [
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Coordenação",
+        "Enviou para aprovação",
+        ""
+      ],
+      [
+        "Direção",
+        "Devolveu",
+        "A sala 02 está em reforma até dezembro. Escolher outra sala."
+      ]
+    ]
+  }
+]

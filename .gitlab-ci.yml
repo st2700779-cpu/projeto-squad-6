@@ -1,0 +1,13 @@
+# Publica o front-end estático no GitLab Pages a cada commit na branch principal.
+# O proxy (pasta worker/) é publicado à parte, com "npx wrangler deploy".
+pages:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - mkdir -p public
+    - cp -r index.html 404.html config.js familia professor escola rede assets data public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

@@ -1,0 +1,26 @@
+{
+  "id": "a3",
+  "nome": "Carla Vitória Santos",
+  "turma": "1ª série A",
+  "turmaId": "t1",
+  "escolaId": "e1",
+  "aulasDadas": 80,
+  "notas": {
+    "Língua Portuguesa": [
+      7.5,
+      7.0
+    ],
+    "Biologia": [
+      6.0,
+      6.5
+    ],
+    "História": [
+      8.0,
+      7.5
+    ],
+    "Física": [
+      5.5,
+      5.8
+    ]
+  }
+}

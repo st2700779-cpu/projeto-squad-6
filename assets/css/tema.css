@@ -1,0 +1,43 @@
+/* Tema do Portal Acadêmico — cores, tipografia e tamanhos de toque.
+   Carregado depois do Bootstrap para sobrescrever o necessário. */
+:root {
+  --verde: #17703a;
+  --verde-claro: #e2f0e6;
+  --amarelo: #f2be1a;
+  --amarelo-claro: #fff4cc;
+  --azul: #1c4f9c;
+  --azul-claro: #e3ebf8;
+  --vermelho: #a8321e;
+  --vermelho-claro: #fbe8e3;
+  --tinta: #16241c;
+  --suave: #526158;
+  --linha: #d3dcd5;
+  --fundo: #f3f6f2;
+  --superficie: #ffffff;
+  --escala: 1;
+  --toque: 48px;
+  --raio: 12px;
+  --fonte: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+html { font-size: calc(100% * var(--escala)); }
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: var(--fonte);
+  line-height: 1.5;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+h1, h2, h3 { line-height: 1.2; font-weight: 700; }
+h1 { font-size: 1.75rem; margin: 0 0 .5rem; }
+h2 { font-size: 1.3rem; margin: 1.25rem 0 .6rem; }
+h3 { font-size: 1.1rem; }
+a { color: var(--azul); }
+:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 6px; }
+.texto-suave { color: var(--suave); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+.sr-only:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; clip: auto; z-index: 100; background: var(--superficie); padding: .6rem 1rem; border-radius: 10px; }
+.so-desktop { display: none; }
+@media (min-width: 768px) { .so-desktop { display: inline; } }
+[tabindex="-1"]:focus { outline: none; }

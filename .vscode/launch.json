@@ -1,0 +1,14 @@
+{
+    // O portal precisa de um servidor HTTP: abrir index.html direto (file://) bloqueia
+    // os módulos JS e o carregamento dos JSON. O preLaunchTask sobe o servidor local.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "editor-browser",
+            "request": "launch",
+            "name": "Abrir portal (servidor local)",
+            "url": "http://localhost:5500/index.html",
+            "preLaunchTask": "Servidor do portal"
+        }
+    ]
+}

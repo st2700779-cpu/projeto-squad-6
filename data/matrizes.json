@@ -1,0 +1,167 @@
+{
+  "curso": "Ensino Médio — Formação Geral Básica",
+  "versoes": [
+    {
+      "versao": "2025",
+      "aplicacao": "Estudantes que entraram a partir de 2025 (1ª e 2ª séries)",
+      "componentes": [
+        [
+          "Língua Portuguesa",
+          4,
+          3,
+          3
+        ],
+        [
+          "Matemática",
+          4,
+          3,
+          3
+        ],
+        [
+          "Física",
+          2,
+          2,
+          2
+        ],
+        [
+          "Química",
+          2,
+          2,
+          2
+        ],
+        [
+          "Biologia",
+          2,
+          2,
+          2
+        ],
+        [
+          "História",
+          2,
+          2,
+          2
+        ],
+        [
+          "Geografia",
+          2,
+          2,
+          2
+        ],
+        [
+          "Filosofia",
+          1,
+          1,
+          1
+        ],
+        [
+          "Sociologia",
+          1,
+          1,
+          1
+        ],
+        [
+          "Inglês",
+          2,
+          2,
+          1
+        ],
+        [
+          "Educação Física",
+          2,
+          1,
+          1
+        ],
+        [
+          "Arte",
+          1,
+          1,
+          1
+        ],
+        [
+          "Educação Digital e Computação",
+          1,
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "versao": "2023",
+      "aplicacao": "Estudantes que entraram em 2024 (3ª série)",
+      "componentes": [
+        [
+          "Língua Portuguesa",
+          3,
+          3,
+          3
+        ],
+        [
+          "Matemática",
+          3,
+          3,
+          3
+        ],
+        [
+          "Física",
+          2,
+          2,
+          2
+        ],
+        [
+          "Química",
+          2,
+          2,
+          2
+        ],
+        [
+          "Biologia",
+          2,
+          2,
+          2
+        ],
+        [
+          "História",
+          2,
+          2,
+          2
+        ],
+        [
+          "Geografia",
+          2,
+          2,
+          2
+        ],
+        [
+          "Filosofia",
+          1,
+          1,
+          1
+        ],
+        [
+          "Sociologia",
+          1,
+          1,
+          1
+        ],
+        [
+          "Inglês",
+          2,
+          2,
+          2
+        ],
+        [
+          "Educação Física",
+          2,
+          2,
+          1
+        ],
+        [
+          "Arte",
+          1,
+          1,
+          0
+        ]
+      ]
+    }
+  ]
+}

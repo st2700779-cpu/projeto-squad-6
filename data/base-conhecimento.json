@@ -1,0 +1,290 @@
+{
+  "versao": "1.0",
+  "atualizado_em": "2026-09-24",
+  "responsavel": "Squad 6",
+  "itens": [
+    {
+      "id": "rematricula-prazo",
+      "tema": "matricula",
+      "pergunta": "Quando é a rematrícula?",
+      "resposta": "A rematrícula para 2027 vai de 3 a 28 de novembro de 2026, pelo portal ou na secretaria da escola. Quem não fizer pode perder a vaga.",
+      "palavras_chave": [
+        "rematricula",
+        "renovar",
+        "renovacao",
+        "continuar na escola"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "matricula-nova-prazo",
+      "tema": "matricula",
+      "pergunta": "Quando é a matrícula nova?",
+      "resposta": "A matrícula nova para 2027 vai de 1º a 15 de dezembro de 2026, pelo portal ou na secretaria de qualquer escola da rede.",
+      "palavras_chave": [
+        "matricula nova",
+        "matricular",
+        "vaga",
+        "primeira vez",
+        "inscricao"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "matricula-como",
+      "tema": "matricula",
+      "pergunta": "Como faço a matrícula pelo portal?",
+      "resposta": "No portal, toque em Fazer matrícula e siga 5 passos: dados do estudante, série, escola, documentos e confirmação. No fim, você recebe um número de protocolo.",
+      "palavras_chave": [
+        "como matricular",
+        "fazer matricula",
+        "portal",
+        "passos"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "documentos-matricula",
+      "tema": "documentos",
+      "pergunta": "Quais documentos levar para a matrícula?",
+      "resposta": "Certidão de nascimento ou RG do estudante, CPF do estudante se tiver, comprovante de residência e documento com foto do responsável.",
+      "palavras_chave": [
+        "documento",
+        "documentos",
+        "levar",
+        "papel",
+        "certidao",
+        "comprovante"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "documentos-prazo",
+      "tema": "documentos",
+      "pergunta": "Qual o prazo para levar os documentos?",
+      "resposta": "Depois de enviar o pedido pelo portal, leve os documentos à secretaria da escola em até 5 dias úteis.",
+      "palavras_chave": [
+        "prazo documentos",
+        "quando levar",
+        "dias uteis",
+        "entregar documentos"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "transferencia-regra",
+      "tema": "transferencia",
+      "pergunta": "Como funciona a transferência?",
+      "resposta": "Na transferência, o estudante continua na mesma série em que está hoje. Ele só passa para a série seguinte se for aprovado.",
+      "palavras_chave": [
+        "transferencia",
+        "transferir",
+        "mudar de escola",
+        "trocar de escola",
+        "outra escola"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "transferencia-documentos",
+      "tema": "transferencia",
+      "pergunta": "Que documento a transferência pede a mais?",
+      "resposta": "Além dos documentos da matrícula, leve a declaração de transferência da escola anterior.",
+      "palavras_chave": [
+        "declaracao de transferencia",
+        "historico",
+        "escola anterior"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "sem-vaga",
+      "tema": "matricula",
+      "pergunta": "E se a escola não tiver vaga?",
+      "resposta": "Se a escola não tiver vaga ou não puder oferecer a série, o portal mostra outras escolas da cidade que têm vaga.",
+      "palavras_chave": [
+        "sem vaga",
+        "nao tem vaga",
+        "lotada",
+        "cheia"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "aprovacao-regra",
+      "tema": "notas",
+      "pergunta": "O que é preciso para passar de ano?",
+      "resposta": "A regra geral é média 6 e pelo menos 75% de presença nas aulas. Quem decide a aprovação é a escola.",
+      "palavras_chave": [
+        "passar de ano",
+        "aprovado",
+        "aprovacao",
+        "reprovar",
+        "media"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "frequencia-minima",
+      "tema": "notas",
+      "pergunta": "Qual a frequência mínima?",
+      "resposta": "O estudante precisa ter pelo menos 75% de presença nas aulas do ano.",
+      "palavras_chave": [
+        "frequencia",
+        "presenca",
+        "falta",
+        "faltas"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "boletim",
+      "tema": "notas",
+      "pergunta": "Onde vejo as notas?",
+      "resposta": "No portal, toque em Ver notas e faltas. As notas aparecem depois que o professor lança cada unidade.",
+      "palavras_chave": [
+        "nota",
+        "notas",
+        "boletim",
+        "ver notas"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "segunda-chamada",
+      "tema": "notas",
+      "pergunta": "Perdi a prova. E agora?",
+      "resposta": "Quem faltar à prova pode pedir segunda chamada na secretaria em até 2 dias, levando atestado ou outro documento.",
+      "palavras_chave": [
+        "segunda chamada",
+        "perdi a prova",
+        "faltei na prova",
+        "prova"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "provas-3-unidade",
+      "tema": "calendario",
+      "pergunta": "Quando são as provas da 3ª unidade?",
+      "resposta": "As provas da 3ª unidade serão de 13 a 17 de outubro de 2026.",
+      "palavras_chave": [
+        "provas",
+        "avaliacao",
+        "unidade",
+        "quando e a prova"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "fim-ano-letivo",
+      "tema": "calendario",
+      "pergunta": "Quando termina o ano letivo?",
+      "resposta": "O ano letivo de 2026 termina em 18 de dezembro.",
+      "palavras_chave": [
+        "fim do ano",
+        "ferias",
+        "termina",
+        "acaba"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "feriados",
+      "tema": "calendario",
+      "pergunta": "Quais os próximos feriados?",
+      "resposta": "Os próximos feriados são 12 de outubro, 2 de novembro e 20 de novembro. Não há aula nesses dias.",
+      "palavras_chave": [
+        "feriado",
+        "feriados",
+        "nao tem aula"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "secretaria-horario",
+      "tema": "atendimento",
+      "pergunta": "Qual o horário da secretaria?",
+      "resposta": "A secretaria das escolas atende de segunda a sexta, das 7h às 17h.",
+      "palavras_chave": [
+        "horario",
+        "atendimento",
+        "secretaria",
+        "funciona"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "senha",
+      "tema": "atendimento",
+      "pergunta": "Esqueci a senha. O que faço?",
+      "resposta": "Procure a secretaria da escola com um documento com foto para recuperar o acesso.",
+      "palavras_chave": [
+        "senha",
+        "entrar",
+        "acesso",
+        "login",
+        "esqueci"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "transporte",
+      "tema": "atendimento",
+      "pergunta": "Como pedir transporte escolar?",
+      "resposta": "O transporte escolar é pedido na secretaria da escola. Leve um comprovante de residência.",
+      "palavras_chave": [
+        "transporte",
+        "onibus",
+        "van"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "matriz-versao",
+      "tema": "matriz",
+      "pergunta": "O que é a matriz curricular?",
+      "resposta": "É a lista de matérias e horas de aula de cada série. O estudante segue a versão da matriz do ano em que entrou no Ensino Médio.",
+      "palavras_chave": [
+        "matriz",
+        "grade",
+        "materias",
+        "disciplinas"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    },
+    {
+      "id": "protocolo",
+      "tema": "matricula",
+      "pergunta": "Como acompanho o pedido de matrícula?",
+      "resposta": "O pedido aparece na tela inicial do portal da família, com o número do protocolo e a situação: aguardando, confirmada ou recusada.",
+      "palavras_chave": [
+        "protocolo",
+        "acompanhar",
+        "situacao do pedido",
+        "pedido"
+      ],
+      "fonte": "Dados simulados — substituir pela orientação oficial da SEDUC",
+      "atualizado_em": "2026-09-24"
+    }
+  ]
+}
