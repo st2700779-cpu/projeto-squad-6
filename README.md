@@ -17,6 +17,14 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 | `worker/` | Proxy do assistente (Cloudflare Workers), que guarda a chave da IA |
 | `tools/` | Script que roda a bateria de perguntas contra o proxy |
 
+## Telas e versão mobile
+
+As telas seguem os wireframes e fluxos da Squad 6 (W1–W17). O layout é **mobile primeiro**:
+
+- **Família (W1–W5):** feita para o celular. Telas internas têm cabeçalho com voltar e título, e a matrícula tem os botões Voltar/Continuar fixos no rodapé.
+- **Assistente (W6–W12):** no celular ocupa a tela inteira; no computador abre como coluna à direita. Segue o fluxo W17: validação no navegador, IA pelo proxy e, em qualquer falha, as perguntas frequentes locais.
+- **Professor, escola e rede (W13–W15):** menu lateral no computador; no celular o menu vira abas roláveis, e o diário de classe mostra um cartão por estudante.
+
 ## Rodar no computador
 
 Pré-requisitos: VS Code com a extensão **Live Server** (ou qualquer servidor estático). As páginas carregam os JSON com `fetch`, então **não funcionam abrindo o arquivo direto** (`file://`).

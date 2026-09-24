@@ -50,10 +50,12 @@ export async function perguntar(pergunta, perfil, historico, sinalUsuario) {
 
 function validar(d) {
   if (!d || typeof d.resposta !== 'string' || !d.resposta.trim()) throw registrarFalha(erro('RESPOSTA_INVALIDA'));
+  const naBase = d.na_base !== false;
   return {
     resposta: d.resposta.trim().slice(0, 600),
-    acao: ACOES_PERMITIDAS.includes(d.acao) ? d.acao : null,
-    naBase: d.na_base !== false
+    // Fora da base e sem ação: encaminha à secretaria (W10).
+    acao: ACOES_PERMITIDAS.includes(d.acao) ? d.acao : (naBase ? null : 'contato'),
+    naBase
   };
 }
 function registrarFalha(e) {

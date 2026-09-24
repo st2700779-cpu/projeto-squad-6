@@ -1,23 +1,27 @@
-/* Tema do Portal Acadêmico — cores, tipografia e tamanhos de toque.
+/* Tema do Portal Acadêmico — cores, tipografia e tamanhos de toque, conforme os wireframes (W1–W15).
    Carregado depois do Bootstrap para sobrescrever o necessário. */
 :root {
-  --verde: #17703a;
-  --verde-claro: #e2f0e6;
-  --amarelo: #f2be1a;
-  --amarelo-claro: #fff4cc;
-  --azul: #1c4f9c;
-  --azul-claro: #e3ebf8;
-  --vermelho: #a8321e;
-  --vermelho-claro: #fbe8e3;
-  --tinta: #16241c;
-  --suave: #526158;
-  --linha: #d3dcd5;
-  --fundo: #f3f6f2;
+  --tinta: #1f201b;
+  --suave: #5b5d57;
+  --linha: #8e9089;          /* bordas de cartões e campos */
+  --linha-suave: #e2e3de;    /* separadores de tabela */
+  --cinza: #e3e4df;          /* botão Ouvir, item ativo do menu */
+  --fundo-claro: #f3f3ef;    /* balões do assistente, cabeçalho de tabela */
+  --fundo: #ffffff;
   --superficie: #ffffff;
+  --verde: #1f6b3a;
+  --verde-claro: #e4f1e7;
+  --azul: #1c4f9c;
+  --azul-claro: #e6ecf8;
+  --azul-desativado: #9db0d6;
+  --vermelho: #8a3a14;
+  --vermelho-claro: #f9ebe4;
+  --amarelo-claro: #fff4cc;
   --escala: 1;
   --toque: 48px;
   --raio: 12px;
   --fonte: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fonte-titulo: "Atkinson Hyperlegible", system-ui, sans-serif;
 }
 html { font-size: calc(100% * var(--escala)); }
 body {
@@ -28,8 +32,8 @@ body {
   line-height: 1.5;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-h1, h2, h3 { line-height: 1.2; font-weight: 700; }
-h1 { font-size: 1.75rem; margin: 0 0 .5rem; }
+h1, h2, h3 { line-height: 1.2; font-weight: 700; font-family: var(--fonte-titulo); }
+h1 { font-size: 1.75rem; margin: 0 0 .75rem; }
 h2 { font-size: 1.3rem; margin: 1.25rem 0 .6rem; }
 h3 { font-size: 1.1rem; }
 a { color: var(--azul); }

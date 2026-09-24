@@ -15,14 +15,14 @@ function desenhar() {
   const vencidos = linhas.filter((l) => !l.s.vigente).length;
   const aVencer = linhas.filter((l) => l.s.tipo === 'atencao').length;
   main.innerHTML = `
-    <div class="d-flex justify-content-between align-items-end flex-wrap gap-3"><h1>Atos autorizativos</h1>
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-3"><h1 style="margin:0">Atos autorizativos</h1>
       <div class="campo" style="margin:0;min-width:240px"><label for="dre">DRE</label><select id="dre" class="entrada"><option value="">Todas as DREs</option>${dres.map((d) => `<option ${d === dre ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></div></div>
-    <p class="texto-suave">Autorizações do Conselho Estadual de Educação. Sem ato vigente, a escola fica impedida de abrir turma e de matricular naquela etapa.</p>
-    <div class="numeros"><div class="numero${vencidos ? ' alerta' : ''}"><strong>${vencidos}</strong><span>atos vencidos</span></div><div class="numero"><strong>${aVencer}</strong><span>vencem em até 90 dias</span></div><div class="numero"><strong>${linhas.length}</strong><span>atos acompanhados</span></div></div>
+    <div class="numeros" style="margin-top:1.2rem"><div class="numero${vencidos ? ' alerta' : ''}"><strong>${vencidos}</strong><span>atos vencidos</span></div><div class="numero"><strong>${aVencer}</strong><span>vencem em até 90 dias</span></div><div class="numero"><strong>${linhas.length}</strong><span>atos acompanhados</span></div></div>
     <div class="tabela-rolagem"><table class="tabela"><caption class="sr-only">Atos autorizativos ordenados pelo vencimento</caption>
       <thead><tr><th scope="col">Escola</th><th scope="col">Etapa</th><th scope="col">Ato</th><th scope="col">Validade</th><th scope="col">Situação</th></tr></thead>
       <tbody>${linhas.map(({ a, e, s }) => `<tr><td>${esc(e.nome)}<br><span class="texto-suave" style="font-size:.88rem">${esc(e.dre)}</span></td><td>${esc(a.etapa)}</td><td>${esc(a.numero)}</td><td>${dataBR(a.validade)}</td><td>${etiqueta(s.texto, s.tipo)}</td></tr>`).join('')}</tbody>
-    </table></div>`;
+    </table></div>
+    <p class="texto-suave">Escola com ato vencido não pode abrir turma nem receber matrícula naquela etapa. Os atos são do Conselho Estadual de Educação.</p>`;
 }
 main.addEventListener('change', (e) => { if (e.target.id === 'dre') { dre = e.target.value; desenhar(); } });
 mostrar();

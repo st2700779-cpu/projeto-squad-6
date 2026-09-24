@@ -39,6 +39,7 @@
       "resposta": "No portal, toque em Fazer matrícula e siga 5 passos: dados do estudante, série, escola, documentos e confirmação. No fim, você recebe um número de protocolo.",
       "palavras_chave": [
         "como matricular",
+        "onde faco a matricula",
         "fazer matricula",
         "portal",
         "passos"
@@ -55,6 +56,8 @@
         "documento",
         "documentos",
         "levar",
+        "preciso levar",
+        "o que levar",
         "papel",
         "certidao",
         "comprovante"
@@ -69,6 +72,7 @@
       "resposta": "Depois de enviar o pedido pelo portal, leve os documentos à secretaria da escola em até 5 dias úteis.",
       "palavras_chave": [
         "prazo documentos",
+        "prazo",
         "quando levar",
         "dias uteis",
         "entregar documentos"

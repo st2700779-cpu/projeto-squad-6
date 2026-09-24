@@ -3,6 +3,7 @@ export const MSG = {
   saudacao: 'Olá! Posso ajudar com matrícula, documentos, prazos e notas. Escreva ou toque no microfone para falar.',
   avisoDados: 'Não escreva CPF, RG ou endereço aqui. Não é preciso.',
   carregando: 'Procurando a resposta…',
+  esperaMaxima: 'Se não houver resposta em 30 segundos, a consulta é interrompida.',
   fonte: 'Informação cadastrada pela rede. Em caso de dúvida, confirme na secretaria da escola.',
   semIA: 'Resposta das perguntas frequentes · sem IA',
   semResposta: 'Não encontrei essa informação. A secretaria da escola pode ajudar. Ela atende de segunda a sexta, das 7h às 17h.',
@@ -34,8 +35,19 @@ export const SUGESTOES = {
 // Ações que o assistente pode sugerir e a tela de destino de cada uma.
 export const ACOES = {
   matricula: ['familia/matricula.html', 'Fazer matrícula'],
-  documentos: ['familia/documentos.html', 'Ver lista de documentos'],
+  documentos: ['familia/documentos.html', 'Ver lista completa'],
   notas: ['familia/notas.html', 'Ver notas e faltas'],
   calendario: ['familia/calendario.html', 'Ver calendário'],
-  avisos: ['familia/calendario.html#avisos', 'Ver avisos']
+  avisos: ['familia/calendario.html#avisos', 'Ver avisos'],
+  // Resposta fora da base (W10): encaminha à secretaria.
+  contato: ['familia/documentos.html#contato', 'Contato da escola']
+};
+
+// Perguntas de continuação mostradas depois de uma resposta (W9), pela ação sugerida.
+export const SEGUIMENTOS = {
+  documentos: ['Onde faço a matrícula?', 'Qual o prazo?'],
+  matricula: ['Quais documentos levar?', 'Como pedir transferência?'],
+  notas: ['Qual a frequência mínima?', 'Perdi a prova. E agora?'],
+  calendario: ['Quais os próximos feriados?', 'Quando termina o ano letivo?'],
+  avisos: ['Quando são as provas da 3ª unidade?', 'Quando é a rematrícula?']
 };

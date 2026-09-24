@@ -1,6 +1,10 @@
 // Regras de negócio da rede aplicadas sobre os dados simulados.
 export const SERIES = ['6º ano', '7º ano', '8º ano', '9º ano', '1ª série EM', '2ª série EM', '3ª série EM'];
 export const etapaDaSerie = (serie) => (serie.includes('EM') ? 'Ensino Médio' : 'Ensino Fundamental — Anos Finais');
+// "1ª série EM" → "1ª série do Ensino Médio"; "6º ano" → "6º ano do Ensino Fundamental".
+export const serieCompleta = (serie) => (serie.includes('EM') ? serie.replace(' EM', ' do Ensino Médio') : `${serie} do Ensino Fundamental`);
+// "Colégio Estadual Rio Sergipe" → "C. E. Rio Sergipe" (telas estreitas).
+export const nomeCurto = (nome) => nome.replace(/^Colégio Estadual /, 'C. E. ').replace(/^Escola Estadual /, 'E. E. ');
 export const MEDIA_APROVACAO = 6;
 export const PRESENCA_MINIMA = 75;
 
