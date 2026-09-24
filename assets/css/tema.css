@@ -17,12 +17,40 @@
   --vermelho: #8a3a14;
   --vermelho-claro: #f9ebe4;
   --amarelo-claro: #fff4cc;
+  --azul-texto: #1c4f9c;     /* links sobre o fundo */
+  --sobre-tinta: #ffffff;    /* texto e ícones sobre fundo --tinta (botões escuros) */
+  --sobre-azul: #ffffff;     /* texto e ícones sobre fundo --azul (assistente) */
   --escala: 1;
   --toque: 48px;
   --raio: 12px;
   --fonte: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --fonte-titulo: "Atkinson Hyperlegible", system-ui, sans-serif;
 }
+/* Modo escuro: o atributo data-tema é definido por assets/js/tema-inicial.js antes da página aparecer.
+   Mesma hierarquia do modo claro: botões principais claros sobre fundo escuro. */
+:root[data-tema="escuro"] {
+  color-scheme: dark;
+  --tinta: #ecebe4;
+  --suave: #b0b2aa;
+  --linha: #75776f;
+  --linha-suave: #34362f;
+  --cinza: #393b34;
+  --fundo-claro: #24261f;
+  --fundo: #141511;
+  --superficie: #1c1d19;
+  --verde: #7dd3a0;
+  --verde-claro: #16301f;
+  --azul: #3a6cd0;
+  --azul-claro: #1c2a45;
+  --azul-desativado: #33456b;
+  --azul-texto: #a3c0ff;
+  --vermelho: #ff9f7a;
+  --vermelho-claro: #3a1f14;
+  --amarelo-claro: #3a3214;
+  --sobre-tinta: #141511;
+  --sobre-azul: #ffffff;
+}
+:root { color-scheme: light; }
 html { font-size: calc(100% * var(--escala)); }
 body {
   margin: 0;
@@ -36,8 +64,8 @@ h1, h2, h3 { line-height: 1.2; font-weight: 700; font-family: var(--fonte-titulo
 h1 { font-size: 1.75rem; margin: 0 0 .75rem; }
 h2 { font-size: 1.3rem; margin: 1.25rem 0 .6rem; }
 h3 { font-size: 1.1rem; }
-a { color: var(--azul); }
-:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; border-radius: 6px; }
+a { color: var(--azul-texto); }
+:focus-visible { outline: 3px solid var(--azul-texto); outline-offset: 2px; border-radius: 6px; }
 .texto-suave { color: var(--suave); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

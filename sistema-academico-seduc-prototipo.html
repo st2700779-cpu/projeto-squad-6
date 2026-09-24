@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <link rel="stylesheet" href="assets/css/tema.css">
 <link rel="stylesheet" href="assets/css/componentes.css">
+<script src="assets/js/tema-inicial.js"></script>
 <style>
   /* Complementos deste protótipo (o resto vem de componentes.css). O portal recebe estas duas
      regras do Bootstrap; aqui, sem Bootstrap, elas vêm declaradas. */
@@ -27,7 +28,7 @@
   @media (min-width: 560px) { .chamada-botoes { width: auto; } .lista-cartao.chamada li { flex-wrap: nowrap; } }
   .lista-cartao.chamada li { flex-wrap: wrap; }
   .nota-entrada { width: 96px; flex: none; text-align: right; }
-  .icone-atividade { width: 48px; height: 48px; border-radius: 12px; background: var(--tinta); color: #fff; display: grid; place-items: center; flex: none; }
+  .icone-atividade { width: 48px; height: 48px; border-radius: 12px; background: var(--tinta); color: var(--sobre-tinta); display: grid; place-items: center; flex: none; }
   .relatorio { text-align: left; }
   .rodape-prototipo { color: var(--suave); font-size: .9rem; margin-top: 2rem; }
 </style>
@@ -40,6 +41,7 @@
     <a class="marca" href="#" data-ir="">Portal Acadêmico<span id="marca-perfil" class="so-desktop"></span></a>
     <button type="button" class="ferramenta" data-escala="-0.1" aria-label="Diminuir letra" id="btn-menos">A−</button>
     <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
+    <span id="lugar-tema"></span>
     <a class="ferramenta" href="#" data-ir="" id="btn-sair" hidden>Sair</a>
   </div>
 </header>
@@ -49,6 +51,10 @@
 <script>
 (function () {
   'use strict';
+
+  // Botão de modo escuro (assets/js/tema-inicial.js, o mesmo do portal).
+  var lugarTema = document.getElementById('lugar-tema');
+  if (lugarTema && window.botaoTema) lugarTema.outerHTML = window.botaoTema();
 
   // ---------- Utilitários ----------
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };

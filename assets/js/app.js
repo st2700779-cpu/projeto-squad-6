@@ -28,6 +28,7 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
         ${voltar ? `<a class="topo-voltar" href="${url(voltar)}" aria-label="Voltar">${icone('voltar', 26)}</a>` : ''}
         <span class="topo-titulo">${esc(titulo)}</span>
         <div id="topo-acoes" class="topo-acoes"></div>
+        ${window.botaoTema ? window.botaoTema() : ''}
       </div>`;
   } else {
     topo.innerHTML = `
@@ -36,6 +37,7 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
         ${papel ? `<span class="topo-papel so-desktop">Você está como: <strong>${esc(papel)}</strong></span>` : ''}
         ${perfil ? '' : '<button type="button" class="ferramenta" data-escala="-0.1" aria-label="Diminuir letra">A−</button>'}
         <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
+        ${window.botaoTema ? window.botaoTema() : ''}
         ${perfil ? `<a class="ferramenta" href="${url('index.html')}">Sair</a>` : ''}
       </div>`;
     topo.addEventListener('click', (e) => {
