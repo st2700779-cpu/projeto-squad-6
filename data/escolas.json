@@ -1,31 +1,31 @@
 [
   {
     "id": "e1",
-    "nome": "Colégio Estadual Rio Sergipe",
+    "nome": "Colégio Estadual Professor Osvaldo Tavares Rezende",
     "municipio": "Aracaju",
     "dre": "DEA — Aracaju"
   },
   {
     "id": "e2",
-    "nome": "Escola Estadual Maré Alta",
+    "nome": "Escola Estadual Jornalista Adelaide Cunha Bispo",
     "municipio": "Aracaju",
     "dre": "DEA — Aracaju"
   },
   {
     "id": "e3",
-    "nome": "Escola Estadual Coqueiral",
-    "municipio": "Aracaju",
-    "dre": "DEA — Aracaju"
-  },
-  {
-    "id": "e4",
-    "nome": "Escola Estadual Cajueiro dos Ventos",
-    "municipio": "Nossa Senhora do Socorro",
+    "nome": "Escola Estadual Doutor Heraldo Menezes Sobral",
+    "municipio": "São Cristóvão",
     "dre": "DRE — Grande Aracaju"
   },
   {
+    "id": "e4",
+    "nome": "Colégio Estadual Padre Ezequiel Fontes Matos",
+    "municipio": "Lagarto",
+    "dre": "DRE — Centro-Sul"
+  },
+  {
     "id": "e5",
-    "nome": "Colégio Estadual Serra Azul",
+    "nome": "Escola Estadual Professora Zilda Aragão Prado",
     "municipio": "Itabaiana",
     "dre": "DRE — Agreste Central"
   }

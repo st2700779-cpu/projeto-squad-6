@@ -98,8 +98,8 @@ function ProximoProtocolo([string]$pref) {
   if (Test-Path $arquivo) {
     (LerTexto $arquivo | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $cont[$_.Name] = [int]$_.Value }
   }
-  # A base simulada ja tem os protocolos 0001 e 0002.
-  $n = if ($cont.ContainsKey($pref)) { $cont[$pref] + 1 } else { 3 }
+  # A base simulada ja tem os protocolos 0001 a 0005.
+  $n = if ($cont.ContainsKey($pref)) { $cont[$pref] + 1 } else { 6 }
   $cont[$pref] = $n
   GravarTexto $arquivo ($cont | ConvertTo-Json -Compress)
   return '{0}-{1}-{2:D4}' -f $pref, (Get-Date).Year, $n

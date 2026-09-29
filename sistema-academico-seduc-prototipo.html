@@ -23,18 +23,7 @@
   main:focus { outline: none; }
   [hidden] { display: none !important; }
   .linha-entre { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; }
-  .lista-cartao { list-style: none; padding: 0; margin: 0; }
-  .lista-cartao li { display: flex; align-items: center; gap: .8rem; padding: .8rem 0; border-bottom: 1px solid var(--linha-suave); }
-  .lista-cartao li:last-child { border-bottom: 0; }
-  .lista-cartao .nome { flex: 1; min-width: 0; font-size: 1.05rem; }
-  .chamada-botoes { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; width: 100%; }
-  .chamada-botoes .botao { min-height: 48px; }
-  @media (min-width: 560px) { .chamada-botoes { width: auto; } .lista-cartao.chamada li { flex-wrap: nowrap; } }
-  .lista-cartao.chamada li { flex-wrap: wrap; }
-  .nota-entrada { width: 96px; flex: none; text-align: right; }
-  .icone-atividade { width: 48px; height: 48px; border-radius: 12px; background: var(--tinta); color: var(--sobre-tinta); display: grid; place-items: center; flex: none; }
-  .relatorio { text-align: left; }
-  .rodape-prototipo { color: var(--suave); font-size: .9rem; margin-top: 2rem; }
+  .nota-entrada { max-width: 96px; text-align: right; }
 </style>
 </head>
 <body>
@@ -43,8 +32,7 @@
 <header class="topo">
   <div class="topo-interno">
     <a class="marca" href="#" data-ir="" aria-label="Portal Acadêmico, página inicial">
-      <span class="marca-selo" aria-hidden="true">SE</span>
-      <span class="marca-texto"><strong>Portal Acadêmico</strong><small>SEDUC/SE · Governo de Sergipe</small></span>
+      <span class="marca-texto"><small>Secretaria de Estado da Educação · Sergipe</small><strong>Portal Acadêmico</strong></span>
     </a>
     <div class="topo-direita">
       <button type="button" class="ferramenta ferramenta-opcional" data-escala="-0.1" aria-label="Diminuir letra" id="btn-menos">A−</button>
@@ -71,13 +59,13 @@
 <script type="application/json" id="dados-demo">{
  "letivo": {
   "ano": 2026,
-  "aulasDadas": 80,
+  "aulasDadas": 83,
   "bimestresLancados": 2,
   "totalBimestres": 4
  },
  "escola": {
   "id": "e1",
-  "nome": "Colégio Estadual Rio Sergipe",
+  "nome": "Colégio Estadual Professor Osvaldo Tavares Rezende",
   "municipio": "Aracaju",
   "dre": "DEA — Aracaju"
  },
@@ -87,10 +75,11 @@
    "nome": "1ª série A",
    "serie": "1ª série EM",
    "turno": "Manhã",
-   "sala": "Sala 04 (40 lugares)",
-   "capacidade": 40,
-   "matriculados": 38,
+   "sala": "Bloco B, sala 04 (38 lugares)",
+   "capacidade": 38,
+   "matriculados": 37,
    "situacao": "Aprovada",
+   "escolaId": "e1",
    "historico": [
     [
      "Coordenação",
@@ -102,18 +91,18 @@
      "Aprovou",
      ""
     ]
-   ],
-   "escolaId": "e1"
+   ]
   },
   {
    "id": "tt5",
    "nome": "1ª série B",
    "serie": "1ª série EM",
    "turno": "Tarde",
-   "sala": "Sala 01 (40 lugares)",
-   "capacidade": 40,
-   "matriculados": 24,
+   "sala": "Bloco A, sala 01 (36 lugares)",
+   "capacidade": 36,
+   "matriculados": 29,
    "situacao": "Aprovada",
+   "escolaId": "e1",
    "historico": [
     [
      "Coordenação",
@@ -125,18 +114,18 @@
      "Aprovou",
      ""
     ]
-   ],
-   "escolaId": "e1"
+   ]
   },
   {
    "id": "tt4",
    "nome": "2ª série A",
    "serie": "2ª série EM",
    "turno": "Manhã",
-   "sala": "Sala 05 (35 lugares)",
-   "capacidade": 35,
-   "matriculados": 35,
+   "sala": "Bloco B, sala 05 (34 lugares)",
+   "capacidade": 34,
+   "matriculados": 34,
    "situacao": "Aprovada",
+   "escolaId": "e1",
    "historico": [
     [
      "Coordenação",
@@ -148,18 +137,18 @@
      "Aprovou",
      ""
     ]
-   ],
-   "escolaId": "e1"
+   ]
   },
   {
    "id": "tt2",
    "nome": "1ª série C",
    "serie": "1ª série EM",
    "turno": "Tarde",
-   "sala": "Sala 07 (35 lugares)",
-   "capacidade": 35,
+   "sala": "Bloco C, sala 07 (32 lugares)",
+   "capacidade": 32,
    "matriculados": 0,
    "situacao": "Pendente de aprovação",
+   "escolaId": "e1",
    "historico": [
     [
      "Coordenação",
@@ -171,18 +160,18 @@
      "Enviou para aprovação",
      ""
     ]
-   ],
-   "escolaId": "e1"
+   ]
   },
   {
    "id": "tt3",
    "nome": "2ª série B",
    "serie": "2ª série EM",
    "turno": "Noite",
-   "sala": "Sala 02 (30 lugares)",
+   "sala": "Bloco A, sala 02 (30 lugares)",
    "capacidade": 30,
    "matriculados": 0,
    "situacao": "Devolvida",
+   "escolaId": "e1",
    "historico": [
     [
      "Coordenação",
@@ -197,16 +186,15 @@
     [
      "Direção",
      "Devolveu",
-     "A sala 02 está em reforma até dezembro. Escolher outra sala."
+     "A sala do bloco A está em reforma até dezembro. Escolher outra sala."
     ]
-   ],
-   "escolaId": "e1"
+   ]
   }
  ],
  "turmaId": "tt1",
  "professor": {
   "id": "p1",
-  "nome": "Profa. Ana Lúcia Menezes",
+  "nome": "Profa. Rosângela Tavares Góis",
   "concurso": "Professor de Matemática",
   "formacao": "Licenciatura em Matemática",
   "habilitacao": [
@@ -218,9 +206,9 @@
  "professoresDaEscola": 5,
  "estudante": {
   "id": "a3",
-  "nome": "Carla Vitória Santos",
+  "nome": "Iasmim Cardoso de Jesus",
   "nascimento": "2010-05-14",
-  "responsavel": "Rosa Maria Santos",
+  "responsavel": "Edilene Cardoso de Jesus",
   "serie": "1ª série EM",
   "turma": "1ª série A",
   "turmaId": "tt1",
@@ -228,20 +216,20 @@
   "escolaId": "e1",
   "notas": {
    "Língua Portuguesa": [
-    7.5,
-    7
+    7.3,
+    6.8
    ],
    "Biologia": [
-    6,
-    6.5
+    6.4,
+    6.9
    ],
    "História": [
-    8,
-    7.5
+    7.9,
+    7.4
    ],
    "Física": [
-    5.5,
-    5.8
+    5.2,
+    5.9
    ]
   }
  },
@@ -249,107 +237,310 @@
   "tt1": [
    {
     "id": "a1",
-    "nome": "Ana Clara Souza",
-    "n1": 8.5,
-    "n2": 8,
-    "faltas": 4
+    "nome": "Ágata Ferreira Alves",
+    "n1": 7.7,
+    "n2": 7.5,
+    "faltas": 3
    },
    {
     "id": "a2",
-    "nome": "Bruno Henrique Lima",
-    "n1": 5,
-    "n2": 3.8,
-    "faltas": 22
+    "nome": "Ana Beatriz Aragão Franco",
+    "n1": 6.5,
+    "n2": 5,
+    "faltas": 6
    },
    {
-    "id": "a3",
-    "nome": "Carla Vitória Santos",
-    "n1": 7,
-    "n2": 6.4,
-    "faltas": 9
+    "id": "a16",
+    "nome": "Arthur Góis Ferro",
+    "n1": 3.6,
+    "n2": null,
+    "faltas": 0
    },
    {
     "id": "a4",
-    "nome": "Davi Lucas Oliveira",
-    "n1": 4.5,
-    "n2": 4,
-    "faltas": 14
+    "nome": "Breno Lisboa Rezende",
+    "n1": 3.7,
+    "n2": 4.7,
+    "faltas": 4
    },
    {
     "id": "a5",
-    "nome": "Emanuelly Rocha",
-    "n1": 9,
-    "n2": 9.2,
-    "faltas": 2
+    "nome": "Bruno Damasceno",
+    "n1": 6.1,
+    "n2": 6.7,
+    "faltas": 12
    },
    {
     "id": "a6",
-    "nome": "Felipe Andrade",
-    "n1": 6,
-    "n2": 4.2,
-    "faltas": 11
+    "nome": "Bruno Menezes Filho",
+    "n1": 6.8,
+    "n2": 6.9,
+    "faltas": 7
    },
    {
     "id": "a7",
-    "nome": "Gabriela Nunes",
-    "n1": 7.8,
+    "nome": "Cauã Aragão",
+    "n1": 8.3,
     "n2": 7.5,
-    "faltas": 16
+    "faltas": 10
    },
    {
     "id": "a8",
-    "nome": "Heitor Menezes",
-    "n1": 6.5,
+    "nome": "Cauã Bezerra Peixoto",
+    "n1": 5.2,
+    "n2": 4.7,
+    "faltas": 2
+   },
+   {
+    "id": "a9",
+    "nome": "Cauã Mota Lisboa",
+    "n1": 4.8,
+    "n2": 4.2,
+    "faltas": 8
+   },
+   {
+    "id": "a10",
+    "nome": "Clara Lúcia Monteiro Carvalho",
+    "n1": 7.8,
+    "n2": 7.3,
+    "faltas": 1
+   },
+   {
+    "id": "a11",
+    "nome": "Davi Lucca Rocha",
+    "n1": 6.7,
+    "n2": 6.7,
+    "faltas": 17
+   },
+   {
+    "id": "a12",
+    "nome": "Débora Prado Carvalho",
+    "n1": 6.6,
+    "n2": 5.1,
+    "faltas": 8
+   },
+   {
+    "id": "a13",
+    "nome": "Elias Bispo Rocha",
+    "n1": 5.7,
+    "n2": 8,
+    "faltas": 7
+   },
+   {
+    "id": "a14",
+    "nome": "Emanuel Trindade Santos",
+    "n1": 5.8,
+    "n2": 6.1,
+    "faltas": 0
+   },
+   {
+    "id": "a15",
+    "nome": "Fabrício de Jesus Trindade",
+    "n1": 5.1,
+    "n2": 5.5,
+    "faltas": 16
+   },
+   {
+    "id": "a3",
+    "nome": "Iasmim Cardoso de Jesus",
+    "n1": 6.7,
+    "n2": 7.1,
+    "faltas": 13
+   },
+   {
+    "id": "a17",
+    "nome": "Igor Amorim Machado",
+    "n1": 4.4,
+    "n2": 2.4,
+    "faltas": 7
+   },
+   {
+    "id": "a18",
+    "nome": "Jamile Lins Azevedo",
+    "n1": 7.6,
+    "n2": 7,
+    "faltas": 11
+   },
+   {
+    "id": "a19",
+    "nome": "Jaqueline Costa Brito",
+    "n1": 6.6,
     "n2": 6.8,
-    "faltas": 5
+    "faltas": 1
+   },
+   {
+    "id": "a20",
+    "nome": "Kamila Rocha",
+    "n1": 3.9,
+    "n2": 3.1,
+    "faltas": 3
+   },
+   {
+    "id": "a21",
+    "nome": "Kauê Falcão Brito",
+    "n1": 7.1,
+    "n2": 6.4,
+    "faltas": 15
+   },
+   {
+    "id": "a22",
+    "nome": "Larissa Damasceno",
+    "n1": 4.9,
+    "n2": 5.1,
+    "faltas": 3
+   },
+   {
+    "id": "a23",
+    "nome": "Lívia Amorim Carvalho",
+    "n1": 4.9,
+    "n2": 5.6,
+    "faltas": 21
+   },
+   {
+    "id": "a24",
+    "nome": "Lívia Barreto Siqueira",
+    "n1": 5.3,
+    "n2": 3.2,
+    "faltas": 28
+   },
+   {
+    "id": "a25",
+    "nome": "Manuela Fontes",
+    "n1": 6.3,
+    "n2": 8.4,
+    "faltas": 10
+   },
+   {
+    "id": "a26",
+    "nome": "Matheus Machado de Jesus",
+    "n1": 7.9,
+    "n2": 8.4,
+    "faltas": 1
+   },
+   {
+    "id": "a27",
+    "nome": "Otávio Teles Franco",
+    "n1": 8.2,
+    "n2": null,
+    "faltas": 7
+   },
+   {
+    "id": "a28",
+    "nome": "Otávio Vasconcelos Araújo",
+    "n1": null,
+    "n2": 7.2,
+    "faltas": 10
+   },
+   {
+    "id": "a29",
+    "nome": "Rayssa Duarte Peixoto",
+    "n1": 4,
+    "n2": 3.5,
+    "faltas": 11
+   },
+   {
+    "id": "a30",
+    "nome": "Sabrina Azevedo Tavares",
+    "n1": 8.3,
+    "n2": 5.7,
+    "faltas": 6
+   },
+   {
+    "id": "a31",
+    "nome": "Samuel Lins Oliveira",
+    "n1": 7.2,
+    "n2": 6.7,
+    "faltas": 17
+   },
+   {
+    "id": "a32",
+    "nome": "Stefany Bispo Rezende",
+    "n1": 4.5,
+    "n2": 5.7,
+    "faltas": 9
+   },
+   {
+    "id": "a33",
+    "nome": "Tainá Paixão Guimarães",
+    "n1": 6.8,
+    "n2": 6.5,
+    "faltas": 11
+   },
+   {
+    "id": "a34",
+    "nome": "Tainá Tavares Cunha",
+    "n1": 6,
+    "n2": 6,
+    "faltas": 3
+   },
+   {
+    "id": "a35",
+    "nome": "Thaís Silva Cavalcante",
+    "n1": 7.5,
+    "n2": 6.9,
+    "faltas": 20
+   },
+   {
+    "id": "a36",
+    "nome": "Wallace Cruz de Jesus",
+    "n1": 5.1,
+    "n2": 6.2,
+    "faltas": 1
+   },
+   {
+    "id": "a37",
+    "nome": "Wallace Cunha Souza",
+    "n1": 8,
+    "n2": 7.7,
+    "faltas": 7
    }
   ]
  },
  "pedidos": [
   {
-   "protocolo": "MAT-2026-0001",
-   "estudante": "Luana Ferreira Dias",
-   "responsavel": "Marta Ferreira",
+   "protocolo": "MAT-2026-0004",
+   "estudante": "Thaís Aragão Fontes",
+   "responsavel": "Eliane Aragão",
    "serie": "1ª série EM",
    "tipo": "Matrícula nova",
    "escolaId": "e1",
    "situacao": "Aguardando confirmação",
-   "data": "18/09/2026"
+   "data": "22/09/2026"
   },
   {
-   "protocolo": "MAT-2026-0002",
-   "estudante": "Pedro Augusto Reis",
-   "responsavel": "Carlos Reis",
+   "protocolo": "MAT-2026-0005",
+   "estudante": "Josué Menezes Batista",
+   "responsavel": "Gilvan Batista",
    "serie": "2ª série EM",
    "tipo": "Transferência",
    "escolaId": "e1",
    "situacao": "Aguardando confirmação",
-   "data": "21/09/2026"
+   "data": "25/09/2026"
   },
   {
-   "protocolo": "MAT-2025-0091",
-   "estudante": "Ana Júlia Prado",
-   "responsavel": "Célia Prado",
+   "protocolo": "MAT-2026-0001",
+   "estudante": "Ítalo Vasconcelos Dantas",
+   "responsavel": "Cleide Vasconcelos",
    "serie": "1ª série EM",
    "tipo": "Matrícula nova",
    "escolaId": "e1",
    "situacao": "Confirmada",
-   "data": "10/09/2026"
+   "data": "02/09/2026"
   },
   {
-   "protocolo": "MAT-2025-0102",
-   "estudante": "Rafael Lima Couto",
-   "responsavel": "Denise Couto",
+   "protocolo": "MAT-2026-0002",
+   "estudante": "Rayssa Bispo Amorim",
+   "responsavel": "Ednaldo Amorim",
    "serie": "1ª série EM",
    "tipo": "Transferência",
    "escolaId": "e1",
    "situacao": "Confirmada",
-   "data": "12/09/2026"
+   "data": "08/09/2026"
   },
   {
-   "protocolo": "MAT-2025-0107",
-   "estudante": "Beatriz Moura Alves",
-   "responsavel": "Jorge Alves",
+   "protocolo": "MAT-2026-0003",
+   "estudante": "Wesley Nascimento de Jesus",
+   "responsavel": "Marlene Nascimento",
    "serie": "2ª série EM",
    "tipo": "Matrícula nova",
    "escolaId": "e1",
@@ -560,15 +751,15 @@ function desempenho(est, diario, aulasDadas) {
   // ---------- Perfis ----------
   var main = document.getElementById('conteudo');
   var PERFIS = {
-    aluno: { nome: 'Família e estudante', desc: 'Matrícula, notas e avisos', icone: 'usuario', rotulo: 'Família' },
-    professor: { nome: 'Professor', desc: 'Turmas e diário', icone: 'livro', rotulo: 'Professor' },
-    secretaria: { nome: 'Escola', desc: 'Secretaria, coordenação e direção', icone: 'escola', rotulo: 'Escola' }
+    aluno: { nome: 'Família e estudante', desc: 'Boletim, matrícula, documentos e avisos da escola', icone: 'usuario', rotulo: 'Família' },
+    professor: { nome: 'Professor', desc: 'Turmas, chamada e lançamento de notas no diário de classe', icone: 'livro', rotulo: 'Professor' },
+    secretaria: { nome: 'Escola', desc: 'Secretaria, coordenação e direção: matrículas e turmas', icone: 'escola', rotulo: 'Escola' }
   };
-  // Usuário simulado e cor de destaque de cada visão (mesmos do portal).
+  // Usuário simulado de cada visão, tirado dos mesmos dados do portal.
   var USUARIOS = {
-    aluno: { visao: 'familia', nome: 'Rosa Maria Santos', papel: 'Responsável' },
-    professor: { visao: 'professor', nome: 'Profa. Ana Lúcia Menezes', papel: 'Professora de Matemática' },
-    secretaria: { visao: 'escola', nome: 'Secretaria escolar', papel: 'C. E. Rio Sergipe' }
+    aluno: { visao: 'familia', nome: BASE.estudante.responsavel, papel: 'Responsável' },
+    professor: { visao: 'professor', nome: BASE.professor.nome, papel: 'Professora de Matemática' },
+    secretaria: { visao: 'escola', nome: 'Secretaria escolar', papel: nomeCurto(BASE.escola.nome) }
   };
   var turma = function () { return dados.turmas.filter(function (t) { return t.id === dados.turmaId; })[0]; };
   var alunosTurma = function () { return dados.diario[dados.turmaId]; };
@@ -583,14 +774,16 @@ function desempenho(est, diario, aulasDadas) {
 
   // ---------- W1 · Seleção de perfil ----------
   function telaPerfis() {
-    return '<h1 class="titulo-inicial">Quem está usando o portal?</h1>' +
-      '<p class="texto-suave lead">Escolha seu perfil. No protótipo, o acesso é simulado.</p>' +
+    return '<h1>Entrar no sistema</h1>' +
+      '<p class="pagina-descricao">Acesso simulado. Escolha o perfil para continuar.</p>' +
+      '<ul class="lista-perfis">' +
       Object.keys(PERFIS).map(function (k) {
         var p = PERFIS[k];
-        return '<div class="bloco visao-' + USUARIOS[k].visao + '"><a href="#' + k + '"><span class="icone">' + icone(p.icone, 30) + '</span><span><strong>' + p.nome + '</strong><small>' + p.desc + '</small></span></a>' + botaoOuvir(p.nome + '. ' + p.desc + '.') + '</div>';
+        return '<li><a href="#' + k + '"><strong>' + p.nome + '</strong><span>' + p.desc + '</span></a>' + botaoOuvir(p.nome + '. ' + p.desc + '.') + '</li>';
       }).join('') +
-      '<p class="rodape-prototipo">Protótipo de demonstração · SEDUC/SE · dados fictícios · ' +
-      '<button type="button" class="botao botao-texto botao-mini" data-reiniciar>Reiniciar demonstração</button></p>';
+      '</ul>' +
+      '<p class="aviso-prototipo">Protótipo em arquivo único · escolas, pessoas e dados fictícios · ' +
+      '<button type="button" class="botao botao-texto botao-mini" data-reiniciar>Restaurar dados de demonstração</button></p>';
   }
 
   // ---------- W2 + W5 · Família: notas e faltas (mesmas regras do portal) ----------
@@ -602,31 +795,30 @@ function desempenho(est, diario, aulasDadas) {
     var nome = est.nome.split(' ')[0];
     var resumo = 'A presença de ' + nome + ' está em ' + freq + ' por cento. O mínimo é ' + PRESENCA_MINIMA + ' por cento. ' +
       (atencao.length ? 'Precisa de atenção em: ' + atencao.join(', ') + '.' : 'A média está boa em todas as matérias.');
-    return '<h1 class="titulo-tela">Olá! Veja como ' + esc(nome) + ' está indo</h1>' +
-      '<div class="estudante"><span class="avatar" aria-hidden="true">' + esc(est.nome[0]) + '</span><div><strong class="titulo-cartao">' + esc(est.nome) + '</strong><br><span class="texto-suave">' + esc(est.turma) + ' · ' + esc(nomeCurto(dados.escola.nome)) + '</span></div></div>' +
-      '<div class="cartao cartao-destaque">' +
-        '<div class="linha-entre"><strong class="titulo-cartao">Presença nas aulas</strong>' + botaoOuvir(resumo, 'Resumo') + '</div>' +
-        '<p class="numero-grande">' + freq + '%</p>' +
-        '<p class="texto-suave sem-margem-topo">Mínimo para passar de ano: ' + PRESENCA_MINIMA + '%</p>' +
-        '<div class="barra" role="img" aria-label="Presença de ' + freq + ' por cento; mínimo de ' + PRESENCA_MINIMA + '"><span style="width:' + freq + '%"></span><i class="marca-minimo" style="left:' + PRESENCA_MINIMA + '%"></i></div>' +
-      '</div>' +
-      '<h2>Boletim · ' + dados.letivo.bimestresLancados + 'º bimestre</h2>' +
-      '<div class="materias-cabecalho" aria-hidden="true"><span>Matéria</span><span class="direita">Média</span><span>Situação</span></div>' +
-      '<ul class="materias lista-limpa" aria-label="Notas por matéria">' +
+    var nf = function (v) { return v === null ? '—' : num(v); };
+    return '<h1>Boletim de ' + esc(est.nome) + '</h1>' +
+      '<p class="pagina-descricao">' + esc(est.turma) + ' · ' + esc(dados.escola.nome) + ' · ' + dados.letivo.bimestresLancados + ' de ' + dados.letivo.totalBimestres + ' bimestres lançados · situação parcial</p>' +
+      '<dl class="resumo-linha">' +
+        '<div class="' + (d.presenca < PRESENCA_MINIMA ? 'alerta' : '') + '"><dd>' + d.presenca.toFixed(1).replace('.', ',') + '%</dd><dt>de frequência (mínimo ' + PRESENCA_MINIMA + '%)</dt></div>' +
+        '<div class="' + (atencao.length ? 'atencao' : '') + '"><dd>' + atencao.length + '</dd><dt>' + (atencao.length === 1 ? 'matéria em atenção' : 'matérias em atenção') + '</dt></div>' +
+      '</dl>' +
+      '<div class="barra esp-b-4" role="img" aria-label="Frequência de ' + freq + ' por cento; mínimo de ' + PRESENCA_MINIMA + '"><span style="width:' + freq + '%"></span><i class="marca-minimo" style="left:' + PRESENCA_MINIMA + '%"></i></div>' +
+      '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Notas por matéria e bimestre</caption>' +
+        '<thead><tr><th scope="col">Matéria</th><th scope="col" class="num">1º bimestre</th><th scope="col" class="num">2º bimestre</th><th scope="col" class="num">Média</th><th scope="col">Situação</th></tr></thead><tbody>' +
         d.linhas.map(function (l) {
-          return '<li><details class="materia"><summary><span>' + esc(l.materia) + '</span><strong><span class="sr-only">média </span>' + num(l.media) + '</strong>' +
-            etiqueta(l.situacao.texto, l.situacao.tipo) + '</summary>' +
-            '<div class="unidades"><span>1º bimestre: <strong>' + (l.n1 === null ? 'ainda não lançada' : num(l.n1)) + '</strong></span><span>2º bimestre: <strong>' + (l.n2 === null ? 'ainda não lançada' : num(l.n2)) + '</strong></span></div></details></li>';
+          return '<tr><td class="titulo-linha"><strong>' + esc(l.materia) + '</strong></td><td class="num" data-rotulo="1º bimestre">' + nf(l.n1) + '</td><td class="num" data-rotulo="2º bimestre">' + nf(l.n2) + '</td><td class="num negrito" data-rotulo="Média">' + nf(l.media) + '</td><td data-rotulo="Situação">' + etiqueta(l.situacao.texto, l.situacao.tipo) + '</td></tr>';
         }).join('') +
-      '</ul>' +
-      '<p class="texto-suave nota">Toque em uma matéria para ver as notas de cada bimestre. A situação é parcial, pois o ano letivo ainda não terminou.' + (d.matematicaDoDiario ? ' A nota de Matemática vem do diário do professor.' : '') + '</p>' +
+      '</tbody></table></div>' +
+      '<p class="contagem">' + d.linhas.length + ' matérias · aprovação: média ' + MEDIA_APROVACAO + ' e frequência de ' + PRESENCA_MINIMA + '%; recuperação: média de ' + MEDIA_RECUPERACAO + ' a menos de ' + MEDIA_APROVACAO + '.' + (d.matematicaDoDiario ? ' A nota de Matemática vem do diário do professor.' : '') + '</p>' +
+      '<div class="linha-botoes esp-t-3">' + botaoOuvir(resumo, 'Ouvir resumo') + '</div>' +
       '<h2>Próximas datas</h2>' +
-      dados.calendario.map(function (a) {
-        return '<div class="cartao linha-entre sem-quebra"><span class="icone-atividade">' + icone('calendario', 24) + '</span><div class="preenche"><strong>' + esc(a.titulo) + '</strong><br><span class="texto-suave">' + esc(a.data) + '</span></div></div>';
-      }).join('') +
+      '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Próximas datas do calendário letivo</caption>' +
+        '<thead><tr><th scope="col">Data</th><th scope="col">Evento</th></tr></thead><tbody>' +
+        dados.calendario.map(function (a) { return '<tr><td class="sem-quebra-texto" data-rotulo="Data">' + esc(a.data) + '</td><td class="titulo-linha">' + esc(a.titulo) + '</td></tr>'; }).join('') +
+      '</tbody></table></div>' +
       '<h2>Documentos</h2>' +
-      '<div class="cartao"><p class="sem-margem-topo">Peça documentos escolares diretamente à secretaria.</p>' +
-        '<button type="button" class="botao botao-grande botao-largo" id="btn-historico">' + icone('documento', 22) + 'Solicitar histórico escolar</button></div>';
+      '<p>Documentos escolares são emitidos pela secretaria da escola.</p>' +
+      '<button type="button" class="botao botao-secundario" id="btn-historico">Solicitar histórico escolar</button>';
   }
 
   // ---------- W13 · Professor: diário de classe ----------
@@ -641,35 +833,32 @@ function desempenho(est, diario, aulasDadas) {
     var nAusentes = feita ? feita.ausentes.length : alunos.filter(function (a) { return ausentes[a.id]; }).length;
     var presentes = alunos.length - nAusentes;
     var hoje = new Date().toLocaleDateString('pt-BR');
-    return '<h1 class="titulo-tela sem-margem-base">Diário de classe</h1>' +
-      '<p class="texto-suave sem-margem-topo">' + esc(nomeCurto(dados.escola.nome)) + ' · Matemática · ' + esc(t.nome) + ' · ' + dados.letivo.aulasDadas + ' aulas dadas no ano</p>' +
-      '<div class="numeros">' +
-        '<div class="numero"><strong>' + alunos.length + '</strong><span>estudantes na turma</span></div>' +
-        '<div class="numero"><strong>' + presentes + '</strong><span>presentes hoje</span></div>' +
-        '<div class="numero' + (nAusentes ? ' alerta' : '') + '"><strong>' + nAusentes + '</strong><span>ausentes hoje</span></div>' +
-        '<div class="numero"><strong>' + mediaTurma() + '</strong><span>média da turma</span></div>' +
-      '</div>' +
-      '<h2>Chamada de hoje · ' + hoje + '</h2>' +
-      (feita ? '<div class="cartao"><strong>Chamada registrada</strong><p class="sem-margem-base">' + (feita.ausentes.length ? feita.ausentes.length + ' falta(s) lançada(s) no diário.' : 'Todos presentes.') + '</p></div>' :
-      '<div class="cartao"><ul class="lista-cartao chamada">' +
-        alunos.map(function (a) {
-          var falta = !!ausentes[a.id];
-          return '<li><span class="nome">' + esc(a.nome) + '</span><span class="chamada-botoes" role="group" aria-label="Frequência de ' + esc(a.nome) + '">' +
-            '<button type="button" class="botao ' + (falta ? 'botao-secundario' : '') + '" data-presenca="' + a.id + '" data-valor="1" aria-pressed="' + !falta + '">Presente</button>' +
-            '<button type="button" class="botao ' + (falta ? 'botao-perigo' : 'botao-secundario') + '" data-presenca="' + a.id + '" data-valor="0" aria-pressed="' + falta + '">Ausente</button></span></li>';
-        }).join('') +
-      '</ul></div>' +
-      '<button type="button" class="botao botao-largo" id="btn-frequencia">' + icone('ok', 20) + 'Registrar chamada</button>') +
-      '<h2>Lançar notas · ' + dados.letivo.bimestresLancados + 'º bimestre</h2>' +
-      '<div class="cartao"><ul class="lista-cartao">' +
+    var bim = dados.letivo.bimestresLancados;
+    var celulaHoje = function (a) {
+      if (feita) return '<td data-rotulo="Chamada de hoje">' + (feita.ausentes.indexOf(a.id) >= 0 ? etiqueta('Faltou', 'erro') : '<span class="texto-suave">Presente</span>') + '</td>';
+      return '<td data-rotulo="Faltou hoje"><input type="checkbox" class="caixa-grande" data-faltou="' + a.id + '" aria-label="Faltou hoje: ' + esc(a.nome) + '"' + (ausentes[a.id] ? ' checked' : '') + '></td>';
+    };
+    return '<h1>Diário de classe · ' + esc(t.nome) + ' · Matemática</h1>' +
+      '<p class="texto-suave esp-t-0">' + esc(nomeCurto(dados.escola.nome)) + ' · ' + bim + 'º bimestre lançado · ' + dados.letivo.aulasDadas + ' aulas dadas · média da turma ' + mediaTurma() + '</p>' +
+      (feita
+        ? '<p class="esp-b-3"><strong>Chamada de ' + hoje + ' registrada</strong> ' + etiqueta('Registrada', 'ok') + ' ' + (feita.ausentes.length ? feita.ausentes.length + (feita.ausentes.length === 1 ? ' falta lançada' : ' faltas lançadas') + ' no diário.' : 'Todos presentes.') + '</p>'
+        : '<div class="linha-botoes entre esp-b-3"><p class="esp-t-0 esp-b-0"><strong>Chamada de ' + hoje + '</strong> · marque só quem faltou. <span id="chamada-resumo">' + presentes + (presentes === 1 ? ' presente' : ' presentes') + ' · ' + nAusentes + (nAusentes === 1 ? ' falta' : ' faltas') + '</span></p>' +
+          '<button type="button" class="botao" id="btn-frequencia">' + (nAusentes ? 'Registrar chamada com ' + nAusentes + (nAusentes === 1 ? ' falta' : ' faltas') : 'Registrar chamada: todos presentes') + '</button></div>') +
+      '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Chamada e notas do ' + bim + 'º bimestre</caption>' +
+        '<thead><tr><th scope="col">Estudante</th><th scope="col">Faltou hoje</th><th scope="col" class="num">Nota do ' + bim + 'º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th></tr></thead><tbody>' +
         alunos.map(function (a) {
           var invalido = erroNotas && erroNotas.id === a.id;
           var valor = a.n2 === null ? '' : String(a.n2).replace('.', ',');
-          return '<li><label class="nome" for="nota-' + a.id + '">' + esc(a.nome) + '</label><input id="nota-' + a.id + '" class="entrada nota-entrada" inputmode="decimal" placeholder="0,0" data-nota="' + a.id + '" data-vazio="' + (a.n2 === null) + '" value="' + esc(valor) + '"' + (invalido ? ' aria-invalid="true" aria-describedby="erro-notas"' : '') + '></li>';
+          var freq = presenca(a.faltas, dados.letivo.aulasDadas);
+          var sit = situacao(media(a.n1, a.n2), freq);
+          return '<tr><td class="titulo-linha"><label for="nota-' + a.id + '">' + esc(a.nome) + '</label></td>' + celulaHoje(a) +
+            '<td class="num" data-rotulo="Nota do ' + bim + 'º bimestre"><input id="nota-' + a.id + '" class="entrada nota-entrada" inputmode="decimal" placeholder="0,0" data-nota="' + a.id + '" data-vazio="' + (a.n2 === null) + '" value="' + esc(valor) + '"' + (invalido ? ' aria-invalid="true" aria-describedby="erro-notas"' : '') + '></td>' +
+            '<td class="num" data-rotulo="Faltas">' + a.faltas + '</td><td class="num" data-rotulo="Presença">' + Math.round(freq) + '%</td><td data-rotulo="Situação">' + etiqueta(sit.texto, sit.tipo) + '</td></tr>';
         }).join('') +
-      '</ul></div>' +
+      '</tbody></table></div>' +
+      '<p class="contagem">' + alunos.length + (alunos.length === 1 ? ' estudante' : ' estudantes') + ' · turma ' + esc(t.nome) + '</p>' +
       '<div id="erro-notas" role="alert">' + (erroNotas ? '<p class="alerta-erro">' + icone('alerta', 20) + '<span>' + esc(erroNotas.texto) + '</span></p>' : '') + '</div>' +
-      '<div class="linha-botoes"><button type="button" class="botao" id="btn-notas">' + icone('ok', 20) + 'Salvar notas</button><span class="texto-suave">As notas salvas aparecem para a família.</span></div>';
+      '<div class="linha-botoes"><button type="button" class="botao" id="btn-notas">Salvar notas do ' + bim + 'º bimestre</button><span class="texto-suave">As notas salvas aparecem para a família.</span></div>';
   }
 
   // ---------- W14 · Escola: pedidos de matrícula ----------
@@ -689,32 +878,32 @@ function desempenho(est, diario, aulasDadas) {
     var aprovadas = dados.turmas.filter(function (t) { return t.situacao === 'Aprovada'; });
     var estudantes = aprovadas.reduce(function (s, t) { return s + t.matriculados; }, 0);
     var aguardando = dados.pedidos.filter(function (p) { return p.situacao === 'Aguardando confirmação'; }).length;
-    return '<h1>Pedidos de matrícula</h1>' +
+    var alvo = recusando ? dados.pedidos.filter(function (p) { return p.protocolo === recusando; })[0] : null;
+    return '<h1>Pedidos de matrícula · 2026</h1>' +
+      '<p class="pagina-descricao">' + esc(dados.escola.nome) + ' · ' + esc(dados.escola.municipio) + ' · ' + estudantes + ' estudantes enturmados em ' + aprovadas.length + ' turmas aprovadas</p>' +
       '<div class="filtros" role="group" aria-label="Filtrar por situação">' +
         abas.map(function (a) { var n = dados.pedidos.filter(function (p) { return p.situacao === a; }).length; return '<button type="button" data-filtro="' + a + '" aria-pressed="' + (a === filtro) + '">' + nomes[a] + (n ? ' (' + n + ')' : '') + '</button>'; }).join('') +
       '</div>' +
-      (lista.length ? lista.map(function (p) {
-        var tipo = p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao';
-        return '<div class="cartao"><strong class="titulo-cartao">' + esc(p.estudante) + '</strong><br>' +
-          '<span class="texto-suave nota">' + esc(p.tipo) + ' · ' + esc(p.serie) + ' · Responsável: ' + esc(p.responsavel) + ' · ' + esc(p.protocolo) + '</span>' +
-          (p.motivo ? '<p class="sem-margem-base">Motivo: ' + esc(p.motivo) + '</p>' : '') +
-          '<div class="espaco-topo">' + etiqueta(p.situacao, tipo) + '</div>' +
-          (p.situacao === 'Aguardando confirmação' ? '<div class="chamada-botoes espaco-topo"><button type="button" class="botao" data-confirmar="' + esc(p.protocolo) + '">Confirmar</button><button type="button" class="botao botao-secundario" data-recusar="' + esc(p.protocolo) + '" aria-expanded="' + (recusando === p.protocolo) + '">Recusar</button></div>' : '') +
-          '</div>' + (recusando === p.protocolo ? painelRecusa(p) : '');
-      }).join('') : '<div class="estado-vazio"><strong>' + vazios[filtro] + '</strong></div>') +
-      '<h2>Painel da escola</h2>' +
-      '<div class="numeros">' +
-        '<div class="numero"><strong>' + estudantes + '</strong><span>estudantes enturmados</span></div>' +
-        '<div class="numero"><strong>' + dados.professoresDaEscola + '</strong><span>professores na rede simulada</span></div>' +
-        '<div class="numero"><strong>' + aprovadas.length + '</strong><span>turmas aprovadas</span></div>' +
-        '<div class="numero' + (aguardando ? ' alerta' : '') + '"><strong>' + aguardando + '</strong><span>' + (aguardando === 1 ? 'pedido aguardando' : 'pedidos aguardando') + '</span></div>' +
-      '</div>' +
-      '<h2>Relatórios</h2>' +
-      '<div class="opcoes">' +
-        [['Boletim consolidado', 'documento'], ['Histórico escolar', 'livro'], ['Censo Escolar (Educacenso)', 'grade']].map(function (r) {
-          return '<button type="button" class="opcao relatorio" data-relatorio="' + esc(r[0]) + '">' + icone(r[1], 26) + '<span>' + esc(r[0]) + '<small>Disponível na versão completa</small></span></button>';
+      (alvo ? painelRecusa(alvo) : '') +
+      (lista.length ?
+        '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Pedidos de matrícula: ' + nomes[filtro].toLowerCase() + '</caption>' +
+        '<thead><tr><th scope="col">Estudante</th><th scope="col">Tipo</th><th scope="col">Série</th><th scope="col" class="num">Pedido em</th><th scope="col">Situação</th><th scope="col">Decisão</th></tr></thead><tbody>' +
+        lista.map(function (p) {
+          var tipo = p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao';
+          var acoes = p.situacao === 'Aguardando confirmação'
+            ? '<div class="linha-botoes coluna-botoes"><button type="button" class="botao botao-mini" data-confirmar="' + esc(p.protocolo) + '" aria-label="Confirmar matrícula de ' + esc(p.estudante) + '">Confirmar matrícula</button><button type="button" class="botao botao-secundario botao-mini" data-recusar="' + esc(p.protocolo) + '" aria-expanded="' + (recusando === p.protocolo) + '" aria-label="Recusar matrícula de ' + esc(p.estudante) + '">Recusar matrícula</button></div>' : '';
+          return '<tr><td class="titulo-linha"><strong>' + esc(p.estudante) + '</strong><small>' + esc(p.protocolo) + ' · resp. ' + esc(p.responsavel) + '</small></td><td data-rotulo="Tipo">' + esc(p.tipo) + '</td><td class="sem-quebra-texto" data-rotulo="Série">' + esc(p.serie) + '</td><td class="num" data-rotulo="Pedido em">' + esc(p.data) + '</td>' +
+            '<td data-rotulo="Situação">' + etiqueta(p.situacao, tipo) + (p.motivo ? '<small>Motivo: ' + esc(p.motivo) + '</small>' : '') + '</td><td class="acoes">' + acoes + '</td></tr>';
         }).join('') +
-      '</div>';
+        '</tbody></table></div><p class="contagem">' + lista.length + (lista.length === 1 ? ' pedido' : ' pedidos') + ' · ' + nomes[filtro].toLowerCase() + '</p>'
+        : '<div class="estado-vazio"><strong>' + vazios[filtro] + '</strong></div>') +
+      '<h2>Relatórios</h2>' +
+      '<ul class="lista-texto">' +
+        ['Boletim consolidado', 'Histórico escolar', 'Censo Escolar (Educacenso)'].map(function (r) {
+          return '<li><button type="button" class="botao botao-texto botao-mini" data-relatorio="' + esc(r) + '">' + esc(r) + '</button> <span class="texto-suave">ainda não disponível no protótipo</span></li>';
+        }).join('') +
+      '</ul>' +
+      '<p class="texto-suave nota">Pendências: ' + aguardando + (aguardando === 1 ? ' pedido aguardando confirmação' : ' pedidos aguardando confirmação') + ' · ' + dados.professoresDaEscola + ' professores cadastrados na rede simulada.</p>';
   }
 
   // ---------- Roteamento por endereço (#aluno, #professor, #secretaria) ----------
@@ -765,25 +954,30 @@ function desempenho(est, diario, aulasDadas) {
     var ouvir = e.target.closest('[data-ouvir]');
     if (ouvir) { ler(ouvir.dataset.ouvir); return; }
 
+    // Caixa "Faltou hoje": atualiza só o resumo da chamada, sem redesenhar a tabela (não perde notas já digitadas).
+    var caixa = e.target.closest('[data-faltou]');
+    if (caixa && main.contains(caixa)) {
+      if (caixa.checked) ausentes[caixa.dataset.faltou] = true; else delete ausentes[caixa.dataset.faltou];
+      var nAus = alunosTurma().filter(function (a) { return ausentes[a.id]; }).length;
+      var resumo = document.getElementById('chamada-resumo');
+      if (resumo) resumo.textContent = (alunosTurma().length - nAus) + (alunosTurma().length - nAus === 1 ? ' presente' : ' presentes') + ' · ' + nAus + (nAus === 1 ? ' falta' : ' faltas');
+      var registrar = document.getElementById('btn-frequencia');
+      if (registrar) registrar.textContent = nAus ? 'Registrar chamada com ' + nAus + (nAus === 1 ? ' falta' : ' faltas') : 'Registrar chamada: todos presentes';
+      return;
+    }
+
     var b = e.target.closest('button');
     if (!b || !main.contains(b)) return;
 
     if (b.dataset.reiniciar !== undefined) {
-      confirmar('Reiniciar a demonstração?', 'Apaga as notas, a chamada e as confirmações feitas neste protótipo. Os dados voltam ao início.', 'Reiniciar', true).then(function (sim) {
+      confirmar('Restaurar os dados de demonstração?', 'Apaga as notas, a chamada e as confirmações feitas neste protótipo. Os dados voltam ao início.', 'Restaurar dados', true).then(function (sim) {
         if (!sim) return;
-        dados = copia(BASE); dados.chamadaFeita = null; guardar(); desenhar(); avisar('Demonstração reiniciada.');
+        dados = copia(BASE); dados.chamadaFeita = null; guardar(); desenhar(); avisar('Dados de demonstração restaurados.');
       });
       return;
     }
-    if (b.id === 'btn-historico') avisar('Pedido enviado. A secretaria vai emitir o histórico escolar.');
+    if (b.id === 'btn-historico') avisar('Pedido de histórico escolar enviado. A secretaria vai emitir o documento.');
 
-    if (b.dataset.presenca) {
-      var id = b.dataset.presenca;
-      if (b.dataset.valor === '1') delete ausentes[id]; else ausentes[id] = true;
-      desenhar();
-      var alvo = main.querySelector('[data-presenca="' + id + '"][data-valor="' + b.dataset.valor + '"]');
-      if (alvo) alvo.focus();
-    }
     if (b.id === 'btn-frequencia') {
       var faltosos = alunosTurma().filter(function (a) { return ausentes[a.id]; });
       var texto = faltosos.length ? 'Vai somar 1 falta para: ' + faltosos.map(function (a) { return a.nome; }).join(', ') + '. Depois de registrada, a chamada de hoje não pode ser refeita.' : 'Todos presentes. Depois de registrada, a chamada de hoje não pode ser refeita.';
@@ -792,7 +986,7 @@ function desempenho(est, diario, aulasDadas) {
         faltosos.forEach(function (a) { a.faltas += 1; });
         dados.chamadaFeita = { data: hojeISO(), ausentes: faltosos.map(function (a) { return a.id; }) };
         ausentes = {};
-        guardar(); desenhar(); avisar('Chamada registrada.');
+        guardar(); desenhar(); avisar('Chamada registrada em ' + turma().nome + ': ' + (faltosos.length === 0 ? 'todos presentes' : faltosos.length + (faltosos.length === 1 ? ' falta lançada' : ' faltas lançadas')) + '.');
       });
     }
     if (b.id === 'btn-notas') {
@@ -807,7 +1001,7 @@ function desempenho(est, diario, aulasDadas) {
         alunosTurma().forEach(function (a) { if (a.id === c.dataset.nota) a.n2 = Math.round(Number(c.value.replace(',', '.')) * 10) / 10; });
       });
       guardar(); desenhar();
-      avisar('Notas do ' + dados.letivo.bimestresLancados + 'º bimestre salvas. Já aparecem para a família.');
+      avisar('Notas do ' + dados.letivo.bimestresLancados + 'º bimestre salvas: ' + alunosTurma().length + ' estudantes. Já aparecem no boletim da família.');
     }
 
     if (b.dataset.filtro) { filtro = b.dataset.filtro; recusando = null; desenhar(); }
@@ -837,7 +1031,7 @@ function desempenho(est, diario, aulasDadas) {
       recusando = null; erroRecusa = '';
       guardar(); desenhar(); avisar('Matrícula recusada. A família será avisada.');
     }
-    if (b.dataset.relatorio) avisar('“' + b.dataset.relatorio + '” estará disponível na versão completa do sistema.');
+    if (b.dataset.relatorio) avisar('O relatório “' + b.dataset.relatorio + '” ainda não existe no protótipo.', 'info');
   });
 
   // Limpa o aviso de erro assim que a pessoa corrige o campo.
