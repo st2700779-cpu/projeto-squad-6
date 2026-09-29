@@ -1,7 +1,7 @@
 @echo off
 rem Abre o portal com o servidor simples do Python. Serve para computadores em que o PowerShell esta bloqueado.
 rem Sem a API de dados: as alteracoes ficam salvas no navegador (localStorage), nao em disco.
-rem Uso: dois cliques, ou iniciar-python.bat familia/index.html para abrir uma pagina especifica.
+rem Uso: dois cliques, ou iniciar-python.bat aluno/index.html para abrir uma pagina especifica.
 title Portal Academico - servidor com Python
 cd /d "%~dp0"
 

@@ -1,0 +1,43 @@
+[
+  {
+    "perfil": "aluno",
+    "login": "202610317",
+    "senha": "aluno2026",
+    "refId": "a3",
+    "nome": "Iasmim Cardoso de Jesus",
+    "papel": "Estudante · 1ª série A"
+  },
+  {
+    "perfil": "aluno",
+    "login": "202610842",
+    "senha": "aluno2026",
+    "refId": "b7",
+    "nome": "Ravi Cardoso de Jesus",
+    "papel": "Estudante · 7º ano B"
+  },
+  {
+    "perfil": "professor",
+    "login": "PF-30412",
+    "senha": "prof2026",
+    "refId": "p1",
+    "nome": "Profa. Rosângela Tavares Góis",
+    "papel": "Professora de Matemática"
+  },
+  {
+    "perfil": "escola",
+    "login": "secretaria.osvaldo",
+    "senha": "secretaria2026",
+    "refId": "e1",
+    "escolaId": "e1",
+    "nome": "Secretaria escolar",
+    "papel": "C. E. Prof. Osvaldo Tavares Rezende"
+  },
+  {
+    "perfil": "rede",
+    "login": "seduc.tecnico",
+    "senha": "rede2026",
+    "refId": null,
+    "nome": "Equipe técnica",
+    "papel": "SEDUC/SE"
+  }
+]

@@ -45,7 +45,7 @@ function linha(p) {
   const ultima = historico.find((h) => h.alvo === p.protocolo && /Confirmou|Recusou/.test(h.acao));
   const acoes = p.situacao === 'Aguardando confirmação'
     ? `<div class="linha-botoes coluna-botoes"><button type="button" class="botao botao-mini" data-confirmar="${esc(p.protocolo)}" aria-label="Confirmar matrícula de ${esc(p.estudante)}">Confirmar matrícula</button><button type="button" class="botao botao-secundario botao-mini" data-recusar="${esc(p.protocolo)}" aria-expanded="${recusando === p.protocolo}" aria-label="Recusar matrícula de ${esc(p.estudante)}">Recusar matrícula</button></div>`
-    : p.situacao === 'Confirmada' ? `<a class="botao botao-secundario botao-mini" href="${link('familia/declaracao.html')}?tipo=matricula&protocolo=${encodeURIComponent(p.protocolo)}">Emitir declaração</a>` : '';
+    : p.situacao === 'Confirmada' ? `<a class="botao botao-secundario botao-mini" href="${link('aluno/declaracao.html')}?tipo=matricula&protocolo=${encodeURIComponent(p.protocolo)}">Emitir declaração</a>` : '';
   return `<tr>
     <td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)} · resp. ${esc(p.responsavel)}</small></td>
     <td data-rotulo="Tipo">${esc(p.tipo)}</td><td data-rotulo="Série" class="sem-quebra-texto">${esc(p.serie)}</td>

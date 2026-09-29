@@ -2,13 +2,15 @@
 // regras de ato e vaga aplicadas na escolha da escola.
 // Com ?rematricula=<id>, é a rematrícula em um toque: dados preenchidos, só confirmar.
 import { iniciar, link, falhaDados, acoesDoTopo } from '../app.js';
+import { sessao } from '../auth.js';
 import { esc, icone, hojeBR } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { carregar, matriculas, vagas as lerVagas, salvar, novoProtocolo, estudantes, registrarAcao } from '../dados.js';
 import { SERIES, etapaDaSerie, serieCompleta, nomeCurto, motivoBloqueio, proximaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Matrícula', voltar: 'familia/index.html', estreito: true });
+const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Matrícula', estreito: true });
 const TOTAL = 5;
+const logado = sessao()?.perfil === 'aluno'; // com login de aluno, os atalhos levam à área do aluno; sem login, à entrada
 let passo = 1;
 const d = {};
 let base;
@@ -89,9 +91,9 @@ function desenhar(erro = '', campoComErro = null) {
       <p class="texto-medio">${d.tipo === 'rematricula' ? 'A escola vai confirmar a rematrícula. Não é preciso levar documentos, a menos que a secretaria peça.' : 'A escola vai conferir e confirmar a matrícula. Leve os documentos à secretaria da escola em até 5 dias úteis.'}</p>
       <div class="grade-acoes">
         ${botaoOuvir(`Pedido de matrícula enviado. O protocolo é ${d.protocolo.split('').join(' ')}. Leve os documentos à secretaria da escola em até 5 dias úteis.`)}
-        <a class="botao botao-secundario botao-grande" href="${link('familia/documentos.html')}">${icone('documento', 22)}Ver lista de documentos</a>
+        ${logado ? `<a class="botao botao-secundario botao-grande" href="${link('aluno/documentos.html')}">${icone('documento', 22)}Ver lista de documentos</a>` : ''}
       </div>
-      <div class="barra-acoes coluna-curta"><a class="botao botao-grande" href="${link('familia/index.html')}">Voltar à página inicial</a><p class="nota-rodape">Você acompanha o pedido na tela inicial.</p></div>`;
+      <div class="barra-acoes coluna-curta"><a class="botao botao-grande" href="${link(logado ? 'aluno/index.html' : 'index.html')}">Voltar à página inicial</a><p class="nota-rodape">${logado ? 'Você acompanha o pedido na tela inicial.' : 'Guarde o número do protocolo: é com ele que a secretaria localiza o pedido.'}</p></div>`;
     main.querySelector('.botao-ouvir')?.classList.add('botao-grande');
     main.querySelector('h1').focus();
     return;

@@ -5,7 +5,7 @@ import { esc } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { estudantes, carregar } from '../dados.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Documentos', voltar: 'familia/index.html', estreito: true });
+const main = await iniciar({ perfil: 'aluno', assistente: true, titulo: 'Documentos', voltar: 'aluno/index.html', estreito: true });
 const matricula = ['Certidão de nascimento ou RG do estudante', 'CPF do estudante, se tiver', 'Comprovante de residência (conta de luz ou de água)', 'Documento com foto do responsável'];
 const lista = (itens) => `<ul class="lista-texto">${itens.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
 const DECLARACOES = [
@@ -20,11 +20,11 @@ async function mostrar() {
     const escola = escolas.find((e) => e.id === est.escolaId);
     main.innerHTML = `
       <h1>Documentos e declarações</h1>
-      <p class="pagina-descricao">De <strong class="cor-tinta">${esc(est.nome)}</strong>, prontos para imprimir ou salvar em PDF.${todos.length > 1 ? ` Para outro estudante, troque na <a href="${link('familia/index.html')}">página inicial da família</a>.` : ''}</p>
+      <p class="pagina-descricao">De <strong class="cor-tinta">${esc(est.nome)}</strong>, prontos para imprimir ou salvar em PDF.${todos.length > 1 ? ` Para outro estudante, troque na <a href="${link('aluno/index.html')}">página inicial da família</a>.` : ''}</p>
       <h2 class="esp-t-0">Declarações</h2>
       <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Declarações disponíveis para emissão</caption>
         <thead><tr><th scope="col">Declaração</th><th scope="col">Para que serve</th><th scope="col"><span class="sr-only">Ação</span></th></tr></thead>
-        <tbody>${DECLARACOES.map(([t, nome, desc]) => `<tr><td class="titulo-linha"><strong>${nome}</strong></td><td data-rotulo="Para que serve">${desc}</td><td class="acoes"><a class="botao botao-secundario botao-mini" href="${link('familia/declaracao.html')}?tipo=${t}&estudante=${est.id}" aria-label="Emitir ${esc(nome.toLowerCase())}">Emitir</a></td></tr>`).join('')}</tbody>
+        <tbody>${DECLARACOES.map(([t, nome, desc]) => `<tr><td class="titulo-linha"><strong>${nome}</strong></td><td data-rotulo="Para que serve">${desc}</td><td class="acoes"><a class="botao botao-secundario botao-mini" href="${link('aluno/declaracao.html')}?tipo=${t}&estudante=${est.id}" aria-label="Emitir ${esc(nome.toLowerCase())}">Emitir</a></td></tr>`).join('')}</tbody>
       </table></div>
       <div class="linha-botoes entre esp-t-5"><h2 class="esp-t-0 esp-b-0">Documentos para a matrícula</h2>${botaoOuvir(`Para a matrícula, leve: ${matricula.join('. ')}.`, 'Ouvir a lista')}</div>
       ${lista(matricula)}

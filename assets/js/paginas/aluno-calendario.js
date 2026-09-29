@@ -3,7 +3,7 @@ import { esc, vazio } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { carregar } from '../dados.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Calendário e avisos', voltar: 'familia/index.html', estreito: true });
+const main = await iniciar({ perfil: 'aluno', assistente: true, titulo: 'Calendário e avisos', voltar: 'aluno/index.html', estreito: true });
 async function mostrar() {
   try {
     const [cal, avisos] = await Promise.all([carregar('calendario'), carregar('avisos')]);

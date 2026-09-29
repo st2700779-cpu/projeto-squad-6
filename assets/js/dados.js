@@ -2,6 +2,7 @@
 // e as alterações ficam salvas em disco (pasta dados-salvos/). Em hospedagem estática
 // (GitLab Pages, Live Server) não há API: lê data/*.json e guarda as alterações no localStorage.
 import { obter, definir, reiniciar, proximoProtocolo } from './estado.js';
+import { sessao } from './auth.js';
 
 export const RAIZ = new URL('../../', import.meta.url);
 const API = new URL('api/', RAIZ);
@@ -90,7 +91,10 @@ export async function reiniciarDados() {
 
 // Família com mais de um estudante: lista e estudante escolhido no seletor do topo.
 export async function estudantes() {
-  const lista = await carregar('estudantes');
+  let lista = await carregar('estudantes');
+  const login = sessao();
+  // Com login de aluno, a pessoa só vê o próprio cadastro.
+  if (login?.perfil === 'aluno' && lista.some((e) => e.id === login.refId)) { lista = lista.filter((e) => e.id === login.refId); definir('estudanteId', login.refId); }
   const id = obter('estudanteId', lista[0].id);
   return { lista, atual: lista.find((e) => e.id === id) || lista[0] };
 }

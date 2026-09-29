@@ -15,7 +15,7 @@ echo  ---------------------------------------------
 echo.
 choice /c 1234 /n /m " Digite 1, 2, 3 ou 4: "
 
-set "ALVO=familia/index.html"
+set "ALVO=aluno/index.html"
 if errorlevel 2 set "ALVO=professor/index.html"
 if errorlevel 3 set "ALVO=escola/index.html"
 if errorlevel 4 set "ALVO=rede/atos.html"

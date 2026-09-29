@@ -3,6 +3,7 @@ import { icone, esc } from './ui.js';
 import { aplicarEscala, mudarEscala } from './acessibilidade.js';
 import { definir } from './estado.js';
 import { RAIZ, letivo } from './dados.js';
+import { sessao, exigirPerfil, sair } from './auth.js';
 
 const url = (caminho) => new URL(caminho, RAIZ).href;
 const VERSAO = '1.0';
@@ -10,26 +11,21 @@ const DATA_DOS_DADOS = '29/09/2026'; // data de referência dos dados de demonst
 
 /** Itens do menu lateral de cada visão: [página, rótulo, ícone]. */
 export const MENUS = {
-  familia: [['familia/index.html', 'Início', 'usuario'], ['familia/matricula.html', 'Matrícula', 'formulario'], ['familia/notas.html', 'Notas e faltas', 'livro'], ['familia/documentos.html', 'Documentos', 'documento'], ['familia/calendario.html', 'Calendário e avisos', 'calendario']],
+  familia: [['familia/matricula.html', 'Matrícula', 'formulario']],
+  aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario']],
   professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/avisos.html', 'Avisos', 'calendario']],
   escola: [['escola/index.html', 'Início', 'escola'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario']],
   rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro']]
 };
-const NOMES = { familia: 'Família e estudante', professor: 'Professor', escola: 'Escola', rede: 'Rede (SEDUC e DRE)' };
-// Usuário simulado de cada visão (nomes que já existem nos dados de demonstração).
-const USUARIOS = {
-  familia: { nome: 'Edilene Cardoso de Jesus', papel: 'Responsável' },
-  professor: { nome: 'Profa. Rosângela Tavares Góis', papel: 'Professora de Matemática' },
-  escola: { nome: 'Secretaria escolar', papel: 'C. E. Prof. Osvaldo Tavares Rezende' },
-  rede: { nome: 'Equipe técnica', papel: 'SEDUC/SE' }
-};
+const NOMES = { familia: 'Matrícula', aluno: 'Aluno', professor: 'Professor', escola: 'Escola', rede: 'Rede (SEDUC e DRE)' };
 const CHAVE_MENU = 'portal-menu-recolhido';
 const lerPreferencia = () => { try { return localStorage.getItem(CHAVE_MENU) === '1'; } catch { return false; } };
 const gravarPreferencia = (v) => { try { localStorage.setItem(CHAVE_MENU, v ? '1' : '0'); } catch { /* segue sem guardar */ } };
 const iniciais = (nome) => nome.replace(/^(Profa?\.|Dr\.|Dra\.)\s+/, '').split(' ').filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
 
-function cabecalho({ perfil, papel }) {
-  const u = perfil ? { ...USUARIOS[perfil], ...(papel ? { nome: papel } : {}) } : null;
+function cabecalho({ perfil }) {
+  const login = sessao();
+  const u = perfil && perfil !== 'familia' && login?.perfil === perfil ? login : null; // matrícula é pública: sem usuário no cabeçalho
   const topo = document.createElement('header');
   topo.className = 'topo';
   topo.innerHTML = `
@@ -44,12 +40,13 @@ function cabecalho({ perfil, papel }) {
         <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
         ${window.botaoTema ? window.botaoTema() : ''}
         ${u ? `<div class="usuario"><span class="avatar" aria-hidden="true">${esc(iniciais(u.nome))}</span><span class="usuario-texto"><strong>${esc(u.nome)}</strong><small>${esc(u.papel)}</small></span></div>` : ''}
-        ${perfil ? `<a class="ferramenta" href="${url('index.html')}">Sair</a>` : ''}
+        ${u ? '<button type="button" class="ferramenta" data-sair>Sair</button>' : perfil ? `<a class="ferramenta" href="${url('index.html')}">Início</a>` : ''}
       </div>
     </div>`;
   topo.addEventListener('click', (e) => {
     const b = e.target.closest('[data-escala]');
     if (b) mudarEscala(Number(b.dataset.escala));
+    if (e.target.closest('[data-sair]')) sair();
   });
   return topo;
 }
@@ -62,7 +59,7 @@ function itemAtual(menu, pagina) {
 
 function breadcrumb({ perfil, menu, atual, titulo }) {
   const passos = [[ 'Início', url('index.html') ]];
-  if (perfil) passos.push([NOMES[perfil], url(menu[0][0])]);
+  if (perfil && menu.length) passos.push([NOMES[perfil], url(menu[0][0])]);
   if (atual && atual !== menu[0]) passos.push([atual[1], null]);
   else if (!atual && titulo) passos.push([titulo, null]);
   else if (atual) passos[passos.length - 1][1] = null;
@@ -115,15 +112,17 @@ function configurarMenu(topo, conteudo, menu, area) {
 /**
  * Monta cabeçalho, menu do perfil, breadcrumb e assistente. Chamada uma vez por página.
  * @param {{perfil?: 'familia'|'professor'|'escola'|'rede'|null, pagina?: string, assistente?: boolean, titulo?: string, voltar?: string, papel?: string, estreito?: boolean}} opcoes
- *   titulo: nome da página quando ela não está no menu (ex.: declaração); papel: nome exibido do usuário (escola);
+ *   titulo: nome da página quando ela não está no menu (ex.: declaração); papel: sem efeito, o nome vem da sessão;
  *   estreito: limita a largura do conteúdo (formulários e documentos).
  * @returns {Promise<HTMLElement>} O elemento onde a página desenha seu conteúdo.
  */
 export async function iniciar({ perfil = null, pagina = '', assistente = false, titulo = '', papel = '', estreito = false } = {}) {
   aplicarEscala();
+  // Páginas internas exigem o login do perfil; sem ele, o navegador já foi levado ao login e a página nunca termina de montar.
+  if (perfil && perfil !== 'familia' && !exigirPerfil(perfil)) await new Promise(() => {});
   if (perfil) definir('perfil', perfil);
   document.body.dataset.visao = perfil || 'geral';
-  const topo = cabecalho({ perfil, papel });
+  const topo = cabecalho({ perfil });
   document.body.prepend(topo);
   // Ano letivo e bimestre em curso no cabeçalho (dados de data/letivo.json).
   letivo().then((l) => {

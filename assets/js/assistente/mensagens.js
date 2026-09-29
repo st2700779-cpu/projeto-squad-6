@@ -35,12 +35,12 @@ export const SUGESTOES = {
 // Ações que o assistente pode sugerir e a tela de destino de cada uma.
 export const ACOES = {
   matricula: ['familia/matricula.html', 'Fazer matrícula'],
-  documentos: ['familia/documentos.html', 'Ver lista completa'],
-  notas: ['familia/notas.html', 'Ver notas e faltas'],
-  calendario: ['familia/calendario.html', 'Ver calendário'],
-  avisos: ['familia/calendario.html#avisos', 'Ver avisos'],
+  documentos: ['aluno/documentos.html', 'Ver lista completa'],
+  notas: ['aluno/notas.html', 'Ver notas e faltas'],
+  calendario: ['aluno/calendario.html', 'Ver calendário'],
+  avisos: ['aluno/calendario.html#avisos', 'Ver avisos'],
   // Resposta fora da base (W10): encaminha à secretaria.
-  contato: ['familia/documentos.html#contato', 'Contato da escola']
+  contato: ['aluno/documentos.html#contato', 'Contato da escola']
 };
 
 // Perguntas de continuação mostradas depois de uma resposta (W9), pela ação sugerida.

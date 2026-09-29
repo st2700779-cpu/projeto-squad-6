@@ -5,7 +5,7 @@ pages:
   image: alpine:latest
   script:
     - mkdir -p public
-    - cp -r index.html 404.html config.js sistema-academico-seduc-prototipo.html familia professor escola rede assets data public/
+    - cp -r index.html 404.html config.js sistema-academico-seduc-prototipo.html aluno familia professor escola rede assets data login.html public/
   artifacts:
     paths:
       - public

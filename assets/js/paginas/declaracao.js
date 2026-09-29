@@ -13,10 +13,10 @@ const tipo = ['matricula', 'frequencia', 'transferencia'].includes(params.get('t
 const protocolo = params.get('protocolo');
 const TITULOS = { matricula: 'Declaração de matrícula', frequencia: 'Declaração de frequência', transferencia: 'Declaração de transferência' };
 const main = await iniciar({
-  perfil: protocolo ? 'escola' : 'familia',
+  perfil: protocolo ? 'escola' : 'aluno',
   assistente: false, // documento para imprimir: o botão flutuante cobriria o botão Imprimir no celular
   titulo: TITULOS[tipo],
-  voltar: protocolo ? 'escola/matriculas.html' : 'familia/documentos.html',
+  voltar: protocolo ? 'escola/matriculas.html' : 'aluno/documentos.html',
   estreito: true
 });
 const ANO = 2026;

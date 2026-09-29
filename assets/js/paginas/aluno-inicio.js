@@ -5,7 +5,7 @@ import { botaoOuvir } from '../acessibilidade.js';
 import { carregar, matriculas, estudantes, escolherEstudante, diario, letivo } from '../dados.js';
 import { nomeCurto, proximaSerie, serieCompleta, desempenho, PRESENCA_MINIMA } from '../regras.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true });
+const main = await iniciar({ perfil: 'aluno', assistente: true });
 const cor = (s) => (s === 'Confirmada' ? 'ok' : s === 'Recusada' ? 'erro' : 'atencao');
 
 async function mostrar() {
@@ -35,11 +35,11 @@ async function mostrar() {
         <div class="${atencao ? 'atencao' : ''}"><dd>${atencao}</dd><dt>${plural(atencao, 'matéria em atenção', 'matérias em atenção')}</dt></div>
         <div><dd>${aguardando}</dd><dt>${plural(aguardando, 'pedido aguardando a escola', 'pedidos aguardando a escola')}</dt></div>
       </dl>
-      <div class="linha-botoes esp-b-4"><a class="botao botao-secundario" href="${link('familia/notas.html')}">Ver boletim de ${esc(primeiroNome)}</a>${botaoOuvir(resumoFalado, 'Ouvir resumo')}</div>
+      <div class="linha-botoes esp-b-4"><a class="botao botao-secundario" href="${link('aluno/notas.html')}">Ver boletim de ${esc(primeiroNome)}</a>${botaoOuvir(resumoFalado, 'Ouvir resumo')}</div>
       ${seguinte ? (rematricula
         ? `<p class="esp-b-4">Rematrícula para 2027: ${etiqueta(rematricula.situacao, cor(rematricula.situacao))} <span class="texto-suave">protocolo ${esc(rematricula.protocolo)}</span></p>`
         : `<div class="alerta-info">${icone('info', 20)}<span>Rematrícula para 2027 aberta de 3 a 28 de novembro. ${esc(primeiroNome)} continua em ${esc(nomeCurto(escola.nome))}, na ${esc(serieCompleta(seguinte))}, com os dados já preenchidos. <a href="${link('familia/matricula.html')}?rematricula=${est.id}">Confirmar rematrícula de ${esc(primeiroNome)}</a></span></div>`) : ''}
-      <h2>Próximas datas <a class="texto-pequeno peso-normal" href="${link('familia/calendario.html')}">ver calendário e avisos</a></h2>
+      <h2>Próximas datas <a class="texto-pequeno peso-normal" href="${link('aluno/calendario.html')}">ver calendário e avisos</a></h2>
       <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Próximas datas do calendário letivo</caption>
         <thead><tr><th scope="col">Data</th><th scope="col">Evento</th></tr></thead>
         <tbody>${proximas.map((c) => `<tr><td class="sem-quebra-texto" data-rotulo="Data">${esc(c.data)}</td><td data-rotulo="Evento">${esc(c.titulo)}</td></tr>`).join('')}</tbody>

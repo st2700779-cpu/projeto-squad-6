@@ -5,7 +5,7 @@ import { botaoOuvir } from '../acessibilidade.js';
 import { diario, letivo, estudantes } from '../dados.js';
 import { desempenho, MEDIA_APROVACAO, MEDIA_RECUPERACAO, PRESENCA_MINIMA } from '../regras.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Notas e faltas', voltar: 'familia/index.html', estreito: true });
+const main = await iniciar({ perfil: 'aluno', assistente: true, titulo: 'Notas e faltas', voltar: 'aluno/index.html', estreito: true });
 async function mostrar() {
   try {
     const [{ lista, atual: est }, dia, lv] = await Promise.all([estudantes(), diario(), letivo()]);
@@ -17,7 +17,7 @@ async function mostrar() {
     main.innerHTML = `
       <h1>Boletim de ${esc(est.nome)}</h1>
       <p class="pagina-descricao">${esc(est.turma)} · ${lv.bimestresLancados} de ${lv.totalBimestres} bimestres lançados · situação parcial</p>
-      ${lista.length > 1 ? `<p class="texto-suave esp-t-0 esp-b-3">Para ver outro estudante, escolha na <a href="${link('familia/index.html')}">página inicial da família</a>.</p>` : ''}
+      ${lista.length > 1 ? `<p class="texto-suave esp-t-0 esp-b-3">Para ver outro estudante, escolha na <a href="${link('aluno/index.html')}">página inicial da família</a>.</p>` : ''}
       <dl class="resumo-linha">
         <div class="${pres < PRESENCA_MINIMA ? 'alerta' : ''}"><dd>${pres.toFixed(1).replace('.', ',')}%</dd><dt>de frequência (mínimo ${PRESENCA_MINIMA}%)</dt></div>
         <div class="${atencao.length ? 'atencao' : ''}"><dd>${atencao.length}</dd><dt>${atencao.length === 1 ? 'matéria em atenção' : 'matérias em atenção'}</dt></div>
