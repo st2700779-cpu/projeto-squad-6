@@ -5,7 +5,7 @@ import { botaoOuvir } from '../acessibilidade.js';
 import { diario, letivo, estudantes } from '../dados.js';
 import { desempenho, MEDIA_APROVACAO, MEDIA_RECUPERACAO, PRESENCA_MINIMA } from '../regras.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Notas e faltas', voltar: 'familia/index.html' });
+const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Notas e faltas', voltar: 'familia/index.html', estreito: true });
 async function mostrar() {
   try {
     const [{ lista, atual: est }, dia, lv] = await Promise.all([estudantes(), diario(), letivo()]);

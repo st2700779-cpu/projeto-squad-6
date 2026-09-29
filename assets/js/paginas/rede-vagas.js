@@ -26,13 +26,13 @@ function tabela() {
   if (!lista.length) return vazio('Nenhuma escola encontrada', 'Mude a busca ou o município para ver outras escolas.', 'busca');
   const celula = (e, s) => {
     const v = valor(e, s);
-    if (v === '—') return '<td class="texto-suave">—</td>';
-    if (v === 'bloq.') return '<td><span class="etiqueta etiqueta-erro" title="Ato vencido">bloq.</span></td>';
-    return `<td${v === 0 ? ' class="texto-suave"' : ''}>${v}</td>`;
+    if (v === '—') return '<td class="num texto-suave">—</td>';
+    if (v === 'bloq.') return '<td class="num"><span class="etiqueta etiqueta-erro" title="Ato vencido">bloq.</span></td>';
+    return `<td class="num${v === 0 ? ' texto-suave' : ''}">${v}</td>`;
   };
-  return `<div class="tabela-rolagem"><table class="tabela"><caption class="sr-only">Vagas por escola e série</caption>
-    <thead><tr><th scope="col">Escola</th>${SERIES.map((s) => `<th scope="col">${s.replace(' EM', '')}${s.includes('EM') ? ' (EM)' : ''}</th>`).join('')}</tr></thead>
-    <tbody>${lista.map((e) => `<tr><th class="link-botao" scope="row">${esc(e.nome)}<br><span class="texto-suave texto-pequeno peso-normal">${esc(e.municipio)}</span></th>${SERIES.map((s) => celula(e, s)).join('')}</tr>`).join('')}</tbody>
+  return `<div class="tabela-rolagem"><table class="tabela tabela-matriz"><caption class="sr-only">Vagas por escola e série</caption>
+    <thead><tr><th scope="col">Escola</th>${SERIES.map((s) => `<th scope="col" class="num">${s.replace(' EM', '')}${s.includes('EM') ? ' (EM)' : ''}</th>`).join('')}</tr></thead>
+    <tbody>${lista.map((e) => `<tr><th class="celula-escola" scope="row">${esc(e.nome)}<br><span class="texto-suave texto-pequeno peso-normal">${esc(e.municipio)}</span></th>${SERIES.map((s) => celula(e, s)).join('')}</tr>`).join('')}</tbody>
   </table></div>`;
 }
 function desenhar() {

@@ -1,6 +1,6 @@
 // Início da escola: pendências do dia, autorizações e histórico das últimas ações.
 import { iniciar, link, falhaDados } from '../app.js';
-import { esc, dataBR, etiqueta, icone, vazio, dataHoraBR } from '../ui.js';
+import { esc, dataBR, etiqueta, icone, vazio, dataHoraBR, plural } from '../ui.js';
 import { carregar, matriculas, turmasEscola, conjunto } from '../dados.js';
 import { situacaoAto } from '../regras.js';
 
@@ -17,12 +17,12 @@ async function mostrar() {
     const meusAtos = atos.filter((a) => a.escolaId === ESCOLA);
     const vencidos = meusAtos.filter((a) => !situacaoAto(a).vigente).length;
     main.innerHTML = `
-      <h1>${esc(escola.nome)}</h1><p class="texto-suave">${esc(escola.dre)}</p>
+      <h1>${esc(escola.nome)}</h1><p class="pagina-descricao">${esc(escola.dre)} · resumo do que precisa de atenção hoje</p>
       <div class="numeros">
-        <a class="numero" href="${link('escola/matriculas.html')}"><strong>${aguardando}</strong><span>matrículas para confirmar</span></a>
-        <a class="numero" href="${link('escola/enturmacao.html')}"><strong>${semTurma}</strong><span>estudantes sem turma</span></a>
-        <a class="numero" href="${link('escola/turmas.html')}"><strong>${pendentes}</strong><span>turmas aguardando aprovação</span></a>
-        <div class="numero${vencidos ? ' alerta' : ''}"><strong>${vencidos}</strong><span>autorizações vencidas</span></div>
+        <a class="numero${aguardando ? ' atencao' : ''}" href="${link('escola/matriculas.html')}"><span class="numero-icone">${icone('formulario', 22)}</span><strong>${aguardando}</strong><span>${plural(aguardando, 'matrícula para confirmar', 'matrículas para confirmar')}</span></a>
+        <a class="numero${semTurma ? ' atencao' : ''}" href="${link('escola/enturmacao.html')}"><span class="numero-icone">${icone('pessoas', 22)}</span><strong>${semTurma}</strong><span>${plural(semTurma, 'estudante sem turma', 'estudantes sem turma')}</span></a>
+        <a class="numero${pendentes ? ' atencao' : ''}" href="${link('escola/turmas.html')}"><span class="numero-icone">${icone('usuario', 22)}</span><strong>${pendentes}</strong><span>${plural(pendentes, 'turma aguardando aprovação', 'turmas aguardando aprovação')}</span></a>
+        <div class="numero${vencidos ? ' alerta' : ' ok'}"><span class="numero-icone">${icone(vencidos ? 'alerta' : 'ok', 22)}</span><strong>${vencidos}</strong><span>${plural(vencidos, 'autorização vencida', 'autorizações vencidas')}</span></div>
       </div>
       <div class="cartao"><h2 class="esp-t-0">Autorizações da escola</h2>
         ${meusAtos.map((a) => { const s = situacaoAto(a); return `<div class="d-flex justify-content-between align-items-center gap-2 py-2 linha-divisoria"><span>${esc(a.etapa)}<br><span class="texto-suave texto-pequeno">${esc(a.numero)} · validade ${dataBR(a.validade)}</span></span>${etiqueta(s.texto, s.tipo)}</div>`; }).join('')}

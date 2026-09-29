@@ -309,3 +309,10 @@ dialog.janela::backdrop { background: var(--overlay); }
 svg { flex: none; }
 .tabela th:first-child, .tabela td:first-child { min-width: 11rem; }
 .tabela-notas th:first-child, .tabela-notas td:first-child { min-width: 0; }
+/* Matriz escola × série (vagas): a primeira coluna fica visível ao rolar para o lado */
+.tabela-matriz th[scope="row"] { position: sticky; left: 0; z-index: 1; background: var(--superficie); font-weight: var(--peso-forte); min-width: 12rem; box-shadow: 1px 0 0 var(--borda); }
+.tabela-matriz tbody tr:nth-child(even) th[scope="row"] { background: var(--zebra); }
+.tabela-matriz tbody tr:hover th[scope="row"] { background: var(--cor-primaria-suave); }
+.tabela-matriz th.num { white-space: nowrap; }
+.numero strong.numero-texto { font-size: var(--texto-xl); line-height: 1.3; }
+h2 .etiqueta { white-space: normal; }

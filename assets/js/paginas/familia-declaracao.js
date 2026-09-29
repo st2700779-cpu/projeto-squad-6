@@ -16,7 +16,8 @@ const main = await iniciar({
   perfil: protocolo ? 'escola' : 'familia',
   assistente: false, // documento para imprimir: o botão flutuante cobriria o botão Imprimir no celular
   titulo: TITULOS[tipo],
-  voltar: protocolo ? 'escola/matriculas.html' : 'familia/documentos.html'
+  voltar: protocolo ? 'escola/matriculas.html' : 'familia/documentos.html',
+  estreito: true
 });
 const ANO = 2026;
 let numero = null;

@@ -21,10 +21,10 @@ const linhasFiltradas = () => atos
 
 function tabela(linhas) {
   if (!linhas.length) return vazio('Nenhum ato encontrado', 'Mude a busca ou o filtro de DRE para ver outros atos.', 'busca');
-  return `<div class="tabela-rolagem"><table class="tabela"><caption class="sr-only">Atos autorizativos ordenados pelo vencimento</caption>
-    <thead><tr><th scope="col">Escola</th><th scope="col">Etapa</th><th scope="col">Ato</th><th scope="col">Validade</th><th scope="col">Situação</th><th scope="col">Renovação</th></tr></thead>
-    <tbody>${linhas.map(({ a, e, s, r }) => `<tr><td>${esc(e.nome)}<br><span class="texto-suave texto-pequeno">${esc(e.dre)}</span></td><td>${esc(a.etapa)}</td><td>${esc(a.numero)}</td><td>${dataBR(a.validade)}</td><td>${etiqueta(s.texto, s.tipo)}</td>
-      <td>${r ? `${etiqueta('Pedida', 'info')}<br><span class="texto-suave texto-pequeno">${dataHoraBR(r.quando)}</span>` : s.dias <= DIAS_RENOVACAO ? `<button type="button" class="botao botao-secundario" data-renovar="${esc(chave(a))}">Iniciar renovação</button>` : '<span class="texto-suave">—</span>'}</td></tr>`).join('')}</tbody>
+  return `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Atos autorizativos ordenados pelo vencimento</caption>
+    <thead><tr><th scope="col">Escola</th><th scope="col">Etapa</th><th scope="col">Ato</th><th scope="col" class="num">Validade</th><th scope="col">Situação</th><th scope="col">Renovação</th></tr></thead>
+    <tbody>${linhas.map(({ a, e, s, r }) => `<tr><td class="titulo-linha">${esc(e.nome)}<br><span class="texto-suave texto-pequeno">${esc(e.dre)}</span></td><td data-rotulo="Etapa">${esc(a.etapa)}</td><td data-rotulo="Ato">${esc(a.numero)}</td><td data-rotulo="Validade" class="num">${dataBR(a.validade)}</td><td data-rotulo="Situação">${etiqueta(s.texto, s.tipo)}</td>
+      ${r ? `<td data-rotulo="Renovação">${etiqueta('Pedida', 'info')}<span class="texto-suave texto-pequeno">${dataHoraBR(r.quando)}</span></td>` : s.dias <= DIAS_RENOVACAO ? `<td class="acoes"><button type="button" class="botao botao-secundario botao-mini" data-renovar="${esc(chave(a))}">Iniciar renovação</button></td>` : '<td data-rotulo="Renovação"><span class="texto-suave">—</span></td>'}</tr>`).join('')}</tbody>
   </table></div>`;
 }
 
@@ -37,7 +37,7 @@ function desenhar() {
   main.innerHTML = `
     <h1 class="esp-t-0 esp-b-4">Atos autorizativos</h1>
     ${semPedido.length ? `<div class="alerta-erro esp-b-4" role="status">${icone('alerta', 20)}<span>${semPedido.length} ato${semPedido.length > 1 ? 's' : ''} vencido${semPedido.length > 1 ? 's' : ''} ou a ${DIAS_RENOVACAO} dias do vencimento sem pedido de renovação. Inicie a renovação para a escola não ficar impedida de abrir turmas e matricular.</span></div>` : ''}
-    <div class="numeros"><div class="numero${vencidos ? ' alerta' : ''}"><strong>${vencidos}</strong><span>atos vencidos</span></div><div class="numero"><strong>${aVencer}</strong><span>vencem em até ${DIAS_RENOVACAO} dias</span></div><div class="numero"><strong>${linhas.length}</strong><span>atos acompanhados</span></div></div>
+    <div class="numeros"><div class="numero${vencidos ? ' alerta' : ' ok'}"><span class="numero-icone">${icone(vencidos ? 'alerta' : 'ok', 22)}</span><strong>${vencidos}</strong><span>${vencidos === 1 ? 'ato vencido' : 'atos vencidos'}</span></div><div class="numero${aVencer ? ' atencao' : ''}"><span class="numero-icone">${icone('relogio', 22)}</span><strong>${aVencer}</strong><span>${aVencer === 1 ? 'vence' : 'vencem'} em até ${DIAS_RENOVACAO} dias</span></div><div class="numero"><span class="numero-icone">${icone('documento', 22)}</span><strong>${linhas.length}</strong><span>${linhas.length === 1 ? 'ato acompanhado' : 'atos acompanhados'}</span></div></div>
     <div class="ferramentas-tabela">
       <div class="campo campo-busca"><label for="busca">Buscar</label><input id="busca" class="entrada" type="search" placeholder="Escola, número do ato ou etapa" value="${esc(busca)}">${icone('busca', 20)}</div>
       <div class="campo"><label for="dre">DRE</label><select id="dre" class="entrada"><option value="">Todas as DREs</option>${dres.map((d) => `<option ${d === dre ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></div>

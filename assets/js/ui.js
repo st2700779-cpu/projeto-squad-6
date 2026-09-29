@@ -32,7 +32,8 @@ const PATHS = {
   relogio: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
   trocar: 'M4 7h13l-3-3M20 17H7l3 3',
   cadeado: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',
-  mais: 'M12 5v14M5 12h14'
+  mais: 'M12 5v14M5 12h14',
+  menu: 'M4 6h16M4 12h16M4 18h16'
 };
 /** SVG de ícone pelo nome (ver PATHS). Decorativo: fica oculto para leitores de tela. */
 export const icone = (nome, tam = 22) =>
@@ -137,6 +138,9 @@ export function pedirTexto({ titulo, rotulo, minimo = 5 }) {
     }
   });
 }
+
+/** Escolhe singular ou plural conforme a quantidade. */
+export const plural = (n, singular, pluralTexto) => (n === 1 ? singular : pluralTexto);
 
 export const hojeBR = () => new Date().toLocaleDateString('pt-BR');
 /** Data ISO (AAAA-MM-DD) para dd/mm/aaaa. */

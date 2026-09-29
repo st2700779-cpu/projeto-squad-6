@@ -7,7 +7,7 @@ import { botaoOuvir } from '../acessibilidade.js';
 import { carregar, matriculas, vagas as lerVagas, salvar, novoProtocolo, estudantes, registrarAcao } from '../dados.js';
 import { SERIES, etapaDaSerie, serieCompleta, nomeCurto, motivoBloqueio, proximaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Matrícula', voltar: 'familia/index.html' });
+const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Matrícula', voltar: 'familia/index.html', estreito: true });
 const TOTAL = 5;
 let passo = 1;
 const d = {};

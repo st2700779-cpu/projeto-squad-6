@@ -5,7 +5,7 @@ import { icone, esc } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { estudantes } from '../dados.js';
 
-const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Documentos', voltar: 'familia/index.html' });
+const main = await iniciar({ perfil: 'familia', assistente: true, titulo: 'Documentos', voltar: 'familia/index.html', estreito: true });
 const matricula = ['Certidão de nascimento ou RG do estudante', 'CPF do estudante, se tiver', 'Comprovante de residência (conta de luz ou de água)', 'Documento com foto do responsável'];
 const lista = (itens) => `<ul class="opcoes lista-limpa">${itens.map((x) => `<li class="opcao opcao-estatica">${icone('documento', 26)}<span>${esc(x)}</span>${botaoOuvir(x, '')}</li>`).join('')}</ul>`;
 const DECLARACOES = [

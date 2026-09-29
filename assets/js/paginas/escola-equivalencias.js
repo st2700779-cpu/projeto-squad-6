@@ -51,11 +51,11 @@ function desenhar() {
       <div class="numero"><strong>${conta('complementar')}</strong><span>com complementação de carga</span></div>
       <div class="numero${conta('adaptacao') + conta('reprovado') ? ' alerta' : ''}"><strong>${conta('adaptacao') + conta('reprovado')}</strong><span>pendências de adaptação</span></div>
     </div>
-    <div class="tabela-rolagem"><table class="tabela"><caption class="sr-only">Comparação do histórico de ${esc(p.estudante)} com a matriz da rede</caption>
-      <thead><tr><th scope="col">Componente da rede</th><th scope="col">Aulas/semana na rede</th><th scope="col">Na escola de origem</th><th scope="col">Resultado</th></tr></thead>
-      <tbody>${linhas.map((l) => `<tr><td>${esc(l.componente)}</td><td>${l.aulasRede}</td>
-        <td>${l.origem ? `${esc(l.origem.nome)} · ${l.origem.aulas} aula${l.origem.aulas > 1 ? 's' : ''} · nota ${numeroBR(l.origem.nota)}` : '<span class="texto-suave">Não cursou</span>'}</td>
-        <td>${etiqueta(RESULTADOS[l.resultado][0], RESULTADOS[l.resultado][1])}${l.resultado === 'complementar' ? `<br><span class="texto-suave texto-pequeno">faltam ${l.faltam} aula${l.faltam > 1 ? 's' : ''}/semana</span>` : ''}</td></tr>`).join('')}</tbody>
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Comparação do histórico de ${esc(p.estudante)} com a matriz da rede</caption>
+      <thead><tr><th scope="col">Componente da rede</th><th scope="col" class="num">Aulas/semana na rede</th><th scope="col">Na escola de origem</th><th scope="col">Resultado</th></tr></thead>
+      <tbody>${linhas.map((l) => `<tr><td class="titulo-linha">${esc(l.componente)}</td><td data-rotulo="Aulas/semana na rede" class="num">${l.aulasRede}</td>
+        <td data-rotulo="Na escola de origem">${l.origem ? `${esc(l.origem.nome)} · ${l.origem.aulas} aula${l.origem.aulas > 1 ? 's' : ''} · nota ${numeroBR(l.origem.nota)}` : '<span class="texto-suave">Não cursou</span>'}</td>
+        <td data-rotulo="Resultado">${etiqueta(RESULTADOS[l.resultado][0], RESULTADOS[l.resultado][1])}${l.resultado === 'complementar' ? `<br><span class="texto-suave texto-pequeno">faltam ${l.faltam} aula${l.faltam > 1 ? 's' : ''}/semana</span>` : ''}</td></tr>`).join('')}</tbody>
     </table></div>
     ${semCorrespondencia.length ? `<p class="texto-suave">Sem correspondência na rede (fica no histórico como enriquecimento curricular): <strong class="cor-tinta">${esc(semCorrespondencia.join(', '))}</strong>.</p>` : ''}
     ${pendencias.length ? `<div class="cartao"><strong>Plano de adaptação sugerido</strong><ul class="lista-recuada">${pendencias.map((l) => `<li>${esc(l.componente)}: ${l.resultado === 'complementar' ? `estudos de complementação (${l.faltam} aula${l.faltam > 1 ? 's' : ''}/semana)` : l.resultado === 'reprovado' ? `recuperação (nota ${numeroBR(l.origem.nota)} na origem)` : 'cursar em regime de adaptação'}</li>`).join('')}</ul></div>` : ''}
