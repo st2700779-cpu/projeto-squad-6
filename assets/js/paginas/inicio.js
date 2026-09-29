@@ -21,6 +21,7 @@ main.innerHTML = `
   <ul class="lista-perfis">
     ${acessos.map(([h, t, d]) => `<li><a href="${link(h)}"><strong>${t}</strong><span>${d}</span></a></li>`).join('')}
   </ul>
+  <p><a href="${link('verificar.html')}">Verificar um documento pelo código</a></p>
   <p class="aviso-prototipo">Squad 6 · Residência RiseUp · Escolas, pessoas e dados fictícios · <button type="button" class="botao botao-texto botao-mini" id="reiniciar">Restaurar dados de demonstração</button></p>`;
 main.querySelector('#sair')?.addEventListener('click', sair);
 main.querySelector('#reiniciar').addEventListener('click', async () => {

@@ -273,7 +273,7 @@ dialog.janela::backdrop { background: var(--overlay); }
 
 /* 12 · Impressão */
 @media print {
-  .topo, .menu, .breadcrumb, .assistente-botao, .assistente-painel, .nao-imprimir, .aviso-rapido { display: none !important; }
+  .topo, .rodape-sistema, .menu, .breadcrumb, .assistente-botao, .assistente-painel, .nao-imprimir, .aviso-rapido { display: none !important; }
   body, .conteudo { background: #fff !important; padding: 0 !important; max-width: none !important; }
   .folha { border: 0; box-shadow: none; margin: 0; padding: 0; }
 }

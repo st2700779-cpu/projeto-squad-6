@@ -1,0 +1,11 @@
+/* Declarações, verificação e carteirinha. Só usa tokens de tema.css. */
+.bloco-verificacao { display: flex; align-items: center; gap: var(--sp-4); margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid #999; font-size: .85rem; color: #222; }
+.bloco-verificacao .qr-doc { flex: none; width: 96px; height: 96px; }
+.bloco-verificacao .qr-doc canvas, .bloco-verificacao .qr-doc img { width: 96px !important; height: 96px !important; }
+.bloco-verificacao p { margin: 0 0 2px; }
+.bloco-verificacao .codigo { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1rem; font-weight: 700; letter-spacing: .04em; }
+.resultado-verificacao { max-width: 520px; border: 1px solid var(--borda); border-radius: var(--raio-lg); background: var(--superficie); padding: var(--sp-4) var(--sp-5); }
+.selo-autentico { display: flex; align-items: center; gap: var(--sp-2); margin: 0 0 var(--sp-3); font-size: var(--texto-xl); font-weight: var(--peso-negrito); color: var(--sucesso); }
+.dados-verificacao { display: grid; grid-template-columns: max-content 1fr; gap: var(--sp-1) var(--sp-4); margin: 0 0 var(--sp-3); }
+.dados-verificacao dt { color: var(--texto-suave); }
+.dados-verificacao dd { margin: 0; font-weight: var(--peso-forte); }
