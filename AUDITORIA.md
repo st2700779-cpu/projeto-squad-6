@@ -2,6 +2,8 @@
 
 Data: 29/09/2026 · Escopo: leitura completa do repositório, execução das 22 páginas HTML em navegador (Chromium headless, larguras de 360 px e 1280 px) e conferência cruzada dos arquivos de dados. Nenhum arquivo do projeto foi alterado nesta fase; só este documento foi criado.
 
+> **Atualização:** as melhorias decorrentes desta auditoria estão descritas em [`MELHORIAS.md`](MELHORIAS.md); o que ficou de fora está em [`SUGESTOES.md`](SUGESTOES.md). Este documento registra o estado **antes** das melhorias.
+
 ## 0. Ponto de atenção antes de tudo: o projeto real não é o descrito no pedido
 
 O pedido descreve um protótipo com três visões (Aluno, Professor, Secretaria), dados escritos à mão, JS solto e sem persistência. O repositório contém **três coisas diferentes**:

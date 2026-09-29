@@ -11,11 +11,14 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 | `index.html`, `familia/`, `professor/`, `escola/`, `rede/` | Páginas de cada perfil |
 | `assets/css/` | Tema, componentes e estilos do assistente |
 | `assets/js/` | Núcleo (`app`, `estado`, `dados`, `regras`, `acessibilidade`, `ui`) e páginas |
+| `assets/js/dominio/` | Regras de negócio por domínio: `matricula`, `notas`, `turmas`, `equivalencias` (`regras.js` reexporta todas) |
+| `sistema-academico-seduc-prototipo.html` | Protótipo em arquivo único, abre com duplo clique. Usa os mesmos dados e regras do portal (ver `tools/gerar-prototipo.mjs`) |
 | `assets/js/assistente/` | Assistente: interface, chamada à IA, erros, perguntas frequentes, voz |
 | `data/` | Dados simulados em JSON e a base de conhecimento do assistente |
 | `prompts/` | Prompt de sistema versionado, registro de alterações e bateria de testes |
 | `worker/` | Proxy do assistente (Cloudflare Workers), que guarda a chave da IA |
-| `tools/` | Script que roda a bateria de perguntas contra o proxy |
+| `tools/` | Servidor local, bateria de perguntas do assistente e `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único com `data/` e `assets/js/dominio/`) |
+| `AUDITORIA.md`, `MELHORIAS.md`, `SUGESTOES.md` | Auditoria inicial, resumo das melhorias e ideias que exigiriam funcionalidade nova |
 
 ## Telas e versão mobile
 
@@ -53,6 +56,8 @@ Com o `iniciar.bat` (ou F5), as páginas leem e gravam pela API do `tools/servid
 Sem a API (Live Server, `python -m http.server`, GitLab Pages), o portal continua funcionando: lê `data/*.json` e guarda as alterações no navegador (localStorage).
 
 Alternativa sem VS Code: `python3 -m http.server 5500` na pasta do projeto.
+
+**Abrir com duplo clique:** só o protótipo `sistema-academico-seduc-prototipo.html` funciona assim. Depois de mudar `data/` ou `assets/js/dominio/notas.js`, rode `node tools/gerar-prototipo.mjs` para atualizá-lo.
 
 ## Testar o assistente sem gastar cota
 
@@ -123,7 +128,8 @@ O script faz as 30 perguntas de `prompts/testes/perguntas-teste.json`, mostra ac
 - A matrícula só oferece escolas com vaga; pedir reserva uma vaga, recusar devolve.
 - Na transferência, o estudante fica na mesma série.
 - Turmas: a coordenação cria e envia; a direção aprova ou devolve com justificativa.
-- Notas de 0 a 10 e faltas até o total de aulas dadas; presença mínima de 75% e média 6 para aprovação.
+- Notas de 0 a 10 e faltas até o total de aulas dadas. Situação por matéria (`assets/js/dominio/notas.js`): média 6 ou mais aprova; de 4 a 5,9 fica em recuperação; abaixo de 4 reprova; frequência abaixo de 75% reprova.
+- Uma só turma para todas as visões: a alocação feita pela escola gera "Minhas turmas" do professor, e o estudante enturmado pela secretaria entra no diário. Notas e faltas do diário aparecem no boletim da família.
 - Enturmação só em turma aprovada da mesma série e sem passar da capacidade da sala.
 - Alocação bloqueada quando o professor não é habilitado no componente (concurso e formação) ou passaria da carga horária semanal.
 - Equivalências por regras: mesmo componente (com sinônimos) e carga de pelo menos 75% da rede é equivalente; carga menor pede complementação; componente não cursado ou nota abaixo de 6 vira pendência de adaptação.
