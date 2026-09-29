@@ -7,6 +7,8 @@ function ler() {
 }
 let estado = ler();
 
+/** Relê o localStorage. Outra aba pode ter gravado dados depois que esta página carregou. */
+export function recarregar() { estado = ler(); }
 /** Lê uma preferência ou dado da sessão simulada (localStorage). */
 export function obter(chave, padrao) {
   return estado[chave] !== undefined ? estado[chave] : padrao;

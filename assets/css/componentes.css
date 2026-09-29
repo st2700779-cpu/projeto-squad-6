@@ -347,3 +347,13 @@ details > summary { min-height: var(--toque); display: flex; align-items: center
 .legenda li { display: inline-flex; align-items: center; gap: var(--sp-2); }
 .tabela-matriz thead th.cabecalho-vertical { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 9.5rem; text-align: left; vertical-align: bottom; padding: var(--sp-2) 4px; }
 @media print { .tabela-matriz { font-size: 8pt; } .tabela-rolagem { overflow: visible; max-height: none; } .tabela-matriz th[scope="row"] { position: static; } }
+
+/* 15 · Indicador de conexão do diário offline: faixa fixa logo abaixo do cabeçalho */
+.estado-conexao { position: sticky; top: var(--altura-topo); z-index: 34; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--sp-1) var(--sp-3); padding: var(--sp-1) var(--sp-4); border-bottom: 1px solid var(--borda-forte); background: var(--superficie-2); font-size: var(--texto-sm); }
+.estado-conexao .ponto { width: .65rem; height: .65rem; border-radius: 50%; background: var(--sucesso); flex: none; }
+.estado-conexao.off { border-bottom-color: var(--alerta-borda); background: var(--alerta-fundo); color: var(--alerta); }
+.estado-conexao.off .ponto { background: var(--alerta); border-radius: 2px; }
+.estado-conexao .botao-mini { min-height: 2.25rem; }
+.estado-conexao .pendentes { color: inherit; opacity: .9; }
+.pendente-marca { display: inline-block; margin-left: var(--sp-2); }
+@media print { .estado-conexao { display: none; } }

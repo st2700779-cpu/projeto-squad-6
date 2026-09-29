@@ -1,7 +1,7 @@
 // Acesso aos dados. Com o servidor local (iniciar.bat) tudo passa pela API em /api/
 // e as alterações ficam salvas em disco (pasta dados-salvos/). Em hospedagem estática
 // (GitLab Pages, Live Server) não há API: lê data/*.json e guarda as alterações no localStorage.
-import { obter, definir, reiniciar, proximoProtocolo } from './estado.js';
+import { obter, definir, reiniciar, proximoProtocolo, recarregar } from './estado.js';
 import { sessao } from './auth.js';
 
 export const RAIZ = new URL('../../', import.meta.url);
@@ -84,10 +84,14 @@ export async function novoProtocolo(prefixo) {
   return (await r.json()).protocolo;
 }
 
+/** Descarta o que esta página guardou em memória e relê o armazenamento (útil depois de uma sincronização ou de outra aba gravar). */
+export function recarregarDoServidor() { recarregar(); cache.clear(); }
+
 /** Restaura os dados de demonstração: apaga o que foi salvo no navegador e na API local. */
 export async function reiniciarDados() {
   reiniciar();
   cache.clear();
+  await import('./idb.js').then((m) => m.limpar()).catch(() => { /* sem IndexedDB não há fila para limpar */ });
   if (await usarApi()) {
     const r = await fetch(new URL('dados', API), { method: 'DELETE' });
     if (!r.ok) throw new Error('FALHA_AO_SALVAR');
