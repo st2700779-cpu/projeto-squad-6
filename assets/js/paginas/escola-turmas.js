@@ -1,6 +1,6 @@
 // Turmas (HU13, HU14): criação bloqueada sem ato vigente; aprovação ou devolução pela direção.
 import { iniciar, falhaDados } from '../app.js';
-import { esc, etiqueta, pedirTexto, avisar, confirmar } from '../ui.js';
+import { esc, etiqueta, pedirTexto, avisar, confirmar, vazio } from '../ui.js';
 import { carregar, turmasEscola, salvar as salvarDados, registrarAcao } from '../dados.js';
 import { definir, obter } from '../estado.js';
 import { SERIES, etapaDaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
@@ -18,12 +18,12 @@ function desenhar(erro = '') {
   const coord = papel === 'coordenacao';
   main.innerHTML = `
     <h1>Turmas</h1>
-    <div class="linha-botoes" role="group" aria-label="Papel na escola" style="margin-bottom:.8rem"><span class="texto-suave">Você está como:</span>
+    <div class="linha-botoes esp-b-3" role="group" aria-label="Papel na escola"><span class="texto-suave">Você está como:</span>
       <button type="button" class="botao ${coord ? '' : 'botao-secundario'}" data-papel="coordenacao" aria-pressed="${coord}">Coordenação</button>
       <button type="button" class="botao ${!coord ? '' : 'botao-secundario'}" data-papel="direcao" aria-pressed="${!coord}">Direção</button></div>
     <p class="texto-suave">A coordenação monta a turma e envia para aprovação. A direção aprova ou devolve com justificativa. Professores e estudantes só veem turmas aprovadas.</p>
     ${coord ? `<details class="cartao" ${erro ? 'open' : ''}><summary><strong>Criar nova turma</strong></summary>
-      <div class="row g-3" style="margin-top:.2rem">
+      <div class="row g-3 esp-t-1">
         <div class="col-md-6 campo"><label for="nt-nome">Nome da turma</label><input id="nt-nome" class="entrada" placeholder="Ex.: 9º ano B"></div>
         <div class="col-md-6 campo"><label for="nt-serie">Série</label><select id="nt-serie" class="entrada">${SERIES.map((s) => `<option>${s}</option>`).join('')}</select></div>
         <div class="col-md-6 campo"><label for="nt-turno">Turno</label><select id="nt-turno" class="entrada"><option>Manhã</option><option>Tarde</option><option>Noite</option></select></div>
@@ -31,13 +31,13 @@ function desenhar(erro = '') {
       </div>
       <p class="erro" role="alert">${esc(erro)}</p>
       <button type="button" class="botao" data-criar>Salvar como rascunho</button></details>` : ''}
-    ${turmas.map((t) => { const u = t.historico[t.historico.length - 1]; return `
+    ${turmas.length ? turmas.map((t) => { const u = t.historico[t.historico.length - 1]; return `
       <div class="cartao"><div class="d-flex justify-content-between flex-wrap gap-2"><div><strong>${esc(t.nome)}</strong> <span class="texto-suave">· ${esc(t.serie)} · ${esc(t.turno)} · ${esc(t.sala)}</span></div>${etiqueta(t.situacao, tipo(t.situacao))}</div>
-      <p class="texto-suave" style="font-size:.92rem;margin:.4rem 0">Último registro: ${esc(u[0])} — ${esc(u[1])}${u[2] ? `: “${esc(u[2])}”` : ''}</p>
+      <p class="texto-suave texto-pequeno esp-t-2 esp-b-2">Último registro: ${esc(u[0])} — ${esc(u[1])}${u[2] ? `: “${esc(u[2])}”` : ''}</p>
       <div class="linha-botoes">
         ${coord && ['Rascunho', 'Devolvida'].includes(t.situacao) ? `<button type="button" class="botao" data-enviar="${t.id}">Enviar para aprovação</button>` : ''}
         ${!coord && t.situacao === 'Pendente de aprovação' ? `<button type="button" class="botao" data-aprovar="${t.id}">Aprovar</button><button type="button" class="botao botao-perigo" data-devolver="${t.id}">Devolver</button>` : ''}
-      </div></div>`; }).join('')}`;
+      </div></div>`; }).join('') : vazio('Nenhuma turma cadastrada', 'Use “Criar nova turma” para montar a primeira.', 'usuario')}`;
 }
 // Salva as turmas e registra no histórico de ações quem fez o quê.
 async function salvar(msg, quem, acao, alvo) {

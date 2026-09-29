@@ -60,15 +60,15 @@ async function mostrar() {
     }
     main.innerHTML = `
       <div class="nao-imprimir">
-        <h1 style="margin-bottom:.3rem">${TITULOS[tipo]}</h1>
-        <p class="texto-suave" style="margin-top:0">Confira os dados. Ao emitir, a declaração recebe um número e abre a janela de impressão, onde você também pode salvar em PDF.</p>
+        <h1 class="esp-b-1">${TITULOS[tipo]}</h1>
+        <p class="texto-suave esp-t-0">Confira os dados. Ao emitir, a declaração recebe um número e abre a janela de impressão, onde você também pode salvar em PDF.</p>
       </div>
       <article class="folha" aria-label="Prévia da declaração">
         <div class="marca-dagua" aria-hidden="true">DOCUMENTO SIMULADO<br>PROTÓTIPO · SEM VALOR LEGAL</div>
         <div class="cabecalho-folha"><strong>Rede Estadual de Ensino de Sergipe</strong><br>${esc(a.escola.nome)}<br>${esc(a.escola.municipio)}/SE</div>
         <h2>${TITULOS[tipo].toUpperCase()}</h2>
         ${texto(a)}
-        <p style="text-align:right;margin-top:1.5rem">${esc(a.escola.municipio)}/SE, ${hojeBR()}.</p>
+        <p class="direita esp-t-5">${esc(a.escola.municipio)}/SE, ${hojeBR()}.</p>
         <div class="assinatura"><span></span>Secretaria escolar<br>${esc(a.escola.nome)}</div>
         <div class="rodape-folha">Declaração nº <strong>${numero ? esc(numero) : '(gerado ao emitir)'}</strong> · Emitida pelo Portal Acadêmico em ${hojeBR()} · Dados fictícios de demonstração.</div>
       </article>

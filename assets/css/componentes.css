@@ -254,3 +254,39 @@ h2 .etiqueta { white-space: normal; }
 /* Situação por extenso (ex.: "Reprovado por frequência") pode quebrar em duas linhas no celular */
 .materias-cabecalho, .materia summary { grid-template-columns: 1fr 4rem minmax(9.5rem, 11.5rem); }
 .materia summary .etiqueta { white-space: normal; text-align: center; }
+svg { flex: none; }
+
+/* Espaçamento: esp-t-N (margem superior) e esp-b-N (margem inferior), N de 0 a 6, na escala --esp-N */
+.esp-t-0 { margin-top: 0; } .esp-t-1 { margin-top: var(--esp-1); } .esp-t-2 { margin-top: var(--esp-2); } .esp-t-3 { margin-top: var(--esp-3); }
+.esp-t-4 { margin-top: var(--esp-4); } .esp-t-5 { margin-top: var(--esp-5); } .esp-t-6 { margin-top: var(--esp-6); }
+.esp-b-0 { margin-bottom: 0; } .esp-b-1 { margin-bottom: var(--esp-1); } .esp-b-2 { margin-bottom: var(--esp-2); } .esp-b-3 { margin-bottom: var(--esp-3); }
+.esp-b-4 { margin-bottom: var(--esp-4); } .esp-b-5 { margin-bottom: var(--esp-5); } .esp-b-6 { margin-bottom: var(--esp-6); }
+/* Texto */
+.texto-pequeno { font-size: var(--texto-pequeno); }
+.texto-medio { font-size: var(--texto-medio); }
+.negrito { font-weight: 700; }
+.peso-normal { font-weight: 400; }
+.cor-tinta { color: var(--tinta); }
+.cor-perigo { color: var(--vermelho); }
+.sem-quebra-texto { white-space: nowrap; }
+.sem-sublinhado { text-decoration: none; }
+.min-0 { min-width: 0; }
+/* Alinhamento de linhas de botões e cartões */
+.entre { justify-content: space-between; }
+.inicio-topo { justify-content: flex-start; align-items: flex-start; }
+.coluna-curta { flex-direction: column; gap: .2rem; }
+.grade-acoes { display: grid; gap: .8rem; }
+.pedido-info { flex: 1; min-width: 240px; }
+.campo-turma { min-width: min(300px, 100%); }
+.bloco-cheio { height: 100%; margin: 0; }
+.linha-divisoria { border-bottom: 1px solid var(--linha-suave); }
+.lista-limpa { list-style: none; padding: 0; }
+.lista-recuada { margin: .4rem 0 0; padding-left: 1.2rem; }
+.opcao-estatica { cursor: default; font-weight: 400; }
+.caixa-grande { width: 30px; height: 30px; accent-color: var(--tinta); }
+.caixa-confirmar { display: flex; gap: .8rem; align-items: center; margin-top: 1.2rem; font-size: 1.1rem; font-weight: 700; }
+.link-botao { background: none; color: var(--tinta); font-size: 1rem; }
+.carregando::before { content: ""; display: inline-block; width: 1em; height: 1em; margin-right: .5em; vertical-align: -.15em; border: 3px solid var(--linha); border-top-color: var(--tinta); border-radius: 50%; animation: girar 1s linear infinite; }
+@keyframes girar { to { transform: rotate(360deg); } }
+/* A mensagem do passo reserva sua altura, para o botão Continuar não se mover quando o erro aparece ao sair do campo. */
+#erro-passo, #erro-passo:empty { display: block; min-height: 2.8rem; }

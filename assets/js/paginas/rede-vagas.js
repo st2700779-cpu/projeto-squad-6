@@ -32,7 +32,7 @@ function tabela() {
   };
   return `<div class="tabela-rolagem"><table class="tabela"><caption class="sr-only">Vagas por escola e série</caption>
     <thead><tr><th scope="col">Escola</th>${SERIES.map((s) => `<th scope="col">${s.replace(' EM', '')}${s.includes('EM') ? ' (EM)' : ''}</th>`).join('')}</tr></thead>
-    <tbody>${lista.map((e) => `<tr><th scope="row" style="background:none;color:var(--tinta);font-size:1rem">${esc(e.nome)}<br><span class="texto-suave" style="font-size:.85rem;font-weight:400">${esc(e.municipio)}</span></th>${SERIES.map((s) => celula(e, s)).join('')}</tr>`).join('')}</tbody>
+    <tbody>${lista.map((e) => `<tr><th class="link-botao" scope="row">${esc(e.nome)}<br><span class="texto-suave texto-pequeno peso-normal">${esc(e.municipio)}</span></th>${SERIES.map((s) => celula(e, s)).join('')}</tr>`).join('')}</tbody>
   </table></div>`;
 }
 function desenhar() {

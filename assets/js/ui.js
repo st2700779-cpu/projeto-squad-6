@@ -34,7 +34,7 @@ const PATHS = {
   mais: 'M12 5v14M5 12h14'
 };
 export const icone = (nome, tam = 22) =>
-  `<svg width="${tam}" height="${tam}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="flex:none"><path d="${PATHS[nome]}"/></svg>`;
+  `<svg width="${tam}" height="${tam}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${PATHS[nome]}"/></svg>`;
 
 let timerAviso;
 export function avisar(texto) {
@@ -59,13 +59,13 @@ export function pedirTexto({ titulo, rotulo, minimo = 5 }) {
     fundo.className = 'fundo-janela';
     fundo.innerHTML = `
       <div class="janela" role="dialog" aria-modal="true" aria-labelledby="janela-titulo">
-        <h2 id="janela-titulo" style="margin-top:0">${esc(titulo)}</h2>
+        <h2 class="esp-t-0" id="janela-titulo">${esc(titulo)}</h2>
         <div class="campo">
           <label for="janela-texto">${esc(rotulo)}</label>
           <textarea id="janela-texto" class="entrada" aria-describedby="janela-erro"></textarea>
           <p id="janela-erro" class="erro" role="alert"></p>
         </div>
-        <div class="linha-botoes" style="justify-content:flex-end">
+        <div class="linha-botoes fim">
           <button type="button" class="botao botao-secundario" data-acao="cancelar">Cancelar</button>
           <button type="button" class="botao" data-acao="confirmar">Confirmar</button>
         </div>
@@ -110,9 +110,9 @@ export function confirmar({ titulo, texto, botao = 'Confirmar', perigo = false }
     fundo.className = 'fundo-janela';
     fundo.innerHTML = `
       <div class="janela" role="alertdialog" aria-modal="true" aria-labelledby="confirmar-titulo" aria-describedby="confirmar-texto">
-        <h2 id="confirmar-titulo" style="margin-top:0">${esc(titulo)}</h2>
+        <h2 class="esp-t-0" id="confirmar-titulo">${esc(titulo)}</h2>
         <p id="confirmar-texto">${esc(texto)}</p>
-        <div class="linha-botoes" style="justify-content:flex-end">
+        <div class="linha-botoes fim">
           <button type="button" class="botao botao-secundario" data-acao="nao">Cancelar</button>
           <button type="button" class="botao${perigo ? ' botao-perigo' : ''}" data-acao="sim">${esc(botao)}</button>
         </div>

@@ -35,13 +35,13 @@ function desenharRematricula(erro = '') {
   acoesDoTopo().innerHTML = botaoOuvir(`Rematrícula de ${d.estudante} para 2027, na ${serieCompleta(d.serie)}, em ${escola.nome}. Se estiver tudo certo, toque em Confirmar rematrícula.`, '');
   main.innerHTML = `
     <h1 tabindex="-1">Rematrícula de ${esc(nome)} para 2027</h1>
-    <p style="font-size:1.05rem">Os dados já estão preenchidos. Se estiver tudo certo, é só confirmar.</p>
-    <dl class="cartao" style="font-size:1.05rem">
+    <p class="texto-medio">Os dados já estão preenchidos. Se estiver tudo certo, é só confirmar.</p>
+    <dl class="cartao texto-medio">
       <dt class="texto-suave">Estudante</dt><dd><strong>${esc(d.estudante)}</strong></dd>
       <dt class="texto-suave">Série em 2027</dt><dd><strong>${esc(serieCompleta(d.serie))}</strong></dd>
       <dt class="texto-suave">Escola</dt><dd><strong>${esc(escola.nome)}</strong></dd>
       <dt class="texto-suave">Turno</dt><dd><strong>${esc(d.turno)}</strong></dd>
-      <dt class="texto-suave">Responsável</dt><dd style="margin:0"><strong>${esc(d.responsavel)}</strong></dd>
+      <dt class="texto-suave">Responsável</dt><dd class="esp-t-0 esp-b-0"><strong>${esc(d.responsavel)}</strong></dd>
     </dl>
     ${bloqueio ? `<p class="alerta-erro">${icone('alerta', 20)}<span>Esta escola não tem autorização vigente para a ${esc(serieCompleta(d.serie))}. Faça a matrícula completa para escolher outra escola.</span></p>` : '<p class="texto-suave">A vaga de quem já estuda na escola fica reservada. Não é preciso levar documentos, a menos que a secretaria peça.</p>'}
     <p class="erro" role="alert" id="erro-passo">${esc(erro)}</p>
@@ -74,7 +74,7 @@ function narracao() {
   return `Confira: ${d.estudante}, ${serieCompleta(d.serie)}, na escola ${escola.nome}. Responsável: ${d.responsavel}.`;
 }
 
-function desenhar(erro = '') {
+function desenhar(erro = '', campoComErro = null) {
   const acoes = acoesDoTopo();
   const voltarTopo = document.querySelector('.topo-voltar');
   if (passo === 6) {
@@ -86,12 +86,12 @@ function desenhar(erro = '') {
         <h1 tabindex="-1">Pedido enviado</h1>
       </div>
       <div class="protocolo"><span>Protocolo</span><strong>${esc(d.protocolo)}</strong></div>
-      <p style="font-size:1.1rem">${d.tipo === 'rematricula' ? 'A escola vai confirmar a rematrícula. Não é preciso levar documentos, a menos que a secretaria peça.' : 'A escola vai conferir e confirmar a matrícula. Leve os documentos à secretaria da escola em até 5 dias úteis.'}</p>
-      <div style="display:grid;gap:.8rem">
+      <p class="texto-medio">${d.tipo === 'rematricula' ? 'A escola vai confirmar a rematrícula. Não é preciso levar documentos, a menos que a secretaria peça.' : 'A escola vai conferir e confirmar a matrícula. Leve os documentos à secretaria da escola em até 5 dias úteis.'}</p>
+      <div class="grade-acoes">
         ${botaoOuvir(`Pedido de matrícula enviado. O protocolo é ${d.protocolo.split('').join(' ')}. Leve os documentos à secretaria da escola em até 5 dias úteis.`)}
         <a class="botao botao-secundario botao-grande" href="${link('familia/documentos.html')}">${icone('documento', 22)}Ver lista de documentos</a>
       </div>
-      <div class="barra-acoes" style="flex-direction:column;gap:.2rem"><a class="botao botao-grande" href="${link('familia/index.html')}">Voltar ao início</a><p class="nota-rodape">Você acompanha o pedido na tela inicial.</p></div>`;
+      <div class="barra-acoes coluna-curta"><a class="botao botao-grande" href="${link('familia/index.html')}">Voltar ao início</a><p class="nota-rodape">Você acompanha o pedido na tela inicial.</p></div>`;
     main.querySelector('.botao-ouvir')?.classList.add('botao-grande');
     main.querySelector('h1').focus();
     return;
@@ -104,10 +104,10 @@ function desenhar(erro = '') {
   if (passo === 1) {
     corpo = `<h1>Quem vai estudar?</h1>
       <div class="campo"><label for="f-estudante">Nome do estudante</label><input id="f-estudante" class="entrada" type="text" autocomplete="off" value="${esc(d.estudante)}"></div>
-      <div class="campo"><label for="f-nascimento">Data de nascimento</label><input id="f-nascimento" class="entrada" type="date" value="${esc(d.nascimento)}"></div>
+      <div class="campo"><label for="f-nascimento">Data de nascimento</label><input id="f-nascimento" class="entrada" type="date" max="${hoje}" value="${esc(d.nascimento)}"></div>
       <div class="campo"><label for="f-responsavel">Seu nome (responsável)</label><input id="f-responsavel" class="entrada" type="text" autocomplete="name" value="${esc(d.responsavel)}"></div>
-      <div class="campo"><label for="f-telefone">Telefone para contato <span class="dica">com DDD</span></label><input id="f-telefone" class="entrada" type="tel" inputmode="tel" autocomplete="tel" value="${esc(d.telefone)}"></div>
-      <fieldset class="campo"><legend style="font-weight:700;font-size:1rem">O estudante…</legend><div class="opcoes">
+      <div class="campo"><label for="f-telefone">Telefone para contato <span class="dica">com DDD</span></label><input id="f-telefone" class="entrada" type="tel" inputmode="tel" autocomplete="tel" placeholder="(79) 99999-9999" maxlength="15" value="${esc(d.telefone)}"></div>
+      <fieldset class="campo"><legend class="negrito">O estudante…</legend><div class="opcoes">
         <button type="button" class="opcao" data-tipo="nova" aria-pressed="${d.tipo === 'nova'}">${icone('usuario', 26)}<span>Vai estudar pela primeira vez nesta rede<small>Matrícula nova ou rematrícula</small></span>${d.tipo === 'nova' ? marcado : ''}</button>
         <button type="button" class="opcao" data-tipo="transferencia" aria-pressed="${d.tipo === 'transferencia'}">${icone('escola', 26)}<span>Vem de outra escola<small>Transferência</small></span>${d.tipo === 'transferencia' ? marcado : ''}</button>
       </div></fieldset>`;
@@ -128,25 +128,25 @@ function desenhar(erro = '') {
       return `<button type="button" class="opcao" data-escola="${e.id}" aria-pressed="${sel}" ${motivo ? 'disabled' : ''}>${icone('escola', 26)}<span>${esc(nomeCurto(e.nome))}<small>${motivo || `${n} vaga${n > 1 ? 's' : ''} disponíve${n > 1 ? 'is' : 'l'}`}</small></span>${sel ? marcado : ''}</button>`;
     }).join('');
     corpo = `<h1>Escolha a escola</h1>
-      <p style="font-size:1.1rem"><span class="texto-suave">Série:</span> <strong>${esc(serieCompleta(d.serie))}</strong></p>
+      <p class="texto-medio"><span class="texto-suave">Série:</span> <strong>${esc(serieCompleta(d.serie))}</strong></p>
       <div class="campo"><label for="f-cidade">Cidade</label><select id="f-cidade" class="entrada">${cidades.map((c) => `<option ${c === d.cidade ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select></div>
       <div class="opcoes">${lista}</div>`;
   }
   if (passo === 4) {
     const docs = documentos();
     corpo = `<h1>Separe estes documentos</h1>
-      <ul class="opcoes" style="list-style:none;padding:0">${docs.map((x) => `<li class="opcao" style="cursor:default;font-weight:400">${icone('documento', 26)}<span>${esc(x)}</span></li>`).join('')}</ul>
-      <label style="display:flex;gap:.8rem;align-items:center;margin-top:1.2rem;font-size:1.1rem;font-weight:700"><input type="checkbox" id="f-documentos" ${d.documentos ? 'checked' : ''} style="width:30px;height:30px;accent-color:var(--tinta)"> Tenho estes documentos ou vou conseguir</label>`;
+      <ul class="opcoes lista-limpa">${docs.map((x) => `<li class="opcao opcao-estatica">${icone('documento', 26)}<span>${esc(x)}</span></li>`).join('')}</ul>
+      <label class="caixa-confirmar"><input class="caixa-grande" type="checkbox" id="f-documentos" ${d.documentos ? 'checked' : ''}> Tenho estes documentos ou vou conseguir</label>`;
   }
   if (passo === 5) {
     const escola = base.escolas.find((e) => e.id === d.escolaId);
     corpo = `<h1>Confira antes de enviar</h1>
-      <dl class="cartao" style="font-size:1.05rem">
+      <dl class="cartao texto-medio">
         <dt class="texto-suave">Estudante</dt><dd><strong>${esc(d.estudante)}</strong></dd>
         <dt class="texto-suave">Tipo</dt><dd><strong>${d.tipo === 'transferencia' ? 'Transferência' : 'Matrícula nova'}</strong></dd>
         <dt class="texto-suave">Série</dt><dd><strong>${esc(serieCompleta(d.serie))}</strong></dd>
         <dt class="texto-suave">Escola</dt><dd><strong>${esc(escola.nome)}</strong></dd>
-        <dt class="texto-suave">Responsável</dt><dd style="margin:0"><strong>${esc(d.responsavel)} · ${esc(d.telefone)}</strong></dd>
+        <dt class="texto-suave">Responsável</dt><dd class="esp-t-0 esp-b-0"><strong>${esc(d.responsavel)} · ${esc(d.telefone)}</strong></dd>
       </dl>`;
   }
   const rotulo = passo === 5 ? 'Enviar pedido' : 'Continuar';
@@ -155,7 +155,11 @@ function desenhar(erro = '') {
     <div class="barra-acoes">${passo > 1 ? '<button type="button" class="botao botao-secundario botao-grande" data-voltar>Voltar</button>' : ''}<button type="button" class="botao botao-grande" data-avancar>${rotulo}</button></div>`;
   const h1 = main.querySelector('h1');
   h1.tabIndex = -1;
-  if (erro) main.querySelector('#erro-passo').scrollIntoView({ block: 'center' }); else h1.focus();
+  if (erro) {
+    // Foco no primeiro campo com erro; sem campo, a mensagem é lida pelo leitor de tela (role=alert) e rolada para a vista.
+    const campo = campoComErro && main.querySelector(`#${campoComErro}`);
+    if (campo) { campo.setAttribute('aria-invalid', 'true'); campo.setAttribute('aria-describedby', 'erro-passo'); main.querySelector('#erro-passo').dataset.campo = campoComErro; campo.focus(); } else main.querySelector('#erro-passo').scrollIntoView({ block: 'center' });
+  } else h1.focus();
 }
 
 
@@ -165,18 +169,43 @@ function guardarCampos() {
   if (passo === 4) d.documentos = main.querySelector('#f-documentos')?.checked;
 }
 
+// Máscara de telefone brasileiro: (79) 99999-9999 ou (79) 3999-9999.
+const mascararTelefone = (texto) => {
+  const n = texto.replace(/\D/g, '').slice(0, 11);
+  if (n.length <= 2) return n ? `(${n}` : '';
+  if (n.length <= 6) return `(${n.slice(0, 2)}) ${n.slice(2)}`;
+  const corte = n.length > 10 ? 7 : 6;
+  return `(${n.slice(0, 2)}) ${n.slice(2, corte)}-${n.slice(corte)}`;
+};
+
+// Regras de cada campo do passo 1. Devolvem a mensagem de erro ou ''.
+const hoje = new Date().toISOString().slice(0, 10);
+const REGRAS = {
+  'f-estudante': (v) => (!v || v.length < 3 ? 'Escreva o nome do estudante.' : ''),
+  'f-nascimento': (v) => (!v ? 'Informe a data de nascimento.' : v > hoje ? 'A data de nascimento não pode ser no futuro.' : v < '1990-01-01' ? 'Confira a data de nascimento.' : ''),
+  'f-responsavel': (v) => (!v ? 'Escreva o seu nome.' : ''),
+  'f-telefone': (v) => ((v || '').replace(/\D/g, '').length < 10 ? 'Escreva um telefone com DDD, por exemplo (79) 99999-9999.' : '')
+};
+const mostrarErroCampo = (campo, mensagem) => {
+  const erro = main.querySelector('#erro-passo');
+  if (mensagem) { campo.setAttribute('aria-invalid', 'true'); campo.setAttribute('aria-describedby', 'erro-passo'); erro.textContent = mensagem; } else {
+    campo.removeAttribute('aria-invalid');
+    if (erro.dataset.campo === campo.id || !erro.dataset.campo) erro.textContent = '';
+  }
+  erro.dataset.campo = mensagem ? campo.id : '';
+};
+
+// Devolve { erro, campo }: a primeira mensagem do passo e o id do campo com problema (para receber o foco).
 function validar() {
   if (passo === 1) {
-    if (!d.estudante || d.estudante.length < 3) return 'Escreva o nome do estudante.';
-    if (!d.nascimento) return 'Informe a data de nascimento.';
-    if (!d.responsavel) return 'Escreva o seu nome.';
-    if ((d.telefone || '').replace(/\D/g, '').length < 10) return 'Escreva um telefone com DDD.';
-    if (!d.tipo) return 'Escolha se é a primeira vez na rede ou se vem de outra escola.';
+    const dados = { 'f-estudante': d.estudante, 'f-nascimento': d.nascimento, 'f-responsavel': d.responsavel, 'f-telefone': d.telefone };
+    for (const [id, regra] of Object.entries(REGRAS)) { const erro = regra(dados[id]); if (erro) return { erro, campo: id }; }
+    if (!d.tipo) return { erro: 'Escolha se é a primeira vez na rede ou se vem de outra escola.', campo: null };
   }
-  if (passo === 2 && !d.serie) return 'Escolha a série.';
-  if (passo === 3 && !d.escolaId) return 'Escolha uma escola que tenha vaga.';
-  if (passo === 4 && !d.documentos) return 'Marque a caixa quando tiver os documentos.';
-  return '';
+  if (passo === 2 && !d.serie) return { erro: 'Escolha a série.', campo: null };
+  if (passo === 3 && !d.escolaId) return { erro: 'Escolha uma escola que tenha vaga.', campo: null };
+  if (passo === 4 && !d.documentos) return { erro: 'Marque a caixa quando tiver os documentos.', campo: 'f-documentos' };
+  return { erro: '', campo: null };
 }
 
 async function enviarPedido() {
@@ -206,8 +235,8 @@ main.addEventListener('click', async (e) => {
   if ('voltar' in alvo.dataset) { guardarCampos(); passo -= 1; desenhar(); }
   if ('avancar' in alvo.dataset) {
     guardarCampos();
-    const erro = validar();
-    if (erro) { desenhar(erro); return; }
+    const { erro, campo } = validar();
+    if (erro) { desenhar(erro, campo); return; }
     if (passo === 5) {
       alvo.disabled = true;
       try { await enviarPedido(); } catch { desenhar('Não foi possível enviar o pedido agora. Tente de novo.'); return; }
@@ -216,6 +245,16 @@ main.addEventListener('click', async (e) => {
     desenhar();
     window.scrollTo(0, 0);
   }
+});
+// Validação enquanto a pessoa preenche: máscara do telefone, erro ao sair do campo e limpeza ao corrigir.
+main.addEventListener('input', (e) => {
+  const campo = e.target;
+  if (campo.id === 'f-telefone') campo.value = mascararTelefone(campo.value);
+  if (REGRAS[campo.id] && campo.getAttribute('aria-invalid') && !REGRAS[campo.id](campo.value.trim())) mostrarErroCampo(campo, '');
+});
+main.addEventListener('focusout', (e) => {
+  const campo = e.target;
+  if (REGRAS[campo.id]) mostrarErroCampo(campo, REGRAS[campo.id](campo.value.trim()));
 });
 main.addEventListener('change', (e) => {
   if (e.target.id === 'f-cidade') { d.cidade = e.target.value; d.escolaId = null; desenhar(); }

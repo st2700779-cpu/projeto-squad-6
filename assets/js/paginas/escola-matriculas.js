@@ -29,12 +29,12 @@ const visiveis = () => daEscola().filter((p) => p.situacao === filtro && combina
 function painelRecusa(p) {
   return `<div class="painel-inline" role="group" aria-labelledby="recusa-titulo">
     <h2 id="recusa-titulo">Recusar matrícula de ${esc(p.estudante)}</h2>
-    <div class="campo" style="margin:0">
+    <div class="campo esp-t-0 esp-b-0">
       <label for="motivo">Motivo <span class="dica">(obrigatório; a família verá este texto)</span></label>
       <textarea id="motivo" class="entrada" aria-describedby="motivo-erro" ${erroRecusa ? 'aria-invalid="true"' : ''}></textarea>
       <p id="motivo-erro" class="erro">${esc(erroRecusa)}</p>
     </div>
-    <div class="linha-botoes" style="justify-content:flex-end;margin-top:.7rem">
+    <div class="linha-botoes fim esp-t-3">
       <button type="button" class="botao botao-secundario" data-cancelar-recusa>Cancelar</button>
       <button type="button" class="botao" data-confirmar-recusa="${esc(p.protocolo)}">Confirmar recusa</button>
     </div>
@@ -44,9 +44,9 @@ function cartao(p) {
   const ultima = historico.find((h) => h.alvo === p.protocolo && /Confirmou|Recusou/.test(h.acao));
   return `
     <div class="cartao d-flex flex-wrap align-items-center gap-3">
-      <div style="flex:1;min-width:240px"><strong style="font-size:1.1rem">${esc(p.estudante)}</strong><br><span class="texto-suave" style="font-size:.92rem">${esc(p.tipo)} · ${esc(p.serie)} · Responsável: ${esc(p.responsavel)} · ${esc(p.protocolo)}</span>
+      <div class="pedido-info"><strong class="texto-medio">${esc(p.estudante)}</strong><br><span class="texto-suave texto-pequeno">${esc(p.tipo)} · ${esc(p.serie)} · Responsável: ${esc(p.responsavel)} · ${esc(p.protocolo)}</span>
         ${p.motivo ? `<br><span>Motivo: ${esc(p.motivo)}</span>` : ''}
-        ${ultima ? `<p class="registro" style="margin:.3rem 0 0">${icone('relogio', 16)}${esc(ultima.acao)} por ${esc(ultima.quem)} em ${dataHoraBR(ultima.quando)}</p>` : ''}</div>
+        ${ultima ? `<p class="registro esp-t-1 esp-b-0">${icone('relogio', 16)}${esc(ultima.acao)} por ${esc(ultima.quem)} em ${dataHoraBR(ultima.quando)}</p>` : ''}</div>
       ${etiqueta(p.situacao, p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao')}
       ${p.situacao === 'Aguardando confirmação' ? `<div class="linha-botoes"><button type="button" class="botao" data-confirmar="${esc(p.protocolo)}">Confirmar</button><button type="button" class="botao botao-secundario" data-recusar="${esc(p.protocolo)}" aria-expanded="${recusando === p.protocolo}">Recusar</button></div>` : ''}
       ${p.situacao === 'Confirmada' ? `<a class="botao botao-secundario" href="${link('familia/declaracao.html')}?tipo=matricula&protocolo=${encodeURIComponent(p.protocolo)}">${icone('imprimir', 20)}Declaração</a>` : ''}

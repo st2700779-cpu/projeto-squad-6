@@ -38,8 +38,8 @@ function desenhar() {
   const campo = (a, c, max) => `<td data-rotulo="${CAMPOS[c]}"><label class="sr-only" for="${a.id}-${c}">${CAMPOS[c]} de ${esc(a.nome)}</label><input id="${a.id}-${c}" class="entrada" inputmode="decimal" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="${c}" data-max="${max}" data-vazio="${c !== 'faltas' && a[c] === null}" value="${c === 'faltas' ? a[c] : (a[c] === null ? '' : numeroBR(a[c]))}"></td>`;
   main.innerHTML = `
     <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
-      <div><h1 style="margin-bottom:.2rem">Diário de classe</h1><p class="texto-suave" style="margin:0">${esc(nomeCurto(escola.nome))} · ${aulasDadas} aulas dadas no ano</p></div>
-      <div class="campo" style="margin:0;min-width:min(300px,100%)"><label for="turma">Turma e componente</label><select id="turma" class="entrada">${minhas.map((m) => `<option value="${m.turma.id}" ${m.turma.id === turmaId ? 'selected' : ''}>${esc(m.turma.nome)} — ${esc(m.componente)}</option>`).join('')}</select></div>
+      <div><h1 class="esp-b-1">Diário de classe</h1><p class="texto-suave esp-t-0 esp-b-0">${esc(nomeCurto(escola.nome))} · ${aulasDadas} aulas dadas no ano</p></div>
+      <div class="campo esp-t-0 esp-b-0 campo-turma"><label for="turma">Turma e componente</label><select id="turma" class="entrada">${minhas.map((m) => `<option value="${m.turma.id}" ${m.turma.id === turmaId ? 'selected' : ''}>${esc(m.turma.nome)} — ${esc(m.componente)}</option>`).join('')}</select></div>
     </div>
     ${alunos.length ? `${painelChamada(t, alunos)}
     <h2>Notas e faltas acumuladas · ${esc(componente)}</h2>
@@ -47,23 +47,23 @@ function desenhar() {
       <thead><tr><th scope="col">Estudante</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col">Faltas</th><th scope="col">Presença</th></tr></thead>
       <tbody>${alunos.map((a) => { const p = `${presenca(a.faltas, aulasDadas).toFixed(0)}%`; return `<tr><td>${esc(a.nome)}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula">${p}</td></tr>`; }).join('')}</tbody>
     </table></div>
-    <div id="erro-diario" role="alert"></div>
-    <div class="linha-botoes" style="margin-top:1rem"><button type="button" class="botao" id="salvar">${icone('ok', 20)}Salvar diário</button><span class="texto-suave">As notas salvas aparecem para a família.</span></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.', 'pessoas')}`;
+    <div class="linha-botoes esp-t-4"><button type="button" class="botao" id="salvar">${icone('ok', 20)}Salvar diário</button><span class="texto-suave">As notas salvas aparecem para a família.</span></div>
+    <div id="erro-diario" role="alert"></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.', 'pessoas')}`;
 }
 // Chamada rápida: todos começam presentes; um toque marca quem faltou. Registrar soma 1 falta a cada ausente.
 function painelChamada(t, alunos) {
   const feita = chamadas[turmaId]?.[hoje];
   if (feita) {
     const nomes = alunos.filter((a) => feita.ausentes.includes(a.id)).map((a) => a.nome);
-    return `<div class="cartao"><div class="linha-botoes" style="justify-content:space-between"><strong style="font-size:1.1rem">Chamada de hoje</strong>${`<span class="etiqueta etiqueta-ok">Registrada</span>`}</div>
-      <p style="margin:.4rem 0 0">${nomes.length ? `${nomes.length} falta${nomes.length > 1 ? 's' : ''}: ${esc(nomes.join(', '))}.` : 'Todos presentes.'}</p>
-      <p class="registro" style="margin:.3rem 0 0">${icone('relogio', 16)}Registrada em ${dataHoraBR(feita.quando)}</p></div>`;
+    return `<div class="cartao"><div class="linha-botoes entre"><strong class="texto-medio">Chamada de hoje</strong>${`<span class="etiqueta etiqueta-ok">Registrada</span>`}</div>
+      <p class="esp-t-2 esp-b-0">${nomes.length ? `${nomes.length} falta${nomes.length > 1 ? 's' : ''}: ${esc(nomes.join(', '))}.` : 'Todos presentes.'}</p>
+      <p class="registro esp-t-1 esp-b-0">${icone('relogio', 16)}Registrada em ${dataHoraBR(feita.quando)}</p></div>`;
   }
   return `<section class="cartao" aria-labelledby="chamada-titulo">
-    <div class="linha-botoes" style="justify-content:space-between"><h2 id="chamada-titulo" style="margin:0;font-size:1.15rem">Chamada de hoje · ${esc(t.nome)}</h2><span class="texto-suave">${alunos.length - ausentes.size} presentes · ${ausentes.size} faltas</span></div>
-    <p class="texto-suave" style="margin:.3rem 0 .8rem">Todos começam presentes. Toque só em quem faltou.</p>
+    <div class="linha-botoes entre"><h2 class="esp-t-0 esp-b-0 titulo-cartao" id="chamada-titulo">Chamada de hoje · ${esc(t.nome)}</h2><span class="texto-suave">${alunos.length - ausentes.size} presentes · ${ausentes.size} faltas</span></div>
+    <p class="texto-suave esp-t-1 esp-b-3">Todos começam presentes. Toque só em quem faltou.</p>
     <div class="chamada-rapida">${alunos.map((a) => `<button type="button" data-faltou="${a.id}" aria-pressed="${ausentes.has(a.id)}">${ausentes.has(a.id) ? icone('fechar', 18) : icone('ok', 18)}<span>${esc(a.nome)}</span><small>${ausentes.has(a.id) ? 'Faltou' : 'Presente'}</small></button>`).join('')}</div>
-    <button type="button" class="botao botao-largo" id="registrar-chamada" style="margin-top:.9rem">${icone('ok', 20)}${ausentes.size ? `Registrar chamada com ${ausentes.size} falta${ausentes.size > 1 ? 's' : ''}` : 'Todos presentes: registrar chamada'}</button>
+    <button type="button" class="botao botao-largo esp-t-4" id="registrar-chamada">${icone('ok', 20)}${ausentes.size ? `Registrar chamada com ${ausentes.size} falta${ausentes.size > 1 ? 's' : ''}` : 'Todos presentes: registrar chamada'}</button>
   </section>`;
 }
 async function registrarChamada() {
@@ -88,25 +88,38 @@ async function registrarChamada() {
     mostrar();
   }
 }
+// Regra de um campo do diário: devolve a mensagem de erro ou '' se está certo.
+// Nota: 0 a 10 (vírgula ou ponto); faltas: inteiro de 0 ao total de aulas dadas. Nota em branco só vale se ainda não foi lançada.
+function erroDoCampo(c) {
+  const texto = c.value.trim();
+  if (texto === '' && c.dataset.vazio === 'true') return '';
+  const v = Number(texto.replace(',', '.'));
+  const max = Number(c.dataset.max);
+  if (c.dataset.campo === 'faltas') {
+    return texto === '' || !Number.isInteger(v) || v < 0 || v > max ? `Faltas inválidas em ${c.dataset.nome}: use um número inteiro de 0 a ${max}.` : '';
+  }
+  return texto === '' || Number.isNaN(v) || v < 0 || v > max ? `Nota inválida em ${c.dataset.nome}, ${c.dataset.campo === 'n1' ? '1º' : '2º'} bimestre: use um valor de 0 a ${max}.` : '';
+}
+function mostrarErro(c, texto) {
+  const caixa = main.querySelector('#erro-diario');
+  if (texto) {
+    c.setAttribute('aria-invalid', 'true');
+    c.setAttribute('aria-describedby', 'erro-diario');
+    caixa.dataset.campo = c.id;
+    caixa.innerHTML = `<p class="alerta-erro esp-t-2">${icone('alerta', 20)}<span>${esc(texto)}</span></p>`;
+  } else {
+    c.removeAttribute('aria-invalid');
+    if (caixa.dataset.campo === c.id) { caixa.innerHTML = ''; caixa.dataset.campo = ''; }
+  }
+}
 async function salvar() {
   const campos = [...main.querySelectorAll('[data-aluno]')];
   campos.forEach((c) => c.removeAttribute('aria-invalid'));
   const caixa = main.querySelector('#erro-diario');
   caixa.innerHTML = '';
   for (const c of campos) {
-    const v = Number(c.value.replace(',', '.'));
-    const max = Number(c.dataset.max);
-    const faltas = c.dataset.campo === 'faltas';
-    const podeVazio = c.dataset.vazio === 'true' && c.value.trim() === '';
-    if (!podeVazio && (c.value.trim() === '' || Number.isNaN(v) || v < 0 || v > max || (faltas && !Number.isInteger(v)))) {
-      c.setAttribute('aria-invalid', 'true');
-      const texto = faltas
-        ? `Faltas inválidas em ${c.dataset.nome}: use um número inteiro de 0 a ${max}.`
-        : `Nota inválida em ${c.dataset.nome}, ${c.dataset.campo === 'n1' ? '1º' : '2º'} bimestre: use um valor de 0 a ${max}.`;
-      caixa.innerHTML = `<p class="alerta-erro" style="margin-top:.5rem">${icone('alerta', 20)}<span>${esc(texto)}</span></p>`;
-      c.focus();
-      return;
-    }
+    const texto = erroDoCampo(c);
+    if (texto) { mostrarErro(c, texto); c.focus(); return; }
   }
   for (const c of campos) {
     const a = dados[turmaId].find((x) => x.id === c.dataset.aluno);
@@ -133,6 +146,15 @@ main.addEventListener('click', async (e) => {
     return;
   }
   if (e.target.closest('#registrar-chamada')) registrarChamada();
+});
+// Validação em tempo real: erro ao digitar/sair do campo; a nota é normalizada para o formato brasileiro (8,5).
+main.addEventListener('input', (e) => { if (e.target.dataset?.aluno && e.target.getAttribute('aria-invalid')) mostrarErro(e.target, erroDoCampo(e.target)); });
+main.addEventListener('focusout', (e) => {
+  const c = e.target;
+  if (!c.dataset?.aluno) return;
+  const texto = erroDoCampo(c);
+  mostrarErro(c, texto);
+  if (!texto && c.dataset.campo !== 'faltas' && c.value.trim() !== '') c.value = numeroBR(Number(c.value.replace(',', '.')));
 });
 main.addEventListener('change', (e) => { if (e.target.id === 'turma') { turmaId = e.target.value; ausentes.clear(); desenhar(); } });
 mostrar();

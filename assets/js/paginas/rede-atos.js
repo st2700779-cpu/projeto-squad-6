@@ -23,8 +23,8 @@ function tabela(linhas) {
   if (!linhas.length) return vazio('Nenhum ato encontrado', 'Mude a busca ou o filtro de DRE para ver outros atos.', 'busca');
   return `<div class="tabela-rolagem"><table class="tabela"><caption class="sr-only">Atos autorizativos ordenados pelo vencimento</caption>
     <thead><tr><th scope="col">Escola</th><th scope="col">Etapa</th><th scope="col">Ato</th><th scope="col">Validade</th><th scope="col">Situação</th><th scope="col">Renovação</th></tr></thead>
-    <tbody>${linhas.map(({ a, e, s, r }) => `<tr><td>${esc(e.nome)}<br><span class="texto-suave" style="font-size:.88rem">${esc(e.dre)}</span></td><td>${esc(a.etapa)}</td><td>${esc(a.numero)}</td><td>${dataBR(a.validade)}</td><td>${etiqueta(s.texto, s.tipo)}</td>
-      <td>${r ? `${etiqueta('Pedida', 'info')}<br><span class="texto-suave" style="font-size:.82rem">${dataHoraBR(r.quando)}</span>` : s.dias <= DIAS_RENOVACAO ? `<button type="button" class="botao botao-secundario" data-renovar="${esc(chave(a))}">Iniciar renovação</button>` : '<span class="texto-suave">—</span>'}</td></tr>`).join('')}</tbody>
+    <tbody>${linhas.map(({ a, e, s, r }) => `<tr><td>${esc(e.nome)}<br><span class="texto-suave texto-pequeno">${esc(e.dre)}</span></td><td>${esc(a.etapa)}</td><td>${esc(a.numero)}</td><td>${dataBR(a.validade)}</td><td>${etiqueta(s.texto, s.tipo)}</td>
+      <td>${r ? `${etiqueta('Pedida', 'info')}<br><span class="texto-suave texto-pequeno">${dataHoraBR(r.quando)}</span>` : s.dias <= DIAS_RENOVACAO ? `<button type="button" class="botao botao-secundario" data-renovar="${esc(chave(a))}">Iniciar renovação</button>` : '<span class="texto-suave">—</span>'}</td></tr>`).join('')}</tbody>
   </table></div>`;
 }
 
@@ -35,8 +35,8 @@ function desenhar() {
   const aVencer = linhas.filter((l) => l.s.tipo === 'atencao').length;
   const semPedido = linhas.filter((l) => l.s.dias <= DIAS_RENOVACAO && !l.r);
   main.innerHTML = `
-    <h1 style="margin:0 0 1rem">Atos autorizativos</h1>
-    ${semPedido.length ? `<div class="alerta-erro" role="status" style="margin-bottom:1rem">${icone('alerta', 20)}<span>${semPedido.length} ato${semPedido.length > 1 ? 's' : ''} vencido${semPedido.length > 1 ? 's' : ''} ou a ${DIAS_RENOVACAO} dias do vencimento sem pedido de renovação. Inicie a renovação para a escola não ficar impedida de abrir turmas e matricular.</span></div>` : ''}
+    <h1 class="esp-t-0 esp-b-4">Atos autorizativos</h1>
+    ${semPedido.length ? `<div class="alerta-erro esp-b-4" role="status">${icone('alerta', 20)}<span>${semPedido.length} ato${semPedido.length > 1 ? 's' : ''} vencido${semPedido.length > 1 ? 's' : ''} ou a ${DIAS_RENOVACAO} dias do vencimento sem pedido de renovação. Inicie a renovação para a escola não ficar impedida de abrir turmas e matricular.</span></div>` : ''}
     <div class="numeros"><div class="numero${vencidos ? ' alerta' : ''}"><strong>${vencidos}</strong><span>atos vencidos</span></div><div class="numero"><strong>${aVencer}</strong><span>vencem em até ${DIAS_RENOVACAO} dias</span></div><div class="numero"><strong>${linhas.length}</strong><span>atos acompanhados</span></div></div>
     <div class="ferramentas-tabela">
       <div class="campo campo-busca"><label for="busca">Buscar</label><input id="busca" class="entrada" type="search" placeholder="Escola, número do ato ou etapa" value="${esc(busca)}">${icone('busca', 20)}</div>

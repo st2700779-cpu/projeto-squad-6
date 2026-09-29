@@ -21,6 +21,10 @@
   --sobre-tinta: #ffffff;    /* texto e ícones sobre fundo --tinta (botões escuros) */
   --sobre-azul: #ffffff;     /* texto e ícones sobre fundo --azul (assistente) */
   --escala: 1;
+  /* Escala de espaçamento (usada pelas classes esp-t-N e esp-b-N) */
+  --esp-1: .25rem; --esp-2: .5rem; --esp-3: .75rem; --esp-4: 1rem; --esp-5: 1.5rem; --esp-6: 2rem;
+  /* Escala de texto */
+  --texto-pequeno: .9rem; --texto-medio: 1.1rem;
   --toque: 48px;
   --raio: 12px;
   --fonte: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
