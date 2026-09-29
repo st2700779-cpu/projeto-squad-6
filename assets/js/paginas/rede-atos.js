@@ -37,7 +37,11 @@ function desenhar() {
   main.innerHTML = `
     <h1 class="esp-t-0 esp-b-4">Atos autorizativos</h1>
     ${semPedido.length ? `<div class="alerta-erro esp-b-4" role="status">${icone('alerta', 20)}<span>${semPedido.length} ato${semPedido.length > 1 ? 's' : ''} vencido${semPedido.length > 1 ? 's' : ''} ou a ${DIAS_RENOVACAO} dias do vencimento sem pedido de renovação. Inicie a renovação para a escola não ficar impedida de abrir turmas e matricular.</span></div>` : ''}
-    <div class="numeros"><div class="numero${vencidos ? ' alerta' : ' ok'}"><span class="numero-icone">${icone(vencidos ? 'alerta' : 'ok', 22)}</span><strong>${vencidos}</strong><span>${vencidos === 1 ? 'ato vencido' : 'atos vencidos'}</span></div><div class="numero${aVencer ? ' atencao' : ''}"><span class="numero-icone">${icone('relogio', 22)}</span><strong>${aVencer}</strong><span>${aVencer === 1 ? 'vence' : 'vencem'} em até ${DIAS_RENOVACAO} dias</span></div><div class="numero"><span class="numero-icone">${icone('documento', 22)}</span><strong>${linhas.length}</strong><span>${linhas.length === 1 ? 'ato acompanhado' : 'atos acompanhados'}</span></div></div>
+    <dl class="resumo-linha">
+      <div class="${vencidos ? 'alerta' : ''}"><dd>${vencidos}</dd><dt>${vencidos === 1 ? 'ato vencido' : 'atos vencidos'}</dt></div>
+      <div class="${aVencer ? 'atencao' : ''}"><dd>${aVencer}</dd><dt>${aVencer === 1 ? 'vence' : 'vencem'} em até ${DIAS_RENOVACAO} dias</dt></div>
+      <div><dd>${linhas.length}</dd><dt>${linhas.length === 1 ? 'ato acompanhado' : 'atos acompanhados'}</dt></div>
+    </dl>
     <div class="ferramentas-tabela">
       <div class="campo campo-busca"><label for="busca">Buscar</label><input id="busca" class="entrada" type="search" placeholder="Escola, número do ato ou etapa" value="${esc(busca)}">${icone('busca', 20)}</div>
       <div class="campo"><label for="dre">DRE</label><select id="dre" class="entrada"><option value="">Todas as DREs</option>${dres.map((d) => `<option ${d === dre ? 'selected' : ''}>${esc(d)}</option>`).join('')}</select></div>

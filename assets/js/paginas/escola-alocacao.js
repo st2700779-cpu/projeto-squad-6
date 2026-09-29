@@ -3,7 +3,7 @@
 import { iniciar, falhaDados } from '../app.js';
 import { esc, icone, avisar, etiqueta, confirmar } from '../ui.js';
 import { carregar, turmasEscola, conjunto, salvar, registrarAcao } from '../dados.js';
-import { colunaDaMatriz, bloqueioAlocacao, aulasDoComponente as aulasNaMatriz, aulasAlocadas as aulasDoProfessor } from '../regras.js';
+import { colunaDaMatriz, bloqueioAlocacao, codigoDaTurma, aulasDoComponente as aulasNaMatriz, aulasAlocadas as aulasDoProfessor } from '../regras.js';
 
 const main = await iniciar({ perfil: 'escola', pagina: 'escola/alocacao.html', assistente: true, papel: 'Coordenação' });
 let turmas, professores, alocacoes, matriz;
@@ -28,34 +28,29 @@ function desenhar() {
   const col = colunaDaMatriz(t.serie);
   const componentes = matriz.filter((c) => c[col] > 0);
   const semProfessor = componentes.filter(([c]) => !alocacoes.some((a) => a.turmaId === t.id && a.componente === c)).length;
+  const linha = ([componente]) => {
+    const aulas = aulasDoComponente(componente, t.serie);
+    const atual = alocacoes.find((a) => a.turmaId === t.id && a.componente === componente);
+    const prof = atual && professores.find((p) => p.id === atual.professorId);
+    const id = `prof-${componente.replace(/\W/g, '')}`;
+    const acao = prof
+      ? `<button type="button" class="botao botao-secundario botao-mini" data-desalocar="${esc(componente)}" aria-label="Tirar ${esc(prof.nome)} de ${esc(componente)}">Tirar professor</button>`
+      : `<div class="linha-botoes"><label class="sr-only" for="${id}">Professor de ${esc(componente)}</label><select id="${id}" class="entrada">${professores.map((p) => `<option value="${p.id}">${esc(p.nome)}${p.habilitacao.includes(componente) ? '' : ' — não habilitado'}</option>`).join('')}</select><button type="button" class="botao botao-mini" data-alocar="${esc(componente)}" data-campo="${id}" aria-label="Alocar professor em ${esc(componente)}">Alocar</button></div>`;
+    return `<tr><td class="titulo-linha"><strong>${esc(componente)}</strong></td><td class="num" data-rotulo="Aulas por semana">${aulas}</td><td data-rotulo="Professor">${prof ? esc(prof.nome) : etiqueta('Sem professor', 'atencao')}</td><td class="acoes">${acao}</td></tr>`;
+  };
   main.innerHTML = `
-    <h1 class="esp-b-1">Alocação de professores</h1>
-    <p class="texto-suave esp-t-0">Escolha o professor de cada componente. Pela regra de habilitação, o sistema bloqueia componentes incompatíveis com o concurso e a formação, e cargas acima do limite semanal.</p>
-    <div class="ferramentas-tabela"><div class="campo"><label for="turma">Turma</label><select id="turma" class="entrada">${turmas.map((x) => `<option value="${x.id}" ${x.id === turmaId ? 'selected' : ''}>${esc(x.nome)} · ${esc(x.turno)}</option>`).join('')}</select></div></div>
-    <p class="contagem">${componentes.length} componentes na matriz 2025 · ${semProfessor ? `<strong class="cor-perigo">${semProfessor} sem professor</strong>` : 'todos com professor'}</p>
-    ${componentes.map(([componente]) => {
-      const aulas = aulasDoComponente(componente, t.serie);
-      const atual = alocacoes.find((a) => a.turmaId === t.id && a.componente === componente);
-      const prof = atual && professores.find((p) => p.id === atual.professorId);
-      const id = `prof-${componente.replace(/\W/g, '')}`;
-      return `<div class="cartao">
-        <div class="linha-botoes entre"><strong class="texto-medio">${esc(componente)} <span class="texto-suave peso-normal">· ${aulas} aula${aulas > 1 ? 's' : ''}/semana</span></strong>${prof ? etiqueta(prof.nome, 'ok') : etiqueta('Sem professor', 'atencao')}</div>
-        ${prof ? `<div class="linha-botoes esp-t-3"><button type="button" class="botao botao-secundario" data-desalocar="${esc(componente)}">Tirar professor</button></div>` : `
-          <div class="ferramentas-tabela esp-t-3 esp-b-0">
-            <div class="campo"><label for="${id}">Professor</label><select id="${id}" class="entrada">${professores.map((p) => `<option value="${p.id}">${esc(p.nome)}${p.habilitacao.includes(componente) ? '' : ' — não habilitado'}</option>`).join('')}</select></div>
-            <button type="button" class="botao" data-alocar="${esc(componente)}" data-campo="${id}">Alocar</button>
-          </div>
-          ${erro && erro.componente === componente ? `<p class="alerta-erro esp-t-3 esp-b-0" role="alert">${icone('cadeado', 20)}<span>Alocação bloqueada. ${esc(erro.texto)}</span></p>` : ''}`}
-      </div>`;
-    }).join('')}
-    <h2>Quadro de professores</h2>
-    ${professores.map((p) => {
-      const usadas = p.aulasEmOutrasTurmas + aulasAlocadas(p.id);
-      return `<div class="cartao"><strong>${esc(p.nome)}</strong><br><span class="texto-suave">Concurso: ${esc(p.concurso)} · Formação: ${esc(p.formacao)}</span>
-        <div class="linha-botoes esp-t-2 esp-b-2">${p.habilitacao.map((h) => etiqueta(h, 'info')).join('')}</div>
-        <div class="barra" role="img" aria-label="${usadas} de ${p.cargaHorariaSemanal} aulas semanais"><span style="width:${Math.min(100, (usadas / p.cargaHorariaSemanal) * 100)}%"></span></div>
-        <span class="texto-suave">${usadas} de ${p.cargaHorariaSemanal} aulas semanais</span></div>`;
-    }).join('')}`;
+    <h1>Alocação de professores · ${esc(t.nome)} · ${esc(t.turno)}</h1>
+    <p class="pagina-descricao">O sistema bloqueia componente incompatível com o concurso e a formação do professor, e carga acima do limite semanal.</p>
+    <div class="ferramentas-tabela"><div class="campo"><label for="turma">Turma</label><select id="turma" class="entrada">${turmas.map((x) => `<option value="${x.id}" ${x.id === turmaId ? 'selected' : ''}>${esc(x.nome)} · ${esc(x.turno)} · ${esc(codigoDaTurma(x))}</option>`).join('')}</select></div></div>
+    ${erro ? `<p class="alerta-erro" role="alert">${icone('cadeado', 20)}<span>Alocação bloqueada em ${esc(erro.componente)}. ${esc(erro.texto)}</span></p>` : ''}
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Componentes da matriz e professores da turma</caption>
+      <thead><tr><th scope="col">Componente</th><th scope="col" class="num">Aulas por semana</th><th scope="col">Professor</th><th scope="col">Alocação</th></tr></thead>
+      <tbody>${componentes.map(linha).join('')}</tbody></table></div>
+    <p class="contagem">${componentes.length} componentes da matriz 2025 · ${semProfessor ? `<strong class="cor-perigo">${semProfessor} sem professor</strong>` : 'todos com professor'}</p>
+    <h2>Carga horária dos professores</h2>
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Carga horária semanal dos professores</caption>
+      <thead><tr><th scope="col">Professor</th><th scope="col">Concurso</th><th scope="col">Formação</th><th scope="col">Habilitação</th><th scope="col" class="num">Aulas por semana</th></tr></thead>
+      <tbody>${professores.map((p) => { const usadas = p.aulasEmOutrasTurmas + aulasAlocadas(p.id); return `<tr><td class="titulo-linha"><strong>${esc(p.nome)}</strong></td><td data-rotulo="Concurso">${esc(p.concurso)}</td><td data-rotulo="Formação">${esc(p.formacao)}</td><td data-rotulo="Habilitação">${esc(p.habilitacao.join(', '))}</td><td class="num${usadas > p.cargaHorariaSemanal ? ' cor-perigo' : ''}" data-rotulo="Aulas por semana">${usadas} de ${p.cargaHorariaSemanal}<div class="barra" role="img" aria-label="${usadas} de ${p.cargaHorariaSemanal} aulas semanais"><span style="width:${Math.min(100, (usadas / p.cargaHorariaSemanal) * 100)}%"></span></div></td></tr>`; }).join('')}</tbody></table></div>`;
 }
 
 main.addEventListener('change', (e) => { if (e.target.id === 'turma') { turmaId = e.target.value; erro = null; desenhar(); } });

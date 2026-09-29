@@ -61,7 +61,7 @@ function desenhar() {
     ${pendencias.length ? `<div class="cartao"><strong>Plano de adaptação sugerido</strong><ul class="lista-recuada">${pendencias.map((l) => `<li>${esc(l.componente)}: ${l.resultado === 'complementar' ? `estudos de complementação (${l.faltam} aula${l.faltam > 1 ? 's' : ''}/semana)` : l.resultado === 'reprovado' ? `recuperação (nota ${numeroBR(l.origem.nota)} na origem)` : 'cursar em regime de adaptação'}</li>`).join('')}</ul></div>` : ''}
     ${parecer
       ? `<p class="registro">${icone('ok', 16)}Parecer registrado por ${esc(parecer.quem)} em ${dataHoraBR(parecer.quando)}.</p>`
-      : `<button type="button" class="botao botao-largo" id="registrar-parecer">${icone('ok', 20)}Registrar parecer de equivalência</button>`}`;
+      : `<button type="button" class="botao botao-largo" id="registrar-parecer">Registrar parecer de equivalência</button>`}`;
 }
 
 main.addEventListener('change', (e) => { if (e.target.id === 'estudante') { protocolo = e.target.value; desenhar(); } });

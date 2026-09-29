@@ -1,8 +1,9 @@
 // Enturmação: a secretaria coloca os estudantes com matrícula confirmada nas turmas aprovadas da mesma série,
 // sem passar da capacidade da sala.
 import { iniciar, link, falhaDados } from '../app.js';
-import { esc, icone, avisar, vazio, etiqueta, confirmar } from '../ui.js';
+import { esc, avisar, vazio, etiqueta, confirmar } from '../ui.js';
 import { matriculas, turmasEscola, conjunto, salvar, registrarAcao } from '../dados.js';
+import { codigoDaTurma } from '../regras.js';
 
 const ESCOLA = 'e1';
 const main = await iniciar({ perfil: 'escola', pagina: 'escola/enturmacao.html', assistente: true, papel: 'Secretaria escolar' });
@@ -21,33 +22,32 @@ const livres = (t) => (t.capacidade || 0) - ocupacao(t);
 function desenhar() {
   const confirmados = pedidos.filter((p) => p.escolaId === ESCOLA && p.situacao === 'Confirmada');
   const semTurma = confirmados.filter((p) => !enturmacao[p.protocolo]);
+  const enturmados = confirmados.filter((p) => enturmacao[p.protocolo]);
+  const linhaEspera = (p) => {
+    const opcoes = aprovadas().filter((t) => t.serie === p.serie);
+    const comVaga = opcoes.filter((t) => livres(t) > 0);
+    const acao = comVaga.length
+      ? `<div class="linha-botoes"><label class="sr-only" for="turma-${esc(p.protocolo)}">Turma de ${esc(p.estudante)}</label><select id="turma-${esc(p.protocolo)}" class="entrada">${opcoes.map((t) => `<option value="${t.id}" ${livres(t) > 0 ? '' : 'disabled'}>${esc(t.nome)} · ${esc(t.turno)} · ${livres(t) > 0 ? `${livres(t)} ${livres(t) > 1 ? 'vagas' : 'vaga'}` : 'sem vaga'}</option>`).join('')}</select><button type="button" class="botao botao-mini" data-enturmar="${esc(p.protocolo)}" aria-label="Colocar ${esc(p.estudante)} na turma escolhida">Enturmar</button></div>`
+      : `<span class="erro">Nenhuma turma aprovada com vaga na ${esc(p.serie)}. Crie a turma em <a href="${link('escola/turmas.html')}">Turmas</a> e peça a aprovação da direção.</span>`;
+    return `<tr><td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)}</small></td><td data-rotulo="Tipo">${esc(p.tipo)}</td><td data-rotulo="Série" class="sem-quebra-texto">${esc(p.serie)}</td><td class="acoes">${acao}</td></tr>`;
+  };
   main.innerHTML = `
-    <h1 class="esp-b-1">Enturmação</h1>
-    <p class="texto-suave esp-t-0">Coloque cada estudante com matrícula confirmada em uma turma aprovada da mesma série. Turmas cheias não aparecem como opção.</p>
-    <h2>Aguardando turma (${semTurma.length})</h2>
-    ${semTurma.length ? semTurma.map((p) => {
-      const opcoes = aprovadas().filter((t) => t.serie === p.serie);
-      const comVaga = opcoes.filter((t) => livres(t) > 0);
-      return `<div class="cartao">
-        <strong class="texto-medio">${esc(p.estudante)}</strong><br><span class="texto-suave">${esc(p.tipo)} · ${esc(p.serie)} · ${esc(p.protocolo)}</span>
-        ${comVaga.length ? `<div class="ferramentas-tabela esp-t-3 esp-b-0">
-            <div class="campo"><label for="turma-${esc(p.protocolo)}">Turma</label><select id="turma-${esc(p.protocolo)}" class="entrada">${opcoes.map((t) => `<option value="${t.id}" ${livres(t) > 0 ? '' : 'disabled'}>${esc(t.nome)} · ${esc(t.turno)} · ${livres(t) > 0 ? `${livres(t)} vaga${livres(t) > 1 ? 's' : ''}` : 'cheia'}</option>`).join('')}</select></div>
-            <button type="button" class="botao" data-enturmar="${esc(p.protocolo)}">Colocar na turma</button>
-          </div>`
-        : `<p class="alerta-erro esp-t-3 esp-b-0">${icone('alerta', 20)}<span>Nenhuma turma aprovada com vaga na ${esc(p.serie)}. Crie uma turma em <a href="${link('escola/turmas.html')}">Turmas</a> e peça a aprovação da direção.</span></p>`}
-      </div>`;
-    }).join('') : vazio('Todos os confirmados já estão em uma turma', 'Quando a secretaria confirmar uma nova matrícula, o estudante aparece aqui para ser enturmado.', 'ok')}
+    <h1>Enturmação · 2026</h1>
+    <p class="pagina-descricao">Estudantes com matrícula confirmada entram em turma aprovada da mesma série, respeitando a capacidade da sala.</p>
+    <h2 class="esp-t-0">Aguardando turma (${semTurma.length})</h2>
+    ${semTurma.length ? `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Estudantes aguardando turma</caption>
+      <thead><tr><th scope="col">Estudante</th><th scope="col">Tipo</th><th scope="col">Série</th><th scope="col">Turma</th></tr></thead>
+      <tbody>${semTurma.map(linhaEspera).join('')}</tbody></table></div>
+      <p class="contagem">${semTurma.length} ${semTurma.length === 1 ? 'estudante' : 'estudantes'} sem turma</p>`
+      : vazio('Todos os estudantes confirmados já têm turma', 'Quando a secretaria confirmar uma nova matrícula, o estudante aparece aqui para ser enturmado.')}
     <h2>Ocupação das turmas</h2>
-    ${aprovadas().map((t) => {
-      const oc = ocupacao(t);
-      const nesta = confirmados.filter((p) => enturmacao[p.protocolo] === t.id);
-      return `<div class="cartao">
-        <div class="linha-botoes entre"><strong>${esc(t.nome)} <span class="texto-suave peso-normal">· ${esc(t.turno)} · ${esc(t.sala)}</span></strong>${oc >= t.capacidade ? etiqueta('Cheia', 'erro') : etiqueta(`${t.capacidade - oc} vaga${t.capacidade - oc > 1 ? 's' : ''}`, 'ok')}</div>
-        <div class="barra esp-t-3 esp-b-1" role="img" aria-label="${oc} de ${t.capacidade} lugares ocupados"><span style="width:${Math.min(100, (oc / t.capacidade) * 100)}%"></span></div>
-        <span class="texto-suave">${oc} de ${t.capacidade} lugares</span>
-        ${nesta.length ? `<ul class="lista-simples">${nesta.map((p) => `<li><span>${esc(p.estudante)} <span class="texto-suave">(novo)</span></span><button type="button" class="botao botao-secundario" data-tirar="${esc(p.protocolo)}">Tirar da turma</button></li>`).join('')}</ul>` : ''}
-      </div>`;
-    }).join('')}`;
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Ocupação das turmas aprovadas</caption>
+      <thead><tr><th scope="col">Turma</th><th scope="col">Código</th><th scope="col">Turno</th><th scope="col">Sala</th><th scope="col" class="num">Ocupação</th><th scope="col">Situação</th></tr></thead>
+      <tbody>${aprovadas().map((t) => { const oc = ocupacao(t); const vagas = t.capacidade - oc; return `<tr><td class="titulo-linha"><strong>${esc(t.nome)}</strong></td><td data-rotulo="Código">${esc(codigoDaTurma(t))}</td><td data-rotulo="Turno">${esc(t.turno)}</td><td data-rotulo="Sala">${esc(t.sala)}</td><td class="num" data-rotulo="Ocupação">${oc} de ${t.capacidade}</td><td data-rotulo="Situação">${vagas <= 0 ? etiqueta('Turma cheia', 'atencao') : `${vagas} ${vagas > 1 ? 'vagas' : 'vaga'}`}</td></tr>`; }).join('')}</tbody></table></div>
+    ${enturmados.length ? `<h2>Enturmados nesta demonstração</h2>
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Estudantes enturmados</caption>
+      <thead><tr><th scope="col">Estudante</th><th scope="col">Turma</th><th scope="col"><span class="sr-only">Ação</span></th></tr></thead>
+      <tbody>${enturmados.map((p) => { const t = turmas.find((x) => x.id === enturmacao[p.protocolo]); return `<tr><td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)}</small></td><td data-rotulo="Turma">${esc(t.nome)} · ${esc(t.turno)}</td><td class="acoes"><button type="button" class="botao botao-secundario botao-mini" data-tirar="${esc(p.protocolo)}" aria-label="Tirar ${esc(p.estudante)} da turma">Tirar da turma</button></td></tr>`; }).join('')}</tbody></table></div>` : ''}`;
 }
 
 main.addEventListener('click', async (e) => {

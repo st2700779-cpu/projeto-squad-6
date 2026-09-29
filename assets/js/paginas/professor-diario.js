@@ -3,11 +3,11 @@
 import { iniciar, falhaDados } from '../app.js';
 import { esc, avisar, icone, numeroBR, confirmar, dataHoraBR, vazio, etiqueta, comEspera } from '../ui.js';
 import { carregar, diario, letivo, matriculas, turmasEscola, salvar as salvarDados, conjunto, registrarAcao } from '../dados.js';
-import { presenca, media, situacao, nomeCurto, turmasDoProfessor, sincronizarDiario } from '../regras.js';
+import { presenca, media, situacao, nomeCurto, turmasDoProfessor, sincronizarDiario, codigoDaTurma } from '../regras.js';
 
 const main = await iniciar({ perfil: 'professor', pagina: 'professor/diario.html', assistente: true });
 let turmaId = new URLSearchParams(location.search).get('turma');
-let dados, prof, escolas, chamadas, minhas, aulasDadas;
+let dados, prof, escolas, chamadas, minhas, aulasDadas, bimestres;
 const ausentes = new Set(); // chamada rápida: todos começam presentes; o professor toca em quem faltou
 const hoje = new Date().toISOString().slice(0, 10);
 
@@ -19,6 +19,7 @@ async function mostrar() {
     [dados, escolas, chamadas] = await Promise.all([diario(), carregar('escolas'), conjunto('chamadas')]);
     prof = professores.find((p) => p.id === logado.professorId);
     aulasDadas = lv.aulasDadas;
+    bimestres = lv.bimestresLancados;
     minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes.versoes[0].componentes });
     // Estudantes enturmados pela secretaria entram no diário, com notas em branco.
     const novos = minhas.map(({ turma }) => sincronizarDiario(dados, turma.id, { pedidos, enturmacao })).some(Boolean);
@@ -28,7 +29,7 @@ async function mostrar() {
 }
 function desenhar() {
   if (!minhas.length) {
-    main.innerHTML = `<h1>Diário de classe</h1>${vazio('Nenhuma turma alocada', 'O diário abre quando a coordenação da escola aloca você em uma turma aprovada.', 'livro')}`;
+    main.innerHTML = `<h1>Diário de classe</h1>${vazio('Nenhuma turma alocada', 'O diário abre quando a coordenação da escola aloca você em uma turma aprovada.')}`;
     return;
   }
   if (!minhas.some((m) => m.turma.id === turmaId)) turmaId = minhas[0].turma.id;
@@ -38,33 +39,36 @@ function desenhar() {
   const campo = (a, c, max) => `<td data-rotulo="${CAMPOS[c]}"><label class="sr-only" for="${a.id}-${c}">${CAMPOS[c]} de ${esc(a.nome)}</label><input id="${a.id}-${c}" class="entrada" inputmode="decimal" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="${c}" data-max="${max}" data-vazio="${c !== 'faltas' && a[c] === null}" value="${c === 'faltas' ? a[c] : (a[c] === null ? '' : numeroBR(a[c]))}"></td>`;
   main.innerHTML = `
     <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 esp-b-5">
-      <div><h1 class="esp-b-1">Diário de classe</h1><p class="texto-suave esp-t-0 esp-b-0">${esc(nomeCurto(escola.nome))} · ${aulasDadas} aulas dadas no ano</p></div>
+      <div><h1 class="esp-b-1">Diário de classe · ${esc(t.nome)} · ${esc(componente)}</h1><p class="texto-suave esp-t-0 esp-b-0">${esc(nomeCurto(escola.nome))} · turma ${esc(codigoDaTurma(t))} · ${bimestres}º bimestre lançado · ${aulasDadas} aulas dadas</p></div>
       <div class="campo esp-t-0 esp-b-0 campo-turma"><label for="turma">Turma e componente</label><select id="turma" class="entrada">${minhas.map((m) => `<option value="${m.turma.id}" ${m.turma.id === turmaId ? 'selected' : ''}>${esc(m.turma.nome)} — ${esc(m.componente)}</option>`).join('')}</select></div>
     </div>
-    ${alunos.length ? `${painelChamada(t, alunos)}
-    <h2>Notas e faltas acumuladas · ${esc(componente)}</h2>
-    <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-notas"><caption class="sr-only">Notas e faltas de ${esc(t.nome)}</caption>
-      <thead><tr><th scope="col">Estudante</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th></tr></thead>
-      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td></tr>`; }).join('')}</tbody>
+    ${alunos.length ? `${painelChamada(alunos)}
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-notas"><caption class="sr-only">Chamada, notas e faltas de ${esc(t.nome)}, ${esc(componente)}</caption>
+      <thead><tr><th scope="col">Estudante</th><th scope="col">Faltou hoje</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th></tr></thead>
+      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${celulaHoje(a)}${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td></tr>`; }).join('')}</tbody>
     </table></div>
-    <div class="barra-acoes compacta"><button type="button" class="botao" id="salvar">${icone('ok', 20)}Salvar diário</button><span class="texto-suave" id="estado-diario">As notas salvas aparecem para a família.</span></div>
-    <div id="erro-diario" role="alert"></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.', 'pessoas')}`;
+    <p class="contagem">${alunos.length} ${alunos.length === 1 ? 'estudante' : 'estudantes'} · Enter desce para o próximo estudante · Tab vai para o campo seguinte</p>
+    <div class="barra-acoes compacta"><button type="button" class="botao" id="salvar">Salvar notas e faltas</button><span class="texto-suave" id="estado-diario">As notas salvas aparecem para a família.</span></div>
+    <div id="erro-diario" role="alert"></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.')}`;
 }
-// Chamada rápida: todos começam presentes; um toque marca quem faltou. Registrar soma 1 falta a cada ausente.
-function painelChamada(t, alunos) {
+// Coluna "Faltou hoje": caixa de marcação enquanto a chamada não foi registrada; depois, o resultado.
+function celulaHoje(a) {
   const feita = chamadas[turmaId]?.[hoje];
+  if (feita) return `<td data-rotulo="Chamada de hoje">${feita.ausentes.includes(a.id) ? etiqueta('Faltou', 'erro') : '<span class="texto-suave">Presente</span>'}</td>`;
+  return `<td data-rotulo="Faltou hoje"><input type="checkbox" class="caixa-grande" data-faltou="${a.id}" aria-label="Faltou hoje: ${esc(a.nome)}" ${ausentes.has(a.id) ? 'checked' : ''}></td>`;
+}
+// Chamada: todos começam presentes; marque só quem faltou. Registrar soma 1 falta a cada ausente.
+function painelChamada(alunos) {
+  const feita = chamadas[turmaId]?.[hoje];
+  const dataHoje = new Date().toLocaleDateString('pt-BR');
   if (feita) {
     const nomes = alunos.filter((a) => feita.ausentes.includes(a.id)).map((a) => a.nome);
-    return `<div class="cartao"><div class="linha-botoes entre"><strong class="texto-medio">Chamada de hoje</strong>${`<span class="etiqueta etiqueta-ok">Registrada</span>`}</div>
-      <p class="esp-t-2 esp-b-0">${nomes.length ? `${nomes.length} falta${nomes.length > 1 ? 's' : ''}: ${esc(nomes.join(', '))}.` : 'Todos presentes.'}</p>
-      <p class="registro esp-t-1 esp-b-0">${icone('relogio', 16)}Registrada em ${dataHoraBR(feita.quando)}</p></div>`;
+    return `<p class="esp-b-3"><strong>Chamada de ${dataHoje} registrada</strong> ${etiqueta('Registrada', 'ok')} ${nomes.length ? `${nomes.length} ${nomes.length > 1 ? 'faltas' : 'falta'}: ${esc(nomes.join(', '))}.` : 'Todos presentes.'} <span class="registro">Registrada em ${dataHoraBR(feita.quando)}</span></p>`;
   }
-  return `<section class="cartao" aria-labelledby="chamada-titulo">
-    <div class="linha-botoes entre"><h2 class="esp-t-0 esp-b-0 titulo-cartao" id="chamada-titulo">Chamada de hoje · ${esc(t.nome)}</h2><span class="texto-suave">${alunos.length - ausentes.size} presentes · ${ausentes.size} faltas</span></div>
-    <p class="texto-suave esp-t-1 esp-b-3">Todos começam presentes. Toque só em quem faltou.</p>
-    <div class="chamada-rapida">${alunos.map((a) => `<button type="button" data-faltou="${a.id}" aria-pressed="${ausentes.has(a.id)}">${ausentes.has(a.id) ? icone('fechar', 18) : icone('ok', 18)}<span>${esc(a.nome)}</span><small>${ausentes.has(a.id) ? 'Faltou' : 'Presente'}</small></button>`).join('')}</div>
-    <button type="button" class="botao botao-largo esp-t-4" id="registrar-chamada">${icone('ok', 20)}${ausentes.size ? `Registrar chamada com ${ausentes.size} falta${ausentes.size > 1 ? 's' : ''}` : 'Todos presentes: registrar chamada'}</button>
-  </section>`;
+  return `<div class="linha-botoes entre esp-b-3">
+    <p class="esp-t-0 esp-b-0" id="chamada-titulo"><strong>Chamada de ${dataHoje}</strong> · todos começam presentes; marque só quem faltou. ${alunos.length - ausentes.size} ${alunos.length - ausentes.size === 1 ? 'presente' : 'presentes'} · ${ausentes.size} ${ausentes.size === 1 ? 'falta' : 'faltas'}</p>
+    <button type="button" class="botao" id="registrar-chamada">${ausentes.size ? `Registrar chamada com ${ausentes.size} ${ausentes.size > 1 ? 'faltas' : 'falta'}` : 'Registrar chamada: todos presentes'}</button>
+  </div>`;
 }
 async function registrarChamada() {
   const t = minhas.find((x) => x.turma.id === turmaId).turma;

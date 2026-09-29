@@ -3,6 +3,21 @@
 // recebe os estudantes que a secretaria enturma.
 import { colunaDaMatriz } from './matricula.js';
 
+/** Ano letivo em curso (exibição). */
+export const ANO_LETIVO = 2026;
+
+/**
+ * Código da turma para identificação em telas e listas: ano, série, letra e turno.
+ * Ex.: "1ª série A", Ensino Médio, manhã → "2026-1EM-A-M".
+ * @param {{nome: string, serie: string, turno: string}} turma
+ */
+export function codigoDaTurma(turma) {
+  const numero = /\d/.exec(turma.serie)?.[0] ?? '';
+  const serie = `${numero}${turma.serie.includes('EM') ? 'EM' : 'EF'}`;
+  const letra = turma.nome.trim().split(' ').pop().toUpperCase();
+  return `${ANO_LETIVO}-${serie}-${letra}-${(turma.turno || '?')[0].toUpperCase()}`;
+}
+
 /** Aulas por semana de um componente na série (matriz curricular do Ensino Médio). 0 se não constar. */
 export const aulasDoComponente = (matriz, componente, serie) => matriz.find((c) => c[0] === componente)?.[colunaDaMatriz(serie)] || 0;
 

@@ -326,3 +326,16 @@ details > summary { min-height: var(--toque); display: flex; align-items: center
 .cartao > details > summary, details.cartao > summary { list-style-position: inside; }
 .tabela-notas thead th { white-space: normal; }
 .tabela-notas th, .tabela-notas td { padding-inline: var(--sp-3); }
+.tabela th.num:first-child, .tabela td.num:first-child { min-width: 0; width: 1%; white-space: nowrap; }
+.tabela td.acoes .linha-botoes { flex-wrap: nowrap; }
+.tabela td small { color: var(--texto-suave); }
+/* Diário: a caixa "Faltou hoje" ocupa a linha inteira no cartão do celular */
+@media (max-width: 767px) {
+  .tabela-notas td[data-rotulo="Faltou hoje"], .tabela-notas td[data-rotulo="Chamada de hoje"] { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; }
+  .tabela-notas td[data-rotulo="Faltou hoje"]::before, .tabela-notas td[data-rotulo="Chamada de hoje"]::before { margin-bottom: 0; }
+}
+/* Avisos: texto corrido separado por linha, sem cartão */
+.aviso-item { padding: var(--sp-4) 0; border-bottom: 1px solid var(--borda); }
+.aviso-item:first-of-type { border-top: 1px solid var(--borda); }
+.lista-texto { margin: var(--sp-2) 0 var(--sp-4); padding-left: var(--sp-5); }
+.lista-texto li { padding: var(--sp-1) 0; }

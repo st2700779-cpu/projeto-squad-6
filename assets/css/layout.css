@@ -13,7 +13,6 @@
 .topo-menu-botao { flex: none; }
 .marca { display: flex; align-items: center; gap: var(--sp-3); margin-right: auto; min-height: var(--toque); min-width: var(--toque); text-decoration: none; color: var(--texto); }
 .marca:hover { color: var(--texto); }
-.marca-selo { flex: none; width: 40px; height: 40px; border-radius: var(--raio); background: var(--cor-primaria); color: var(--sobre-primaria); display: grid; place-items: center; font-weight: var(--peso-negrito); font-size: var(--texto-sm); letter-spacing: .02em; }
 .marca-texto { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
 .marca-texto strong { font-size: var(--texto-base); font-weight: var(--peso-negrito); white-space: nowrap; }
 .marca-texto small { display: none; font-size: var(--texto-xs); color: var(--texto-suave); white-space: nowrap; }
@@ -86,15 +85,13 @@ html.menu-aberto body { overflow: hidden; }
 .grade-3 { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .grade-3 .bloco { margin: 0; }
 
-/* Início do portal (escolha de perfil) */
-.hero { text-align: center; padding: var(--sp-8) 0 var(--sp-6); }
-.hero .marca-selo { width: 64px; height: 64px; font-size: var(--texto-xl); margin: 0 auto var(--sp-4); border-radius: var(--raio-lg); }
-.hero .lead { margin-inline: auto; }
-.perfis { display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.perfil-cartao { display: flex; flex-direction: column; gap: var(--sp-3); height: 100%; margin: 0; border-top: 4px solid var(--acento); }
-.perfil-cartao > a { display: flex; flex-direction: column; gap: var(--sp-3); flex: 1; color: var(--texto); text-decoration: none; }
-.perfil-cartao .icone { width: 52px; height: 52px; border-radius: var(--raio); background: var(--acento-suave); color: var(--acento); display: grid; place-items: center; }
-.perfil-cartao strong { font-size: var(--texto-xl); }
-.perfil-cartao small { color: var(--texto-suave); font-size: var(--texto-base); }
-.perfil-cartao .perfil-rodape { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
-.perfil-cartao .perfil-entrar { color: var(--acento); font-weight: var(--peso-forte); display: inline-flex; align-items: center; gap: var(--sp-2); }
+/* Início do portal: lista de perfis, alinhada à esquerda */
+.lista-perfis { list-style: none; margin: 0 0 var(--sp-6); padding: 0; max-width: 720px; border-top: 1px solid var(--borda); }
+.lista-perfis li { display: flex; align-items: center; gap: var(--sp-3); border-bottom: 1px solid var(--borda); }
+.lista-perfis a { flex: 1; display: flex; flex-direction: column; gap: 2px; padding: var(--sp-4) var(--sp-2); color: var(--texto); text-decoration: none; min-height: var(--toque); }
+.lista-perfis a:hover { background: var(--superficie-2); }
+.lista-perfis strong { font-size: var(--texto-lg); }
+.lista-perfis span { color: var(--texto-suave); }
+.area-topo .breadcrumb { min-width: 0; flex: 1 1 0; }
+.marca { flex: 1 1 0; min-width: 0; }
+.marca-texto strong, .marca-texto small { overflow: hidden; text-overflow: ellipsis; }

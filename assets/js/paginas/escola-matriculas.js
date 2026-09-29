@@ -40,37 +40,46 @@ function painelRecusa(p) {
     </div>
   </div>`;
 }
-function cartao(p) {
+// Linha da tabela de pedidos. Ações só para quem aguarda confirmação; declaração para quem já foi confirmado.
+function linha(p) {
   const ultima = historico.find((h) => h.alvo === p.protocolo && /Confirmou|Recusou/.test(h.acao));
-  return `
-    <div class="cartao d-flex flex-wrap align-items-center gap-3">
-      <div class="pedido-info"><strong class="texto-medio">${esc(p.estudante)}</strong><br><span class="texto-suave texto-pequeno">${esc(p.tipo)} · ${esc(p.serie)} · Responsável: ${esc(p.responsavel)} · ${esc(p.protocolo)}</span>
-        ${p.motivo ? `<br><span>Motivo: ${esc(p.motivo)}</span>` : ''}
-        ${ultima ? `<p class="registro esp-t-1 esp-b-0">${icone('relogio', 16)}${esc(ultima.acao)} por ${esc(ultima.quem)} em ${dataHoraBR(ultima.quando)}</p>` : ''}</div>
-      ${etiqueta(p.situacao, p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao')}
-      ${p.situacao === 'Aguardando confirmação' ? `<div class="linha-botoes"><button type="button" class="botao" data-confirmar="${esc(p.protocolo)}">Confirmar</button><button type="button" class="botao botao-secundario" data-recusar="${esc(p.protocolo)}" aria-expanded="${recusando === p.protocolo}">Recusar</button></div>` : ''}
-      ${p.situacao === 'Confirmada' ? `<a class="botao botao-secundario" href="${link('familia/declaracao.html')}?tipo=matricula&protocolo=${encodeURIComponent(p.protocolo)}">${icone('imprimir', 20)}Declaração</a>` : ''}
-    </div>
-    ${recusando === p.protocolo ? painelRecusa(p) : ''}`;
+  const acoes = p.situacao === 'Aguardando confirmação'
+    ? `<div class="linha-botoes"><button type="button" class="botao botao-mini" data-confirmar="${esc(p.protocolo)}" aria-label="Confirmar matrícula de ${esc(p.estudante)}">Confirmar</button><button type="button" class="botao botao-secundario botao-mini" data-recusar="${esc(p.protocolo)}" aria-expanded="${recusando === p.protocolo}" aria-label="Recusar matrícula de ${esc(p.estudante)}">Recusar</button></div>`
+    : p.situacao === 'Confirmada' ? `<a class="botao botao-secundario botao-mini" href="${link('familia/declaracao.html')}?tipo=matricula&protocolo=${encodeURIComponent(p.protocolo)}">Emitir declaração</a>` : '';
+  return `<tr>
+    <td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)} · resp. ${esc(p.responsavel)}</small></td>
+    <td data-rotulo="Tipo">${esc(p.tipo)}</td><td data-rotulo="Série" class="sem-quebra-texto">${esc(p.serie)}</td>
+    <td class="num" data-rotulo="Pedido em">${esc(p.data || '—')}</td>
+    <td data-rotulo="Situação">${etiqueta(p.situacao, p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao')}${p.motivo ? `<small>Motivo: ${esc(p.motivo)}</small>` : ''}${ultima ? `<small class="registro">${esc(ultima.acao)} por ${esc(ultima.quem)} em ${dataHoraBR(ultima.quando)}</small>` : ''}</td>
+    ${acoes ? `<td class="acoes">${acoes}</td>` : '<td class="acoes"></td>'}</tr>`;
 }
+function tabela(lista) {
+  return `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Pedidos de matrícula: ${esc(NOMES[filtro].toLowerCase())}</caption>
+    <thead><tr><th scope="col">Estudante</th><th scope="col">Tipo</th><th scope="col">Série</th><th scope="col" class="num">Pedido em</th><th scope="col">Situação</th><th scope="col">Decisão</th></tr></thead>
+    <tbody>${lista.map(linha).join('')}</tbody></table></div>
+    <p class="contagem">${lista.length} ${lista.length === 1 ? 'pedido' : 'pedidos'} · ${esc(NOMES[filtro].toLowerCase())}</p>`;
+}
+const corpoDaLista = (lista) => (lista.length ? tabela(lista) : (busca ? vazio('Nada encontrado', `Nenhum pedido em “${NOMES[filtro]}” combina com “${busca}”. Confira o nome, o protocolo ou o responsável.`) : vazio(...VAZIOS[filtro])));
 function desenhar() {
   const lista = visiveis();
+  const alvo = recusando && pedidos.find((p) => p.protocolo === recusando);
   main.innerHTML = `
-    <h1>Pedidos de matrícula</h1>
+    <h1>Pedidos de matrícula · 2026</h1>
     <div class="filtros" role="group" aria-label="Filtrar por situação">
       ${ABAS.map((a) => { const n = daEscola().filter((p) => p.situacao === a).length; return `<button type="button" data-filtro="${a}" aria-pressed="${a === filtro}">${NOMES[a]}${n ? ` (${n})` : ''}</button>`; }).join('')}
     </div>
     <div class="ferramentas-tabela">
-      <div class="campo campo-busca"><label for="busca">Buscar</label><input id="busca" class="entrada" type="search" placeholder="Nome, protocolo ou responsável" value="${esc(busca)}">${icone('busca', 20)}</div>
-      <button type="button" class="botao botao-secundario" id="exportar">${icone('baixar', 20)}Exportar CSV</button>
+      <div class="campo campo-busca"><label for="busca">Buscar pedido</label><input id="busca" class="entrada" type="search" placeholder="Nome, protocolo ou responsável" value="${esc(busca)}">${icone('busca', 20)}</div>
+      <button type="button" class="botao botao-secundario" id="exportar">${icone('baixar', 20)}Exportar lista em CSV</button>
     </div>
-    <div id="lista-pedidos">${lista.length ? lista.map(cartao).join('') : (busca ? vazio('Nada encontrado', `Nenhum pedido em “${NOMES[filtro]}” combina com “${busca}”.`, 'busca') : vazio(...VAZIOS[filtro]))}</div>`;
+    ${alvo ? painelRecusa(alvo) : ''}
+    <div id="lista-pedidos">${corpoDaLista(lista)}</div>`;
   if (recusando) main.querySelector('#motivo')?.focus();
 }
 // A busca só redesenha a lista, para não tirar o foco do campo enquanto a pessoa digita.
 const filtrarBusca = debounce(() => {
   const lista = visiveis();
-  main.querySelector('#lista-pedidos').innerHTML = lista.length ? lista.map(cartao).join('') : vazio('Nada encontrado', `Nenhum pedido em “${NOMES[filtro]}” combina com “${busca}”.`, 'busca');
+  main.querySelector('#lista-pedidos').innerHTML = corpoDaLista(lista);
 });
 main.addEventListener('input', (e) => {
   if (e.target.id !== 'busca') return;

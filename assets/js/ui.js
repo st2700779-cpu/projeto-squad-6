@@ -181,9 +181,9 @@ export function confirmar({ titulo, texto, botao = 'Confirmar', perigo = false }
 }
 
 // Estado vazio com explicação do que aparece ali e, se houver, o próximo passo.
-/** Estado vazio: título, explicação do que aparece ali e ícone. */
-export const vazio = (titulo, texto, nomeIcone = 'info') =>
-  `<div class="estado-vazio">${icone(nomeIcone, 32)}<strong>${esc(titulo)}</strong><span>${esc(texto)}</span></div>`;
+/** Estado vazio: só texto, com o que aparece ali e o próximo passo. */
+export const vazio = (titulo, texto) =>
+  `<div class="estado-vazio"><strong>${esc(titulo)}</strong><span>${esc(texto)}</span></div>`;
 
 // Exporta linhas para CSV que abre direto no Excel em português (ponto e vírgula e BOM UTF-8).
 /** Baixa uma tabela em CSV (ponto e vírgula e BOM UTF-8, abre direto no Excel em português). */

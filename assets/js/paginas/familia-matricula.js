@@ -45,7 +45,7 @@ function desenharRematricula(erro = '') {
     </dl>
     ${bloqueio ? `<p class="alerta-erro">${icone('alerta', 20)}<span>Esta escola não tem autorização vigente para a ${esc(serieCompleta(d.serie))}. Faça a matrícula completa para escolher outra escola.</span></p>` : '<p class="texto-suave">A vaga de quem já estuda na escola fica reservada. Não é preciso levar documentos, a menos que a secretaria peça.</p>'}
     <p class="erro" role="alert" id="erro-passo">${esc(erro)}</p>
-    <div class="barra-acoes"><a class="botao botao-secundario botao-grande" href="${link('familia/matricula.html')}">Mudar algo</a>${bloqueio ? '' : `<button type="button" class="botao botao-grande" data-rematricular>${icone('ok', 22)}Confirmar rematrícula</button>`}</div>`;
+    <div class="barra-acoes"><a class="botao botao-secundario botao-grande" href="${link('familia/matricula.html')}">Mudar algo</a>${bloqueio ? '' : `<button type="button" class="botao botao-grande" data-rematricular>Confirmar rematrícula</button>`}</div>`;
   main.querySelector('h1').focus();
 }
 async function enviarRematricula() {
@@ -82,7 +82,7 @@ function desenhar(erro = '', campoComErro = null) {
     acoes.innerHTML = '';
     voltarTopo?.remove();
     main.innerHTML = `<div class="sucesso" role="status">
-        <div class="selo" aria-hidden="true">${icone('ok', 60)}</div>
+        <div class="selo" aria-hidden="true">${icone('ok', 36)}</div>
         <h1 tabindex="-1">Pedido enviado</h1>
       </div>
       <div class="protocolo"><span>Protocolo</span><strong>${esc(d.protocolo)}</strong></div>
