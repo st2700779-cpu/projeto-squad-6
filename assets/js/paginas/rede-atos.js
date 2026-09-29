@@ -37,10 +37,10 @@ function desenhar() {
   const semPedido = linhas.filter((l) => l.s.dias <= DIAS_RENOVACAO && !l.r);
   main.innerHTML = `
     <h1 class="esp-t-0 esp-b-4">Atos autorizativos</h1>
-    ${semPedido.length ? `<div class="alerta-erro esp-b-4" role="status">${icone('alerta', 20)}<span>${semPedido.length} ${semPedido.length === 1 ? 'ato vencido ou a vencer' : 'atos vencidos ou a vencer'} em até ${DIAS_RENOVACAO} dias, sem pedido de renovação.</span></div>` : ''}
     <dl class="resumo-linha">
       <div class="${vencidos ? 'alerta' : ''}"><dd>${vencidos}</dd><dt>${vencidos === 1 ? 'ato vencido' : 'atos vencidos'}</dt></div>
       <div class="${aVencer ? 'atencao' : ''}"><dd>${aVencer}</dd><dt>${aVencer === 1 ? 'vence' : 'vencem'} em até ${DIAS_RENOVACAO} dias</dt></div>
+      <div class="${semPedido.length ? 'alerta' : ''}"><dd>${semPedido.length}</dd><dt>sem pedido de renovação</dt></div>
       <div><dd>${linhas.length}</dd><dt>${linhas.length === 1 ? 'ato acompanhado' : 'atos acompanhados'}</dt></div>
     </dl>
     <div class="ferramentas-tabela">

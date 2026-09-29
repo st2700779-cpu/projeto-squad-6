@@ -1,6 +1,6 @@
 // Textos fixos do assistente, escritos pela equipe (não gerados pela IA).
 export const MSG = {
-  saudacao: 'Olá! Posso ajudar com matrícula, documentos, prazos e notas. Escreva ou toque no microfone para falar.',
+  saudacao: 'Posso ajudar com matrícula, documentos, prazos e notas. Escreva a dúvida ou use o microfone.',
   avisoDados: 'Não escreva CPF, RG ou endereço aqui. Não é preciso.',
   carregando: 'Procurando a resposta…',
   esperaMaxima: 'Se não houver resposta em 30 segundos, a consulta é interrompida.',

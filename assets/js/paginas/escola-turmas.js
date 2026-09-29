@@ -21,7 +21,7 @@ function desenhar(erro = '') {
     <div class="filtros" role="group" aria-label="Papel na escola">
       <button type="button" data-papel="coordenacao" aria-pressed="${coord}">Atuar como coordenação</button>
       <button type="button" data-papel="direcao" aria-pressed="${!coord}">Atuar como direção</button></div>
-    <p class="pagina-descricao">${coord ? 'A coordenação monta a turma e envia para aprovação da direção.' : 'A direção aprova a turma ou devolve com justificativa.'} Professores e estudantes só veem turmas aprovadas.</p>
+    <p class="pagina-descricao">${coord ? 'Monte a turma e envie para a direção aprovar.' : 'Aprove a turma ou devolva com justificativa.'} Só turmas aprovadas aparecem para professores e estudantes.</p>
     ${coord ? `<details class="cartao" ${erro ? 'open' : ''}><summary><strong>Criar nova turma</strong></summary>
       <div class="row g-3 esp-t-1">
         <div class="col-md-6 campo"><label for="nt-nome">Nome da turma</label><input id="nt-nome" class="entrada" placeholder="Ex.: 9º ano B"></div>

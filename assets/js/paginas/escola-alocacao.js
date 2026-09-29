@@ -40,7 +40,7 @@ function desenhar() {
   };
   main.innerHTML = `
     <h1>Alocação de professores · ${esc(t.nome)} · ${esc(t.turno)}</h1>
-    <p class="pagina-descricao">O sistema bloqueia componente incompatível com o concurso e a formação do professor, e carga acima do limite semanal.</p>
+    <p class="pagina-descricao">Não é possível alocar professor sem habilitação no componente, nem acima da carga semanal.</p>
     <div class="ferramentas-tabela"><div class="campo"><label for="turma">Turma</label><select id="turma" class="entrada">${turmas.map((x) => `<option value="${x.id}" ${x.id === turmaId ? 'selected' : ''}>${esc(x.nome)} · ${esc(x.turno)} · ${esc(codigoDaTurma(x))}</option>`).join('')}</select></div></div>
     ${erro ? `<p class="alerta-erro" role="alert">${icone('cadeado', 20)}<span>Alocação bloqueada em ${esc(erro.componente)}. ${esc(erro.texto)}</span></p>` : ''}
     <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Componentes da matriz e professores da turma</caption>

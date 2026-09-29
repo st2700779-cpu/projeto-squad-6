@@ -22,7 +22,6 @@ async function mostrar() {
         <div class="${pres < PRESENCA_MINIMA ? 'alerta' : ''}"><dd>${pres.toFixed(1).replace('.', ',')}%</dd><dt>de frequência (mínimo ${PRESENCA_MINIMA}%)</dt></div>
         <div class="${atencao.length ? 'atencao' : ''}"><dd>${atencao.length}</dd><dt>${atencao.length === 1 ? 'matéria em atenção' : 'matérias em atenção'}</dt></div>
       </dl>
-      <div class="barra esp-b-4" role="img" aria-label="Frequência de ${pres.toFixed(0)} por cento; mínimo de ${PRESENCA_MINIMA}"><span style="width:${pres}%"></span><i class="marca-minimo" style="left:${PRESENCA_MINIMA}%"></i></div>
       <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Notas por matéria e bimestre</caption>
         <thead><tr><th scope="col">Matéria</th><th scope="col" class="num">1º bimestre</th><th scope="col" class="num">2º bimestre</th><th scope="col" class="num">Média</th><th scope="col">Situação</th></tr></thead>
         <tbody>${linhas.map((l) => `<tr><td class="titulo-linha"><strong>${esc(l.materia)}</strong></td><td class="num" data-rotulo="1º bimestre">${nf(l.n1)}</td><td class="num" data-rotulo="2º bimestre">${nf(l.n2)}</td><td class="num negrito" data-rotulo="Média">${nf(l.media)}</td><td data-rotulo="Situação">${etiqueta(l.situacao.texto, l.situacao.tipo)}</td></tr>`).join('')}</tbody>

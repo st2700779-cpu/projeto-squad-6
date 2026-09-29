@@ -1,39 +1,126 @@
 {
   "aluno": [
-    { "alvo": "#pagina h1", "titulo": "Sua situação em uma tela", "texto": "Aqui aparecem sua turma, a frequência e as matérias que pedem atenção. Se a presença ficar abaixo de 75%, a linha fica destacada." },
-    { "alvo": "#menu-lateral", "alternativa": ".topo-menu-botao", "titulo": "Menu do aluno", "texto": "Use o menu para ver as notas e faltas de cada matéria, emitir declarações e consultar o calendário e os avisos da escola." },
-    { "alvo": "[data-escala='0.1']", "titulo": "Tamanho da letra", "texto": "Os botões A mais e A menos mudam o tamanho da letra em todas as telas. A escolha fica guardada neste aparelho." },
-    { "alvo": "[data-exibicao]", "titulo": "Modo escuro e alto contraste", "texto": "Neste botão você liga o modo escuro ou o alto contraste, que deixa texto e bordas mais fortes." },
-    { "alvo": ".assistente-botao", "titulo": "Assistente", "texto": "O assistente responde dúvidas frequentes, como documentos da matrícula e datas do calendário, e leva você até a tela certa." },
-    { "alvo": "[data-sair]", "titulo": "Sair", "texto": "Ao terminar, use Sair. Isso encerra o acesso neste navegador. Para rever este guia, clique em Como usar." }
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Resumo do aluno",
+      "texto": "Turma, frequência e matérias em atenção. Com presença abaixo de 75%, o número aparece em destaque."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Notas e faltas por matéria, declarações e o calendário com os avisos da escola."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste. As escolhas ficam guardadas neste aparelho."
+    },
+    {
+      "alvo": ".assistente-botao",
+      "titulo": "Assistente",
+      "texto": "Responde dúvidas sobre documentos da matrícula e datas, e abre a tela certa."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Para ver este guia de novo, use Como usar."
+    }
   ],
   "professor": [
-    { "alvo": "#pagina h1", "titulo": "Suas turmas", "texto": "A tabela mostra as turmas em que você leciona, o componente, a carga horária e quantos estudantes estão matriculados." },
-    { "alvo": "#menu-lateral", "alternativa": ".topo-menu-botao", "titulo": "Diário de classe", "texto": "No menu, Diário de classe abre a chamada e o lançamento de notas por bimestre. Avisos da escola ficam logo abaixo." },
-    { "alvo": "[data-escala='0.1']", "titulo": "Tamanho da letra", "texto": "Aumente ou diminua a letra por aqui. Em tabelas longas, como o diário, ajuda a conferir os nomes." },
-    { "alvo": "[data-exibicao]", "titulo": "Modo escuro e alto contraste", "texto": "Este botão troca o modo de exibição, útil em sala com muita luz ou pouca." },
-    { "alvo": "[data-sair]", "titulo": "Sair", "texto": "Use Sair ao terminar, principalmente em computador compartilhado. Para rever este guia, clique em Como usar." }
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Suas turmas",
+      "texto": "Turmas, componente, carga horária e número de estudantes matriculados."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Diário de classe",
+      "texto": "O Diário abre a chamada e o lançamento de notas por bimestre. Os avisos da escola ficam logo abaixo."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra, útil nas tabelas longas do diário. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Em computador compartilhado, saia ao terminar."
+    }
   ],
   "escola": [
-    { "alvo": "#pagina h1", "titulo": "O que precisa de atenção", "texto": "A tela inicial lista as pendências da escola: matrículas a confirmar, estudantes sem turma e turmas devolvidas." },
-    { "alvo": "#menu-lateral", "alternativa": ".topo-menu-botao", "titulo": "Menu da secretaria", "texto": "Matrículas, enturmação, turmas, alocação de professores e equivalências ficam no menu, na ordem em que o trabalho costuma acontecer." },
-    { "alvo": "[data-escala='0.1']", "titulo": "Tamanho da letra", "texto": "Os botões A mais e A menos mudam o tamanho da letra em todas as telas." },
-    { "alvo": "[data-exibicao]", "titulo": "Modo escuro e alto contraste", "texto": "Troque aqui o modo de exibição para o que for mais confortável." },
-    { "alvo": ".assistente-botao", "titulo": "Assistente", "texto": "O assistente tira dúvidas sobre o fluxo de matrícula e as regras de vaga e de ato autorizativo." },
-    { "alvo": "[data-sair]", "titulo": "Sair", "texto": "Use Sair ao terminar o atendimento. Para rever este guia, clique em Como usar." }
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Pendências da secretaria",
+      "texto": "Matrículas a confirmar, estudantes sem turma e turmas devolvidas, cada uma com o botão que abre a tela certa."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Matrículas, enturmação, turmas, alocação de professores e equivalências, na ordem em que o trabalho costuma acontecer."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": ".assistente-botao",
+      "titulo": "Assistente",
+      "texto": "Tira dúvidas sobre o fluxo de matrícula e as regras de vaga e de ato autorizativo."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador."
+    }
   ],
   "rede": [
-    { "alvo": "#pagina h1", "titulo": "Atos autorizativos", "texto": "A lista vem ordenada pelo vencimento mais próximo. Atos vencidos impedem a escola de abrir turma e de receber matrícula naquela etapa." },
-    { "alvo": "#menu-lateral", "alternativa": ".topo-menu-botao", "titulo": "Menu da rede", "texto": "Além dos atos, o menu tem as vagas por escola e as matrizes curriculares." },
-    { "alvo": "[data-escala='0.1']", "titulo": "Tamanho da letra", "texto": "Os botões A mais e A menos mudam o tamanho da letra em todas as telas." },
-    { "alvo": "[data-exibicao]", "titulo": "Modo escuro e alto contraste", "texto": "Troque aqui o modo de exibição." },
-    { "alvo": "[data-sair]", "titulo": "Sair", "texto": "Use Sair ao terminar. Para rever este guia, clique em Como usar." }
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Atos autorizativos",
+      "texto": "Lista ordenada pelo vencimento. Com o ato vencido, a escola não pode abrir turma nem receber matrícula na etapa."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Além dos atos: vagas por escola e matrizes curriculares."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador."
+    }
   ],
   "familia": [
-    { "alvo": "#pagina h1", "titulo": "Matrícula em cinco passos", "texto": "O pedido é feito em cinco passos: dados do estudante, responsável, endereço, escolha da escola e revisão. Uma decisão por tela." },
-    { "alvo": ".botao-ouvir", "titulo": "Ouvir em voz alta", "texto": "O botão com o alto-falante lê a tela em voz alta. Se o aparelho não tiver voz em português, o texto continua na tela." },
-    { "alvo": "[data-escala='0.1']", "titulo": "Tamanho da letra", "texto": "Os botões A mais e A menos mudam o tamanho da letra." },
-    { "alvo": "[data-exibicao]", "titulo": "Modo escuro e alto contraste", "texto": "Troque aqui o modo de exibição para o que ficar mais fácil de ler." },
-    { "alvo": ".assistente-botao", "titulo": "Assistente", "texto": "O assistente responde dúvidas sobre documentos e prazos da matrícula." }
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Matrícula em cinco passos",
+      "texto": "Dados do estudante, responsável, endereço, escolha da escola e revisão. Uma decisão por tela."
+    },
+    {
+      "alvo": ".botao-ouvir",
+      "titulo": "Ouvir",
+      "texto": "Lê a tela em voz alta. Se o aparelho não tiver voz em português, o texto continua na tela."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": ".assistente-botao",
+      "titulo": "Assistente",
+      "texto": "Responde dúvidas sobre documentos e prazos da matrícula."
+    }
   ]
 }

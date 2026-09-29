@@ -42,7 +42,7 @@ function desenhar() {
   const pendencias = linhas.filter((l) => l.resultado !== 'equivalente');
   main.innerHTML = `
     <h1>Equivalência de estudos · matriz ${esc(matriz.versao)}</h1>
-    <p class="pagina-descricao">Compara o histórico da escola de origem com a matriz da rede. O resultado vem das regras da rede; a secretaria confere e registra o parecer.</p>
+    <p class="pagina-descricao">Histórico da escola de origem comparado com a matriz da rede. A secretaria confere e registra o parecer.</p>
     <div class="ferramentas-tabela"><div class="campo"><label for="estudante">Estudante transferido</label><select id="estudante" class="entrada">${transferidos.map((x) => `<option value="${esc(x.protocolo)}" ${x.protocolo === p.protocolo ? 'selected' : ''}>${esc(x.estudante)} · ${esc(x.serie)} · ${esc(x.situacao)}</option>`).join('')}</select></div></div>
     <div class="cartao"><strong class="texto-medio">${esc(p.estudante)}</strong><br>
       <span class="texto-suave">Vem de: ${esc(h.escolaOrigem)} · Cursou: ${esc(h.serieCursada)} · Vai para: ${esc(p.serie)}</span></div>

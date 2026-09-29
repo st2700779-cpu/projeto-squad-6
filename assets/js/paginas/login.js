@@ -29,7 +29,7 @@ async function desenhar() {
   document.title = `Entrar como ${P.rotulo} · Portal Acadêmico`;
   main.innerHTML = `
     <h1 tabindex="-1">Entrar como ${esc(P.rotulo)}</h1>
-    <p class="pagina-descricao">Acesso de protótipo: nenhuma senha real é usada nem guardada.</p>
+    <p class="pagina-descricao">Acesso simulado. Não use uma senha real.</p>
     ${atual && params.get('motivo') === 'outro-perfil' ? `<div class="sessao-atual" role="status">${icone('info', 20)}<span>Você entrou como ${esc(atual.nome)} (${esc(PERFIS[atual.perfil]?.rotulo || atual.perfil)}). Esta área é de ${esc(P.rotulo)}: entre com uma conta desse perfil.</span></div>` : params.get('voltar') ? `<div class="sessao-atual" role="status">${icone('info', 20)}<span>Entre para abrir a página pedida.</span></div>` : ''}
     <form id="form-login" class="form-login" novalidate>
       <div class="campo">

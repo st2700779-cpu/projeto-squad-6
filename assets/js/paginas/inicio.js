@@ -2,25 +2,24 @@
 // Matrícula (família) é aberta e não pede.
 import { iniciar, link } from '../app.js';
 import { avisar, confirmar, esc } from '../ui.js';
-import { botaoOuvir } from '../acessibilidade.js';
 import { sessao, sair, PERFIS } from '../auth.js';
 import { reiniciarDados } from '../dados.js';
 
 const main = await iniciar();
 const acessos = [
-  ['login.html?perfil=aluno', 'Aluno', 'Notas e faltas, documentos e calendário. Pede matrícula e senha.'],
-  ['login.html?perfil=professor', 'Professor', 'Turmas, chamada e lançamento de notas no diário de classe. Pede matrícula funcional e senha.'],
-  ['login.html?perfil=escola', 'Secretaria', 'Matrículas, enturmação, turmas e alocação de professores. Pede usuário institucional e senha.'],
-  ['login.html?perfil=rede', 'Rede (SEDUC e DRE)', 'Atos autorizativos, vagas por escola e matrizes curriculares. Pede usuário institucional e senha.'],
-  ['familia/matricula.html', 'Matrícula', 'Para a família fazer o pedido de matrícula. Não precisa de login.']
+  ['login.html?perfil=aluno', 'Aluno', 'Notas e faltas, documentos e calendário'],
+  ['login.html?perfil=professor', 'Professor', 'Turmas e diário de classe: chamada e notas'],
+  ['login.html?perfil=escola', 'Secretaria', 'Matrículas, enturmação, turmas e alocação de professores'],
+  ['login.html?perfil=rede', 'Rede (SEDUC e DRE)', 'Atos autorizativos, vagas por escola e matrizes curriculares'],
+  ['familia/matricula.html', 'Matrícula', 'Pedido de matrícula pela família, sem login']
 ];
 const s = sessao();
 main.innerHTML = `
   <h1>Entrar no sistema</h1>
-  <p class="pagina-descricao">Escolha como você vai usar o portal. O acesso é simulado e as contas de teste aparecem na tela de login.</p>
+  <p class="pagina-descricao">Acesso simulado. As contas de teste ficam na tela de login.</p>
   ${s ? `<div class="sessao-atual" role="status"><span>Você entrou como <strong>${esc(s.nome)}</strong> (${esc(PERFIS[s.perfil]?.rotulo || s.perfil)}).</span><a class="botao botao-secundario botao-mini" href="${link(PERFIS[s.perfil]?.inicio || 'index.html')}">Continuar</a><button type="button" class="botao botao-texto botao-mini" id="sair">Sair</button></div>` : ''}
   <ul class="lista-perfis">
-    ${acessos.map(([h, t, d]) => `<li><a href="${link(h)}"><strong>${t}</strong><span>${d}</span></a>${botaoOuvir(`${t}. ${d}`, '')}</li>`).join('')}
+    ${acessos.map(([h, t, d]) => `<li><a href="${link(h)}"><strong>${t}</strong><span>${d}</span></a></li>`).join('')}
   </ul>
   <p class="aviso-prototipo">Squad 6 · Residência RiseUp · Escolas, pessoas e dados fictícios · <button type="button" class="botao botao-texto botao-mini" id="reiniciar">Restaurar dados de demonstração</button></p>`;
 main.querySelector('#sair')?.addEventListener('click', sair);

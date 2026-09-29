@@ -33,7 +33,7 @@ function desenhar() {
   };
   main.innerHTML = `
     <h1>Enturmação · 2026</h1>
-    <p class="pagina-descricao">Estudantes com matrícula confirmada entram em turma aprovada da mesma série, respeitando a capacidade da sala.</p>
+    <p class="pagina-descricao">Só entram turmas aprovadas da mesma série e com vaga.</p>
     <h2 class="esp-t-0">Aguardando turma (${semTurma.length})</h2>
     ${semTurma.length ? `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Estudantes aguardando turma</caption>
       <thead><tr><th scope="col">Estudante</th><th scope="col">Tipo</th><th scope="col">Série</th><th scope="col">Turma</th></tr></thead>

@@ -38,7 +38,7 @@ async function mostrar() {
       <div class="linha-botoes esp-b-4"><a class="botao botao-secundario" href="${link('aluno/notas.html')}">Ver boletim de ${esc(primeiroNome)}</a>${botaoOuvir(resumoFalado, 'Ouvir resumo')}</div>
       ${seguinte ? (rematricula
         ? `<p class="esp-b-4">Rematrícula para 2027: ${etiqueta(rematricula.situacao, cor(rematricula.situacao))} <span class="texto-suave">protocolo ${esc(rematricula.protocolo)}</span></p>`
-        : `<div class="alerta-info">${icone('info', 20)}<span>Rematrícula para 2027 aberta de 3 a 28 de novembro. ${esc(primeiroNome)} continua em ${esc(nomeCurto(escola.nome))}, na ${esc(serieCompleta(seguinte))}, com os dados já preenchidos. <a href="${link('familia/matricula.html')}?rematricula=${est.id}">Confirmar rematrícula de ${esc(primeiroNome)}</a></span></div>`) : ''}
+        : `<div class="alerta-info">${icone('info', 20)}<span>Rematrícula 2027 aberta de 3 a 28 de novembro: ${esc(serieCompleta(seguinte))} em ${esc(nomeCurto(escola.nome))}. <a href="${link('familia/matricula.html')}?rematricula=${est.id}">Confirmar rematrícula de ${esc(primeiroNome)}</a></span></div>`) : ''}
       <h2>Próximas datas <a class="texto-pequeno peso-normal" href="${link('aluno/calendario.html')}">ver calendário e avisos</a></h2>
       <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Próximas datas do calendário letivo</caption>
         <thead><tr><th scope="col">Data</th><th scope="col">Evento</th></tr></thead>
