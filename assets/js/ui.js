@@ -215,3 +215,15 @@ export function debounce(fn, espera = 200) {
   let t;
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), espera); };
 }
+
+/**
+ * Executa uma ação assíncrona mostrando o botão como "salvando" (spinner, desativado) até terminar.
+ * @param {HTMLButtonElement|null} botao
+ * @param {() => Promise<any>} acao
+ */
+export async function comEspera(botao, acao) {
+  if (botao) { botao.setAttribute('aria-busy', 'true'); botao.disabled = true; }
+  try { return await acao(); } finally {
+    if (botao?.isConnected) { botao.removeAttribute('aria-busy'); botao.disabled = false; }
+  }
+}

@@ -19,7 +19,8 @@
 <style>
   /* Complementos deste protótipo (o resto vem de componentes.css). O portal recebe estas duas
      regras do Bootstrap; aqui, sem Bootstrap, elas vêm declaradas. */
-  *, *::before, *::after { box-sizing: border-box; }
+  .conteudo-prototipo { max-width: 800px; padding-top: var(--sp-4); }
+  main:focus { outline: none; }
   [hidden] { display: none !important; }
   .linha-entre { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; }
   .lista-cartao { list-style: none; padding: 0; margin: 0; }
@@ -40,17 +41,23 @@
 <a class="sr-only" href="#conteudo">Pular para o conteúdo</a>
 
 <header class="topo">
-  <div class="topo-interno topo-estreito">
-    <a class="marca" href="#" data-ir="">Portal Acadêmico<span id="marca-perfil" class="so-desktop"></span></a>
-    <button type="button" class="ferramenta" data-escala="-0.1" aria-label="Diminuir letra" id="btn-menos">A−</button>
-    <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
-    <span id="lugar-tema"></span>
-    <a class="ferramenta" href="#" data-ir="" id="btn-sair" hidden>Sair</a>
+  <div class="topo-interno">
+    <a class="marca" href="#" data-ir="" aria-label="Portal Acadêmico, página inicial">
+      <span class="marca-selo" aria-hidden="true">SE</span>
+      <span class="marca-texto"><strong>Portal Acadêmico</strong><small>SEDUC/SE · Governo de Sergipe</small></span>
+    </a>
+    <div class="topo-direita">
+      <button type="button" class="ferramenta ferramenta-opcional" data-escala="-0.1" aria-label="Diminuir letra" id="btn-menos">A−</button>
+      <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
+      <span id="lugar-tema"></span>
+      <div class="usuario" id="usuario" hidden><span class="avatar" id="usuario-avatar" aria-hidden="true"></span><span class="usuario-texto"><strong id="usuario-nome"></strong><small id="usuario-papel"></small></span></div>
+      <a class="ferramenta" href="#" data-ir="" id="btn-sair" hidden>Sair</a>
+    </div>
   </div>
 </header>
 
-<main id="conteudo" class="conteudo conteudo-estreito" tabindex="-1"></main>
-<div id="aviso-rapido" class="aviso-rapido" role="status"></div>
+<main id="conteudo" class="conteudo conteudo-prototipo" tabindex="-1"></main>
+<div id="aviso-rapido" class="aviso-rapido"><span class="aviso-icone" aria-hidden="true"></span><span class="aviso-texto" id="aviso-texto" role="status"></span><button type="button" class="aviso-fechar" id="aviso-fechar" aria-label="Fechar aviso"></button></div>
 <dialog id="dialogo" class="janela" aria-labelledby="dialogo-titulo" aria-describedby="dialogo-texto">
   <h2 id="dialogo-titulo" class="sem-margem-topo"></h2>
   <p id="dialogo-texto"></p>
@@ -479,7 +486,8 @@ function desempenho(est, diario, aulasDadas) {
     tam = tam || 22;
     return '<svg width="' + tam + '" height="' + tam + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="' + PATHS[nome] + '"/></svg>';
   };
-  var etiqueta = function (texto, tipo) { return '<span class="etiqueta etiqueta-' + tipo + '">' + esc(texto) + '</span>'; };
+  var ICONE_SELO = { ok: 'ok', atencao: 'alerta', erro: 'fechar', info: 'alerta', neutra: '' };
+  var etiqueta = function (texto, tipo) { return '<span class="etiqueta etiqueta-' + tipo + '">' + (ICONE_SELO[tipo] ? icone(ICONE_SELO[tipo], 14) : '') + esc(texto) + '</span>'; };
 
   // Preferência de tamanho de letra (só conveniência; funciona sem armazenamento).
   function lerEscala() { try { return Number(localStorage.getItem('prototipo-escala')) || 1; } catch (e) { return 1; } }
@@ -505,15 +513,25 @@ function desempenho(est, diario, aulasDadas) {
     speechSynthesis.speak(fala);
   }
 
-  // Aviso rápido: a região "status" existe desde o carregamento, para o leitor de tela anunciar.
+  // Aviso rápido com ícone e botão de fechar: a região "status" existe desde o carregamento, para o leitor de tela anunciar.
   var timerAviso;
-  function avisar(texto) {
+  var ERRO_NO_TEXTO = /n[ãa]o foi poss[ií]vel|inv[áa]lid|falha|erro/i;
+  function esconderAviso() {
     var el = document.getElementById('aviso-rapido');
-    el.textContent = texto;
-    el.classList.add('visivel');
-    clearTimeout(timerAviso);
-    timerAviso = setTimeout(function () { el.classList.remove('visivel'); el.textContent = ''; }, 5000);
+    el.classList.remove('visivel');
+    document.getElementById('aviso-texto').textContent = '';
   }
+  function avisar(texto, tipo) {
+    tipo = tipo || (ERRO_NO_TEXTO.test(texto) ? 'erro' : 'ok');
+    var el = document.getElementById('aviso-rapido');
+    el.className = 'aviso-rapido visivel ' + tipo;
+    el.querySelector('.aviso-icone').innerHTML = icone(tipo === 'ok' ? 'ok' : 'alerta', 20);
+    document.getElementById('aviso-texto').textContent = texto;
+    clearTimeout(timerAviso);
+    timerAviso = setTimeout(esconderAviso, 6000);
+  }
+  document.getElementById('aviso-fechar').innerHTML = icone('fechar', 18);
+  document.getElementById('aviso-fechar').addEventListener('click', esconderAviso);
 
   // Confirmação antes de ações que não dá para desfazer. <dialog> nativo: prende o foco e fecha com Esc.
   var dialogo = document.getElementById('dialogo');
@@ -546,6 +564,12 @@ function desempenho(est, diario, aulasDadas) {
     professor: { nome: 'Professor', desc: 'Turmas e diário', icone: 'livro', rotulo: 'Professor' },
     secretaria: { nome: 'Escola', desc: 'Secretaria, coordenação e direção', icone: 'escola', rotulo: 'Escola' }
   };
+  // Usuário simulado e cor de destaque de cada visão (mesmos do portal).
+  var USUARIOS = {
+    aluno: { visao: 'familia', nome: 'Rosa Maria Santos', papel: 'Responsável' },
+    professor: { visao: 'professor', nome: 'Profa. Ana Lúcia Menezes', papel: 'Professora de Matemática' },
+    secretaria: { visao: 'escola', nome: 'Secretaria escolar', papel: 'C. E. Rio Sergipe' }
+  };
   var turma = function () { return dados.turmas.filter(function (t) { return t.id === dados.turmaId; })[0]; };
   var alunosTurma = function () { return dados.diario[dados.turmaId]; };
   var hojeISO = function () { return new Date().toISOString().slice(0, 10); };
@@ -563,10 +587,10 @@ function desempenho(est, diario, aulasDadas) {
       '<p class="texto-suave lead">Escolha seu perfil. No protótipo, o acesso é simulado.</p>' +
       Object.keys(PERFIS).map(function (k) {
         var p = PERFIS[k];
-        return '<div class="bloco"><a href="#' + k + '"><span class="icone">' + icone(p.icone, 30) + '</span><span><strong>' + p.nome + '</strong><small>' + p.desc + '</small></span></a>' + botaoOuvir(p.nome + '. ' + p.desc + '.') + '</div>';
+        return '<div class="bloco visao-' + USUARIOS[k].visao + '"><a href="#' + k + '"><span class="icone">' + icone(p.icone, 30) + '</span><span><strong>' + p.nome + '</strong><small>' + p.desc + '</small></span></a>' + botaoOuvir(p.nome + '. ' + p.desc + '.') + '</div>';
       }).join('') +
       '<p class="rodape-prototipo">Protótipo de demonstração · SEDUC/SE · dados fictícios · ' +
-      '<button type="button" class="botao botao-secundario botao-mini" data-reiniciar>Reiniciar demonstração</button></p>';
+      '<button type="button" class="botao botao-texto botao-mini" data-reiniciar>Reiniciar demonstração</button></p>';
   }
 
   // ---------- W2 + W5 · Família: notas e faltas (mesmas regras do portal) ----------
@@ -701,10 +725,17 @@ function desempenho(est, diario, aulasDadas) {
     if (perfil !== perfilAtual) { filtro = 'Aguardando confirmação'; recusando = null; erroRecusa = ''; erroNotas = null; ausentes = {}; }
     perfilAtual = perfil;
     document.getElementById('btn-sair').hidden = !perfil;
-    document.getElementById('btn-menos').hidden = !!perfil; // W2: no perfil, só A+ e Sair
-    document.getElementById('marca-perfil').textContent = perfil ? ' · ' + PERFIS[perfil].rotulo : '';
     document.title = (perfil ? PERFIS[perfil].nome + ' · ' : '') + 'Sistema Acadêmico · SEDUC/SE';
-    main.innerHTML = perfil === 'aluno' ? telaAluno() : perfil === 'professor' ? telaProfessor() : perfil === 'secretaria' ? telaSecretaria() : telaPerfis();
+    var u = perfil && USUARIOS[perfil];
+    document.body.dataset.visao = u ? u.visao : 'geral';
+    document.getElementById('usuario').hidden = !u;
+    if (u) {
+      document.getElementById('usuario-avatar').textContent = u.nome.replace(/^Profa?\.\s+/, '').split(' ').slice(0, 2).map(function (p) { return p[0]; }).join('');
+      document.getElementById('usuario-nome').textContent = u.nome;
+      document.getElementById('usuario-papel').textContent = u.papel;
+    }
+    var trilha = perfil ? '<nav class="breadcrumb esp-b-4" aria-label="Você está em"><ol><li><a href="#" data-ir="">Início</a></li><li><span aria-current="page">' + PERFIS[perfil].nome + '</span></li></ol></nav>' : '';
+    main.innerHTML = trilha + (perfil === 'aluno' ? telaAluno() : perfil === 'professor' ? telaProfessor() : perfil === 'secretaria' ? telaSecretaria() : telaPerfis());
     if (focar) { window.scrollTo(0, 0); main.focus(); }
   }
   window.addEventListener('hashchange', function () { desenhar(true); });

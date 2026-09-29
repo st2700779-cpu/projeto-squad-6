@@ -63,7 +63,7 @@
 .estudante { display: flex; align-items: center; gap: var(--sp-3); background: var(--superficie); border: 1px solid var(--borda); border-radius: var(--raio-lg); padding: var(--sp-3) var(--sp-4); margin-bottom: var(--sp-4); }
 .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--acento-suave); color: var(--acento); display: grid; place-items: center; font-weight: var(--peso-negrito); font-size: var(--texto-base); flex: none; }
 /* Indicadores (KPI): número grande, rótulo e, se houver, ícone e link */
-.numeros { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: var(--sp-5); }
+.numeros { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: var(--sp-5); }
 .numero { position: relative; display: block; background: var(--superficie); border: 1px solid var(--borda); border-left: 4px solid var(--acento); border-radius: var(--raio-lg); box-shadow: var(--sombra-1); padding: var(--sp-4) var(--sp-5); color: var(--texto); text-decoration: none; transition: box-shadow var(--transicao), border-color var(--transicao); }
 a.numero:hover { box-shadow: var(--sombra-2); }
 .numero strong { display: block; font-size: var(--texto-3xl); line-height: 1.1; font-weight: var(--peso-negrito); }
@@ -316,3 +316,8 @@ svg { flex: none; }
 .tabela-matriz th.num { white-space: nowrap; }
 .numero strong.numero-texto { font-size: var(--texto-xl); line-height: 1.3; }
 h2 .etiqueta { white-space: normal; }
+.barra-acoes.compacta { justify-content: flex-start; align-items: center; flex-wrap: wrap; }
+.barra-acoes.compacta .botao { flex: none; }
+.cor-atencao { color: var(--alerta); font-weight: var(--peso-forte); }
+.tabela-notas td.situacao-celula { white-space: nowrap; }
+@media (max-width: 767px) { .tabela-notas td.situacao-celula { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; } .tabela-notas td.situacao-celula::before { margin-bottom: 0; } }

@@ -23,7 +23,8 @@ export function montarAssistente({ perfil }) {
   abrirBotao.className = 'assistente-botao';
   abrirBotao.setAttribute('aria-controls', 'assistente');
   abrirBotao.setAttribute('aria-expanded', 'false');
-  abrirBotao.innerHTML = `${icone('conversa', 24)}<span>Tirar dúvida</span>`;
+  abrirBotao.innerHTML = `${icone('conversa', 24)}<span class="assistente-rotulo">Tirar dúvida</span>`;
+  abrirBotao.title = 'Tirar dúvida';
 
   const painel = document.createElement('aside');
   painel.id = 'assistente';

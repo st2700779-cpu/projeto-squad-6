@@ -97,3 +97,6 @@ html.menu-aberto body { overflow: hidden; }
 .perfil-cartao small { color: var(--texto-suave); font-size: var(--texto-base); }
 .perfil-cartao .perfil-rodape { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
 .perfil-cartao .perfil-entrar { color: var(--acento); font-weight: var(--peso-forte); display: inline-flex; align-items: center; gap: var(--sp-2); }
+/* Entrada suave do conteúdo (desligada por prefers-reduced-motion em tema.css) */
+#pagina { animation: aparecer var(--transicao-lenta) ease both; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(6px); } }

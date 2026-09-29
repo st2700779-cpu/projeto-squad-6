@@ -222,7 +222,7 @@ main.addEventListener('click', async (e) => {
   const alvo = e.target.closest('button');
   if (!alvo) return;
   if ('rematricular' in alvo.dataset) {
-    alvo.disabled = true;
+    alvo.disabled = true; alvo.setAttribute('aria-busy', 'true');
     try { await enviarRematricula(); } catch { desenharRematricula('Não foi possível confirmar agora. Tente de novo.'); return; }
     passo = 6;
     desenhar();
@@ -238,7 +238,7 @@ main.addEventListener('click', async (e) => {
     const { erro, campo } = validar();
     if (erro) { desenhar(erro, campo); return; }
     if (passo === 5) {
-      alvo.disabled = true;
+      alvo.disabled = true; alvo.setAttribute('aria-busy', 'true');
       try { await enviarPedido(); } catch { desenhar('Não foi possível enviar o pedido agora. Tente de novo.'); return; }
     }
     passo += 1;

@@ -1,9 +1,9 @@
 // Diário de classe (HU11; wireframe W13): turmas vindas da alocação da escola, estudantes vindos da enturmação,
 // validação no próprio campo e gravação pela API. No celular, cada estudante vira um cartão (classe tabela-cartoes).
 import { iniciar, falhaDados } from '../app.js';
-import { esc, avisar, icone, numeroBR, confirmar, dataHoraBR, vazio } from '../ui.js';
+import { esc, avisar, icone, numeroBR, confirmar, dataHoraBR, vazio, etiqueta, comEspera } from '../ui.js';
 import { carregar, diario, letivo, matriculas, turmasEscola, salvar as salvarDados, conjunto, registrarAcao } from '../dados.js';
-import { presenca, nomeCurto, turmasDoProfessor, sincronizarDiario } from '../regras.js';
+import { presenca, media, situacao, nomeCurto, turmasDoProfessor, sincronizarDiario } from '../regras.js';
 
 const main = await iniciar({ perfil: 'professor', pagina: 'professor/diario.html', assistente: true });
 let turmaId = new URLSearchParams(location.search).get('turma');
@@ -44,10 +44,10 @@ function desenhar() {
     ${alunos.length ? `${painelChamada(t, alunos)}
     <h2>Notas e faltas acumuladas · ${esc(componente)}</h2>
     <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-notas"><caption class="sr-only">Notas e faltas de ${esc(t.nome)}</caption>
-      <thead><tr><th scope="col">Estudante</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col">Faltas</th><th scope="col">Presença</th></tr></thead>
-      <tbody>${alunos.map((a) => { const p = `${presenca(a.faltas, aulasDadas).toFixed(0)}%`; return `<tr><td>${esc(a.nome)}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula">${p}</td></tr>`; }).join('')}</tbody>
+      <thead><tr><th scope="col">Estudante</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th></tr></thead>
+      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td></tr>`; }).join('')}</tbody>
     </table></div>
-    <div class="linha-botoes esp-t-4"><button type="button" class="botao" id="salvar">${icone('ok', 20)}Salvar diário</button><span class="texto-suave">As notas salvas aparecem para a família.</span></div>
+    <div class="barra-acoes compacta"><button type="button" class="botao" id="salvar">${icone('ok', 20)}Salvar diário</button><span class="texto-suave" id="estado-diario">As notas salvas aparecem para a família.</span></div>
     <div id="erro-diario" role="alert"></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.', 'pessoas')}`;
 }
 // Chamada rápida: todos começam presentes; um toque marca quem faltou. Registrar soma 1 falta a cada ausente.
@@ -77,8 +77,10 @@ async function registrarChamada() {
   try {
     alunos.forEach((a) => { if (ausentes.has(a.id)) a.faltas += 1; });
     chamadas[turmaId] = { ...(chamadas[turmaId] || {}), [hoje]: { ausentes: [...ausentes], quando: new Date().toISOString() } };
-    await salvarDados('diario', dados);
-    await salvarDados('chamadas', chamadas);
+    await comEspera(main.querySelector('#registrar-chamada'), async () => {
+      await salvarDados('diario', dados);
+      await salvarDados('chamadas', chamadas);
+    });
     await registrarAcao(prof.nome, `Registrou chamada (${ausentes.size} falta${ausentes.size === 1 ? '' : 's'})`, t.nome);
     ausentes.clear();
     desenhar();
@@ -128,7 +130,7 @@ async function salvar() {
     a[c.dataset.campo] = c.dataset.campo === 'faltas' ? v : Math.round(v * 10) / 10;
   }
   try {
-    await salvarDados('diario', dados);
+    await comEspera(main.querySelector('#salvar'), () => salvarDados('diario', dados));
     desenhar();
     avisar('Diário salvo.');
   } catch {
@@ -148,7 +150,21 @@ main.addEventListener('click', async (e) => {
   if (e.target.closest('#registrar-chamada')) registrarChamada();
 });
 // Validação em tempo real: erro ao digitar/sair do campo; a nota é normalizada para o formato brasileiro (8,5).
-main.addEventListener('input', (e) => { if (e.target.dataset?.aluno && e.target.getAttribute('aria-invalid')) mostrarErro(e.target, erroDoCampo(e.target)); });
+main.addEventListener('input', (e) => {
+  if (!e.target.dataset?.aluno) return;
+  if (e.target.getAttribute('aria-invalid')) mostrarErro(e.target, erroDoCampo(e.target));
+  const estado = main.querySelector('#estado-diario');
+  if (estado) { estado.textContent = 'Há alterações não salvas.'; estado.classList.add('cor-atencao'); }
+});
+// Menos esforço no lançamento: o texto do campo já vem selecionado e Enter desce para o mesmo campo do estudante seguinte.
+main.addEventListener('focusin', (e) => { if (e.target.dataset?.aluno) e.target.select(); });
+main.addEventListener('keydown', (e) => {
+  const c = e.target;
+  if (e.key !== 'Enter' || !c.dataset?.aluno) return;
+  e.preventDefault();
+  const mesmos = [...main.querySelectorAll(`[data-campo="${c.dataset.campo}"]`)];
+  mesmos[(mesmos.indexOf(c) + 1) % mesmos.length]?.focus();
+});
 main.addEventListener('focusout', (e) => {
   const c = e.target;
   if (!c.dataset?.aluno) return;

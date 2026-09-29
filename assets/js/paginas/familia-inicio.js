@@ -35,8 +35,8 @@ async function mostrar() {
           ${lista.map((e) => `<button type="button" data-estudante="${e.id}" aria-pressed="${e.id === est.id}"><span class="avatar" aria-hidden="true">${esc(e.nome[0])}</span><span>${esc(e.nome.split(' ')[0])}<small>${esc(e.turma)}</small></span></button>`).join('')}
         </div>` : ''}
       <div class="numeros">
-        <div class="numero${d.presenca < PRESENCA_MINIMA ? ' alerta' : ' ok'}"><span class="numero-icone">${icone(d.presenca < PRESENCA_MINIMA ? 'alerta' : 'ok', 22)}</span><strong>${d.presenca.toFixed(0)}%</strong><span>de presença (mínimo ${PRESENCA_MINIMA}%)</span></div>
-        <div class="numero${atencao ? ' atencao' : ' ok'}"><span class="numero-icone">${icone('livro', 22)}</span><strong>${atencao}</strong><span>${plural(atencao, 'matéria precisa de atenção', 'matérias precisam de atenção')}</span></div>
+        <a class="numero${d.presenca < PRESENCA_MINIMA ? ' alerta' : ' ok'}" href="${link('familia/notas.html')}"><span class="numero-icone">${icone(d.presenca < PRESENCA_MINIMA ? 'alerta' : 'ok', 22)}</span><strong>${d.presenca.toFixed(0)}%</strong><span>de presença (mínimo ${PRESENCA_MINIMA}%)</span></a>
+        <a class="numero${atencao ? ' atencao' : ' ok'}" href="${link('familia/notas.html')}"><span class="numero-icone">${icone('livro', 22)}</span><strong>${atencao}</strong><span>${plural(atencao, 'matéria precisa de atenção', 'matérias precisam de atenção')}</span></a>
         <div class="numero"><span class="numero-icone">${icone('calendario', 22)}</span><strong class="numero-texto">${esc(proxima.data)}</strong><span>${esc(proxima.titulo)}</span></div>
         <div class="numero${aguardando ? ' atencao' : ''}"><span class="numero-icone">${icone('formulario', 22)}</span><strong>${aguardando}</strong><span>${plural(aguardando, 'pedido aguardando a escola', 'pedidos aguardando a escola')}</span></div>
       </div>
