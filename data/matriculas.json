@@ -7,7 +7,8 @@
     "tipo": "Matrícula nova",
     "escolaId": "e1",
     "situacao": "Aguardando confirmação",
-    "data": "22/09/2026"
+    "data": "22/09/2026",
+    "origem": "online"
   },
   {
     "protocolo": "MAT-2026-0005",
@@ -17,7 +18,8 @@
     "tipo": "Transferência",
     "escolaId": "e1",
     "situacao": "Aguardando confirmação",
-    "data": "25/09/2026"
+    "data": "25/09/2026",
+    "origem": "presencial"
   },
   {
     "protocolo": "MAT-2026-0001",
@@ -27,7 +29,8 @@
     "tipo": "Matrícula nova",
     "escolaId": "e1",
     "situacao": "Confirmada",
-    "data": "02/09/2026"
+    "data": "02/09/2026",
+    "origem": "online"
   },
   {
     "protocolo": "MAT-2026-0002",
@@ -37,7 +40,8 @@
     "tipo": "Transferência",
     "escolaId": "e1",
     "situacao": "Confirmada",
-    "data": "08/09/2026"
+    "data": "08/09/2026",
+    "origem": "online"
   },
   {
     "protocolo": "MAT-2026-0003",
@@ -47,6 +51,7 @@
     "tipo": "Matrícula nova",
     "escolaId": "e1",
     "situacao": "Confirmada",
-    "data": "15/09/2026"
+    "data": "15/09/2026",
+    "origem": "presencial"
   }
 ]

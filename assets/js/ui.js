@@ -33,7 +33,16 @@ const PATHS = {
   trocar: 'M4 7h13l-3-3M20 17H7l3 3',
   cadeado: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',
   mais: 'M12 5v14M5 12h14',
-  menu: 'M4 6h16M4 12h16M4 18h16'
+  menu: 'M4 6h16M4 12h16M4 18h16',
+  celular: 'M8 3h8a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM11 18h2',
+  mapa: 'M9 4L3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14',
+  cartao: 'M3 6h18v12H3zM3 10h18M7 15h4',
+  pin: 'M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11zM12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4',
+  verificado: 'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6zM9 12l2 2 4-4',
+  semrede: 'M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 20h.01',
+  voltar: 'M11 6l-6 6 6 6M5 12h14',
+  repetir: 'M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5',
+  linha: 'M6 3v18M6 7h8M6 12h12M6 17h8'
 };
 /** SVG de ícone pelo nome (ver PATHS). Decorativo: fica oculto para leitores de tela. */
 export const icone = (nome, tam = 22) =>
@@ -82,7 +91,7 @@ regiaoDeAviso();
  * @param {{papel?: string, foco: string, aoClicar: (e: Event, fechar: (valor: any) => void) => void}} opcoes
  * @returns {Promise<any>} Valor passado a fechar(), ou null se a pessoa apertou Esc.
  */
-function abrirJanela(html, { papel = 'dialog', foco, aoClicar }) {
+export function abrirJanela(html, { papel = 'dialog', foco, aoClicar }) {
   return new Promise((resolver) => {
     const janela = document.createElement('dialog');
     janela.className = 'janela';

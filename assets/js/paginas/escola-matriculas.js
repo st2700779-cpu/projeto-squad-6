@@ -48,14 +48,14 @@ function linha(p) {
     : p.situacao === 'Confirmada' ? `<a class="botao botao-secundario botao-mini" href="${link('aluno/declaracao.html')}?tipo=matricula&protocolo=${encodeURIComponent(p.protocolo)}">Emitir declaração</a>` : '';
   return `<tr>
     <td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)} · resp. ${esc(p.responsavel)}</small></td>
-    <td data-rotulo="Tipo">${esc(p.tipo)}</td><td data-rotulo="Série" class="sem-quebra-texto">${esc(p.serie)}</td>
+    <td data-rotulo="Tipo">${esc(p.tipo)}<small>${p.origem === 'presencial' ? 'Presencial' : 'Online'}</small></td><td data-rotulo="Série" class="sem-quebra-texto">${esc(p.serie)}</td>
     <td class="num" data-rotulo="Pedido em">${esc(p.data || '—')}</td>
     <td data-rotulo="Situação">${etiqueta(p.situacao, p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao')}${p.motivo ? `<small>Motivo: ${esc(p.motivo)}</small>` : ''}${ultima ? `<small class="registro">${esc(ultima.acao)} por ${esc(ultima.quem)} em ${dataHoraBR(ultima.quando)}</small>` : ''}</td>
     ${acoes ? `<td class="acoes">${acoes}</td>` : '<td class="acoes"></td>'}</tr>`;
 }
 function tabela(lista) {
   return `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Pedidos de matrícula: ${esc(NOMES[filtro].toLowerCase())}</caption>
-    <thead><tr><th scope="col">Estudante</th><th scope="col">Tipo</th><th scope="col">Série</th><th scope="col" class="num">Pedido em</th><th scope="col">Situação</th><th scope="col">Decisão</th></tr></thead>
+    <thead><tr><th scope="col">Estudante</th><th scope="col">Tipo e origem</th><th scope="col">Série</th><th scope="col" class="num">Pedido em</th><th scope="col">Situação</th><th scope="col">Decisão</th></tr></thead>
     <tbody>${lista.map(linha).join('')}</tbody></table></div>
     <p class="contagem">${lista.length} ${lista.length === 1 ? 'pedido' : 'pedidos'} · ${esc(NOMES[filtro].toLowerCase())}</p>`;
 }
@@ -70,6 +70,7 @@ function desenhar() {
     </div>
     <div class="ferramentas-tabela">
       <div class="campo campo-busca"><label for="busca">Buscar pedido</label><input id="busca" class="entrada" type="search" placeholder="Nome, protocolo ou responsável" value="${esc(busca)}">${icone('busca', 20)}</div>
+      <a class="botao" href="${link('escola/atendimento.html')}">Atendimento presencial</a>
       <button type="button" class="botao botao-secundario" id="exportar">${icone('baixar', 20)}Exportar lista em CSV</button>
     </div>
     ${alvo ? painelRecusa(alvo) : ''}
@@ -91,8 +92,8 @@ main.addEventListener('click', async (e) => {
   if (!b) return;
   if (b.dataset.filtro) { filtro = b.dataset.filtro; recusando = null; desenhar(); return; }
   if (b.id === 'exportar') {
-    baixarCSV(`pedidos-${NOMES[filtro].toLowerCase()}.csv`, ['Protocolo', 'Estudante', 'Tipo', 'Série', 'Responsável', 'Data', 'Situação', 'Motivo'],
-      visiveis().map((p) => [p.protocolo, p.estudante, p.tipo, p.serie, p.responsavel, p.data, p.situacao, p.motivo || '']));
+    baixarCSV(`pedidos-${NOMES[filtro].toLowerCase()}.csv`, ['Protocolo', 'Estudante', 'Tipo', 'Origem', 'Série', 'Responsável', 'Data', 'Situação', 'Motivo'],
+      visiveis().map((p) => [p.protocolo, p.estudante, p.tipo, p.origem === 'presencial' ? 'presencial' : 'online', p.serie, p.responsavel, p.data, p.situacao, p.motivo || '']));
     return;
   }
   if (b.dataset.recusar) { recusando = b.dataset.recusar; erroRecusa = ''; desenhar(); return; }
