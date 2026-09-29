@@ -1,0 +1,33 @@
+# Publica o portal estático no GitHub Pages a cada push na branch principal (ou pelo botão "Run workflow").
+# Antes do primeiro uso: Settings > Pages > Build and deployment > Source: GitHub Actions.
+# O QR Code, o PWA (service worker) e a verificação de documentos só funcionam em https, que o GitHub Pages oferece.
+name: Publicar no GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Montar a pasta publicada
+        run: |
+          mkdir public
+          cp -r index.html login.html verificar.html 404.html config.js manifest.json sw.js sistema-academico-seduc-prototipo.html aluno familia professor escola rede assets data public/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deploy
+        uses: actions/deploy-pages@v4
