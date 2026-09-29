@@ -31,7 +31,7 @@ const TEXTO = [
   ['texto', 'superficie'], ['texto', 'fundo-app'], ['texto-suave', 'superficie'], ['texto-suave', 'fundo-app'], ['texto-suave', 'superficie-2'],
   ['cor-primaria', 'superficie'], ['cor-primaria', 'cor-primaria-suave'], ['sobre-primaria', 'cor-primaria'],
   ['sucesso', 'sucesso-fundo'], ['alerta', 'alerta-fundo'], ['erro', 'erro-fundo'], ['info', 'info-fundo'],
-  ['sucesso', 'superficie'], ['erro', 'superficie'], ['sobre-erro', 'erro-solido'], ['cor-secundaria', 'superficie']
+  ['sucesso', 'superficie'], ['erro', 'superficie'], ['sobre-erro', 'erro-solido'], ['cor-secundaria', 'superficie'], ['sobre-primaria', 'cor-secundaria']
 ];
 const COMPONENTE = [['borda-forte', 'superficie'], ['borda-forte', 'fundo-app'], ['foco', 'superficie'], ['erro', 'superficie']];
 let falhas = 0;

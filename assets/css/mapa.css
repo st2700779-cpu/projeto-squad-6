@@ -1,0 +1,39 @@
+/* Mapa de vagas (família e rede). Só usa tokens de tema.css. */
+.mapa-layout { display: grid; gap: var(--sp-4); grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1000px) { .mapa-layout { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } .mapa-layout .mapa-caixa { position: sticky; top: calc(var(--altura-topo) + var(--sp-4)); } }
+.mapa-caixa { border: 1px solid var(--borda); border-radius: var(--raio-lg); overflow: hidden; background: var(--superficie-2); }
+.mapa { height: 440px; width: 100%; }
+@media (max-width: 559px) { .mapa { height: 320px; } }
+.mapa-aviso { margin: 0; padding: var(--sp-3) var(--sp-4); font-size: var(--texto-sm); color: var(--texto-suave); }
+.lista-escolas { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--borda); }
+.lista-escolas li { display: grid; grid-template-columns: 2rem minmax(0, 1fr); gap: var(--sp-3); padding: var(--sp-3) 0; border-bottom: 1px solid var(--borda); }
+.lista-escolas .posicao { width: 1.9rem; height: 1.9rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: var(--peso-negrito); font-size: var(--texto-sm); background: var(--cor-primaria); color: var(--sobre-primaria); }
+.lista-escolas h3 { margin: 0 0 2px; font-size: var(--texto-base); }
+.lista-escolas p { margin: 0; color: var(--texto-suave); font-size: var(--texto-sm); }
+.lista-escolas .linha-botoes { margin-top: var(--sp-2); }
+.marcador-mapa { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: var(--peso-negrito); font-size: var(--texto-sm); background: var(--cor-primaria); color: var(--sobre-primaria); border: 2px solid var(--superficie); box-shadow: var(--sombra-2); }
+.marcador-mapa.origem { background: var(--texto); color: var(--superficie); border-radius: 4px; }
+.popup-escola h3 { margin: 0 0 4px; font-size: 1rem; }
+.popup-escola table { border-collapse: collapse; margin: 6px 0; font-size: .85rem; }
+.popup-escola td, .popup-escola th { padding: 2px 8px 2px 0; text-align: left; font-weight: normal; }
+.popup-escola td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.legenda { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); list-style: none; margin: var(--sp-3) 0; padding: 0; font-size: var(--texto-sm); }
+.legenda li { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.legenda i { width: 1rem; height: 1rem; border-radius: 50%; border: 2px solid currentColor; display: inline-block; }
+.legenda .falta { color: var(--erro-solido); } .legenda .equilibrio { color: var(--alerta); } .legenda .folga { color: var(--cor-secundaria); }
+.legenda span { color: var(--texto); }
+/* Guia por voz */
+.guia { max-width: 760px; }
+.guia-pergunta { font-size: var(--texto-2xl); font-weight: var(--peso-negrito); margin: 0 0 var(--sp-4); }
+.guia-lista { margin: 0 0 var(--sp-4); padding-left: 1.4rem; font-size: var(--texto-xl); }
+.guia-opcoes { display: grid; gap: var(--sp-3); margin: var(--sp-4) 0; }
+.guia-opcao { display: flex; align-items: center; gap: var(--sp-4); min-height: 5rem; padding: var(--sp-3) var(--sp-5); border: 2px solid var(--borda-forte); border-radius: var(--raio-lg); font: inherit; font-size: var(--texto-xl); font-weight: var(--peso-negrito); text-align: left; text-decoration: none; cursor: pointer; color: var(--texto); background: var(--superficie); }
+.guia-opcao small { display: block; font-size: var(--texto-sm); font-weight: var(--peso-normal); opacity: .95; }
+.guia-opcao.verde { background: var(--cor-secundaria); border-color: var(--cor-secundaria); color: var(--sobre-primaria); }
+.guia-opcao.azul { background: var(--cor-primaria); border-color: var(--cor-primaria); color: var(--sobre-primaria); }
+.guia-opcao.laranja { background: var(--alerta-fundo); border-color: var(--alerta-borda); color: var(--alerta); }
+.guia-opcao.cinza { background: var(--superficie-2); color: var(--texto); }
+.guia-opcao:hover { filter: brightness(.94); }
+.guia-barra { position: sticky; bottom: 0; display: flex; gap: var(--sp-3); padding: var(--sp-3) 0; background: var(--fundo-app); border-top: 1px solid var(--borda); }
+.guia-barra .botao { flex: 1; min-height: 3.5rem; font-size: var(--texto-lg); }
+.botao-ouvir-grande { width: 100%; min-height: 5rem; font-size: var(--texto-2xl); gap: var(--sp-3); }

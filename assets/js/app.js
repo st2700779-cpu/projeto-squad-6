@@ -11,11 +11,11 @@ const DATA_DOS_DADOS = '29/09/2026'; // data de referência dos dados de demonst
 
 /** Itens do menu lateral de cada visão: [página, rótulo, ícone]. */
 export const MENUS = {
-  familia: [['familia/matricula.html', 'Matrícula', 'formulario']],
+  familia: [['familia/matricula.html', 'Matrícula', 'formulario'], ['familia/mapa.html', 'Escolas com vaga', 'mapa'], ['familia/guia.html', 'Ouvir instruções', 'alto']],
   aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario']],
   professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/avisos.html', 'Avisos', 'calendario']],
   escola: [['escola/index.html', 'Início', 'escola'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario']],
-  rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro']]
+  rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/mapa.html', 'Mapa de vagas', 'mapa'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro']]
 };
 const NOMES = { familia: 'Matrícula', aluno: 'Aluno', professor: 'Professor', escola: 'Escola', rede: 'Rede (SEDUC e DRE)' };
 const CHAVE_MENU = 'portal-menu-recolhido';

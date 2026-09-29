@@ -1,0 +1,115 @@
+{
+  "bairros": [
+    {
+      "nome": "Aracaju — Centro",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.9111,
+      "lng": -37.0717
+    },
+    {
+      "nome": "Aracaju — Grageru",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.9445,
+      "lng": -37.0577
+    },
+    {
+      "nome": "Aracaju — Bugio",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.9058,
+      "lng": -37.0645
+    },
+    {
+      "nome": "Aracaju — Atalaia",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.01,
+      "lng": -37.051
+    },
+    {
+      "nome": "Aracaju — Farolândia",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.966,
+      "lng": -37.067
+    },
+    {
+      "nome": "Aracaju — Jardins",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.935,
+      "lng": -37.056
+    },
+    {
+      "nome": "Aracaju — Santos Dumont",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.88,
+      "lng": -37.08
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Centro",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8551,
+      "lng": -37.1256
+    },
+    {
+      "nome": "São Cristóvão — Centro",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0136,
+      "lng": -37.2061
+    },
+    {
+      "nome": "São Cristóvão — Rosa Elze",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -10.996,
+      "lng": -37.193
+    },
+    {
+      "nome": "Lagarto — Centro",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9174,
+      "lng": -37.6512
+    },
+    {
+      "nome": "Itabaiana — Centro",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6857,
+      "lng": -37.4269
+    }
+  ],
+  "municipios": [
+    {
+      "municipio": "Aracaju",
+      "lat": -10.9361,
+      "lng": -37.064
+    },
+    {
+      "municipio": "Nossa Senhora do Socorro",
+      "lat": -10.8551,
+      "lng": -37.1256
+    },
+    {
+      "municipio": "São Cristóvão",
+      "lat": -11.0048,
+      "lng": -37.1996
+    },
+    {
+      "municipio": "Lagarto",
+      "lat": -10.9174,
+      "lng": -37.6512
+    },
+    {
+      "municipio": "Itabaiana",
+      "lat": -10.6857,
+      "lng": -37.4269
+    }
+  ]
+}

@@ -3,30 +3,45 @@
     "id": "e1",
     "nome": "Colégio Estadual Professor Osvaldo Tavares Rezende",
     "municipio": "Aracaju",
-    "dre": "DEA — Aracaju"
+    "dre": "DEA — Aracaju",
+    "bairro": "Grageru",
+    "lat": -10.9445,
+    "lng": -37.0577
   },
   {
     "id": "e2",
     "nome": "Escola Estadual Jornalista Adelaide Cunha Bispo",
     "municipio": "Aracaju",
-    "dre": "DEA — Aracaju"
+    "dre": "DEA — Aracaju",
+    "bairro": "Bugio",
+    "lat": -10.9058,
+    "lng": -37.0645
   },
   {
     "id": "e3",
     "nome": "Escola Estadual Doutor Heraldo Menezes Sobral",
     "municipio": "São Cristóvão",
-    "dre": "DRE — Grande Aracaju"
+    "dre": "DRE — Grande Aracaju",
+    "bairro": "Rosa Elze",
+    "lat": -10.996,
+    "lng": -37.193
   },
   {
     "id": "e4",
     "nome": "Colégio Estadual Padre Ezequiel Fontes Matos",
     "municipio": "Lagarto",
-    "dre": "DRE — Centro-Sul"
+    "dre": "DRE — Centro-Sul",
+    "bairro": "Centro",
+    "lat": -10.9174,
+    "lng": -37.6512
   },
   {
     "id": "e5",
     "nome": "Escola Estadual Professora Zilda Aragão Prado",
     "municipio": "Itabaiana",
-    "dre": "DRE — Agreste Central"
+    "dre": "DRE — Agreste Central",
+    "bairro": "Centro",
+    "lat": -10.6857,
+    "lng": -37.4269
   }
 ]
