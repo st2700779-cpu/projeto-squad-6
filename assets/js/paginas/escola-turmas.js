@@ -27,7 +27,7 @@ function desenhar(erro = '') {
         <div class="col-md-6 campo"><label for="nt-nome">Nome da turma</label><input id="nt-nome" class="entrada" placeholder="Ex.: 9º ano B"></div>
         <div class="col-md-6 campo"><label for="nt-serie">Série</label><select id="nt-serie" class="entrada">${SERIES.map((s) => `<option>${s}</option>`).join('')}</select></div>
         <div class="col-md-6 campo"><label for="nt-turno">Turno</label><select id="nt-turno" class="entrada"><option>Manhã</option><option>Tarde</option><option>Noite</option></select></div>
-        <div class="col-md-6 campo"><label for="nt-sala">Sala</label><select id="nt-sala" class="entrada"><option>Sala 01 (40 lugares)</option><option>Sala 05 (35 lugares)</option><option>Laboratório 1 (25 lugares)</option></select></div>
+        <div class="col-md-6 campo"><label for="nt-sala">Sala</label><select id="nt-sala" class="entrada"><option>Bloco A, sala 03 (36 lugares)</option><option>Bloco B, sala 06 (38 lugares)</option><option>Bloco C, sala 02 (32 lugares)</option><option>Laboratório de Ciências (24 lugares)</option></select></div>
       </div>
       <p class="erro" role="alert">${esc(erro)}</p>
       <button type="button" class="botao" data-criar>Salvar turma como rascunho</button></details>` : ''}
@@ -35,13 +35,13 @@ function desenhar(erro = '') {
       <thead><tr><th scope="col">Turma</th><th scope="col">Série</th><th scope="col">Turno</th><th scope="col">Sala</th><th scope="col">Situação</th><th scope="col">Último registro</th><th scope="col"><span class="sr-only">Ação</span></th></tr></thead>
       <tbody>${turmas.map((t) => { const u = t.historico[t.historico.length - 1];
         const acao = coord && ['Rascunho', 'Devolvida'].includes(t.situacao) ? `<button type="button" class="botao botao-mini" data-enviar="${t.id}" aria-label="Enviar a turma ${esc(t.nome)} para aprovação">Enviar para aprovação</button>`
-          : !coord && t.situacao === 'Pendente de aprovação' ? `<div class="linha-botoes"><button type="button" class="botao botao-mini" data-aprovar="${t.id}" aria-label="Aprovar a turma ${esc(t.nome)}">Aprovar</button><button type="button" class="botao botao-perigo botao-mini" data-devolver="${t.id}" aria-label="Devolver a turma ${esc(t.nome)}">Devolver</button></div>` : '';
+          : !coord && t.situacao === 'Pendente de aprovação' ? `<div class="linha-botoes"><button type="button" class="botao botao-mini" data-aprovar="${t.id}" aria-label="Aprovar a turma ${esc(t.nome)}">Aprovar turma</button><button type="button" class="botao botao-perigo botao-mini" data-devolver="${t.id}" aria-label="Devolver a turma ${esc(t.nome)}">Devolver turma</button></div>` : '';
         return `<tr><td class="titulo-linha"><strong>${esc(t.nome)}</strong><small>${esc(codigoDaTurma(t))}</small></td><td class="sem-quebra-texto" data-rotulo="Série">${esc(t.serie)}</td><td data-rotulo="Turno">${esc(t.turno)}</td><td data-rotulo="Sala">${esc(t.sala)}</td><td data-rotulo="Situação">${etiqueta(t.situacao, tipo(t.situacao))}</td><td data-rotulo="Último registro">${esc(u[0])}: ${esc(u[1])}${u[2] ? `<small>“${esc(u[2])}”</small>` : ''}</td><td class="acoes">${acao}</td></tr>`; }).join('')}</tbody></table></div>
       <p class="contagem">${turmas.length} ${turmas.length === 1 ? 'turma' : 'turmas'} · ${turmas.filter((t) => t.situacao === 'Aprovada').length} aprovadas</p>` : vazio('Nenhuma turma cadastrada', 'Use “Criar nova turma” para montar a primeira.')}`;
 }
 // Salva as turmas e registra no histórico de ações quem fez o quê.
 async function salvar(msg, quem, acao, alvo) {
-  try { await salvarDados('turmas', turmas); await registrarAcao(quem, acao, alvo); desenhar(); avisar(msg); } catch { avisar('Não foi possível salvar. Tente de novo.'); mostrar(); }
+  try { await salvarDados('turmas', turmas); await registrarAcao(quem, acao, alvo); desenhar(); avisar(msg); } catch { avisar('A turma não foi salva e nada foi alterado. Confira a conexão e repita a ação.'); mostrar(); }
 }
 main.addEventListener('click', async (e) => {
   const b = e.target.closest('button');

@@ -35,7 +35,7 @@ function desenhar() {
     const id = `prof-${componente.replace(/\W/g, '')}`;
     const acao = prof
       ? `<button type="button" class="botao botao-secundario botao-mini" data-desalocar="${esc(componente)}" aria-label="Tirar ${esc(prof.nome)} de ${esc(componente)}">Tirar professor</button>`
-      : `<div class="linha-botoes"><label class="sr-only" for="${id}">Professor de ${esc(componente)}</label><select id="${id}" class="entrada">${professores.map((p) => `<option value="${p.id}">${esc(p.nome)}${p.habilitacao.includes(componente) ? '' : ' — não habilitado'}</option>`).join('')}</select><button type="button" class="botao botao-mini" data-alocar="${esc(componente)}" data-campo="${id}" aria-label="Alocar professor em ${esc(componente)}">Alocar</button></div>`;
+      : `<div class="linha-botoes"><label class="sr-only" for="${id}">Professor de ${esc(componente)}</label><select id="${id}" class="entrada">${professores.map((p) => `<option value="${p.id}">${esc(p.nome)}${p.habilitacao.includes(componente) ? '' : ' — não habilitado'}</option>`).join('')}</select><button type="button" class="botao botao-mini" data-alocar="${esc(componente)}" data-campo="${id}" aria-label="Alocar professor em ${esc(componente)}">Alocar professor</button></div>`;
     return `<tr><td class="titulo-linha"><strong>${esc(componente)}</strong></td><td class="num" data-rotulo="Aulas por semana">${aulas}</td><td data-rotulo="Professor">${prof ? esc(prof.nome) : etiqueta('Sem professor', 'atencao')}</td><td class="acoes">${acao}</td></tr>`;
   };
   main.innerHTML = `
@@ -83,10 +83,10 @@ main.addEventListener('click', async (e) => {
       alocacoes = alocacoes.filter((a) => a !== atual);
       await salvar('alocacoes', alocacoes);
       await registrarAcao('Coordenação', `Tirou ${professor.nome} de ${componente}`, t.nome);
-      desenhar(); avisar('Componente sem professor.');
+      desenhar(); avisar(`Professor retirado de ${componente}. O componente ficou sem professor.`);
     }
   } catch {
-    avisar('Não foi possível salvar. Tente de novo.');
+    avisar('A alocação não foi salva e nada foi alterado. Confira a conexão e repita a ação.');
     mostrar();
   }
 });

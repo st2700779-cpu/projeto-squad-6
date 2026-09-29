@@ -45,7 +45,7 @@ function desenharRematricula(erro = '') {
     </dl>
     ${bloqueio ? `<p class="alerta-erro">${icone('alerta', 20)}<span>Esta escola não tem autorização vigente para a ${esc(serieCompleta(d.serie))}. Faça a matrícula completa para escolher outra escola.</span></p>` : '<p class="texto-suave">A vaga de quem já estuda na escola fica reservada. Não é preciso levar documentos, a menos que a secretaria peça.</p>'}
     <p class="erro" role="alert" id="erro-passo">${esc(erro)}</p>
-    <div class="barra-acoes"><a class="botao botao-secundario botao-grande" href="${link('familia/matricula.html')}">Mudar algo</a>${bloqueio ? '' : `<button type="button" class="botao botao-grande" data-rematricular>Confirmar rematrícula</button>`}</div>`;
+    <div class="barra-acoes"><a class="botao botao-secundario botao-grande" href="${link('familia/matricula.html')}">Alterar dados</a>${bloqueio ? '' : `<button type="button" class="botao botao-grande" data-rematricular>Confirmar rematrícula</button>`}</div>`;
   main.querySelector('h1').focus();
 }
 async function enviarRematricula() {
@@ -91,7 +91,7 @@ function desenhar(erro = '', campoComErro = null) {
         ${botaoOuvir(`Pedido de matrícula enviado. O protocolo é ${d.protocolo.split('').join(' ')}. Leve os documentos à secretaria da escola em até 5 dias úteis.`)}
         <a class="botao botao-secundario botao-grande" href="${link('familia/documentos.html')}">${icone('documento', 22)}Ver lista de documentos</a>
       </div>
-      <div class="barra-acoes coluna-curta"><a class="botao botao-grande" href="${link('familia/index.html')}">Voltar ao início</a><p class="nota-rodape">Você acompanha o pedido na tela inicial.</p></div>`;
+      <div class="barra-acoes coluna-curta"><a class="botao botao-grande" href="${link('familia/index.html')}">Voltar à página inicial</a><p class="nota-rodape">Você acompanha o pedido na tela inicial.</p></div>`;
     main.querySelector('.botao-ouvir')?.classList.add('botao-grande');
     main.querySelector('h1').focus();
     return;
@@ -149,10 +149,10 @@ function desenhar(erro = '', campoComErro = null) {
         <dt class="texto-suave">Responsável</dt><dd class="esp-t-0 esp-b-0"><strong>${esc(d.responsavel)} · ${esc(d.telefone)}</strong></dd>
       </dl>`;
   }
-  const rotulo = passo === 5 ? 'Enviar pedido' : 'Continuar';
+  const rotulo = ['Ir para a série', 'Ir para a escolha da escola', 'Ir para os documentos', 'Ir para a conferência', 'Enviar pedido de matrícula'][passo - 1];
   main.innerHTML = `${topo}${corpo}
     <p class="erro" role="alert" id="erro-passo">${esc(erro)}</p>
-    <div class="barra-acoes">${passo > 1 ? '<button type="button" class="botao botao-secundario botao-grande" data-voltar>Voltar</button>' : ''}<button type="button" class="botao botao-grande" data-avancar>${rotulo}</button></div>`;
+    <div class="barra-acoes">${passo > 1 ? '<button type="button" class="botao botao-secundario botao-grande" data-voltar>Voltar ao passo anterior</button>' : ''}<button type="button" class="botao botao-grande" data-avancar>${rotulo}</button></div>`;
   const h1 = main.querySelector('h1');
   h1.tabIndex = -1;
   if (erro) {
@@ -223,7 +223,7 @@ main.addEventListener('click', async (e) => {
   if (!alvo) return;
   if ('rematricular' in alvo.dataset) {
     alvo.disabled = true; alvo.setAttribute('aria-busy', 'true');
-    try { await enviarRematricula(); } catch { desenharRematricula('Não foi possível confirmar agora. Tente de novo.'); return; }
+    try { await enviarRematricula(); } catch { desenharRematricula('A rematrícula não foi enviada e nenhuma vaga foi reservada. Confira a conexão e confirme de novo.'); return; }
     passo = 6;
     desenhar();
     window.scrollTo(0, 0);
@@ -239,7 +239,7 @@ main.addEventListener('click', async (e) => {
     if (erro) { desenhar(erro, campo); return; }
     if (passo === 5) {
       alvo.disabled = true; alvo.setAttribute('aria-busy', 'true');
-      try { await enviarPedido(); } catch { desenhar('Não foi possível enviar o pedido agora. Tente de novo.'); return; }
+      try { await enviarPedido(); } catch { desenhar('O pedido não foi enviado e nenhuma vaga foi reservada. Confira a conexão e clique em Enviar pedido de novo.'); return; }
     }
     passo += 1;
     desenhar();

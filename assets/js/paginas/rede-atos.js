@@ -20,12 +20,13 @@ const linhasFiltradas = () => atos
   .sort((x, y) => x.s.dias - y.s.dias);
 
 function tabela(linhas) {
-  if (!linhas.length) return vazio('Nenhum ato encontrado', 'Mude a busca ou o filtro de DRE para ver outros atos.', 'busca');
+  if (!linhas.length) return vazio('Nenhum ato encontrado', 'Mude a busca ou o filtro de DRE para ver outros atos.');
   return `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Atos autorizativos ordenados pelo vencimento</caption>
     <thead><tr><th scope="col">Escola</th><th scope="col">Etapa</th><th scope="col">Ato</th><th scope="col" class="num">Validade</th><th scope="col">Situação</th><th scope="col">Renovação</th></tr></thead>
     <tbody>${linhas.map(({ a, e, s, r }) => `<tr><td class="titulo-linha">${esc(e.nome)}<br><span class="texto-suave texto-pequeno">${esc(e.dre)}</span></td><td data-rotulo="Etapa">${esc(a.etapa)}</td><td data-rotulo="Ato">${esc(a.numero)}</td><td data-rotulo="Validade" class="num">${dataBR(a.validade)}</td><td data-rotulo="Situação">${etiqueta(s.texto, s.tipo)}</td>
       ${r ? `<td data-rotulo="Renovação">${etiqueta('Pedida', 'info')}<span class="texto-suave texto-pequeno">${dataHoraBR(r.quando)}</span></td>` : s.dias <= DIAS_RENOVACAO ? `<td class="acoes"><button type="button" class="botao botao-secundario botao-mini" data-renovar="${esc(chave(a))}">Iniciar renovação</button></td>` : '<td data-rotulo="Renovação"><span class="texto-suave">—</span></td>'}</tr>`).join('')}</tbody>
-  </table></div>`;
+  </table></div>
+  <p class="contagem">${linhas.length} ${linhas.length === 1 ? 'ato' : 'atos'} · ordenados pelo vencimento mais próximo</p>`;
 }
 
 function desenhar() {
@@ -36,7 +37,7 @@ function desenhar() {
   const semPedido = linhas.filter((l) => l.s.dias <= DIAS_RENOVACAO && !l.r);
   main.innerHTML = `
     <h1 class="esp-t-0 esp-b-4">Atos autorizativos</h1>
-    ${semPedido.length ? `<div class="alerta-erro esp-b-4" role="status">${icone('alerta', 20)}<span>${semPedido.length} ato${semPedido.length > 1 ? 's' : ''} vencido${semPedido.length > 1 ? 's' : ''} ou a ${DIAS_RENOVACAO} dias do vencimento sem pedido de renovação. Inicie a renovação para a escola não ficar impedida de abrir turmas e matricular.</span></div>` : ''}
+    ${semPedido.length ? `<div class="alerta-erro esp-b-4" role="status">${icone('alerta', 20)}<span>${semPedido.length} ${semPedido.length === 1 ? 'ato vencido ou a vencer' : 'atos vencidos ou a vencer'} em até ${DIAS_RENOVACAO} dias, sem pedido de renovação.</span></div>` : ''}
     <dl class="resumo-linha">
       <div class="${vencidos ? 'alerta' : ''}"><dd>${vencidos}</dd><dt>${vencidos === 1 ? 'ato vencido' : 'atos vencidos'}</dt></div>
       <div class="${aVencer ? 'atencao' : ''}"><dd>${aVencer}</dd><dt>${aVencer === 1 ? 'vence' : 'vencem'} em até ${DIAS_RENOVACAO} dias</dt></div>
@@ -73,7 +74,7 @@ main.addEventListener('click', async (e) => {
       await registrarAcao('Técnico da SEDUC', `Iniciou renovação do ${a.numero}`, escola.nome);
       desenhar(); avisar('Pedido de renovação iniciado.');
     } catch {
-      avisar('Não foi possível salvar. Tente de novo.');
+      avisar('O pedido de renovação não foi registrado. Confira a conexão e clique em Iniciar renovação de novo.');
       mostrar();
     }
   }

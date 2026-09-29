@@ -29,7 +29,7 @@ async function mostrar() {
 function desenhar() {
   const transferidos = pedidos.filter((p) => p.tipo === 'Transferência' && historicos[p.protocolo]);
   if (!transferidos.length) {
-    main.innerHTML = `<h1>Equivalências</h1>${vazio('Nenhuma transferência com histórico', 'Quando um estudante de outra escola trouxer o histórico, ele aparece aqui para a análise.')}`;
+    main.innerHTML = `<h1>Equivalência de estudos</h1>${vazio('Nenhuma transferência com histórico escolar', 'Quando um estudante vindo de outra escola trouxer o histórico, ele aparece aqui para análise.')}`;
     return;
   }
   const p = transferidos.find((x) => x.protocolo === protocolo) || transferidos[0];
@@ -41,8 +41,8 @@ function desenhar() {
   const parecer = pareceres[p.protocolo];
   const pendencias = linhas.filter((l) => l.resultado !== 'equivalente');
   main.innerHTML = `
-    <h1 class="esp-b-1">Equivalências</h1>
-    <p class="texto-suave esp-t-0">Compara o histórico da escola de origem com a matriz ${esc(matriz.versao)} da rede. O resultado sai das regras da rede; a secretaria confere e registra o parecer.</p>
+    <h1>Equivalência de estudos · matriz ${esc(matriz.versao)}</h1>
+    <p class="pagina-descricao">Compara o histórico da escola de origem com a matriz da rede. O resultado vem das regras da rede; a secretaria confere e registra o parecer.</p>
     <div class="ferramentas-tabela"><div class="campo"><label for="estudante">Estudante transferido</label><select id="estudante" class="entrada">${transferidos.map((x) => `<option value="${esc(x.protocolo)}" ${x.protocolo === p.protocolo ? 'selected' : ''}>${esc(x.estudante)} · ${esc(x.serie)} · ${esc(x.situacao)}</option>`).join('')}</select></div></div>
     <div class="cartao"><strong class="texto-medio">${esc(p.estudante)}</strong><br>
       <span class="texto-suave">Vem de: ${esc(h.escolaOrigem)} · Cursou: ${esc(h.serieCursada)} · Vai para: ${esc(p.serie)}</span></div>
@@ -55,7 +55,7 @@ function desenhar() {
       <thead><tr><th scope="col">Componente da rede</th><th scope="col" class="num">Aulas/semana na rede</th><th scope="col">Na escola de origem</th><th scope="col">Resultado</th></tr></thead>
       <tbody>${linhas.map((l) => `<tr><td class="titulo-linha">${esc(l.componente)}</td><td data-rotulo="Aulas/semana na rede" class="num">${l.aulasRede}</td>
         <td data-rotulo="Na escola de origem">${l.origem ? `${esc(l.origem.nome)} · ${l.origem.aulas} aula${l.origem.aulas > 1 ? 's' : ''} · nota ${numeroBR(l.origem.nota)}` : '<span class="texto-suave">Não cursou</span>'}</td>
-        <td data-rotulo="Resultado">${etiqueta(RESULTADOS[l.resultado][0], RESULTADOS[l.resultado][1])}${l.resultado === 'complementar' ? `<br><span class="texto-suave texto-pequeno">faltam ${l.faltam} aula${l.faltam > 1 ? 's' : ''}/semana</span>` : ''}</td></tr>`).join('')}</tbody>
+        <td data-rotulo="Resultado"><div>${etiqueta(RESULTADOS[l.resultado][0], RESULTADOS[l.resultado][1])}${l.resultado === 'complementar' ? `<br><span class="texto-suave texto-pequeno">faltam ${l.faltam} aula${l.faltam > 1 ? 's' : ''}/semana</span>` : ''}</div></td></tr>`).join('')}</tbody>
     </table></div>
     ${semCorrespondencia.length ? `<p class="texto-suave">Sem correspondência na rede (fica no histórico como enriquecimento curricular): <strong class="cor-tinta">${esc(semCorrespondencia.join(', '))}</strong>.</p>` : ''}
     ${pendencias.length ? `<div class="cartao"><strong>Plano de adaptação sugerido</strong><ul class="lista-recuada">${pendencias.map((l) => `<li>${esc(l.componente)}: ${l.resultado === 'complementar' ? `estudos de complementação (${l.faltam} aula${l.faltam > 1 ? 's' : ''}/semana)` : l.resultado === 'reprovado' ? `recuperação (nota ${numeroBR(l.origem.nota)} na origem)` : 'cursar em regime de adaptação'}</li>`).join('')}</ul></div>` : ''}
@@ -75,7 +75,7 @@ main.addEventListener('click', async (e) => {
     await registrarAcao('Secretaria escolar', `Registrou parecer de equivalência de ${p.estudante}`, protocolo);
     desenhar(); avisar('Parecer registrado.');
   } catch {
-    avisar('Não foi possível salvar. Tente de novo.');
+    avisar('O parecer não foi registrado. Confira a conexão e clique em Registrar parecer de equivalência de novo.');
     mostrar();
   }
 });

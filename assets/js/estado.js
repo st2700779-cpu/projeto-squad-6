@@ -24,7 +24,7 @@ export function reiniciar() {
 /** Próximo protocolo sem API (ex.: MAT-2026-0003). */
 export function proximoProtocolo(prefixo) {
   const cont = obter('contadores', {});
-  const n = (cont[prefixo] || 2) + 1;
+  const n = (cont[prefixo] || 5) + 1; // a base simulada já tem os protocolos 0001 a 0005
   cont[prefixo] = n;
   definir('contadores', cont);
   return `${prefixo}-2026-${String(n).padStart(4, '0')}`;

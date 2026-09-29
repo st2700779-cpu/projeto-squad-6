@@ -66,7 +66,7 @@ function painelChamada(alunos) {
     return `<p class="esp-b-3"><strong>Chamada de ${dataHoje} registrada</strong> ${etiqueta('Registrada', 'ok')} ${nomes.length ? `${nomes.length} ${nomes.length > 1 ? 'faltas' : 'falta'}: ${esc(nomes.join(', '))}.` : 'Todos presentes.'} <span class="registro">Registrada em ${dataHoraBR(feita.quando)}</span></p>`;
   }
   return `<div class="linha-botoes entre esp-b-3">
-    <p class="esp-t-0 esp-b-0" id="chamada-titulo"><strong>Chamada de ${dataHoje}</strong> · todos começam presentes; marque só quem faltou. ${alunos.length - ausentes.size} ${alunos.length - ausentes.size === 1 ? 'presente' : 'presentes'} · ${ausentes.size} ${ausentes.size === 1 ? 'falta' : 'faltas'}</p>
+    <p class="esp-t-0 esp-b-0" id="chamada-titulo"><strong>Chamada de ${dataHoje}</strong> · todos começam presentes; marque só quem faltou. <span id="chamada-resumo">${alunos.length - ausentes.size} ${alunos.length - ausentes.size === 1 ? 'presente' : 'presentes'} · ${ausentes.size} ${ausentes.size === 1 ? 'falta' : 'faltas'}</span></p>
     <button type="button" class="botao" id="registrar-chamada">${ausentes.size ? `Registrar chamada com ${ausentes.size} ${ausentes.size > 1 ? 'faltas' : 'falta'}` : 'Registrar chamada: todos presentes'}</button>
   </div>`;
 }
@@ -86,11 +86,12 @@ async function registrarChamada() {
       await salvarDados('chamadas', chamadas);
     });
     await registrarAcao(prof.nome, `Registrou chamada (${ausentes.size} falta${ausentes.size === 1 ? '' : 's'})`, t.nome);
+    const faltas = ausentes.size;
     ausentes.clear();
     desenhar();
-    avisar('Chamada registrada.');
+    avisar(`Chamada registrada em ${t.nome}: ${faltas === 0 ? 'todos presentes' : `${faltas} ${faltas === 1 ? 'falta lançada' : 'faltas lançadas'}`}.`);
   } catch {
-    avisar('Não foi possível registrar a chamada. Tente de novo.');
+    avisar('A chamada não foi registrada e nenhuma falta foi lançada. Confira a conexão e clique em Registrar chamada de novo.');
     mostrar();
   }
 }
@@ -136,19 +137,24 @@ async function salvar() {
   try {
     await comEspera(main.querySelector('#salvar'), () => salvarDados('diario', dados));
     desenhar();
-    avisar('Diário salvo.');
+    avisar(`Notas e faltas salvas: ${dados[turmaId].length} estudantes, turma ${minhas.find((m) => m.turma.id === turmaId).turma.nome}.`);
   } catch {
-    caixa.innerHTML = `<p class="alerta-erro">${icone('alerta', 20)}<span>Não foi possível salvar o diário. Tente de novo.</span></p>`;
+    caixa.innerHTML = `<p class="alerta-erro">${icone('alerta', 20)}<span>As notas e faltas não foram salvas. Confira a conexão e clique em Salvar notas e faltas de novo.</span></p>`;
   }
 }
 main.addEventListener('click', async (e) => {
   if (e.target.closest('#salvar')) { salvar(); return; }
   const aluno = e.target.closest('[data-faltou]');
   if (aluno) {
+    // Só atualiza o resumo da chamada: redesenhar a tabela apagaria as notas digitadas e ainda não salvas.
     const id = aluno.dataset.faltou;
-    if (ausentes.has(id)) ausentes.delete(id); else ausentes.add(id);
-    desenhar();
-    main.querySelector(`[data-faltou="${id}"]`)?.focus();
+    if (aluno.checked) ausentes.add(id); else ausentes.delete(id);
+    const total = dados[turmaId].length;
+    const n = ausentes.size;
+    const resumo = main.querySelector('#chamada-resumo');
+    if (resumo) resumo.textContent = `${total - n} ${total - n === 1 ? 'presente' : 'presentes'} · ${n} ${n === 1 ? 'falta' : 'faltas'}`;
+    const registrar = main.querySelector('#registrar-chamada');
+    if (registrar) registrar.textContent = n ? `Registrar chamada com ${n} ${n > 1 ? 'faltas' : 'falta'}` : 'Registrar chamada: todos presentes';
     return;
   }
   if (e.target.closest('#registrar-chamada')) registrarChamada();

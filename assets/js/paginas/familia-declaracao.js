@@ -89,7 +89,7 @@ main.addEventListener('click', async (e) => {
       await registrarAcao(protocolo ? 'Secretaria escolar' : 'Família', `Emitiu ${TITULOS[tipo].toLowerCase()}`, numero);
     } catch {
       b.disabled = false;
-      avisar('Não foi possível emitir agora. Tente de novo.');
+      avisar('A declaração não foi emitida e não recebeu número. Confira a conexão e clique em Emitir de novo.');
       return;
     }
     await mostrar();

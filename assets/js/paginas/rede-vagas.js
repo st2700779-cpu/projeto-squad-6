@@ -33,7 +33,8 @@ function tabela() {
   return `<div class="tabela-rolagem"><table class="tabela tabela-matriz"><caption class="sr-only">Vagas por escola e série</caption>
     <thead><tr><th scope="col">Escola</th>${SERIES.map((s) => `<th scope="col" class="num">${s.replace(' EM', '')}${s.includes('EM') ? ' (EM)' : ''}</th>`).join('')}</tr></thead>
     <tbody>${lista.map((e) => `<tr><th class="celula-escola" scope="row">${esc(e.nome)}<br><span class="texto-suave texto-pequeno peso-normal">${esc(e.municipio)}</span></th>${SERIES.map((s) => celula(e, s)).join('')}</tr>`).join('')}</tbody>
-  </table></div>`;
+  </table></div>
+  <p class="contagem">${lista.length} ${lista.length === 1 ? 'escola' : 'escolas'} · ${lista.reduce((t, e) => t + SERIES.reduce((s, x) => s + (typeof valor(e, x) === 'number' ? valor(e, x) : 0), 0), 0)} vagas abertas no total</p>`;
 }
 function desenhar() {
   const municipios = [...new Set(escolas.map((e) => e.municipio))];

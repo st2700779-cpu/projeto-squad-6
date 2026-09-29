@@ -2,9 +2,11 @@
 import { icone, esc } from './ui.js';
 import { aplicarEscala, mudarEscala } from './acessibilidade.js';
 import { definir } from './estado.js';
-import { RAIZ } from './dados.js';
+import { RAIZ, letivo } from './dados.js';
 
 const url = (caminho) => new URL(caminho, RAIZ).href;
+const VERSAO = '1.0';
+const DATA_DOS_DADOS = '29/09/2026'; // data de referência dos dados de demonstração
 
 /** Itens do menu lateral de cada visão: [página, rótulo, ícone]. */
 export const MENUS = {
@@ -16,9 +18,9 @@ export const MENUS = {
 const NOMES = { familia: 'Família e estudante', professor: 'Professor', escola: 'Escola', rede: 'Rede (SEDUC e DRE)' };
 // Usuário simulado de cada visão (nomes que já existem nos dados de demonstração).
 const USUARIOS = {
-  familia: { nome: 'Rosa Maria Santos', papel: 'Responsável' },
-  professor: { nome: 'Profa. Ana Lúcia Menezes', papel: 'Professora de Matemática' },
-  escola: { nome: 'Secretaria escolar', papel: 'C. E. Rio Sergipe' },
+  familia: { nome: 'Edilene Cardoso de Jesus', papel: 'Responsável' },
+  professor: { nome: 'Profa. Rosângela Tavares Góis', papel: 'Professora de Matemática' },
+  escola: { nome: 'Secretaria escolar', papel: 'C. E. Prof. Osvaldo Tavares Rezende' },
   rede: { nome: 'Equipe técnica', papel: 'SEDUC/SE' }
 };
 const CHAVE_MENU = 'portal-menu-recolhido';
@@ -36,6 +38,7 @@ function cabecalho({ perfil, papel }) {
       <a class="marca" href="${url('index.html')}" aria-label="Portal Acadêmico, página inicial">
         <span class="marca-texto"><small>Secretaria de Estado da Educação · Sergipe</small><strong>Portal Acadêmico</strong></span>
       </a>
+      <span class="topo-ano" id="topo-ano"></span>
       <div class="topo-direita">
         <button type="button" class="ferramenta ferramenta-opcional" data-escala="-0.1" aria-label="Diminuir letra">A−</button>
         <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
@@ -122,6 +125,15 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
   document.body.dataset.visao = perfil || 'geral';
   const topo = cabecalho({ perfil, papel });
   document.body.prepend(topo);
+  // Ano letivo e bimestre em curso no cabeçalho (dados de data/letivo.json).
+  letivo().then((l) => {
+    const emCurso = Math.min(l.totalBimestres, l.bimestresLancados + 1);
+    topo.querySelector('#topo-ano').textContent = `Ano letivo ${l.ano} · ${emCurso}º bimestre em curso`;
+  }).catch(() => { /* sem o dado, o cabeçalho segue sem essa linha */ });
+  const rodape = document.createElement('footer');
+  rodape.className = 'rodape-sistema';
+  rodape.innerHTML = `<span>Portal Acadêmico v${VERSAO} · SEDUC/SE</span><span>Protótipo com escolas, pessoas e dados fictícios · dados de ${DATA_DOS_DADOS}</span>`;
+  document.body.append(rodape);
 
   const main = document.querySelector('main');
   const menu = MENUS[perfil] || [];
@@ -154,7 +166,7 @@ export const acoesDoTopo = () => document.querySelector('#topo-acoes');
 
 /** Estado de erro padrão: aviso em português e botão "Tentar de novo". */
 export function falhaDados(alvo, tentarDeNovo) {
-  alvo.innerHTML = `<div class="alerta-erro" role="alert">${icone('alerta', 20)}<span>Não foi possível carregar estas informações agora.</span></div>
+  alvo.innerHTML = `<div class="alerta-erro" role="alert">${icone('alerta', 20)}<span>Os dados desta tela não carregaram. Confira a conexão e tente de novo.</span></div>
     <p><button type="button" class="botao botao-secundario" id="tentar-dados">Tentar de novo</button></p>`;
   alvo.querySelector('#tentar-dados').addEventListener('click', tentarDeNovo);
 }

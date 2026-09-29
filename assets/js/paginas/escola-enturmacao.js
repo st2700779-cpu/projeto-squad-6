@@ -72,10 +72,10 @@ main.addEventListener('click', async (e) => {
       delete enturmacao[protocolo];
       await salvar('enturmacao', enturmacao);
       await registrarAcao('Secretaria escolar', `Tirou ${p.estudante} da ${t.nome}`, protocolo);
-      desenhar(); avisar('Estudante voltou para a lista de espera.');
+      desenhar(); avisar(`${p.estudante} voltou para a lista de espera.`);
     }
   } catch {
-    avisar('Não foi possível salvar. Tente de novo.');
+    avisar('A enturmação não foi salva e nada foi alterado. Confira a conexão e repita a ação.');
     mostrar();
   }
 });
