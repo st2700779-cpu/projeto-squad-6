@@ -341,3 +341,9 @@ details > summary { min-height: var(--toque); display: flex; align-items: center
 .lista-texto li { padding: var(--sp-1) 0; }
 .linha-botoes.coluna-botoes { flex-direction: column; align-items: stretch; gap: var(--sp-2); }
 .barra-acoes { flex-wrap: wrap; }
+
+/* 14 · Legenda de selos e faixas (atos, mapa) */
+.legenda { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); list-style: none; margin: var(--sp-3) 0; padding: 0; font-size: var(--texto-sm); }
+.legenda li { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.tabela-matriz thead th.cabecalho-vertical { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; height: 9.5rem; text-align: left; vertical-align: bottom; padding: var(--sp-2) 4px; }
+@media print { .tabela-matriz { font-size: 8pt; } .tabela-rolagem { overflow: visible; max-height: none; } .tabela-matriz th[scope="row"] { position: static; } }

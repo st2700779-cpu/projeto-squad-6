@@ -14,6 +14,7 @@ async function mostrar() {
   try {
     let matrizes;
     [turmas, professores, alocacoes, matrizes] = await Promise.all([turmasEscola(), carregar('professores'), conjunto('alocacoes'), carregar('matrizes')]);
+    professores = professores.filter((p) => !p.escolaId || p.escolaId === 'e1'); // só os professores lotados nesta escola
     matriz = matrizes.versoes[0].componentes;
     turmas = turmas.filter((t) => t.situacao === 'Aprovada' && colunaDaMatriz(t.serie));
     turmaId = turmaId || turmas[0]?.id;

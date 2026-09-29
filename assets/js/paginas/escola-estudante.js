@@ -12,7 +12,7 @@ async function mostrar() {
     const id = new URLSearchParams(location.search).get('id');
     const [lista, escolas, tr] = await Promise.all([carregar('estudantes'), carregar('escolas'), carregar('trajetorias')]);
     const e = lista.find((x) => x.id === id);
-    if (!e) { main.innerHTML = vazio('Estudante não encontrado', 'Volte à lista de estudantes e abra a ficha de novo.') + `<p><a href="${link('escola/estudantes.html')}">Voltar à lista de estudantes</a></p>`; return; }
+    if (!e) { main.innerHTML = '<h1>Estudante não encontrado</h1>' + vazio('Nenhum cadastro com este código', 'Volte à lista de estudantes e abra a ficha de novo.') + `<p><a href="${link('escola/estudantes.html')}">Voltar à lista de estudantes</a></p>`; return; }
     const escola = escolas.find((x) => x.id === e.escolaId);
     const itens = trajetoDoEstudante(tr, e.id, escolas);
     main.innerHTML = `<h1>${esc(e.nome)}</h1>
