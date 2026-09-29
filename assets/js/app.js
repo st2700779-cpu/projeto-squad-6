@@ -38,6 +38,7 @@ function cabecalho({ perfil }) {
       <div class="topo-direita">
         <button type="button" class="ferramenta ferramenta-opcional" data-escala="-0.1" aria-label="Diminuir letra">A−</button>
         <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
+        ${perfil ? `<button type="button" class="ferramenta ferramenta-como-usar" data-tour aria-label="Como usar esta área">${icone('info', 20)}<span class="rotulo">Como usar</span></button>` : ''}
         ${window.botaoTema ? window.botaoTema() : ''}
         ${u ? `<div class="usuario"><span class="avatar" aria-hidden="true">${esc(iniciais(u.nome))}</span><span class="usuario-texto"><strong>${esc(u.nome)}</strong><small>${esc(u.papel)}</small></span></div>` : ''}
         ${u ? '<button type="button" class="ferramenta" data-sair>Sair</button>' : perfil ? `<a class="ferramenta" href="${url('index.html')}">Início</a>` : ''}
@@ -47,6 +48,8 @@ function cabecalho({ perfil }) {
     const b = e.target.closest('[data-escala]');
     if (b) mudarEscala(Number(b.dataset.escala));
     if (e.target.closest('[data-sair]')) sair();
+    const como = e.target.closest('[data-tour]');
+    if (como) import('./tour.js').then((t) => t.abrirTour(perfil, como));
   });
   return topo;
 }
@@ -156,6 +159,8 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
     const { montarAssistente } = await import('./assistente/chat.js');
     montarAssistente({ perfil });
   }
+  // Guia de primeiro acesso da visão (só abre uma vez; "Como usar" no cabeçalho abre de novo).
+  if (perfil) import('./tour.js').then((t) => t.tourNoPrimeiroAcesso(perfil, topo.querySelector('[data-tour]')));
   return document.querySelector('#pagina') || main;
 }
 
