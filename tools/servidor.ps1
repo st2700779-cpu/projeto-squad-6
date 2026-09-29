@@ -1,6 +1,7 @@
 # Servidor local do portal: entrega o site e a API de dados, sem Node nem Python.
-# Uso: powershell -ExecutionPolicy Bypass -File tools/servidor.ps1 [-Porta 5500] [-Abrir] [-Celular]
+# Uso: powershell -ExecutionPolicy Bypass -File tools/servidor.ps1 [-Porta 5500] [-Abrir] [-Celular] [-Pagina familia/index.html]
 #   -Abrir abre o portal no navegador; com -Celular, numa janela do tamanho de um celular (Edge ou Chrome).
+#   -Pagina escolhe a pagina que abre (vazio = tela inicial).
 # Chamado pelo iniciar.bat e pelo VS Code (F5, via .vscode/tasks.json).
 #
 # API (JSON):
@@ -9,12 +10,13 @@
 #   PUT    /api/{nome}                -> salva matriculas, vagas, turmas ou diario em dados-salvos/
 #   POST   /api/protocolo/{PREFIXO}   -> { protocolo: "MAT-2026-0003" }
 #   DELETE /api/dados                 -> apaga as alteracoes salvas (reinicia a demonstracao)
-param([int]$Porta = 5500, [switch]$Abrir, [switch]$Celular)
+param([int]$Porta = 5500, [switch]$Abrir, [switch]$Celular, [string]$Pagina = '')
 
 $raiz = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\') + '\'
 $pastaDados = Join-Path $raiz 'data'
 $pastaSalvos = Join-Path $raiz 'dados-salvos'
 $prefixo = "http://localhost:$Porta/"
+$destino = $prefixo + $Pagina.TrimStart('/')
 $utf8 = New-Object System.Text.UTF8Encoding $false
 $ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias')
 $LIMITE_CORPO = 1MB
@@ -30,12 +32,12 @@ function AbrirNavegador {
       "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"
     ) | Where-Object { Test-Path $_ } | Select-Object -First 1
     if ($navegador) {
-      Start-Process $navegador -ArgumentList "--app=$prefixo", "--window-size=412,915", "--window-position=100,40", "--user-data-dir=$env:LOCALAPPDATA\PortalAcademicoCelular", "--no-first-run"
+      Start-Process $navegador -ArgumentList "--app=$destino", "--window-size=412,915", "--window-position=100,40", "--user-data-dir=$env:LOCALAPPDATA\PortalAcademicoCelular", "--no-first-run"
       return
     }
     Write-Host "Edge e Chrome nao encontrados: abrindo no navegador padrao (F12 e Ctrl+Shift+M simulam o celular)."
   }
-  Start-Process $prefixo
+  Start-Process $destino
 }
 
 # Se ja houver um servidor na porta (outra execucao ou o Live Server), so abre o navegador e sai.

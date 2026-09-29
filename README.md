@@ -40,6 +40,16 @@ Pré-requisitos: VS Code com a extensão **Live Server** (ou qualquer servidor e
 
 Sem mais nada configurado, o assistente funciona em **modo sem IA**: responde pelas perguntas frequentes da base (`data/base-conhecimento.json`).
 
+**Arquivos `.bat` (Windows, dois cliques):**
+
+| Arquivo | O que faz |
+| --- | --- |
+| `iniciar.bat` | Menu: portal no computador, em janela de celular, protótipo ou reiniciar a demonstração. Se o PowerShell estiver bloqueado, tenta com Python |
+| `iniciar-visao.bat` | Abre o portal direto em uma visão (Família, Professor, Escola ou Rede) |
+| `iniciar-python.bat` | Sobe o portal com o servidor do Python, sem PowerShell e sem API (dados ficam no navegador). Aceita a página como argumento: `iniciar-python.bat professor/index.html` |
+| `iniciar-mobile.bat` | Abre só o protótipo em arquivo único, em janela de celular |
+| `verificar.bat` | Atualiza o protótipo com os dados e regras do portal e confere o contraste das cores nos quatro temas (precisa de Node.js 18+) |
+
 **Jeito mais fácil (Windows):** dê dois cliques em `iniciar.bat`. Ele sobe o servidor com a API em `http://localhost:5500` e abre o navegador. Para parar, feche a janela preta. No VS Code, **F5** faz o mesmo. Não precisa de Node nem de Python.
 
 ### API de dados
