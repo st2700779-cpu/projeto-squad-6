@@ -48,6 +48,7 @@ Sem mais nada configurado, o assistente funciona em **modo sem IA**: responde pe
 | Arquivo | O que faz |
 | --- | --- |
 | `iniciar.bat` | Menu: portal no computador, em janela de celular, protótipo ou reiniciar a demonstração. Se o PowerShell estiver bloqueado, tenta com Python |
+| `iniciar-local.bat` | Um clique: sobe o servidor local (Python; sem Python, o do PowerShell), abre a entrada no navegador e mostra as contas de demonstração |
 | `iniciar-visao.bat` | Abre o portal direto em uma visão (Família, Professor, Escola ou Rede) |
 | `iniciar-python.bat` | Sobe o portal com o servidor do Python, sem PowerShell e sem API (dados ficam no navegador). Aceita a página como argumento: `iniciar-python.bat professor/index.html` |
 | `iniciar-mobile.bat` | Abre só o protótipo em arquivo único, em janela de celular |
