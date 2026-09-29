@@ -1,0 +1,173 @@
+[
+  {
+    "id": "r1",
+    "nome": "6º ano A",
+    "serie": "6º ano",
+    "turno": "Tarde",
+    "escolaId": "e1",
+    "situacao": "Aprovada",
+    "matriculados": 31
+  },
+  {
+    "id": "r2",
+    "nome": "7º ano A",
+    "serie": "7º ano",
+    "turno": "Tarde",
+    "escolaId": "e1",
+    "situacao": "Aprovada",
+    "matriculados": 28
+  },
+  {
+    "id": "r3",
+    "nome": "8º ano A",
+    "serie": "8º ano",
+    "turno": "Tarde",
+    "escolaId": "e1",
+    "situacao": "Aprovada",
+    "matriculados": 30
+  },
+  {
+    "id": "r4",
+    "nome": "9º ano A",
+    "serie": "9º ano",
+    "turno": "Tarde",
+    "escolaId": "e1",
+    "situacao": "Aprovada",
+    "matriculados": 26
+  },
+  {
+    "id": "r5",
+    "nome": "1ª série A",
+    "serie": "1ª série EM",
+    "turno": "Manhã",
+    "escolaId": "e2",
+    "situacao": "Aprovada",
+    "matriculados": 35
+  },
+  {
+    "id": "r6",
+    "nome": "2ª série A",
+    "serie": "2ª série EM",
+    "turno": "Manhã",
+    "escolaId": "e2",
+    "situacao": "Aprovada",
+    "matriculados": 33
+  },
+  {
+    "id": "r7",
+    "nome": "3ª série A",
+    "serie": "3ª série EM",
+    "turno": "Manhã",
+    "escolaId": "e2",
+    "situacao": "Aprovada",
+    "matriculados": 27
+  },
+  {
+    "id": "r8",
+    "nome": "7º ano B",
+    "serie": "7º ano",
+    "turno": "Tarde",
+    "escolaId": "e2",
+    "situacao": "Aprovada",
+    "matriculados": 34
+  },
+  {
+    "id": "r9",
+    "nome": "8º ano A",
+    "serie": "8º ano",
+    "turno": "Tarde",
+    "escolaId": "e2",
+    "situacao": "Aprovada",
+    "matriculados": 32
+  },
+  {
+    "id": "r10",
+    "nome": "1ª série A",
+    "serie": "1ª série EM",
+    "turno": "Manhã",
+    "escolaId": "e3",
+    "situacao": "Aprovada",
+    "matriculados": 24
+  },
+  {
+    "id": "r11",
+    "nome": "6º ano A",
+    "serie": "6º ano",
+    "turno": "Tarde",
+    "escolaId": "e3",
+    "situacao": "Aprovada",
+    "matriculados": 29
+  },
+  {
+    "id": "r12",
+    "nome": "6º ano A",
+    "serie": "6º ano",
+    "turno": "Manhã",
+    "escolaId": "e4",
+    "situacao": "Aprovada",
+    "matriculados": 36
+  },
+  {
+    "id": "r13",
+    "nome": "7º ano A",
+    "serie": "7º ano",
+    "turno": "Manhã",
+    "escolaId": "e4",
+    "situacao": "Aprovada",
+    "matriculados": 31
+  },
+  {
+    "id": "r14",
+    "nome": "8º ano A",
+    "serie": "8º ano",
+    "turno": "Tarde",
+    "escolaId": "e4",
+    "situacao": "Aprovada",
+    "matriculados": 28
+  },
+  {
+    "id": "r15",
+    "nome": "9º ano A",
+    "serie": "9º ano",
+    "turno": "Tarde",
+    "escolaId": "e4",
+    "situacao": "Aprovada",
+    "matriculados": 25
+  },
+  {
+    "id": "r16",
+    "nome": "1ª série A",
+    "serie": "1ª série EM",
+    "turno": "Manhã",
+    "escolaId": "e5",
+    "situacao": "Aprovada",
+    "matriculados": 33
+  },
+  {
+    "id": "r17",
+    "nome": "2ª série A",
+    "serie": "2ª série EM",
+    "turno": "Manhã",
+    "escolaId": "e5",
+    "situacao": "Aprovada",
+    "matriculados": 30
+  },
+  {
+    "id": "r18",
+    "nome": "3ª série A",
+    "serie": "3ª série EM",
+    "turno": "Manhã",
+    "escolaId": "e5",
+    "situacao": "Aprovada",
+    "matriculados": 22
+  },
+  {
+    "id": "r19",
+    "nome": "9º ano A",
+    "serie": "9º ano",
+    "turno": "Tarde",
+    "escolaId": "e5",
+    "situacao": "Aprovada",
+    "matriculados": 27
+  }
+]

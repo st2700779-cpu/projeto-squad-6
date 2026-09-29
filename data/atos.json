@@ -3,54 +3,72 @@
     "escolaId": "e1",
     "etapa": "Ensino Médio",
     "numero": "Resolução CEE nº 118/2022",
-    "validade": "2027-11-19"
+    "validade": "2027-11-19",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica"
   },
   {
     "escolaId": "e1",
     "etapa": "Ensino Fundamental — Anos Finais",
     "numero": "Resolução CEE nº 045/2019",
-    "validade": "2026-06-14"
+    "validade": "2026-06-14",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
   },
   {
     "escolaId": "e2",
     "etapa": "Ensino Médio",
     "numero": "Resolução CEE nº 207/2021",
-    "validade": "2026-12-11"
+    "validade": "2026-12-11",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica"
   },
   {
     "escolaId": "e2",
     "etapa": "Ensino Fundamental — Anos Finais",
     "numero": "Resolução CEE nº 088/2023",
-    "validade": "2030-04-26"
+    "validade": "2030-04-26",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
   },
   {
     "escolaId": "e3",
     "etapa": "Ensino Médio",
     "numero": "Resolução CEE nº 150/2024",
-    "validade": "2029-08-03"
+    "validade": "2029-08-03",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica"
   },
   {
     "escolaId": "e3",
     "etapa": "Ensino Fundamental — Anos Finais",
     "numero": "Resolução CEE nº 151/2024",
-    "validade": "2029-08-03"
+    "validade": "2029-08-03",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
   },
   {
     "escolaId": "e4",
     "etapa": "Ensino Fundamental — Anos Finais",
     "numero": "Resolução CEE nº 061/2024",
-    "validade": "2031-02-17"
+    "validade": "2031-02-17",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
   },
   {
     "escolaId": "e5",
     "etapa": "Ensino Médio",
     "numero": "Resolução CEE nº 033/2018",
-    "validade": "2026-04-08"
+    "validade": "2026-04-08",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica"
   },
   {
     "escolaId": "e5",
     "etapa": "Ensino Fundamental — Anos Finais",
     "numero": "Resolução CEE nº 152/2022",
-    "validade": "2029-10-22"
+    "validade": "2029-10-22",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
   }
 ]

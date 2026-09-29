@@ -45,6 +45,11 @@ async function alteravel(nome, semApi) {
 export const matriculas = () => alteravel('matriculas', () => carregar('matriculas'));
 export const vagas = () => alteravel('vagas', () => carregar('vagas'));
 export const turmasEscola = () => alteravel('turmas', () => carregar('turmas'));
+/** Turmas da rede toda: as da secretaria (alteráveis) mais as das outras escolas e das etapas que ela não gerencia (data/turmas-rede.json). */
+export async function turmasDaRede() {
+  const [minhas, outras] = await Promise.all([turmasEscola(), carregar('turmas-rede')]);
+  return [...minhas, ...outras];
+}
 /** Diário de classe por turma: { [turmaId]: [{id, nome, n1, n2, faltas}] }. Base inicial em professor.json. */
 export const diario = () => alteravel('diario', async () => (await carregar('professor')).diario);
 /** Dados do ano letivo (aulas dadas, bimestre atual). Fonte única para o cálculo de frequência. */
