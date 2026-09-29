@@ -1,6 +1,6 @@
 # Sinais de "gerado por IA" — levantamento (etapa 1)
 
-Data: 29/09/2026 · Base: branch `claude/friendly-goodall-9bwbbq` no commit `1567d4a`. Nenhum arquivo do sistema foi alterado; este documento é o único produto da etapa.
+Data: 29/09/2026 · Base do levantamento: commit `1567d4a`. As seções 1 a 7 são o levantamento original; a **seção 8** registra o que foi corrigido e o que ficou.
 
 **Aviso de honestidade:** vários dos sinais abaixo foram **introduzidos pelo redesenho anterior** (feito por mim): as quatro cores de destaque, os cartões de indicador com faixa colorida, a entrada animada de página, os cartões de perfil. Estão marcados com **[redesenho]**. O texto e os dados que a equipe original escreveu estão, em geral, em melhor estado do que o visual, e os pontos bons estão na seção 5, para não estragar o que funciona.
 
@@ -103,3 +103,36 @@ Não foram encontrados: gráficos com curvas bonitas demais ou sempre crescentes
 4. **Código de turma (E4):** cria um campo derivado (ano-série-letra-turno). É só exibição e não muda regra de negócio nem dados. Pode?
 5. **Filtros e selos sem pílula:** troco para abas e texto com ponto de cor. Isso muda a aparência de todas as telas de gestão. Confirma?
 6. **Tela inicial:** remover o hero e a grade de perfis e ficar com uma lista simples de entrada, alinhada à esquerda. Confirma?
+
+## 8. Situação depois das correções (etapa 7)
+
+Decisões da seção 7 aplicadas com o padrão recomendado: cores por visão removidas; aviso de dados fictícios no rodapé; nomenclatura de DRE mantida e **a confirmar com a SEDUC**; código de turma só de exibição; filtros como abas; início como lista.
+
+Verificação: 20 páginas do portal a 360, 768 e 1440 px sem rolagem horizontal e sem erro no console; fluxos de matrícula, diário, rematrícula, declaração e equivalência; menu, busca, diálogos e teclado; protótipo em arquivo único a 390 e 360 px; script de contraste (todas as combinações passam). Falta olhar as telas com uma pessoa: os testes automáticos não julgam se "parece de gente".
+
+### Antes e depois por tela
+
+| Tela | Antes | Depois | Itens |
+| --- | --- | --- | --- |
+| Início do portal | Hero centralizado com monograma, quatro cartões de perfil com faixa colorida | Título "Entrar no sistema" e lista de perfis alinhada à esquerda; botão "Restaurar dados de demonstração" | V1, V2, T4 |
+| Cabeçalho e rodapé | Faixa colorida, monograma "SE", sem ano letivo, sem rodapé | Texto "Secretaria de Estado da Educação · Sergipe / Portal Acadêmico", "Ano letivo 2026 · 3º bimestre em curso" (a partir de 1100 px), rodapé com versão, aviso de dados fictícios e data dos dados | V12, E1, E2 |
+| Família · início | "Olá! O que você quer fazer?", quatro blocos de acesso rápido, cartões de número | Título com o nome do estudante e a turma, resumo em linha, próximas datas e pedidos em tabela | V3, V4, T1, T2 |
+| Família · notas | Lista de matérias com parágrafo longo | Boletim em tabela com legenda curta | T8 |
+| Professor · turmas | Cartões de número e cartões de turma | Resumo em linha, tabela com código da turma e carga horária | V4, E4 |
+| Professor · diário | Grade de azulejos para a chamada, título só "Diário de classe" | Uma tabela com nota e caixa "Faltou hoje" por estudante, contagem e dica de teclado, título com turma e componente | V17, T6, E3, E5 |
+| Escola · início, matrículas, enturmação, turmas, alocação | Cartões por registro | Tabelas com contagem; formulário de recusa como único cartão | V16, E3 |
+| Rede · atos e vagas | Cartões de indicador; texto de alerta longo | Resumo em linha, tabelas ordenadas por vencimento, contagem sob a tabela | V4, T9, E3 |
+| Todas | 5 cores de destaque, raios de 10 a 14 px, sombras em quase tudo, cabeçalho de tabela em caixa alta, selos em pílula, estado vazio com ícone | Azul primário e verde de apoio, raios de 3 a 6 px, sombra só em elementos flutuantes, cabeçalho de tabela normal, selos em texto (fundo só em atenção e erro), estado vazio só com texto | V5–V11, V13–V15 |
+| Botões e mensagens | "Confirmar", "Recusar", "Aprovar", "Não foi possível salvar. Tente de novo." | "Confirmar matrícula", "Recusar matrícula", "Aprovar turma"; erros dizem o que aconteceu e o que fazer | T5, T7, T10 |
+| Protótipo em arquivo único | Mesmos sinais do portal, dados antigos | Mesma marcação em lista/tabela e dados gerados a partir de `data/` | V18, T11 |
+
+### Dados
+
+Nomes de pessoas e escolas trocados (5 escolas em 4 municípios, uma turma com 37, outra com 29 e outra com 34 estudantes, capacidades 38, 36 e 34, salas com bloco), 83 aulas dadas, notas com casas variadas e estudantes com faltas altas, atos com validades sem padrão (um vencido, um vencendo em 2026), vagas irregulares, um terceiro aviso de rotina. Chaves e estrutura dos arquivos ficaram iguais; os protocolos passam a começar em `MAT-2026-0006`. As escolas e as pessoas são fictícias e o nome de alguma pode coincidir com um real; o rodapé avisa. D1–D9 resolvidos.
+
+### O que não foi feito
+
+- **E6 (última atualização por tela):** não implementado; o rodapé mostra só a data de referência dos dados.
+- **Cartões restantes:** `escola-equivalencias`, `familia-matricula` e `escola-turmas` ainda têm cartões para blocos únicos (resumo do estudante, plano de adaptação, formulário); não são dados tabulares.
+- **Nomenclatura de DRE:** os nomes ("DRE — Grande Aracaju", "Centro-Sul", "Agreste Central") são inventados e precisam ser conferidos com a SEDUC.
+- **Teste de percepção:** só uma pessoa da equipe pode responder se ainda parece gerado por IA; recomendo mostrar as telas de diário, matrículas e atos sem o nome do sistema.
