@@ -220,7 +220,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--cor-primaria);
 .aviso-rapido.erro .aviso-icone { color: var(--erro); }
 .aviso-rapido.info .aviso-icone { color: var(--info); }
 .aviso-rapido .aviso-texto { flex: 1; padding-top: 1px; }
-.aviso-rapido .aviso-fechar { flex: none; width: 32px; height: 32px; margin: -4px 0 -4px 0; display: grid; place-items: center; border: 0; border-radius: var(--raio-sm); background: transparent; color: var(--texto-suave); cursor: pointer; }
+.aviso-rapido .aviso-fechar { flex: none; width: var(--toque); height: var(--toque); margin: -10px -6px -10px 0; display: grid; place-items: center; border: 0; border-radius: var(--raio-sm); background: transparent; color: var(--texto-suave); cursor: pointer; }
 .aviso-rapido .aviso-fechar:hover { background: var(--superficie-2); color: var(--texto); }
 dialog.janela { border: 1px solid var(--borda); color: var(--texto); background: var(--superficie); border-radius: var(--raio-lg); box-shadow: var(--sombra-3); padding: var(--sp-6); width: min(520px, calc(100% - 2rem)); max-height: 88vh; overflow: auto; }
 dialog.janela[open] { animation: entrar-janela var(--transicao-lenta) ease; }
@@ -319,5 +319,10 @@ h2 .etiqueta { white-space: normal; }
 .barra-acoes.compacta { justify-content: flex-start; align-items: center; flex-wrap: wrap; }
 .barra-acoes.compacta .botao { flex: none; }
 .cor-atencao { color: var(--alerta); font-weight: var(--peso-forte); }
-.tabela-notas td.situacao-celula { white-space: nowrap; }
+.tabela-notas td.situacao-celula { min-width: 9rem; }
+.tabela-notas td.situacao-celula .etiqueta { white-space: normal; }
 @media (max-width: 767px) { .tabela-notas td.situacao-celula { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; } .tabela-notas td.situacao-celula::before { margin-bottom: 0; } }
+details > summary { min-height: var(--toque); display: flex; align-items: center; cursor: pointer; }
+.cartao > details > summary, details.cartao > summary { list-style-position: inside; }
+.tabela-notas thead th { white-space: normal; }
+.tabela-notas th, .tabela-notas td { padding-inline: var(--sp-3); }

@@ -37,7 +37,7 @@ function desenhar() {
   const alunos = dados[turmaId];
   const campo = (a, c, max) => `<td data-rotulo="${CAMPOS[c]}"><label class="sr-only" for="${a.id}-${c}">${CAMPOS[c]} de ${esc(a.nome)}</label><input id="${a.id}-${c}" class="entrada" inputmode="decimal" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="${c}" data-max="${max}" data-vazio="${c !== 'faltas' && a[c] === null}" value="${c === 'faltas' ? a[c] : (a[c] === null ? '' : numeroBR(a[c]))}"></td>`;
   main.innerHTML = `
-    <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 esp-b-5">
       <div><h1 class="esp-b-1">Diário de classe</h1><p class="texto-suave esp-t-0 esp-b-0">${esc(nomeCurto(escola.nome))} · ${aulasDadas} aulas dadas no ano</p></div>
       <div class="campo esp-t-0 esp-b-0 campo-turma"><label for="turma">Turma e componente</label><select id="turma" class="entrada">${minhas.map((m) => `<option value="${m.turma.id}" ${m.turma.id === turmaId ? 'selected' : ''}>${esc(m.turma.nome)} — ${esc(m.componente)}</option>`).join('')}</select></div>
     </div>
