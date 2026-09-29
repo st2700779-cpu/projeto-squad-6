@@ -69,13 +69,13 @@ async function mostrar() {
     <div class="mapa-caixa"><div id="mapa" class="mapa" role="region" aria-label="Mapa de demanda e vagas por município"></div><p class="mapa-aviso" id="mapa-aviso" role="status">Carregando o mapa…</p></div>
     <h2>Números por município</h2>
     <div id="tabela-mapa"></div>
-    <p class="texto-suave texto-pequeno">Demanda: pedidos de matrícula e crianças em idade escolar sem vaga (dados fictícios). Vagas abertas: só séries com ato autorizativo vigente.</p>`;
+    <p class="texto-suave texto-pequeno">Demanda: pedidos de matrícula e crianças sem vaga. Vagas abertas: séries com ato autorizativo vigente.</p>`;
   atualizar();
   const criado = await criarMapa(main.querySelector('#mapa'));
   const aviso = main.querySelector('#mapa-aviso');
-  if (!criado) { main.querySelector('#mapa').hidden = true; aviso.textContent = 'O mapa não carregou (sem internet ou bloqueado). A tabela abaixo traz os mesmos números.'; return; }
+  if (!criado) { main.querySelector('#mapa').hidden = true; aviso.textContent = 'Não foi possível carregar o mapa. A tabela abaixo tem os mesmos números.'; return; }
   mapa = { ...criado, camada: criado.L.layerGroup().addTo(criado.mapa) };
-  aviso.textContent = 'Mapa © OpenStreetMap. A tabela abaixo é a versão em texto do mapa.';
+  aviso.hidden = true;
   atualizar();
 }
 main.addEventListener('change', (e) => { if (e.target.id === 'serie') { serie = e.target.value; atualizar(); } });

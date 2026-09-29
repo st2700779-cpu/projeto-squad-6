@@ -23,8 +23,8 @@ async function mostrar() {
       : null;
     const url = codigo ? new URL(`verificar.html?codigo=${codigo}`, location.href.replace(/aluno\/[^/]*$/, '')).href : '';
     main.innerHTML = `
-      <h1>Carteirinha do estudante</h1>
-      <p class="pagina-descricao">Mostre na entrada da escola. Depois do primeiro acesso, abre também sem internet.</p>
+      <h1>Carteirinha</h1>
+      <p class="pagina-descricao">Apresente na entrada da escola. Abre também sem internet.</p>
       <article class="carteirinha${vencida ? ' vencida' : ''}" aria-label="Carteirinha de ${esc(est.nome)}">
         <header><span>Rede Estadual de Ensino de Sergipe</span><strong>Carteirinha do estudante ${new Date().getFullYear()}</strong></header>
         <div class="carteirinha-corpo">
@@ -46,7 +46,7 @@ async function mostrar() {
           <span aria-hidden="true">Conferido em <time id="agora">${agora()}</time></span>
         </footer>
       </article>
-      <p class="texto-suave texto-pequeno">Avatar ilustrativo. Dados fictícios. A faixa com data e hora só dificulta cópia por print; quem confere a autenticidade é o código do QR.</p>
+      <p class="texto-suave texto-pequeno">A faixa com data e hora dificulta cópia por print. A autenticidade se confere pelo código do QR.</p>
       <div class="linha-botoes esp-t-3">
         <button type="button" class="botao" id="instalar" hidden>${icone('celular', 20)}Adicionar à tela inicial</button>
         <a class="botao botao-secundario" href="verificar.html${codigo ? `?codigo=${codigo}` : ''}">Verificar este código</a>

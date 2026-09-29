@@ -11,7 +11,6 @@ async function mostrar() {
     const [{ atual: est }, escolas, tr] = await Promise.all([estudantes(), carregar('escolas'), carregar('trajetorias')]);
     const itens = trajetoDoEstudante(tr, est.id, escolas);
     main.innerHTML = `<h1>Vida escolar de ${esc(est.nome)}</h1>
-      <p class="pagina-descricao">Anos, séries, escolas, transferências e a matriz curricular de cada ano.</p>
       ${itens.length ? linhaDoTempo(itens, tr.matrizes) : vazio('Sem histórico registrado', 'O histórico dos anos anteriores ainda não foi lançado no cadastro.')}`;
   } catch { falhaDados(main, mostrar); }
 }

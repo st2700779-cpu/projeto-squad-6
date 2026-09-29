@@ -79,17 +79,17 @@ async function mostrar() {
       <div><h2 class="texto-lg">Da mais perto para a mais longe</h2><ol id="lista-escolas" class="lista-escolas"></ol></div>
       <div class="mapa-caixa"><div id="mapa" class="mapa" role="region" aria-label="Mapa das escolas"></div><p class="mapa-aviso" id="mapa-aviso" role="status">Carregando o mapa…</p></div>
     </div>
-    <p class="texto-suave texto-pequeno esp-t-3">Distância em linha reta a partir do bairro escolhido. Coordenadas e vagas fictícias.</p>`;
+    <p class="texto-suave texto-pequeno esp-t-3">Distância em linha reta a partir do bairro escolhido.</p>`;
   atualizar();
   const criado = await criarMapa(main.querySelector('#mapa'));
   const aviso = main.querySelector('#mapa-aviso');
   if (!criado) {
     main.querySelector('#mapa').hidden = true;
-    aviso.textContent = 'O mapa não carregou (sem internet ou bloqueado). A lista ao lado traz as mesmas escolas, com distância e vagas.';
+    aviso.textContent = 'Não foi possível carregar o mapa. A lista mostra as mesmas escolas, com distância e vagas.';
     return;
   }
   mapa = { ...criado, camada: criado.L.layerGroup().addTo(criado.mapa) };
-  aviso.textContent = 'Mapa © OpenStreetMap. A lista ao lado é a versão em texto do mapa.';
+  aviso.hidden = true; // a atribuição do OpenStreetMap já aparece no canto do mapa
   atualizar();
 }
 main.addEventListener('change', (e) => {
