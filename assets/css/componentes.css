@@ -231,3 +231,26 @@ textarea.entrada { min-height: 100px; resize: vertical; }
 #pagina, .ferramentas-tabela .campo { min-width: 0; }
 select.entrada { max-width: 100%; text-overflow: ellipsis; }
 h2 .etiqueta { white-space: normal; }
+
+/* Utilitários de layout e tipografia (substituem os style="" dos templates) */
+.topo-estreito { max-width: 620px; }
+.titulo-inicial { font-size: clamp(2rem, 6vw, 2.6rem); margin-top: .8rem; }
+.lead { font-size: 1.1rem; max-width: 52ch; }
+.titulo-tela { margin-top: .4rem; }
+.titulo-cartao { font-size: 1.15rem; }
+.cartao-destaque { padding: 1.2rem 1.4rem; }
+.numero-grande { font-size: 2.6rem; font-weight: 700; margin: .2rem 0 0; line-height: 1.2; }
+.nota { font-size: .92rem; margin: .6rem 0; }
+.sem-margem { margin: 0; }
+.sem-margem-topo { margin-top: 0; }
+.sem-margem-base { margin-bottom: 0; }
+.espaco-topo { margin-top: .7rem; }
+.sem-quebra { flex-wrap: nowrap; }
+.preenche { flex: 1; min-width: 0; }
+.fim { justify-content: flex-end; }
+.direita { text-align: right; }
+.botao-mini { min-height: 36px; padding: .2rem .7rem; border-width: 1.5px; }
+.materia .unidades strong { color: var(--tinta); }
+/* Situação por extenso (ex.: "Reprovado por frequência") pode quebrar em duas linhas no celular */
+.materias-cabecalho, .materia summary { grid-template-columns: 1fr 4rem minmax(9.5rem, 11.5rem); }
+.materia summary .etiqueta { white-space: normal; text-align: center; }

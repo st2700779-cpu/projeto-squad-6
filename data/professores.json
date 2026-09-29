@@ -1,5 +1,5 @@
 [
-  { "id": "p1", "nome": "Profa. Ana Lúcia Menezes", "concurso": "Professor de Matemática", "formacao": "Licenciatura em Matemática", "habilitacao": ["Matemática"], "cargaHorariaSemanal": 30, "aulasEmOutrasTurmas": 20 },
+  { "id": "p1", "nome": "Profa. Ana Lúcia Menezes", "concurso": "Professor de Matemática", "formacao": "Licenciatura em Matemática", "habilitacao": ["Matemática"], "cargaHorariaSemanal": 30, "aulasEmOutrasTurmas": 12 },
   { "id": "p2", "nome": "Prof. Marcos Vinícius Teles", "concurso": "Professor de Física", "formacao": "Licenciatura em Física", "habilitacao": ["Física"], "cargaHorariaSemanal": 20, "aulasEmOutrasTurmas": 12 },
   { "id": "p3", "nome": "Profa. Juliana Freitas", "concurso": "Professor de Língua Portuguesa", "formacao": "Letras — Português e Inglês", "habilitacao": ["Língua Portuguesa", "Inglês"], "cargaHorariaSemanal": 30, "aulasEmOutrasTurmas": 18 },
   { "id": "p4", "nome": "Prof. Roberto Andrade", "concurso": "Professor de Biologia", "formacao": "Ciências Biológicas", "habilitacao": ["Biologia"], "cargaHorariaSemanal": 20, "aulasEmOutrasTurmas": 18 },

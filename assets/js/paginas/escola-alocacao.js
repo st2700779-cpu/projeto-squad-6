@@ -3,7 +3,7 @@
 import { iniciar, falhaDados } from '../app.js';
 import { esc, icone, avisar, etiqueta, confirmar } from '../ui.js';
 import { carregar, turmasEscola, conjunto, salvar, registrarAcao } from '../dados.js';
-import { colunaDaMatriz, bloqueioAlocacao } from '../regras.js';
+import { colunaDaMatriz, bloqueioAlocacao, aulasDoComponente as aulasNaMatriz, aulasAlocadas as aulasDoProfessor } from '../regras.js';
 
 const main = await iniciar({ perfil: 'escola', pagina: 'escola/alocacao.html', assistente: true, papel: 'Coordenação' });
 let turmas, professores, alocacoes, matriz;
@@ -20,9 +20,8 @@ async function mostrar() {
     desenhar();
   } catch { falhaDados(main, mostrar); }
 }
-const aulasDoComponente = (componente, serie) => matriz.find((c) => c[0] === componente)?.[colunaDaMatriz(serie)] || 0;
-const aulasAlocadas = (profId) => alocacoes.filter((a) => a.professorId === profId)
-  .reduce((s, a) => s + aulasDoComponente(a.componente, turmas.find((t) => t.id === a.turmaId)?.serie || ''), 0);
+const aulasDoComponente = (componente, serie) => aulasNaMatriz(matriz, componente, serie);
+const aulasAlocadas = (profId) => aulasDoProfessor(profId, { alocacoes, turmas, matriz });
 
 function desenhar() {
   const t = turmas.find((x) => x.id === turmaId);

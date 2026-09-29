@@ -9,9 +9,18 @@
     "matriculados": 38,
     "situacao": "Aprovada",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Direção", "Aprovou", ""]
-    ]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Direção",
+        "Aprovou",
+        ""
+      ]
+    ],
+    "escolaId": "e1"
   },
   {
     "id": "tt5",
@@ -23,9 +32,18 @@
     "matriculados": 24,
     "situacao": "Aprovada",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Direção", "Aprovou", ""]
-    ]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Direção",
+        "Aprovou",
+        ""
+      ]
+    ],
+    "escolaId": "e1"
   },
   {
     "id": "tt4",
@@ -37,9 +55,18 @@
     "matriculados": 35,
     "situacao": "Aprovada",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Direção", "Aprovou", ""]
-    ]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Direção",
+        "Aprovou",
+        ""
+      ]
+    ],
+    "escolaId": "e1"
   },
   {
     "id": "tt2",
@@ -51,9 +78,18 @@
     "matriculados": 0,
     "situacao": "Pendente de aprovação",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Coordenação", "Enviou para aprovação", ""]
-    ]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Coordenação",
+        "Enviou para aprovação",
+        ""
+      ]
+    ],
+    "escolaId": "e1"
   },
   {
     "id": "tt3",
@@ -65,9 +101,22 @@
     "matriculados": 0,
     "situacao": "Devolvida",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Coordenação", "Enviou para aprovação", ""],
-      ["Direção", "Devolveu", "A sala 02 está em reforma até dezembro. Escolher outra sala."]
-    ]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Coordenação",
+        "Enviou para aprovação",
+        ""
+      ],
+      [
+        "Direção",
+        "Devolveu",
+        "A sala 02 está em reforma até dezembro. Escolher outra sala."
+      ]
+    ],
+    "escolaId": "e1"
   }
 ]

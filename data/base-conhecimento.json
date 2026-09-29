@@ -155,7 +155,7 @@
       "id": "boletim",
       "tema": "notas",
       "pergunta": "Onde vejo as notas?",
-      "resposta": "No portal, toque em Ver notas e faltas. As notas aparecem depois que o professor lança cada unidade.",
+      "resposta": "No portal, toque em Ver notas e faltas. As notas aparecem depois que o professor lança as notas de cada bimestre.",
       "palavras_chave": [
         "nota",
         "notas",
@@ -182,11 +182,12 @@
     {
       "id": "provas-3-unidade",
       "tema": "calendario",
-      "pergunta": "Quando são as provas da 3ª unidade?",
-      "resposta": "As provas da 3ª unidade serão de 13 a 17 de outubro de 2026.",
+      "pergunta": "Quando são as provas do 3º bimestre?",
+      "resposta": "As provas do 3º bimestre serão de 13 a 17 de outubro de 2026.",
       "palavras_chave": [
         "provas",
         "avaliacao",
+        "bimestre",
         "unidade",
         "quando e a prova"
       ],

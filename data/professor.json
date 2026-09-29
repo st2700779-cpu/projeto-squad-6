@@ -1,58 +1,7 @@
 {
-  "nome": "Profa. Ana Lúcia Menezes",
-  "concurso": "Professor de Matemática",
-  "formacao": "Licenciatura em Matemática",
-  "habilitacao": [
-    "Matemática"
-  ],
-  "cargaHorariaSemanal": 30,
-  "aulasDadas": 80,
-  "turmas": [
-    {
-      "id": "t1",
-      "nome": "1ª série A",
-      "componente": "Matemática",
-      "aulasSemana": 4,
-      "escolaId": "e1"
-    },
-    {
-      "id": "t2",
-      "nome": "1ª série B",
-      "componente": "Matemática",
-      "aulasSemana": 4,
-      "escolaId": "e1"
-    },
-    {
-      "id": "t3",
-      "nome": "2ª série A",
-      "componente": "Matemática",
-      "aulasSemana": 4,
-      "escolaId": "e1"
-    },
-    {
-      "id": "t4",
-      "nome": "3ª série A",
-      "componente": "Matemática",
-      "aulasSemana": 4,
-      "escolaId": "e1"
-    },
-    {
-      "id": "t5",
-      "nome": "2ª série B",
-      "componente": "Matemática",
-      "aulasSemana": 4,
-      "escolaId": "e2"
-    },
-    {
-      "id": "t6",
-      "nome": "3ª série B",
-      "componente": "Matemática",
-      "aulasSemana": 6,
-      "escolaId": "e2"
-    }
-  ],
+  "professorId": "p1",
   "diario": {
-    "t1": [
+    "tt1": [
       {
         "id": "a1",
         "nome": "Ana Clara Souza",
@@ -110,7 +59,7 @@
         "faltas": 5
       }
     ],
-    "t2": [
+    "tt5": [
       {
         "id": "b1",
         "nome": "Igor Batista",

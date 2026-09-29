@@ -6,15 +6,26 @@
     "responsavel": "Rosa Maria Santos",
     "serie": "1ª série EM",
     "turma": "1ª série A",
-    "turmaId": "t1",
+    "turmaId": "tt1",
     "turno": "Manhã",
     "escolaId": "e1",
-    "aulasDadas": 80,
     "notas": {
-      "Língua Portuguesa": [7.5, 7.0],
-      "Biologia": [6.0, 6.5],
-      "História": [8.0, 7.5],
-      "Física": [5.5, 5.8]
+      "Língua Portuguesa": [
+        7.5,
+        7.0
+      ],
+      "Biologia": [
+        6.0,
+        6.5
+      ],
+      "História": [
+        8.0,
+        7.5
+      ],
+      "Física": [
+        5.5,
+        5.8
+      ]
     }
   },
   {
@@ -27,14 +38,28 @@
     "turmaId": null,
     "turno": "Tarde",
     "escolaId": "e2",
-    "aulasDadas": 80,
     "faltas": 6,
     "notas": {
-      "Matemática": [7.5, 8.0],
-      "Língua Portuguesa": [6.0, 5.5],
-      "Ciências": [8.0, 8.5],
-      "História": [7.0, 7.5],
-      "Geografia": [5.0, 5.8]
+      "Matemática": [
+        7.5,
+        8.0
+      ],
+      "Língua Portuguesa": [
+        6.0,
+        5.5
+      ],
+      "Ciências": [
+        8.0,
+        8.5
+      ],
+      "História": [
+        7.0,
+        7.5
+      ],
+      "Geografia": [
+        5.0,
+        5.8
+      ]
     }
   }
 ]

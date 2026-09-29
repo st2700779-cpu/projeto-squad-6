@@ -8,14 +8,24 @@ const API = new URL('api/', RAIZ);
 const cache = new Map();
 
 let temApi;
+/**
+ * Diz se o site está sendo servido com a API local (tools/servidor.ps1).
+ * A sonda lê o cabeçalho X-Portal-Api de uma página que sempre existe; assim, em hospedagem
+ * estática não há resposta 404 e o console do navegador fica limpo.
+ * @returns {Promise<boolean>}
+ */
 export function usarApi() {
-  temApi ??= fetch(new URL('saude', API), { cache: 'no-store' })
-    .then((r) => (r.ok ? r.json() : null))
-    .then((d) => d?.ok === true)
+  temApi ??= fetch(new URL('config.js', RAIZ), { cache: 'no-store' })
+    .then((r) => r.headers.get('X-Portal-Api') === '1')
     .catch(() => false);
   return temApi;
 }
 
+/**
+ * Lê um conjunto de dados (API local ou data/{nome}.json), com cache por página.
+ * @param {string} nome Ex.: 'escolas', 'atos', 'letivo'.
+ * @throws {Error} DADOS_INDISPONIVEIS quando a leitura falha.
+ */
 export async function carregar(nome) {
   if (cache.has(nome)) return cache.get(nome);
   const promessa = usarApi()
@@ -34,12 +44,15 @@ async function alteravel(nome, semApi) {
 export const matriculas = () => alteravel('matriculas', () => carregar('matriculas'));
 export const vagas = () => alteravel('vagas', () => carregar('vagas'));
 export const turmasEscola = () => alteravel('turmas', () => carregar('turmas'));
+/** Diário de classe por turma: { [turmaId]: [{id, nome, n1, n2, faltas}] }. Base inicial em professor.json. */
 export const diario = () => alteravel('diario', async () => (await carregar('professor')).diario);
+/** Dados do ano letivo (aulas dadas, bimestre atual). Fonte única para o cálculo de frequência. */
+export const letivo = () => carregar('letivo');
 // Demais conjuntos alteráveis, cada um com arquivo-base em data/:
 // chamadas, historico, enturmacao, alocacoes, renovacoes, equivalencias.
 export const conjunto = (nome) => alteravel(nome, () => carregar(nome));
 
-// Histórico de ações: quem fez o quê, em quê e quando. O mais recente fica no topo.
+/** Registra no histórico de ações quem fez o quê, em quê e quando (o mais recente fica no topo). */
 export async function registrarAcao(quem, acao, alvo) {
   const lista = await conjunto('historico');
   lista.unshift({ quando: new Date().toISOString(), quem, acao, alvo });
@@ -50,7 +63,7 @@ export async function ultimaAcao(alvo) {
   return (await conjunto('historico')).find((h) => h.alvo === alvo) || null;
 }
 
-// Salva um conjunto alterável (matriculas, vagas, turmas ou diario). Lança erro se a API recusar.
+/** Salva um conjunto alterável (API ou localStorage). Lança FALHA_AO_SALVAR se a API recusar. */
 export async function salvar(nome, valor) {
   if (!(await usarApi())) { definir(nome, valor); return; }
   const r = await fetch(new URL(nome, API), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(valor) });
@@ -65,7 +78,7 @@ export async function novoProtocolo(prefixo) {
   return (await r.json()).protocolo;
 }
 
-// Volta a demonstração ao estado inicial (preferências locais e dados salvos na API).
+/** Restaura os dados de demonstração: apaga o que foi salvo no navegador e na API local. */
 export async function reiniciarDados() {
   reiniciar();
   cache.clear();

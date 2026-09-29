@@ -63,6 +63,7 @@ function Enviar($resp, [int]$status, [string]$tipo, [byte[]]$bytes) {
   $resp.StatusCode = $status
   $resp.ContentType = $tipo
   $resp.Headers.Add('Cache-Control', 'no-store')
+  $resp.Headers.Add('X-Portal-Api', '1')   # o front-end usa este cabecalho para saber que a API existe
   $resp.ContentLength64 = $bytes.Length
   $resp.OutputStream.Write($bytes, 0, $bytes.Length)
 }

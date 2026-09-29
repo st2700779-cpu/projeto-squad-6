@@ -5,7 +5,7 @@
 // É um protótipo: a folha leva marca-d'água de documento simulado, sem valor legal.
 import { iniciar, falhaDados } from '../app.js';
 import { esc, icone, dataBR, hojeBR, avisar } from '../ui.js';
-import { carregar, diario, estudantes, matriculas, novoProtocolo, registrarAcao } from '../dados.js';
+import { carregar, diario, letivo, estudantes, matriculas, novoProtocolo, registrarAcao } from '../dados.js';
 import { desempenho, serieCompleta, PRESENCA_MINIMA } from '../regras.js';
 
 const params = new URLSearchParams(location.search);
@@ -28,9 +28,9 @@ async function dadosDoAluno() {
     if (!p) return null;
     return { nome: p.estudante, serie: p.serie, turma: null, turno: null, nascimento: null, escola: escolas.find((e) => e.id === p.escolaId), presenca: null };
   }
-  const [{ lista, atual }, dia] = await Promise.all([estudantes(), diario()]);
+  const [{ lista, atual }, dia, lv] = await Promise.all([estudantes(), diario(), letivo()]);
   const est = lista.find((e) => e.id === params.get('estudante')) || atual;
-  return { ...est, escola: escolas.find((e) => e.id === est.escolaId), presenca: desempenho(est, dia).presenca };
+  return { ...est, escola: escolas.find((e) => e.id === est.escolaId), presenca: desempenho(est, dia, lv.aulasDadas).presenca };
 }
 
 function texto(a) {

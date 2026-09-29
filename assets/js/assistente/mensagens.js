@@ -27,7 +27,7 @@ export const MSG = {
 // Perguntas sugeridas por perfil.
 export const SUGESTOES = {
   familia: ['Quando é a rematrícula?', 'Quais documentos levar?', 'Como pedir transferência?'],
-  professor: ['Qual a frequência mínima?', 'Quando são as provas da 3ª unidade?', 'Quando termina o ano letivo?'],
+  professor: ['Qual a frequência mínima?', 'Quando são as provas do 3º bimestre?', 'Quando termina o ano letivo?'],
   escola: ['Quais documentos a família precisa?', 'Como funciona a transferência?', 'Qual o prazo para levar os documentos?'],
   rede: ['Quando é a matrícula nova?', 'O que é a matriz curricular?', 'Quando termina o ano letivo?']
 };
@@ -49,5 +49,5 @@ export const SEGUIMENTOS = {
   matricula: ['Quais documentos levar?', 'Como pedir transferência?'],
   notas: ['Qual a frequência mínima?', 'Perdi a prova. E agora?'],
   calendario: ['Quais os próximos feriados?', 'Quando termina o ano letivo?'],
-  avisos: ['Quando são as provas da 3ª unidade?', 'Quando é a rematrícula?']
+  avisos: ['Quando são as provas do 3º bimestre?', 'Quando é a rematrícula?']
 };
