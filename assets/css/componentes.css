@@ -84,7 +84,7 @@
 .etiqueta-ok { background: var(--verde-claro); color: var(--verde); border-color: var(--verde); }
 .etiqueta-atencao { background: var(--superficie); color: var(--tinta); border: 1.5px dashed var(--tinta); }
 .etiqueta-erro { background: var(--vermelho-claro); color: var(--vermelho); border-color: var(--vermelho); }
-.etiqueta-info { background: var(--azul-claro); color: var(--azul); border-color: var(--azul); }
+.etiqueta-info { background: var(--azul-claro); color: var(--azul-texto); border-color: var(--azul); }
 .etiqueta-neutra { background: var(--fundo-claro); color: var(--suave); border-color: var(--linha); }
 
 /* Formulários */
@@ -160,10 +160,11 @@ textarea.entrada { min-height: 100px; resize: vertical; }
 .painel-inline h2 { font-size: 1.1rem; margin: 0 0 .6rem; }
 
 /* Aviso rápido e janela */
-.aviso-rapido { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); background: var(--tinta); color: var(--sobre-tinta); padding: .7rem 1.1rem; border-radius: 12px; z-index: 60; font-weight: 700; max-width: 90%; }
-.fundo-janela { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 50; display: flex; align-items: flex-end; justify-content: center; padding: 1rem; }
-@media (min-width: 600px) { .fundo-janela { align-items: center; } }
-.janela { background: var(--superficie); border-radius: 18px; padding: 1.2rem; width: min(540px, 100%); max-height: 88vh; overflow: auto; }
+.aviso-rapido { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); background: var(--tinta); color: var(--sobre-tinta); padding: .7rem 1.1rem; border-radius: 12px; z-index: 60; font-weight: 700; max-width: 90%; opacity: 0; pointer-events: none; }
+.aviso-rapido.visivel { opacity: 1; }
+/* Janelas (confirmar, pedir texto): <dialog> nativo, com foco preso e Esc para fechar */
+dialog.janela { border: 2px solid var(--linha); color: var(--tinta); background: var(--superficie); border-radius: 18px; padding: 1.2rem; width: min(540px, calc(100% - 2rem)); max-height: 88vh; overflow: auto; }
+dialog.janela::backdrop { background: rgba(0, 0, 0, .55); }
 
 /* Carregamento de dados */
 .carregando { color: var(--suave); padding: 2rem 0; text-align: center; }
@@ -290,3 +291,4 @@ svg { flex: none; }
 @keyframes girar { to { transform: rotate(360deg); } }
 /* A mensagem do passo reserva sua altura, para o botão Continuar não se mover quando o erro aparece ao sair do campo. */
 #erro-passo, #erro-passo:empty { display: block; min-height: 2.8rem; }
+.materias { margin-bottom: 0; }

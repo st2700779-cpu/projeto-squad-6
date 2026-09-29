@@ -1,6 +1,6 @@
 // Vagas por escola e série, com busca, filtro por município e exportação para CSV.
 import { iniciar, falhaDados } from '../app.js';
-import { esc, icone, vazio, baixarCSV, combina } from '../ui.js';
+import { esc, icone, vazio, baixarCSV, combina, debounce } from '../ui.js';
 import { carregar, vagas as lerVagas } from '../dados.js';
 import { SERIES, atoDaEtapa, situacaoAto } from '../regras.js';
 
@@ -47,7 +47,8 @@ function desenhar() {
     </div>
     <div id="tabela-vagas">${tabela()}</div>`;
 }
-main.addEventListener('input', (e) => { if (e.target.id === 'busca') { busca = e.target.value; main.querySelector('#tabela-vagas').innerHTML = tabela(); } });
+const filtrarBusca = debounce(() => { main.querySelector('#tabela-vagas').innerHTML = tabela(); });
+main.addEventListener('input', (e) => { if (e.target.id === 'busca') { busca = e.target.value; filtrarBusca(); } });
 main.addEventListener('change', (e) => { if (e.target.id === 'municipio') { municipio = e.target.value; desenhar(); } });
 main.addEventListener('click', (e) => {
   if (!e.target.closest('#exportar')) return;

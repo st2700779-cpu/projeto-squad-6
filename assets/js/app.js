@@ -17,6 +17,11 @@ const NOMES = { familia: 'Família', professor: 'Professor', escola: 'Escola', r
 
 // perfil: familia | professor | escola | rede | null (tela inicial)
 // papel: "Você está como" no cabeçalho (escola). titulo + voltar: cabeçalho de tela interna no celular (W3, W5): "‹ Título" e espaço para ações.
+/**
+ * Monta cabeçalho, menu do perfil e assistente. Chamada uma vez por página.
+ * @param {{perfil?: 'familia'|'professor'|'escola'|'rede'|null, pagina?: string, assistente?: boolean, titulo?: string, voltar?: string, papel?: string}} opcoes
+ * @returns {Promise<HTMLElement>} O elemento onde a página desenha seu conteúdo.
+ */
 export async function iniciar({ perfil = null, pagina = '', assistente = false, titulo = '', voltar = '', papel = '' } = {}) {
   aplicarEscala();
   if (perfil) definir('perfil', perfil);
@@ -69,6 +74,7 @@ export const link = url;
 export const acoesDoTopo = () => document.querySelector('#topo-acoes');
 
 // Mensagem padrão quando os dados não carregam.
+/** Estado de erro padrão: aviso em português e botão "Tentar de novo". */
 export function falhaDados(alvo, tentarDeNovo) {
   alvo.innerHTML = `<div class="alerta-erro" role="alert">${icone('alerta', 20)}<span>Não foi possível carregar estas informações agora.</span></div>
     <p><button type="button" class="botao botao-secundario" id="tentar-dados">Tentar de novo</button></p>`;

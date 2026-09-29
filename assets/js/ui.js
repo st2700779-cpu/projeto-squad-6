@@ -1,4 +1,5 @@
 // Utilitários de interface: escape de texto, ícones, aviso rápido e janela de texto.
+/** Escapa texto para uso seguro dentro de HTML (evita injeção de código). */
 export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const $ = (sel, raiz = document) => raiz.querySelector(sel);
 
@@ -33,11 +34,24 @@ const PATHS = {
   cadeado: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4',
   mais: 'M12 5v14M5 12h14'
 };
+/** SVG de ícone pelo nome (ver PATHS). Decorativo: fica oculto para leitores de tela. */
 export const icone = (nome, tam = 22) =>
   `<svg width="${tam}" height="${tam}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${PATHS[nome]}"/></svg>`;
 
 let timerAviso;
+/**
+ * Aviso rápido (toast). A região de status existe desde o carregamento da página, vazia,
+ * para os leitores de tela anunciarem o texto quando ele muda.
+ * @param {string} texto
+ */
 export function avisar(texto) {
+  const el = regiaoDeAviso();
+  el.textContent = texto;
+  el.classList.add('visivel');
+  clearTimeout(timerAviso);
+  timerAviso = setTimeout(() => { el.classList.remove('visivel'); el.textContent = ''; }, 5000);
+}
+function regiaoDeAviso() {
   let el = $('#aviso-rapido');
   if (!el) {
     el = document.createElement('div');
@@ -46,95 +60,117 @@ export function avisar(texto) {
     el.setAttribute('role', 'status');
     document.body.appendChild(el);
   }
-  el.textContent = texto;
-  el.hidden = false;
-  clearTimeout(timerAviso);
-  timerAviso = setTimeout(() => { el.hidden = true; }, 3500);
+  return el;
+}
+regiaoDeAviso();
+
+/**
+ * Abre uma janela de diálogo nativa (<dialog>): o navegador prende o foco dentro dela, deixa o resto da
+ * página inativo e fecha com Esc. Ao fechar, o foco volta para o elemento que a abriu.
+ * @param {string} html Conteúdo da janela.
+ * @param {{papel?: string, foco: string, aoClicar: (e: Event, fechar: (valor: any) => void) => void}} opcoes
+ * @returns {Promise<any>} Valor passado a fechar(), ou null se a pessoa apertou Esc.
+ */
+function abrirJanela(html, { papel = 'dialog', foco, aoClicar }) {
+  return new Promise((resolver) => {
+    const janela = document.createElement('dialog');
+    janela.className = 'janela';
+    janela.setAttribute('role', papel);
+    janela.innerHTML = html;
+    const titulo = $('h2', janela);
+    if (titulo) janela.setAttribute('aria-labelledby', titulo.id);
+    if ($('#confirmar-texto', janela)) janela.setAttribute('aria-describedby', 'confirmar-texto');
+    const anterior = document.activeElement;
+    let valor = null;
+    const fechar = (v) => { valor = v; janela.close(); };
+    janela.addEventListener('click', (e) => aoClicar(e, fechar));
+    janela.addEventListener('close', () => { janela.remove(); anterior?.focus?.(); resolver(valor); });
+    document.body.appendChild(janela);
+    janela.showModal();
+    $(foco, janela).focus();
+  });
 }
 
-// Pede um texto obrigatório (justificativas, motivos). Devolve o texto ou null se cancelado.
+/**
+ * Pede um texto obrigatório (justificativas, motivos).
+ * Clicar fora da janela não fecha, para não perder o que foi digitado; Esc cancela.
+ * @returns {Promise<string|null>} O texto ou null se cancelado.
+ */
 export function pedirTexto({ titulo, rotulo, minimo = 5 }) {
-  return new Promise((resolver) => {
-    const fundo = document.createElement('div');
-    fundo.className = 'fundo-janela';
-    fundo.innerHTML = `
-      <div class="janela" role="dialog" aria-modal="true" aria-labelledby="janela-titulo">
-        <h2 class="esp-t-0" id="janela-titulo">${esc(titulo)}</h2>
-        <div class="campo">
-          <label for="janela-texto">${esc(rotulo)}</label>
-          <textarea id="janela-texto" class="entrada" aria-describedby="janela-erro"></textarea>
-          <p id="janela-erro" class="erro" role="alert"></p>
-        </div>
-        <div class="linha-botoes fim">
-          <button type="button" class="botao botao-secundario" data-acao="cancelar">Cancelar</button>
-          <button type="button" class="botao" data-acao="confirmar">Confirmar</button>
-        </div>
-      </div>`;
-    const anterior = document.activeElement;
-    document.body.appendChild(fundo);
-    const campo = $('#janela-texto', fundo);
-    campo.focus();
-    const fechar = (valor) => { fundo.remove(); anterior?.focus?.(); resolver(valor); };
-    fundo.addEventListener('click', (e) => {
+  const html = `
+    <h2 id="janela-titulo" class="esp-t-0">${esc(titulo)}</h2>
+    <div class="campo">
+      <label for="janela-texto">${esc(rotulo)}</label>
+      <textarea id="janela-texto" class="entrada" aria-describedby="janela-erro"></textarea>
+      <p id="janela-erro" class="erro" role="alert"></p>
+    </div>
+    <div class="linha-botoes fim">
+      <button type="button" class="botao botao-secundario" data-acao="cancelar">Cancelar</button>
+      <button type="button" class="botao" data-acao="confirmar">Confirmar</button>
+    </div>`;
+  return abrirJanela(html, {
+    foco: '#janela-texto',
+    aoClicar(e, fechar) {
       const acao = e.target.closest('[data-acao]')?.dataset.acao;
-      if (e.target === fundo || acao === 'cancelar') fechar(null);
-      if (acao === 'confirmar') {
-        const v = campo.value.trim();
-        if (v.length < minimo) {
-          $('#janela-erro', fundo).textContent = `Escreva pelo menos ${minimo} caracteres. O texto fica registrado.`;
-          campo.setAttribute('aria-invalid', 'true');
-          campo.focus();
-          return;
-        }
-        fechar(v);
+      if (acao === 'cancelar') fechar(null);
+      if (acao !== 'confirmar') return;
+      const janela = e.currentTarget;
+      const campo = $('#janela-texto', janela);
+      const v = campo.value.trim();
+      if (v.length < minimo) {
+        $('#janela-erro', janela).textContent = `Escreva pelo menos ${minimo} caracteres. O texto fica registrado.`;
+        campo.setAttribute('aria-invalid', 'true');
+        campo.focus();
+        return;
       }
-    });
-    fundo.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(null); });
+      fechar(v);
+    }
   });
 }
 
 export const hojeBR = () => new Date().toLocaleDateString('pt-BR');
+/** Data ISO (AAAA-MM-DD) para dd/mm/aaaa. */
 export const dataBR = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR');
+/** Número no formato brasileiro (vírgula decimal). */
 export const numeroBR = (n, casas = 1) => Number(n).toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
 
+/** Selo de situação. Sempre leva texto, nunca só cor. @param {'ok'|'atencao'|'erro'|'info'|'neutra'} tipo */
 export function etiqueta(texto, tipo = 'neutra') {
   return `<span class="etiqueta etiqueta-${tipo}">${esc(texto)}</span>`;
 }
 
 export const dataHoraBR = (iso) => new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-// Confirmação antes de ações que não dá para desfazer. Devolve true ou false.
+/**
+ * Confirmação antes de ações que não dá para desfazer. O foco começa em "Cancelar".
+ * @returns {Promise<boolean>} True se a pessoa confirmou; false ao cancelar, clicar fora ou apertar Esc.
+ */
 export function confirmar({ titulo, texto, botao = 'Confirmar', perigo = false }) {
-  return new Promise((resolver) => {
-    const fundo = document.createElement('div');
-    fundo.className = 'fundo-janela';
-    fundo.innerHTML = `
-      <div class="janela" role="alertdialog" aria-modal="true" aria-labelledby="confirmar-titulo" aria-describedby="confirmar-texto">
-        <h2 class="esp-t-0" id="confirmar-titulo">${esc(titulo)}</h2>
-        <p id="confirmar-texto">${esc(texto)}</p>
-        <div class="linha-botoes fim">
-          <button type="button" class="botao botao-secundario" data-acao="nao">Cancelar</button>
-          <button type="button" class="botao${perigo ? ' botao-perigo' : ''}" data-acao="sim">${esc(botao)}</button>
-        </div>
-      </div>`;
-    const anterior = document.activeElement;
-    document.body.appendChild(fundo);
-    $('[data-acao="nao"]', fundo).focus();
-    const fechar = (valor) => { fundo.remove(); anterior?.focus?.(); resolver(valor); };
-    fundo.addEventListener('click', (e) => {
+  const html = `
+    <h2 id="confirmar-titulo" class="esp-t-0">${esc(titulo)}</h2>
+    <p id="confirmar-texto">${esc(texto)}</p>
+    <div class="linha-botoes fim">
+      <button type="button" class="botao botao-secundario" data-acao="nao">Cancelar</button>
+      <button type="button" class="botao${perigo ? ' botao-perigo' : ''}" data-acao="sim">${esc(botao)}</button>
+    </div>`;
+  return abrirJanela(html, {
+    papel: 'alertdialog',
+    foco: '[data-acao="nao"]',
+    aoClicar(e, fechar) {
       const acao = e.target.closest('[data-acao]')?.dataset.acao;
-      if (e.target === fundo || acao === 'nao') fechar(false);
+      if (e.target === e.currentTarget || acao === 'nao') fechar(false);
       if (acao === 'sim') fechar(true);
-    });
-    fundo.addEventListener('keydown', (e) => { if (e.key === 'Escape') fechar(false); });
-  });
+    }
+  }).then((v) => v === true);
 }
 
 // Estado vazio com explicação do que aparece ali e, se houver, o próximo passo.
+/** Estado vazio: título, explicação do que aparece ali e ícone. */
 export const vazio = (titulo, texto, nomeIcone = 'info') =>
   `<div class="estado-vazio">${icone(nomeIcone, 32)}<strong>${esc(titulo)}</strong><span>${esc(texto)}</span></div>`;
 
 // Exporta linhas para CSV que abre direto no Excel em português (ponto e vírgula e BOM UTF-8).
+/** Baixa uma tabela em CSV (ponto e vírgula e BOM UTF-8, abre direto no Excel em português). */
 export function baixarCSV(nomeArquivo, cabecalho, linhas) {
   const celula = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
   const texto = [cabecalho, ...linhas].map((l) => l.map(celula).join(';')).join('\r\n');
@@ -149,5 +185,17 @@ export function baixarCSV(nomeArquivo, cabecalho, linhas) {
 }
 
 // Busca sem acento e sem diferença de maiúsculas.
+/** Texto em minúsculas e sem acentos, para buscas. */
 export const normalizar = (s) => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+/** True se o termo (sem acento e sem diferença de maiúsculas) aparece em algum dos campos. */
 export const combina = (termo, ...campos) => !termo || campos.some((c) => normalizar(c).includes(normalizar(termo)));
+
+/**
+ * Adia a execução de uma função até a pessoa parar de digitar (usado nas buscas).
+ * @param {Function} fn
+ * @param {number} [espera] Milissegundos.
+ */
+export function debounce(fn, espera = 200) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), espera); };
+}

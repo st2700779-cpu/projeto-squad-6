@@ -33,8 +33,6 @@
   .icone-atividade { width: 48px; height: 48px; border-radius: 12px; background: var(--tinta); color: var(--sobre-tinta); display: grid; place-items: center; flex: none; }
   .relatorio { text-align: left; }
   .rodape-prototipo { color: var(--suave); font-size: .9rem; margin-top: 2rem; }
-  dialog.janela { border: 2px solid var(--linha); color: var(--tinta); background: var(--superficie); padding: 1.2rem; max-width: min(460px, 92vw); width: 100%; }
-  dialog.janela::backdrop { background: rgba(0, 0, 0, .55); }
 </style>
 </head>
 <body>
@@ -51,7 +49,7 @@
 </header>
 
 <main id="conteudo" class="conteudo conteudo-estreito" tabindex="-1"></main>
-<div id="aviso-rapido" class="aviso-rapido" role="status" hidden></div>
+<div id="aviso-rapido" class="aviso-rapido" role="status"></div>
 <dialog id="dialogo" class="janela" aria-labelledby="dialogo-titulo" aria-describedby="dialogo-texto">
   <h2 id="dialogo-titulo" class="sem-margem-topo"></h2>
   <p id="dialogo-texto"></p>
@@ -511,9 +509,9 @@ function desempenho(est, diario, aulasDadas) {
   function avisar(texto) {
     var el = document.getElementById('aviso-rapido');
     el.textContent = texto;
-    el.hidden = false;
+    el.classList.add('visivel');
     clearTimeout(timerAviso);
-    timerAviso = setTimeout(function () { el.hidden = true; }, 5000);
+    timerAviso = setTimeout(function () { el.classList.remove('visivel'); el.textContent = ''; }, 5000);
   }
 
   // Confirmação antes de ações que não dá para desfazer. <dialog> nativo: prende o foco e fecha com Esc.
@@ -589,13 +587,13 @@ function desempenho(est, diario, aulasDadas) {
       '</div>' +
       '<h2>Boletim · ' + dados.letivo.bimestresLancados + 'º bimestre</h2>' +
       '<div class="materias-cabecalho" aria-hidden="true"><span>Matéria</span><span class="direita">Média</span><span>Situação</span></div>' +
-      '<div class="materias" role="list" aria-label="Notas por matéria">' +
+      '<ul class="materias lista-limpa" aria-label="Notas por matéria">' +
         d.linhas.map(function (l) {
-          return '<details class="materia" role="listitem"><summary><span>' + esc(l.materia) + '</span><strong><span class="sr-only">média </span>' + num(l.media) + '</strong>' +
+          return '<li><details class="materia"><summary><span>' + esc(l.materia) + '</span><strong><span class="sr-only">média </span>' + num(l.media) + '</strong>' +
             etiqueta(l.situacao.texto, l.situacao.tipo) + '</summary>' +
-            '<div class="unidades"><span>1º bimestre: <strong>' + (l.n1 === null ? 'ainda não lançada' : num(l.n1)) + '</strong></span><span>2º bimestre: <strong>' + (l.n2 === null ? 'ainda não lançada' : num(l.n2)) + '</strong></span></div></details>';
+            '<div class="unidades"><span>1º bimestre: <strong>' + (l.n1 === null ? 'ainda não lançada' : num(l.n1)) + '</strong></span><span>2º bimestre: <strong>' + (l.n2 === null ? 'ainda não lançada' : num(l.n2)) + '</strong></span></div></details></li>';
         }).join('') +
-      '</div>' +
+      '</ul>' +
       '<p class="texto-suave nota">Toque em uma matéria para ver as notas de cada bimestre. A situação é parcial, pois o ano letivo ainda não terminou.' + (d.matematicaDoDiario ? ' A nota de Matemática vem do diário do professor.' : '') + '</p>' +
       '<h2>Próximas datas</h2>' +
       dados.calendario.map(function (a) {

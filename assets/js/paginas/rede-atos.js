@@ -1,7 +1,7 @@
 // Atos autorizativos (W15): acompanhamento pelo vencimento, busca, filtro por DRE, exportação para CSV
 // e pedido de renovação quando faltam 120 dias ou menos (ou o ato já venceu).
 import { iniciar, falhaDados } from '../app.js';
-import { esc, etiqueta, dataBR, icone, avisar, confirmar, vazio, baixarCSV, combina, dataHoraBR } from '../ui.js';
+import { esc, etiqueta, dataBR, icone, avisar, confirmar, vazio, baixarCSV, combina, dataHoraBR, debounce } from '../ui.js';
 import { carregar, conjunto, salvar, registrarAcao } from '../dados.js';
 import { situacaoAto, DIAS_RENOVACAO } from '../regras.js';
 
@@ -49,7 +49,8 @@ function desenhar() {
 
 main.addEventListener('change', (e) => { if (e.target.id === 'dre') { dre = e.target.value; desenhar(); } });
 // A busca só troca a tabela, para o campo não perder o foco enquanto a pessoa digita.
-main.addEventListener('input', (e) => { if (e.target.id === 'busca') { busca = e.target.value; main.querySelector('#tabela-atos').innerHTML = tabela(linhasFiltradas()); } });
+const filtrarBusca = debounce(() => { main.querySelector('#tabela-atos').innerHTML = tabela(linhasFiltradas()); });
+main.addEventListener('input', (e) => { if (e.target.id === 'busca') { busca = e.target.value; filtrarBusca(); } });
 main.addEventListener('click', async (e) => {
   const b = e.target.closest('button');
   if (!b) return;

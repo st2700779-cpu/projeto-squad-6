@@ -23,13 +23,13 @@ async function mostrar() {
         <div class="barra" role="img" aria-label="Presença de ${pres.toFixed(0)} por cento; mínimo de ${PRESENCA_MINIMA}"><span style="width:${pres}%"></span><i class="marca-minimo" style="left:${PRESENCA_MINIMA}%"></i></div>
       </div>
       <div class="materias-cabecalho" aria-hidden="true"><span>Matéria</span><span class="direita">Média</span><span>Situação</span></div>
-      <div class="materias" role="list" aria-label="Notas por matéria">
+      <ul class="materias lista-limpa" aria-label="Notas por matéria">
         ${linhas.map((l) => `
-          <details class="materia" role="listitem">
+          <li><details class="materia">
             <summary><span>${esc(l.materia)}</span><strong><span class="sr-only">média </span>${l.media === null ? '—' : numeroBR(l.media)}</strong>${etiqueta(l.situacao.texto, l.situacao.tipo)}</summary>
             <div class="unidades"><span>1º bimestre: <strong>${l.n1 === null ? 'ainda não lançada' : numeroBR(l.n1)}</strong></span><span>2º bimestre: <strong>${l.n2 === null ? 'ainda não lançada' : numeroBR(l.n2)}</strong></span></div>
-          </details>`).join('')}
-      </div>
+          </details></li>`).join('')}
+      </ul>
       <p class="texto-suave esp-t-4">Toque em uma matéria para ver as notas de cada bimestre. A situação é parcial, pois o ano letivo ainda não terminou: considera a média até agora (aprovado: ${MEDIA_APROVACAO} ou mais; recuperação: ${MEDIA_RECUPERACAO} a menos de ${MEDIA_APROVACAO}) e a frequência mínima de ${PRESENCA_MINIMA}%.${matematicaDoDiario ? ' A nota de Matemática vem do diário do professor.' : ''}</p>`;
   } catch { falhaDados(main, mostrar); }
 }

@@ -1,7 +1,7 @@
 // Pedidos de matrícula (HU12; wireframe W14): confirmar ou recusar com motivo em um painel logo abaixo
 // do pedido. Recusar libera a vaga. Busca, exportação para CSV e registro de quem fez cada ação.
 import { iniciar, link, falhaDados } from '../app.js';
-import { esc, etiqueta, avisar, icone, confirmar, vazio, baixarCSV, combina, dataHoraBR } from '../ui.js';
+import { esc, etiqueta, avisar, icone, confirmar, vazio, baixarCSV, combina, dataHoraBR, debounce } from '../ui.js';
 import { matriculas, vagas as lerVagas, salvar, conjunto, registrarAcao } from '../dados.js';
 
 const ESCOLA = 'e1';
@@ -68,11 +68,14 @@ function desenhar() {
   if (recusando) main.querySelector('#motivo')?.focus();
 }
 // A busca só redesenha a lista, para não tirar o foco do campo enquanto a pessoa digita.
+const filtrarBusca = debounce(() => {
+  const lista = visiveis();
+  main.querySelector('#lista-pedidos').innerHTML = lista.length ? lista.map(cartao).join('') : vazio('Nada encontrado', `Nenhum pedido em “${NOMES[filtro]}” combina com “${busca}”.`, 'busca');
+});
 main.addEventListener('input', (e) => {
   if (e.target.id !== 'busca') return;
   busca = e.target.value;
-  const lista = visiveis();
-  main.querySelector('#lista-pedidos').innerHTML = lista.length ? lista.map(cartao).join('') : vazio('Nada encontrado', `Nenhum pedido em “${NOMES[filtro]}” combina com “${busca}”.`, 'busca');
+  filtrarBusca();
 });
 main.addEventListener('click', async (e) => {
   const b = e.target.closest('button');

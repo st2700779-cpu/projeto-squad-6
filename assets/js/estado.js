@@ -7,17 +7,21 @@ function ler() {
 }
 let estado = ler();
 
+/** Lê uma preferência ou dado da sessão simulada (localStorage). */
 export function obter(chave, padrao) {
   return estado[chave] !== undefined ? estado[chave] : padrao;
 }
+/** Grava um valor na sessão simulada; sem armazenamento, segue só em memória. */
 export function definir(chave, valor) {
   estado[chave] = valor;
   try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch { /* armazenamento indisponível: segue só em memória */ }
 }
+/** Apaga o estado local (usado por "Reiniciar demonstração"). */
 export function reiniciar() {
   estado = {};
   try { localStorage.removeItem(CHAVE); } catch { /* nada a fazer */ }
 }
+/** Próximo protocolo sem API (ex.: MAT-2026-0003). */
 export function proximoProtocolo(prefixo) {
   const cont = obter('contadores', {});
   const n = (cont[prefixo] || 2) + 1;
