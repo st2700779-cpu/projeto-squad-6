@@ -174,3 +174,14 @@ Fases e commits no fim de cada uma vão para a mesma branch/PR (#1) ou, se prefe
 3. **Q4:** o protótipo em arquivo único fica de fora das funções novas? (Padrão: sim.)
 4. **Branch:** continuo na `claude/friendly-goodall-9bwbbq` (PR #1, que já tem as duas etapas anteriores) ou abro outra? Este ambiente só me deixa publicar em `claude/friendly-goodall-9bwbbq`; se quiser branch separada, diga o nome.
 5. **Login da família:** o acesso "Matrícula" deve continuar levando à visão Família inteira (início, notas, documentos) sem login, ou só ao formulário de matrícula, mapa e guia por voz? (Padrão: só formulário de matrícula, mapa e guia; notas e documentos passam para o Aluno.)
+
+## 8. Como ficou (execução, 30/09/2026)
+
+Tudo foi feito com os padrões das respostas da seção 7 (a aprovação veio sem alterações). Diferenças em relação ao plano:
+
+- **Modo balcão:** o formulário está em `assets/js/matricula/formulario.js` e a página é `escola/atendimento.html` (não `matricula/balcao.html`), para herdar o login e o menu da Secretaria.
+- **Fichas da secretaria:** além da ficha, foram criadas `escola/estudantes.html` (lista) e `escola/professores.html` (linha da própria escola).
+- **Turmas de outras escolas:** entram em `data/turmas-rede.json`, lido só pelo painel de atos; as telas da secretaria seguem só com as turmas da escola `e1`.
+- **Fundamental no mapa de professores:** componentes em `data/componentes-etapa.json`; o Médio vem de `data/matrizes.json`.
+- **Service worker:** a lista de arquivos e a versão são geradas por `tools/gerar-sw.mjs`.
+- **Não testado:** Leaflet, `qrcodejs` e tiles do OpenStreetMap foram testados com cópias locais das mesmas bibliotecas (o ambiente de teste não alcança o cdnjs); a instalação do PWA e o `beforeinstallprompt` não foram exercitados; a voz do `speechSynthesis` foi testada com um substituto que registra o texto; o workflow do GitHub Pages não foi executado.
