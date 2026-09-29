@@ -9,8 +9,7 @@
 
 /* Cabeçalho */
 .topo { position: sticky; top: 0; z-index: 35; background: var(--superficie); border-bottom: 1px solid var(--borda); box-shadow: var(--sombra-1); }
-.topo::before { content: ""; display: block; height: 4px; background: var(--acento); }
-.topo-interno { display: flex; align-items: center; gap: var(--sp-2); max-width: 1440px; margin: 0 auto; padding: var(--sp-2) var(--sp-4); min-height: calc(var(--altura-topo) - 4px); }
+.topo-interno { display: flex; align-items: center; gap: var(--sp-2); max-width: 1440px; margin: 0 auto; padding: var(--sp-2) var(--sp-4); min-height: var(--altura-topo); }
 .topo-menu-botao { flex: none; }
 .marca { display: flex; align-items: center; gap: var(--sp-3); margin-right: auto; min-height: var(--toque); min-width: var(--toque); text-decoration: none; color: var(--texto); }
 .marca:hover { color: var(--texto); }
@@ -23,14 +22,14 @@
 .ferramenta:hover { background: var(--superficie-2); color: var(--texto); border-color: var(--texto-suave); }
 .ferramenta-opcional { display: none; }
 .usuario { display: flex; align-items: center; gap: var(--sp-3); padding: 0 var(--sp-2) 0 var(--sp-3); margin-left: var(--sp-2); border-left: 1px solid var(--borda); min-height: var(--toque); }
-.usuario .avatar { width: 36px; height: 36px; font-size: var(--texto-sm); background: var(--acento); color: var(--sobre-acento); }
+.usuario .avatar { width: 34px; height: 34px; font-size: var(--texto-sm); }
 .usuario-texto { display: none; flex-direction: column; line-height: 1.2; }
 .usuario-texto strong { font-size: var(--texto-sm); white-space: nowrap; }
 .usuario-texto small { font-size: var(--texto-xs); color: var(--texto-suave); white-space: nowrap; }
 @media (min-width: 560px) { .ferramenta-opcional { display: inline-flex; } .marca-texto small { display: block; } }
 @media (min-width: 1024px) { .usuario-texto { display: flex; } }
 @media (max-width: 559px) { .usuario { display: none; } .marca-texto strong { font-size: var(--texto-sm); } }
-@media (max-width: 479px) { .marca-texto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
+@media (max-width: 479px) { .topo-interno { padding-inline: var(--sp-2); gap: var(--sp-1); } .ferramenta { padding-inline: var(--sp-2); } }
 
 /* Estrutura */
 .conteudo { max-width: 1440px; margin: 0 auto; padding: 0 var(--sp-4) 6rem; }
@@ -58,7 +57,7 @@
 .menu.aberto { transform: none; visibility: visible; transition: transform var(--transicao-lenta); }
 .menu-fundo { position: fixed; inset: var(--altura-topo) 0 0 0; z-index: 38; background: var(--overlay); }
 html.menu-aberto body { overflow: hidden; }
-.menu-titulo { margin: var(--sp-1) var(--sp-3) var(--sp-2); font-size: var(--texto-xs); font-weight: var(--peso-forte); color: var(--acento); text-transform: uppercase; letter-spacing: .06em; }
+.menu-titulo { margin: var(--sp-1) var(--sp-3) var(--sp-2); font-size: var(--texto-sm); font-weight: var(--peso-forte); color: var(--cor-secundaria); }
 .menu a { display: flex; align-items: center; gap: var(--sp-3); min-height: var(--toque); padding: var(--sp-2) var(--sp-3); border-radius: var(--raio); border-left: 3px solid transparent; color: var(--texto); text-decoration: none; font-weight: var(--peso-medio); transition: background var(--transicao-rapida), color var(--transicao-rapida); }
 .menu a:hover { background: var(--superficie-2); }
 .menu a[aria-current="page"] { background: var(--acento-suave); border-left-color: var(--acento); color: var(--acento); font-weight: var(--peso-forte); }
@@ -99,6 +98,3 @@ html.menu-aberto body { overflow: hidden; }
 .perfil-cartao small { color: var(--texto-suave); font-size: var(--texto-base); }
 .perfil-cartao .perfil-rodape { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
 .perfil-cartao .perfil-entrar { color: var(--acento); font-weight: var(--peso-forte); display: inline-flex; align-items: center; gap: var(--sp-2); }
-/* Entrada suave do conteúdo (desligada por prefers-reduced-motion em tema.css) */
-#pagina { animation: aparecer var(--transicao-lenta) ease both; }
-@keyframes aparecer { from { opacity: 0; transform: translateY(6px); } }

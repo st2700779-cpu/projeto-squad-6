@@ -34,8 +34,7 @@ function cabecalho({ perfil, papel }) {
     <div class="topo-interno">
       ${perfil ? `<button type="button" class="ferramenta topo-menu-botao" aria-controls="menu-lateral" aria-expanded="false" aria-label="Abrir menu">${icone('menu', 22)}</button>` : ''}
       <a class="marca" href="${url('index.html')}" aria-label="Portal Acadêmico, página inicial">
-        <span class="marca-selo" aria-hidden="true">SE</span>
-        <span class="marca-texto"><strong>Portal Acadêmico</strong><small>SEDUC/SE · Governo de Sergipe</small></span>
+        <span class="marca-texto"><small>Secretaria de Estado da Educação · Sergipe</small><strong>Portal Acadêmico</strong></span>
       </a>
       <div class="topo-direita">
         <button type="button" class="ferramenta ferramenta-opcional" data-escala="-0.1" aria-label="Diminuir letra">A−</button>

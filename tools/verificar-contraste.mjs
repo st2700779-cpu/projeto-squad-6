@@ -21,12 +21,6 @@ const claro = bloco(':root {');
 const escuro = { ...claro, ...bloco(':root[data-tema="escuro"]:not([data-contraste="alto"]) {') };
 const altoClaro = { ...claro, ...bloco(':root[data-contraste="alto"] {') };
 const altoEscuro = { ...altoClaro, ...bloco(':root[data-tema="escuro"][data-contraste="alto"] {') };
-// Cores de destaque de cada visão (definidas por seletor de visão, não no :root).
-const visoes = {
-  claro: { familia: '#0e7490', professor: '#4338ca', escola: '#2e7d32', rede: '#b45309' },
-  escuro: { familia: '#4fc3d9', professor: '#a5a1ff', escola: '#7fd08a', rede: '#f0a960' }
-};
-
 const lum = (h) => {
   const c = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
   return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
@@ -37,7 +31,7 @@ const TEXTO = [
   ['texto', 'superficie'], ['texto', 'fundo-app'], ['texto-suave', 'superficie'], ['texto-suave', 'fundo-app'], ['texto-suave', 'superficie-2'],
   ['cor-primaria', 'superficie'], ['cor-primaria', 'cor-primaria-suave'], ['sobre-primaria', 'cor-primaria'],
   ['sucesso', 'sucesso-fundo'], ['alerta', 'alerta-fundo'], ['erro', 'erro-fundo'], ['info', 'info-fundo'],
-  ['sucesso', 'superficie'], ['erro', 'superficie'], ['sobre-erro', 'erro-solido']
+  ['sucesso', 'superficie'], ['erro', 'superficie'], ['sobre-erro', 'erro-solido'], ['cor-secundaria', 'superficie']
 ];
 const COMPONENTE = [['borda-forte', 'superficie'], ['borda-forte', 'fundo-app'], ['foco', 'superficie'], ['erro', 'superficie']];
 let falhas = 0;
@@ -51,12 +45,6 @@ for (const [tema, bruto] of Object.entries({ claro, escuro, 'alto contraste clar
   const t = resolver(bruto);
   for (const [a, b] of TEXTO) if (t[a] && t[b]) conferir(tema, `${a} sobre ${b}`, t[a], t[b], 4.5);
   for (const [a, b] of COMPONENTE) if (t[a] && t[b]) conferir(tema, `${a} sobre ${b} (componente)`, t[a], t[b], 3);
-}
-for (const [tema, fundo, texto] of [['claro', resolver(claro).superficie, '#ffffff'], ['escuro', resolver(escuro).superficie, '#0b1220']]) {
-  for (const [v, cor] of Object.entries(visoes[tema])) {
-    conferir(tema, `acento ${v} como texto sobre a superfície`, cor, fundo, 4.5);
-    conferir(tema, `${tema === 'claro' ? 'branco' : 'texto escuro'} sobre acento ${v} (avatar)`, texto, cor, 4.5);
-  }
 }
 console.log(falhas ? `\n${falhas} combinação(ões) abaixo do mínimo.` : '\nTodas as combinações cumprem o mínimo.');
 process.exit(falhas ? 1 : 0);

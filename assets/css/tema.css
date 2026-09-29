@@ -2,7 +2,7 @@
    Regra de ouro: cores, tamanhos, espaços, raios, sombras e tempos vêm daqui. Componentes (componentes.css)
    só usam estas variáveis; nunca valores soltos.
 
-   Ordem: 1 paleta · 2 tokens semânticos · 3 tipografia/espaço/forma · 4 visões · 5 tema escuro · 6 alto contraste · 7 base.
+   Ordem: 1 paleta · 2 tokens semânticos · 3 tipografia/espaço/forma · 4 destaque · 5 tema escuro · 6 alto contraste · 7 base.
    O atributo data-tema ("claro" | "escuro") e data-contraste ("alto") são definidos por assets/js/tema-inicial.js
    antes de a página aparecer, seguindo prefers-color-scheme quando não há escolha salva. */
 
@@ -52,17 +52,18 @@
   --sp-8: 2rem; --sp-10: 2.5rem; --sp-12: 3rem; --sp-16: 4rem;
 
   /* Forma, elevação e movimento */
-  --raio-sm: 6px; --raio: 10px; --raio-lg: 14px; --raio-pill: 999px;
-  --sombra-1: 0 1px 2px rgba(17, 24, 39, .06), 0 1px 3px rgba(17, 24, 39, .08);
-  --sombra-2: 0 4px 8px rgba(17, 24, 39, .08), 0 2px 4px rgba(17, 24, 39, .06);
-  --sombra-3: 0 12px 28px rgba(17, 24, 39, .16), 0 4px 10px rgba(17, 24, 39, .08);
+  --raio-sm: 3px; --raio: 4px; --raio-lg: 6px; --raio-pill: 999px;  /* círculo só em avatar e chave liga/desliga */
+  /* Sombra só em elemento que flutua (menu gaveta, painéis suspensos, janelas, aviso). Cartões e tabelas usam só borda. */
+  --sombra-1: none;
+  --sombra-2: 0 2px 8px rgba(17, 24, 39, .14);
+  --sombra-3: 0 8px 24px rgba(17, 24, 39, .22);
   --transicao-rapida: 150ms ease; --transicao: 200ms ease; --transicao-lenta: 250ms ease;
   --toque: 44px;             /* alvo mínimo de toque e clique */
   --largura-conteudo: 1200px;
   --altura-topo: 64px;
   --largura-menu: 264px; --largura-menu-recolhido: 72px;
 
-  /* 4 · Cor de destaque de cada visão (identidade única, com um toque próprio por perfil) */
+  /* 4 · Cor de destaque: a própria cor primária (uma só identidade) */
   --acento: var(--cor-primaria);
   --acento-suave: var(--cor-primaria-suave);
   --sobre-acento: #ffffff;
@@ -83,11 +84,7 @@
   --texto-pequeno: var(--texto-sm); --texto-medio: var(--texto-lg);
 }
 
-/* Visões */
-body[data-visao="familia"], .visao-familia { --acento: #0e7490; --acento-suave: #e0f2f6; }
-body[data-visao="professor"], .visao-professor { --acento: #4338ca; --acento-suave: #ebeafb; }
-body[data-visao="escola"], .visao-escola { --acento: #2e7d32; --acento-suave: #e6f3e7; }
-body[data-visao="rede"], .visao-rede { --acento: #b45309; --acento-suave: #fbeddc; }
+/* Visões: o sistema tem uma cor primária e uma de apoio; a visão é identificada pelo nome no cabeçalho e no menu. */
 
 /* 5 · Tema escuro: só redefine tokens. Vale com a escolha do usuário ou, sem escolha, com o sistema (tema-inicial.js). */
 :root[data-tema="escuro"]:not([data-contraste="alto"]) {
@@ -104,16 +101,12 @@ body[data-visao="rede"], .visao-rede { --acento: #b45309; --acento-suave: #fbedd
   --alerta: #f2c25b;  --alerta-fundo: #33280a;  --alerta-borda: #7a5d14;
   --erro: #ff9a8f;    --erro-fundo: #3a1512;    --erro-borda: #7a352e;
   --info: #8dbbff;    --info-fundo: #12294a;    --info-borda: #2f568f;
-  --sombra-1: 0 1px 2px rgba(0, 0, 0, .4);
-  --sombra-2: 0 4px 10px rgba(0, 0, 0, .45);
-  --sombra-3: 0 12px 28px rgba(0, 0, 0, .6);
+  --sombra-1: none;
+  --sombra-2: 0 2px 8px rgba(0, 0, 0, .5);
+  --sombra-3: 0 8px 24px rgba(0, 0, 0, .65);
   --sobre-tinta: #0b1220; --sobre-azul: #0b1220;
   --azul-desativado: #33456b;
 }
-:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="familia"], :root[data-tema="escuro"]:not([data-contraste="alto"]) .visao-familia { --acento: #4fc3d9; --acento-suave: #12333b; --sobre-acento: #0b1220; }
-:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="professor"], :root[data-tema="escuro"]:not([data-contraste="alto"]) .visao-professor { --acento: #a5a1ff; --acento-suave: #22214d; --sobre-acento: #0b1220; }
-:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="escola"], :root[data-tema="escuro"]:not([data-contraste="alto"]) .visao-escola    { --acento: #7fd08a; --acento-suave: #163422; --sobre-acento: #0b1220; }
-:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="rede"], :root[data-tema="escuro"]:not([data-contraste="alto"]) .visao-rede      { --acento: #f0a960; --acento-suave: #3a2711; --sobre-acento: #0b1220; }
 
 /* 6 · Alto contraste (claro e escuro): preto e branco puros, bordas fortes, links sublinhados. */
 :root[data-contraste="alto"] {
@@ -129,7 +122,6 @@ body[data-visao="rede"], .visao-rede { --acento: #b45309; --acento-suave: #fbedd
   --zebra: #ffffff; --erro-solido: #8a1c00; --sobre-erro: #ffffff;
   --sobre-tinta: #ffffff; --sobre-azul: #ffffff; --azul-desativado: #5b6f99;
 }
-:root[data-contraste="alto"] body[data-visao], :root[data-contraste="alto"] [class*="visao-"] { --acento: #000000; --acento-suave: #ffffff; --sobre-acento: #ffffff; }
 :root[data-tema="escuro"][data-contraste="alto"] {
   color-scheme: dark;
   --cor-primaria: #9cc2ff; --cor-primaria-hover: #c4dbff; --cor-primaria-ativa: #dce9ff; --cor-primaria-suave: #000000;
@@ -143,7 +135,6 @@ body[data-visao="rede"], .visao-rede { --acento: #b45309; --acento-suave: #fbedd
   --info: #9cc2ff;    --info-fundo: #000000;    --info-borda: #9cc2ff;
   --sobre-tinta: #000000; --sobre-azul: #000000;
 }
-:root[data-tema="escuro"][data-contraste="alto"] body[data-visao], :root[data-tema="escuro"][data-contraste="alto"] [class*="visao-"] { --acento: #ffffff; --acento-suave: #000000; --sobre-acento: #000000; }
 :root[data-contraste="alto"] a { text-decoration: underline; }
 :root[data-contraste="alto"] .texto-suave { font-weight: 700; }
 :root[data-contraste="alto"] :focus-visible { outline-width: 4px; }

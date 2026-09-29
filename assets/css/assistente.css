@@ -1,12 +1,11 @@
 /* Assistente de IA (W6–W12): botão flutuante, painel, mensagens e estados. Usa os tokens de tema.css.
    Celular: painel em tela cheia. Desktop (≥ 700px): coluna de 440px à direita. */
-.assistente-botao { position: fixed; right: var(--sp-4); bottom: calc(var(--sp-4) + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; align-items: center; justify-content: center; gap: var(--sp-2); width: 56px; height: 56px; padding: 0; border: 0; border-radius: var(--raio-pill); background: var(--cor-primaria); color: var(--sobre-primaria); font: inherit; font-weight: var(--peso-forte); cursor: pointer; box-shadow: var(--sombra-3); transition: width var(--transicao), background var(--transicao-rapida), transform var(--transicao-rapida); }
+.assistente-botao { position: fixed; right: var(--sp-4); bottom: calc(var(--sp-4) + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; align-items: center; justify-content: center; gap: var(--sp-2); width: 48px; height: 48px; padding: 0; border: 0; border-radius: var(--raio-lg); background: var(--cor-primaria); color: var(--sobre-primaria); font: inherit; font-weight: var(--peso-forte); cursor: pointer; box-shadow: var(--sombra-2); transition: background var(--transicao-rapida); }
 .assistente-botao:hover { background: var(--cor-primaria-hover); }
-.assistente-botao:active { transform: scale(.96); }
 .assistente-botao[hidden] { display: none; }
 .assistente-rotulo { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (hover: hover) {
-  .assistente-botao:hover, .assistente-botao:focus-visible { width: auto; padding: 0 var(--sp-5) 0 var(--sp-4); }
+  .assistente-botao:hover, .assistente-botao:focus-visible { width: auto; padding: 0 var(--sp-4) 0 var(--sp-3); }
   .assistente-botao:hover .assistente-rotulo, .assistente-botao:focus-visible .assistente-rotulo { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
 }
 /* Telas com barra de ações fixa no rodapé (matrícula, diário): o botão sobe para não cobrir os botões da barra. */
@@ -21,7 +20,7 @@ body:has(.barra-acoes) .assistente-botao { bottom: calc(5.5rem + env(safe-area-i
 
 .assistente-topo { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--borda); min-height: 68px; }
 .assistente-topo strong { flex: 1; font-size: var(--texto-xl); }
-.assistente-logo { width: 40px; height: 40px; border-radius: 50%; background: var(--cor-primaria); color: var(--sobre-primaria); display: grid; place-items: center; flex: none; }
+.assistente-logo { width: 36px; height: 36px; border-radius: var(--raio); background: var(--cor-primaria); color: var(--sobre-primaria); display: grid; place-items: center; flex: none; }
 .assistente-mensagens { flex: 1; overflow-y: auto; padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-4); background: var(--fundo-app); }
 .msg { max-width: 94%; padding: var(--sp-3) var(--sp-4); border-radius: var(--raio-lg); line-height: 1.5; display: flex; flex-direction: column; gap: var(--sp-3); }
 .msg-usuario { align-self: flex-end; background: var(--cor-primaria); color: var(--sobre-primaria); border-bottom-right-radius: var(--raio-sm); }
@@ -41,7 +40,7 @@ body:has(.barra-acoes) .assistente-botao { bottom: calc(5.5rem + env(safe-area-i
 .boas-vindas > strong { font-size: var(--texto-base); }
 .sugestoes { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .sugestoes.coluna { flex-direction: column; align-items: flex-start; }
-.sugestoes button { min-height: var(--toque); border: 1.5px solid var(--borda-forte); background: var(--superficie); border-radius: var(--raio-pill); padding: var(--sp-2) var(--sp-4); font: inherit; font-size: var(--texto-sm); cursor: pointer; color: var(--texto); text-align: left; transition: background var(--transicao-rapida), border-color var(--transicao-rapida); }
+.sugestoes button { min-height: var(--toque); border: 1.5px solid var(--borda-forte); background: var(--superficie); border-radius: var(--raio); padding: var(--sp-2) var(--sp-3); font: inherit; font-size: var(--texto-sm); cursor: pointer; color: var(--texto); text-align: left; transition: background var(--transicao-rapida), border-color var(--transicao-rapida); }
 .sugestoes button:hover { background: var(--cor-primaria-suave); border-color: var(--cor-primaria); }
 .sugestoes button:disabled { opacity: .5; cursor: not-allowed; }
 
