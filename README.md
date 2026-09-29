@@ -9,7 +9,7 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 | Pasta | Conteúdo |
 | --- | --- |
 | `index.html`, `familia/`, `professor/`, `escola/`, `rede/` | Páginas de cada perfil |
-| `assets/css/` | Tema, componentes e estilos do assistente |
+| `assets/css/` | `tema.css` (tokens do design system), `componentes.css`, `layout.css` (cabeçalho, menu, breadcrumb) e `assistente.css` |
 | `assets/js/` | Núcleo (`app`, `estado`, `dados`, `regras`, `acessibilidade`, `ui`) e páginas |
 | `assets/js/dominio/` | Regras de negócio por domínio: `matricula`, `notas`, `turmas`, `equivalencias` (`regras.js` reexporta todas) |
 | `sistema-academico-seduc-prototipo.html` | Protótipo em arquivo único, abre com duplo clique. Usa os mesmos dados e regras do portal (ver `tools/gerar-prototipo.mjs`) |
@@ -17,8 +17,9 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 | `data/` | Dados simulados em JSON e a base de conhecimento do assistente |
 | `prompts/` | Prompt de sistema versionado, registro de alterações e bateria de testes |
 | `worker/` | Proxy do assistente (Cloudflare Workers), que guarda a chave da IA |
-| `tools/` | Servidor local, bateria de perguntas do assistente e `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único com `data/` e `assets/js/dominio/`) |
+| `tools/` | Servidor local, bateria de perguntas do assistente, `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único) e `verificar-contraste.mjs` (confere o contraste dos tokens) |
 | `AUDITORIA.md`, `MELHORIAS.md`, `SUGESTOES.md` | Auditoria inicial, resumo das melhorias e ideias que exigiriam funcionalidade nova |
+| `DIAGNOSTICO-UI.md`, `MELHORIAS-UI.md` | Diagnóstico visual e redesenho de interface, com o **guia do design system** (tokens e componentes) |
 
 ## Telas e versão mobile
 

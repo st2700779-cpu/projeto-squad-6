@@ -45,7 +45,9 @@
 .topo-acoes { display: flex; gap: var(--sp-2); }
 
 /* Breadcrumb */
-.breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); list-style: none; margin: 0; padding: 0; font-size: var(--texto-sm); color: var(--texto-suave); }
+.breadcrumb ol { display: flex; flex-wrap: nowrap; overflow: hidden; align-items: center; gap: var(--sp-1) var(--sp-2); list-style: none; margin: 0; padding: 0; font-size: var(--texto-sm); color: var(--texto-suave); }
+.breadcrumb li { white-space: nowrap; }
+.breadcrumb li:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .breadcrumb li + li::before { content: "›"; margin-right: var(--sp-2); color: var(--texto-suave); }
 .breadcrumb a { display: inline-flex; align-items: center; justify-content: center; min-height: var(--toque); min-width: var(--toque); color: var(--texto-suave); text-decoration: none; }
 .breadcrumb a:hover { color: var(--cor-primaria); text-decoration: underline; }
