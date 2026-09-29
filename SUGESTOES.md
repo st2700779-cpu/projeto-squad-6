@@ -12,5 +12,5 @@ Durante a melhoria do protótipo, os itens abaixo apareceram como necessários o
 | 6 | **Login e perfis de acesso reais**, com trilha de auditoria gravada no servidor | Protótipo sem back-end | Confiabilidade e LGPD; o histórico de ações hoje fica no navegador ou em `dados-salvos/` |
 | 7 | **Servidor estático com API para Linux e macOS** (equivalente ao `tools/servidor.ps1`) | `iniciar.bat` só funciona no Windows | Conveniência para quem não usa Windows. Alternativa sem código novo: `python3 -m http.server` (sem API, dados no navegador) |
 | 8 | **Relatórios de verdade** (boletim consolidado, histórico escolar, Educacenso) | No protótipo B os botões avisam que a função existe só na versão completa | Rotina da secretaria; exige modelos oficiais da SEDUC |
-| 9 | **Hospedar Bootstrap e a fonte Atkinson Hyperlegible no próprio repositório** | Acrescenta arquivos de terceiros ao projeto | Redes escolares costumam bloquear CDNs; sem elas o visual muda (o sistema continua funcionando) |
+| 9 | **Hospedar Bootstrap e a fonte Inter no próprio repositório** | Acrescenta arquivos de terceiros ao projeto | Redes escolares costumam bloquear CDNs; sem elas o visual muda (o sistema continua funcionando) |
 | 10 | **Vagas no protótipo em arquivo único** | O protótipo B não controla vagas por escola/série | O portal já controla (reserva, devolução) |

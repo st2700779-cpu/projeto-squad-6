@@ -1,121 +1,176 @@
-/* Tema do Portal Acadêmico — cores, tipografia e tamanhos de toque, conforme os wireframes (W1–W15).
-   Carregado depois do Bootstrap para sobrescrever o necessário. */
+/* Design system do Portal Acadêmico (SEDUC/SE): tokens e estilos-base.
+   Regra de ouro: cores, tamanhos, espaços, raios, sombras e tempos vêm daqui. Componentes (componentes.css)
+   só usam estas variáveis; nunca valores soltos.
+
+   Ordem: 1 paleta · 2 tokens semânticos · 3 tipografia/espaço/forma · 4 visões · 5 tema escuro · 6 alto contraste · 7 base.
+   O atributo data-tema ("claro" | "escuro") e data-contraste ("alto") são definidos por assets/js/tema-inicial.js
+   antes de a página aparecer, seguindo prefers-color-scheme quando não há escolha salva. */
+
 :root {
-  --tinta: #1f201b;
-  --suave: #5b5d57;
-  --linha: #8e9089;          /* bordas de cartões e campos */
-  --linha-suave: #e2e3de;    /* separadores de tabela */
-  --cinza: #e3e4df;          /* botão Ouvir, item ativo do menu */
-  --fundo-claro: #f3f3ef;    /* balões do assistente, cabeçalho de tabela */
-  --fundo: #ffffff;
-  --superficie: #ffffff;
-  --verde: #1f6b3a;
-  --verde-claro: #e4f1e7;
-  --azul: #1c4f9c;
-  --azul-claro: #e6ecf8;
-  --azul-desativado: #9db0d6;
-  --vermelho: #8a3a14;
-  --vermelho-claro: #f9ebe4;
-  --amarelo-claro: #fff4cc;
-  --azul-texto: #1c4f9c;     /* links sobre o fundo */
-  --sobre-tinta: #ffffff;    /* texto e ícones sobre fundo --tinta (botões escuros) */
-  --sobre-azul: #ffffff;     /* texto e ícones sobre fundo --azul (assistente) */
-  --escala: 1;
-  /* Escala de espaçamento (usada pelas classes esp-t-N e esp-b-N) */
-  --esp-1: .25rem; --esp-2: .5rem; --esp-3: .75rem; --esp-4: 1rem; --esp-5: 1.5rem; --esp-6: 2rem;
-  /* Escala de texto */
-  --texto-pequeno: .9rem; --texto-medio: 1.1rem;
-  --toque: 48px;
-  --raio: 12px;
-  --fonte: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --fonte-titulo: "Atkinson Hyperlegible", system-ui, sans-serif;
+  color-scheme: light;
+
+  /* 1 · Paleta bruta (institucional: azul de governo, com neutros frios) */
+  --azul-50: #eaf1fb;  --azul-100: #d4e2f7; --azul-200: #a9c5ee; --azul-600: #1351b4; --azul-700: #0f408e; --azul-800: #0c326f;
+  --neutro-0: #ffffff;  --neutro-50: #f6f7f9; --neutro-100: #edeff2; --neutro-200: #dfe2e7; --neutro-300: #c6cbd3;
+  --neutro-500: #6b7280; --neutro-600: #4b5563; --neutro-700: #374151; --neutro-800: #1f2937; --neutro-900: #111827;
+
+  /* 2 · Tokens semânticos (é o que os componentes usam) */
+  --cor-primaria: var(--azul-600);        /* ações principais, links, foco */
+  --cor-primaria-hover: var(--azul-700);
+  --cor-primaria-ativa: var(--azul-800);
+  --cor-primaria-suave: var(--azul-50);   /* fundo de item selecionado */
+  --sobre-primaria: #ffffff;              /* texto sobre a cor primária */
+  --cor-secundaria: #0f5b3a;              /* apoio institucional (verde escuro) */
+  --fundo-app: var(--neutro-50);          /* fundo da página */
+  --superficie: var(--neutro-0);          /* cartões, painéis, campos */
+  --superficie-2: var(--neutro-100);      /* cabeçalho de tabela, itens inativos */
+  --texto: var(--neutro-800);
+  --texto-suave: var(--neutro-600);
+  --borda: var(--neutro-200);             /* separadores decorativos */
+  --borda-forte: #767e8b;                 /* contorno de campos e botões (3:1 sobre a superfície) */
+  --foco: var(--azul-600);
+  --overlay: rgba(17, 24, 39, .6);
+
+  --sucesso: #157a2b;  --sucesso-fundo: #e6f4e9;  --sucesso-borda: #8fcf9d;
+  --alerta: #8a5a00;   --alerta-fundo: #fff3d6;   --alerta-borda: #e0a100;
+  --erro: #b42318;     --erro-fundo: #fdecea;     --erro-borda: #f0a8a1;
+  --info: #0f5bb5;     --info-fundo: #e6f0fb;     --info-borda: #9dc1ec;
+
+  /* 3 · Tipografia */
+  --fonte: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fonte-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --escala: 1;   /* zoom de letra do usuário (A− / A+) */
+  --texto-xs: .8125rem; --texto-sm: .875rem; --texto-base: 1rem; --texto-lg: 1.125rem;
+  --texto-xl: 1.25rem;  --texto-2xl: 1.5rem; --texto-3xl: 1.875rem; --texto-4xl: 2.25rem;
+  --peso-normal: 400; --peso-medio: 500; --peso-forte: 600; --peso-negrito: 700;
+  --altura-linha: 1.5; --altura-titulo: 1.25;
+
+  /* Espaçamento (base 4 px) */
+  --sp-1: .25rem; --sp-2: .5rem; --sp-3: .75rem; --sp-4: 1rem; --sp-5: 1.25rem; --sp-6: 1.5rem;
+  --sp-8: 2rem; --sp-10: 2.5rem; --sp-12: 3rem; --sp-16: 4rem;
+
+  /* Forma, elevação e movimento */
+  --raio-sm: 6px; --raio: 10px; --raio-lg: 14px; --raio-pill: 999px;
+  --sombra-1: 0 1px 2px rgba(17, 24, 39, .06), 0 1px 3px rgba(17, 24, 39, .08);
+  --sombra-2: 0 4px 8px rgba(17, 24, 39, .08), 0 2px 4px rgba(17, 24, 39, .06);
+  --sombra-3: 0 12px 28px rgba(17, 24, 39, .16), 0 4px 10px rgba(17, 24, 39, .08);
+  --transicao-rapida: 150ms ease; --transicao: 200ms ease; --transicao-lenta: 250ms ease;
+  --toque: 44px;             /* alvo mínimo de toque e clique */
+  --largura-conteudo: 1200px;
+  --altura-topo: 64px;
+  --largura-menu: 264px; --largura-menu-recolhido: 72px;
+
+  /* 4 · Cor de destaque de cada visão (identidade única, com um toque próprio por perfil) */
+  --acento: var(--cor-primaria);
+  --acento-suave: var(--cor-primaria-suave);
+  --sobre-acento: #ffffff;
+
+  /* Apelidos dos nomes antigos: mantidos para os componentes que ainda não migraram. Não use em código novo. */
+  --tinta: var(--texto);          --suave: var(--texto-suave);
+  --linha: var(--borda-forte);    --linha-suave: var(--borda);
+  --cinza: var(--superficie-2);   --fundo-claro: var(--superficie-2);
+  --fundo: var(--fundo-app);
+  --verde: var(--sucesso);        --verde-claro: var(--sucesso-fundo);
+  --azul: var(--cor-primaria);    --azul-claro: var(--info-fundo);    --azul-texto: var(--cor-primaria);
+  --azul-desativado: var(--azul-200);
+  --vermelho: var(--erro);        --vermelho-claro: var(--erro-fundo);
+  --amarelo-claro: var(--alerta-fundo);
+  --sobre-tinta: #ffffff;         --sobre-azul: #ffffff;
+  --raio-antigo: var(--raio);
+  --esp-1: var(--sp-1); --esp-2: var(--sp-2); --esp-3: var(--sp-3); --esp-4: var(--sp-4); --esp-5: var(--sp-6); --esp-6: var(--sp-8);
+  --texto-pequeno: var(--texto-sm); --texto-medio: var(--texto-lg);
 }
-/* Modo escuro: o atributo data-tema é definido por assets/js/tema-inicial.js antes da página aparecer.
-   Mesma hierarquia do modo claro: botões principais claros sobre fundo escuro. */
+
+/* Visões */
+body[data-visao="familia"]   { --acento: #0e7490; --acento-suave: #e0f2f6; }
+body[data-visao="professor"] { --acento: #4338ca; --acento-suave: #ebeafb; }
+body[data-visao="escola"]    { --acento: #2e7d32; --acento-suave: #e6f3e7; }
+body[data-visao="rede"]      { --acento: #b45309; --acento-suave: #fbeddc; }
+
+/* 5 · Tema escuro: só redefine tokens. Vale com a escolha do usuário ou, sem escolha, com o sistema (tema-inicial.js). */
 :root[data-tema="escuro"]:not([data-contraste="alto"]) {
   color-scheme: dark;
-  --tinta: #ecebe4;
-  --suave: #b0b2aa;
-  --linha: #75776f;
-  --linha-suave: #34362f;
-  --cinza: #393b34;
-  --fundo-claro: #24261f;
-  --fundo: #141511;
-  --superficie: #1c1d19;
-  --verde: #7dd3a0;
-  --verde-claro: #16301f;
-  --azul: #3a6cd0;
-  --azul-claro: #1c2a45;
+  --cor-primaria: #7fb0ff; --cor-primaria-hover: #a3c5ff; --cor-primaria-ativa: #c4dbff; --cor-primaria-suave: #16294a;
+  --sobre-primaria: #0b1220;
+  --cor-secundaria: #6fd08a;
+  --fundo-app: #0e1522; --superficie: #172033; --superficie-2: #1f2a40;
+  --texto: #e8eaed; --texto-suave: #a9b0bc;
+  --borda: #2a3650; --borda-forte: #667085; --foco: #a3c5ff;
+  --overlay: rgba(0, 0, 0, .7);
+  --sucesso: #6fd08a; --sucesso-fundo: #12301c; --sucesso-borda: #2f6b41;
+  --alerta: #f2c25b;  --alerta-fundo: #33280a;  --alerta-borda: #7a5d14;
+  --erro: #ff9a8f;    --erro-fundo: #3a1512;    --erro-borda: #7a352e;
+  --info: #8dbbff;    --info-fundo: #12294a;    --info-borda: #2f568f;
+  --sombra-1: 0 1px 2px rgba(0, 0, 0, .4);
+  --sombra-2: 0 4px 10px rgba(0, 0, 0, .45);
+  --sombra-3: 0 12px 28px rgba(0, 0, 0, .6);
+  --sobre-tinta: #0b1220; --sobre-azul: #0b1220;
   --azul-desativado: #33456b;
-  --azul-texto: #a3c0ff;
-  --vermelho: #ff9f7a;
-  --vermelho-claro: #3a1f14;
-  --amarelo-claro: #3a3214;
-  --sobre-tinta: #141511;
-  --sobre-azul: #ffffff;
 }
-/* Alto contraste (claro e escuro): preto e branco puros, bordas fortes e links sublinhados. */
+:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="familia"]   { --acento: #4fc3d9; --acento-suave: #12333b; --sobre-acento: #0b1220; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="professor"] { --acento: #a5a1ff; --acento-suave: #22214d; --sobre-acento: #0b1220; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="escola"]    { --acento: #7fd08a; --acento-suave: #163422; --sobre-acento: #0b1220; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) body[data-visao="rede"]      { --acento: #f0a960; --acento-suave: #3a2711; --sobre-acento: #0b1220; }
+
+/* 6 · Alto contraste (claro e escuro): preto e branco puros, bordas fortes, links sublinhados. */
 :root[data-contraste="alto"] {
-  --tinta: #000000;
-  --suave: #1a1a1a;
-  --linha: #000000;
-  --linha-suave: #000000;
-  --cinza: #ffffff;
-  --fundo-claro: #ffffff;
-  --fundo: #ffffff;
-  --superficie: #ffffff;
-  --verde: #0b5a28;
-  --verde-claro: #ffffff;
-  --azul: #0a3d91;
-  --azul-texto: #0a3d91;
-  --vermelho: #8a1c00;
-  --vermelho-claro: #ffffff;
-  --amarelo-claro: #ffffff;
-  --sobre-tinta: #ffffff;
+  --cor-primaria: #0a3d91; --cor-primaria-hover: #072c6b; --cor-primaria-ativa: #051f4d; --cor-primaria-suave: #ffffff;
+  --sobre-primaria: #ffffff; --cor-secundaria: #0b5a28;
+  --fundo-app: #ffffff; --superficie: #ffffff; --superficie-2: #ffffff;
+  --texto: #000000; --texto-suave: #1a1a1a; --borda: #000000; --borda-forte: #000000; --foco: #0a3d91;
+  --sucesso: #0b5a28; --sucesso-fundo: #ffffff; --sucesso-borda: #0b5a28;
+  --alerta: #5c3b00;  --alerta-fundo: #ffffff;  --alerta-borda: #5c3b00;
+  --erro: #8a1c00;    --erro-fundo: #ffffff;    --erro-borda: #8a1c00;
+  --info: #0a3d91;    --info-fundo: #ffffff;    --info-borda: #0a3d91;
+  --overlay: rgba(0, 0, 0, .75);
+  --sobre-tinta: #ffffff; --sobre-azul: #ffffff; --azul-desativado: #5b6f99;
 }
+:root[data-contraste="alto"] body[data-visao] { --acento: #000000; --acento-suave: #ffffff; --sobre-acento: #ffffff; }
 :root[data-tema="escuro"][data-contraste="alto"] {
   color-scheme: dark;
-  --tinta: #ffffff;
-  --suave: #f0f0f0;
-  --linha: #ffffff;
-  --linha-suave: #ffffff;
-  --cinza: #000000;
-  --fundo-claro: #000000;
-  --fundo: #000000;
-  --superficie: #000000;
-  --verde: #6dffa4;
-  --verde-claro: #000000;
-  --azul: #1f5fd6;
-  --azul-texto: #9cc2ff;
-  --vermelho: #ffb199;
-  --vermelho-claro: #000000;
-  --amarelo-claro: #000000;
-  --sobre-tinta: #000000;
+  --cor-primaria: #9cc2ff; --cor-primaria-hover: #c4dbff; --cor-primaria-ativa: #dce9ff; --cor-primaria-suave: #000000;
+  --sobre-primaria: #000000; --cor-secundaria: #6dffa4;
+  --fundo-app: #000000; --superficie: #000000; --superficie-2: #000000;
+  --texto: #ffffff; --texto-suave: #f0f0f0; --borda: #ffffff; --borda-forte: #ffffff; --foco: #ffe066;
+  --sucesso: #6dffa4; --sucesso-fundo: #000000; --sucesso-borda: #6dffa4;
+  --alerta: #ffe066;  --alerta-fundo: #000000;  --alerta-borda: #ffe066;
+  --erro: #ffb199;    --erro-fundo: #000000;    --erro-borda: #ffb199;
+  --info: #9cc2ff;    --info-fundo: #000000;    --info-borda: #9cc2ff;
+  --sobre-tinta: #000000; --sobre-azul: #000000;
 }
+:root[data-tema="escuro"][data-contraste="alto"] body[data-visao] { --acento: #ffffff; --acento-suave: #000000; --sobre-acento: #000000; }
 :root[data-contraste="alto"] a { text-decoration: underline; }
 :root[data-contraste="alto"] .texto-suave { font-weight: 700; }
-:root[data-contraste="alto"] .aviso-prototipo { border: 2px solid var(--tinta); }
-:root[data-contraste="alto"] :focus-visible { outline-width: 4px; outline-color: var(--tinta); }
-:root { color-scheme: light; }
-html { font-size: calc(100% * var(--escala)); }
+:root[data-contraste="alto"] :focus-visible { outline-width: 4px; }
+
+/* 7 · Base */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: calc(100% * var(--escala)); -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--fundo);
-  color: var(--tinta);
+  background: var(--fundo-app);
+  color: var(--texto);
   font-family: var(--fonte);
-  line-height: 1.5;
+  font-size: var(--texto-base);
+  line-height: var(--altura-linha);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-h1, h2, h3 { line-height: 1.2; font-weight: 700; font-family: var(--fonte-titulo); }
-h1 { font-size: 1.75rem; margin: 0 0 .75rem; }
-h2 { font-size: 1.3rem; margin: 1.25rem 0 .6rem; }
-h3 { font-size: 1.1rem; }
-a { color: var(--azul-texto); }
-:focus-visible { outline: 3px solid var(--azul-texto); outline-offset: 2px; border-radius: 6px; }
-.texto-suave { color: var(--suave); }
+h1, h2, h3, h4 { font-family: var(--fonte); line-height: var(--altura-titulo); font-weight: var(--peso-negrito); color: var(--texto); letter-spacing: -.01em; }
+h1 { font-size: clamp(var(--texto-2xl), 1.2rem + 1.6vw, var(--texto-3xl)); margin: 0 0 var(--sp-2); }
+h2 { font-size: var(--texto-xl); font-weight: var(--peso-forte); margin: var(--sp-8) 0 var(--sp-3); }
+h3 { font-size: var(--texto-lg); font-weight: var(--peso-forte); }
+p { margin-top: 0; }
+a { color: var(--cor-primaria); text-underline-offset: 3px; }
+a:hover { color: var(--cor-primaria-hover); }
+img, svg { max-width: 100%; }
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; border-radius: var(--raio-sm); box-shadow: 0 0 0 2px var(--superficie); }
+[tabindex="-1"]:focus { outline: none; box-shadow: none; }
+.texto-suave { color: var(--texto-suave); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
-.sr-only:focus { position: fixed; left: 1rem; top: 1rem; width: auto; height: auto; clip: auto; z-index: 100; background: var(--superficie); padding: .6rem 1rem; border-radius: 10px; }
+.sr-only:focus { position: fixed; left: var(--sp-4); top: var(--sp-4); width: auto; height: auto; clip: auto; z-index: 100; background: var(--superficie); color: var(--texto); padding: var(--sp-3) var(--sp-4); border-radius: var(--raio); box-shadow: var(--sombra-3); }
 .so-desktop { display: none; }
 @media (min-width: 768px) { .so-desktop { display: inline; } }
-[tabindex="-1"]:focus { outline: none; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
