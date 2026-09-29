@@ -7,14 +7,18 @@ import { sessao, exigirPerfil, sair } from './auth.js';
 
 const url = (caminho) => new URL(caminho, RAIZ).href;
 const VERSAO = '1.0';
+// Service worker: guarda a carteirinha e o diário para abrirem sem internet. Só em https ou localhost.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+  navigator.serviceWorker.register(new URL('sw.js', RAIZ)).catch(() => { /* sem service worker o portal funciona igual, só não abre sem internet */ });
+}
 const DATA_DOS_DADOS = '29/09/2026'; // data de referência dos dados de demonstração
 
 /** Itens do menu lateral de cada visão: [página, rótulo, ícone]. */
 export const MENUS = {
   familia: [['familia/matricula.html', 'Matrícula', 'formulario'], ['familia/mapa.html', 'Escolas com vaga', 'mapa'], ['familia/guia.html', 'Ouvir instruções', 'alto']],
-  aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario']],
+  aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/carteirinha.html', 'Carteirinha', 'cartao'], ['aluno/linha-do-tempo.html', 'Vida escolar', 'linha'], ['aluno/boletim-falado.html', 'Boletim falado', 'alto'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario']],
   professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/avisos.html', 'Avisos', 'calendario']],
-  escola: [['escola/index.html', 'Início', 'escola'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario']],
+  escola: [['escola/index.html', 'Início', 'escola'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/estudantes.html', 'Estudantes', 'usuario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario']],
   rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/mapa.html', 'Mapa de vagas', 'mapa'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro']]
 };
 const NOMES = { familia: 'Matrícula', aluno: 'Aluno', professor: 'Professor', escola: 'Escola', rede: 'Rede (SEDUC e DRE)' };
