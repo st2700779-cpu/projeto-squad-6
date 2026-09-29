@@ -30,6 +30,8 @@
   --borda-forte: #767e8b;                 /* contorno de campos e botões (3:1 sobre a superfície) */
   --foco: var(--azul-600);
   --overlay: rgba(17, 24, 39, .6);
+  --zebra: #f9fafb;                       /* linhas alternadas de tabela */
+  --erro-solido: #b42318; --sobre-erro: #ffffff;   /* botão de perigo */
 
   --sucesso: #157a2b;  --sucesso-fundo: #e6f4e9;  --sucesso-borda: #8fcf9d;
   --alerta: #8a5a00;   --alerta-fundo: #fff3d6;   --alerta-borda: #e0a100;
@@ -97,6 +99,7 @@ body[data-visao="rede"]      { --acento: #b45309; --acento-suave: #fbeddc; }
   --texto: #e8eaed; --texto-suave: #a9b0bc;
   --borda: #2a3650; --borda-forte: #667085; --foco: #a3c5ff;
   --overlay: rgba(0, 0, 0, .7);
+  --zebra: #1a2438; --erro-solido: #ff9a8f; --sobre-erro: #3a1512;
   --sucesso: #6fd08a; --sucesso-fundo: #12301c; --sucesso-borda: #2f6b41;
   --alerta: #f2c25b;  --alerta-fundo: #33280a;  --alerta-borda: #7a5d14;
   --erro: #ff9a8f;    --erro-fundo: #3a1512;    --erro-borda: #7a352e;
@@ -123,6 +126,7 @@ body[data-visao="rede"]      { --acento: #b45309; --acento-suave: #fbeddc; }
   --erro: #8a1c00;    --erro-fundo: #ffffff;    --erro-borda: #8a1c00;
   --info: #0a3d91;    --info-fundo: #ffffff;    --info-borda: #0a3d91;
   --overlay: rgba(0, 0, 0, .75);
+  --zebra: #ffffff; --erro-solido: #8a1c00; --sobre-erro: #ffffff;
   --sobre-tinta: #ffffff; --sobre-azul: #ffffff; --azul-desativado: #5b6f99;
 }
 :root[data-contraste="alto"] body[data-visao] { --acento: #000000; --acento-suave: #ffffff; --sobre-acento: #ffffff; }
@@ -130,6 +134,7 @@ body[data-visao="rede"]      { --acento: #b45309; --acento-suave: #fbeddc; }
   color-scheme: dark;
   --cor-primaria: #9cc2ff; --cor-primaria-hover: #c4dbff; --cor-primaria-ativa: #dce9ff; --cor-primaria-suave: #000000;
   --sobre-primaria: #000000; --cor-secundaria: #6dffa4;
+  --zebra: #000000; --erro-solido: #ffb199; --sobre-erro: #000000;
   --fundo-app: #000000; --superficie: #000000; --superficie-2: #000000;
   --texto: #ffffff; --texto-suave: #f0f0f0; --borda: #ffffff; --borda-forte: #ffffff; --foco: #ffe066;
   --sucesso: #6dffa4; --sucesso-fundo: #000000; --sucesso-borda: #6dffa4;

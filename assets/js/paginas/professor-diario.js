@@ -43,7 +43,7 @@ function desenhar() {
     </div>
     ${alunos.length ? `${painelChamada(t, alunos)}
     <h2>Notas e faltas acumuladas · ${esc(componente)}</h2>
-    <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Notas e faltas de ${esc(t.nome)}</caption>
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-notas"><caption class="sr-only">Notas e faltas de ${esc(t.nome)}</caption>
       <thead><tr><th scope="col">Estudante</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col">Faltas</th><th scope="col">Presença</th></tr></thead>
       <tbody>${alunos.map((a) => { const p = `${presenca(a.faltas, aulasDadas).toFixed(0)}%`; return `<tr><td>${esc(a.nome)}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula">${p}</td></tr>`; }).join('')}</tbody>
     </table></div>

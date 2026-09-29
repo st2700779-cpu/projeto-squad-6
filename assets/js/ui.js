@@ -39,17 +39,26 @@ export const icone = (nome, tam = 22) =>
   `<svg width="${tam}" height="${tam}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="${PATHS[nome]}"/></svg>`;
 
 let timerAviso;
+const ERRO_NO_TEXTO = /n[ãa]o foi poss[ií]vel|inv[áa]lid|falha|erro/i;
 /**
- * Aviso rápido (toast). A região de status existe desde o carregamento da página, vazia,
- * para os leitores de tela anunciarem o texto quando ele muda.
+ * Aviso rápido (toast) com ícone e botão de fechar. A região de status existe desde o carregamento,
+ * vazia, para os leitores de tela anunciarem o texto quando ele muda.
  * @param {string} texto
+ * @param {'ok'|'erro'|'info'} [tipo] Se omitido, "erro" quando o texto fala de falha; senão "ok".
  */
-export function avisar(texto) {
+export function avisar(texto, tipo = ERRO_NO_TEXTO.test(texto) ? 'erro' : 'ok') {
   const el = regiaoDeAviso();
-  el.textContent = texto;
-  el.classList.add('visivel');
+  el.className = `aviso-rapido visivel ${tipo}`;
+  el.querySelector('.aviso-icone').innerHTML = icone(tipo === 'ok' ? 'ok' : tipo === 'erro' ? 'alerta' : 'info', 20);
+  el.querySelector('.aviso-texto').textContent = texto;
   clearTimeout(timerAviso);
-  timerAviso = setTimeout(() => { el.classList.remove('visivel'); el.textContent = ''; }, 5000);
+  timerAviso = setTimeout(esconderAviso, 6000);
+}
+function esconderAviso() {
+  const el = $('#aviso-rapido');
+  if (!el) return;
+  el.classList.remove('visivel');
+  el.querySelector('.aviso-texto').textContent = '';
 }
 function regiaoDeAviso() {
   let el = $('#aviso-rapido');
@@ -57,7 +66,8 @@ function regiaoDeAviso() {
     el = document.createElement('div');
     el.id = 'aviso-rapido';
     el.className = 'aviso-rapido';
-    el.setAttribute('role', 'status');
+    el.innerHTML = `<span class="aviso-icone" aria-hidden="true"></span><span class="aviso-texto" id="aviso-texto" role="status"></span><button type="button" class="aviso-fechar" aria-label="Fechar aviso">${icone('fechar', 18)}</button>`;
+    el.querySelector('.aviso-fechar').addEventListener('click', esconderAviso);
     document.body.appendChild(el);
   }
   return el;
@@ -134,9 +144,11 @@ export const dataBR = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('p
 /** Número no formato brasileiro (vírgula decimal). */
 export const numeroBR = (n, casas = 1) => Number(n).toLocaleString('pt-BR', { minimumFractionDigits: casas, maximumFractionDigits: casas });
 
-/** Selo de situação. Sempre leva texto, nunca só cor. @param {'ok'|'atencao'|'erro'|'info'|'neutra'} tipo */
+const ICONE_SELO = { ok: 'ok', atencao: 'alerta', erro: 'fechar', info: 'info', neutra: '' };
+/** Selo de situação: cor + ícone + texto (o status nunca depende só da cor). @param {'ok'|'atencao'|'erro'|'info'|'neutra'} tipo */
 export function etiqueta(texto, tipo = 'neutra') {
-  return `<span class="etiqueta etiqueta-${tipo}">${esc(texto)}</span>`;
+  const nome = ICONE_SELO[tipo];
+  return `<span class="etiqueta etiqueta-${tipo}">${nome ? icone(nome, 14) : ''}${esc(texto)}</span>`;
 }
 
 export const dataHoraBR = (iso) => new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });

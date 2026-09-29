@@ -1,0 +1,28 @@
+/* Estrutura das páginas: cabeçalho, menu lateral e área de conteúdo. */
+.topo { position: sticky; top: 0; z-index: 20; background: var(--superficie); border-bottom: 1px solid var(--borda); }
+.topo-interno { display: flex; align-items: center; gap: var(--sp-2); max-width: var(--largura-conteudo); margin: 0 auto; padding: var(--sp-2) var(--sp-4); min-height: var(--altura-topo); }
+.marca { margin-right: auto; text-decoration: none; color: var(--texto); font-weight: var(--peso-negrito); font-size: var(--texto-lg); }
+.topo-papel { font-size: var(--texto-sm); color: var(--texto-suave); margin-right: var(--sp-2); }
+.topo-papel strong { color: var(--texto); }
+.ferramenta { min-width: var(--toque); min-height: var(--toque); border: 1.5px solid var(--borda-forte); background: var(--superficie); border-radius: var(--raio); font-weight: var(--peso-forte); color: var(--texto); padding: 0 var(--sp-3); text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); cursor: pointer; font: inherit; font-weight: var(--peso-forte); }
+.ferramenta:hover { background: var(--superficie-2); color: var(--texto); }
+.topo-tela { max-width: 620px; }
+.topo-voltar { width: var(--toque); height: var(--toque); display: grid; place-items: center; color: var(--texto); margin-left: calc(var(--sp-2) * -1); border-radius: var(--raio); }
+.topo-titulo { font-weight: var(--peso-negrito); font-size: var(--texto-xl); margin-right: auto; }
+.topo-acoes { display: flex; gap: var(--sp-2); }
+.topo-estreito { max-width: 620px; }
+.conteudo { max-width: var(--largura-conteudo); margin: 0 auto; padding: var(--sp-6) var(--sp-4) 7rem; }
+.conteudo-estreito { max-width: 620px; }
+.com-menu { display: grid; gap: var(--sp-4); grid-template-columns: minmax(0, 1fr); }
+.menu { display: flex; gap: var(--sp-2); overflow-x: auto; padding: 0 var(--sp-4) var(--sp-1); margin: 0 calc(var(--sp-4) * -1); scrollbar-width: none; }
+.menu a { white-space: nowrap; display: flex; align-items: center; gap: var(--sp-2); min-height: var(--toque); padding: var(--sp-2) var(--sp-4); border-radius: var(--raio); color: var(--texto); text-decoration: none; border: 1px solid var(--borda); background: var(--superficie); font-weight: var(--peso-medio); }
+.menu a:hover { background: var(--superficie-2); }
+.menu a[aria-current="page"] { background: var(--acento-suave); border-color: var(--acento); color: var(--acento); font-weight: var(--peso-forte); }
+#pagina { min-width: 0; }
+@media (min-width: 900px) {
+  .conteudo:has(.com-menu) { padding-top: 0; }
+  .com-menu { grid-template-columns: var(--largura-menu) minmax(0, 1fr); gap: var(--sp-8); }
+  .menu { flex-direction: column; position: sticky; top: var(--altura-topo); align-self: start; margin: 0; padding: var(--sp-5) var(--sp-4) var(--sp-5) 0; border-right: 1px solid var(--borda); }
+  .menu a { border-color: transparent; background: transparent; }
+  #pagina { padding-top: var(--sp-8); }
+}
