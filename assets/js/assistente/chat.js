@@ -23,7 +23,8 @@ export function montarAssistente({ perfil }) {
   abrirBotao.className = 'assistente-botao';
   abrirBotao.setAttribute('aria-controls', 'assistente');
   abrirBotao.setAttribute('aria-expanded', 'false');
-  abrirBotao.innerHTML = `${icone('conversa', 24)}<span>Tirar dúvida</span>`;
+  abrirBotao.innerHTML = `${icone('conversa', 24)}<span class="assistente-rotulo">Tirar dúvida</span>`;
+  abrirBotao.title = 'Tirar dúvida';
 
   const painel = document.createElement('aside');
   painel.id = 'assistente';
@@ -215,7 +216,7 @@ export function montarAssistente({ perfil }) {
     ouvir({
       aoEntender: (texto) => {
         escuta.className = 'msg confirmacao-voz';
-        escuta.innerHTML = `<span class="texto-suave" style="font-weight:700">Entendi assim:</span><strong class="escuta-titulo">“${esc(texto)}”</strong><span>Está certo?</span>
+        escuta.innerHTML = `<span class="texto-suave negrito">Entendi assim:</span><strong class="escuta-titulo">“${esc(texto)}”</strong><span>Está certo?</span>
           <div class="linha-botoes"><button type="button" class="botao" data-sim>Sim, enviar</button><button type="button" class="botao botao-secundario" data-de-novo>Falar de novo</button></div>`;
         escuta.querySelector('[data-sim]').addEventListener('click', () => { escuta.remove(); enviar(texto); });
         escuta.querySelector('[data-de-novo]').addEventListener('click', () => { escuta.remove(); iniciarVoz(); });

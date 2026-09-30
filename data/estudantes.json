@@ -1,40 +1,69 @@
 [
   {
     "id": "a3",
-    "nome": "Carla Vitória Santos",
+    "nome": "Iasmim Cardoso de Jesus",
     "nascimento": "2010-05-14",
-    "responsavel": "Rosa Maria Santos",
+    "responsavel": "Edilene Cardoso de Jesus",
     "serie": "1ª série EM",
     "turma": "1ª série A",
-    "turmaId": "t1",
+    "turmaId": "tt1",
     "turno": "Manhã",
     "escolaId": "e1",
-    "aulasDadas": 80,
     "notas": {
-      "Língua Portuguesa": [7.5, 7.0],
-      "Biologia": [6.0, 6.5],
-      "História": [8.0, 7.5],
-      "Física": [5.5, 5.8]
-    }
+      "Língua Portuguesa": [
+        7.3,
+        6.8
+      ],
+      "Biologia": [
+        6.4,
+        6.9
+      ],
+      "História": [
+        7.9,
+        7.4
+      ],
+      "Física": [
+        5.2,
+        5.9
+      ]
+    },
+    "matricula": "202610317",
+    "validade": "2026-12-18"
   },
   {
     "id": "b7",
-    "nome": "Lucas Gabriel Santos",
+    "nome": "Ravi Cardoso de Jesus",
     "nascimento": "2014-08-02",
-    "responsavel": "Rosa Maria Santos",
+    "responsavel": "Edilene Cardoso de Jesus",
     "serie": "7º ano",
     "turma": "7º ano B",
     "turmaId": null,
     "turno": "Tarde",
     "escolaId": "e2",
-    "aulasDadas": 80,
-    "faltas": 6,
+    "faltas": 7,
     "notas": {
-      "Matemática": [7.5, 8.0],
-      "Língua Portuguesa": [6.0, 5.5],
-      "Ciências": [8.0, 8.5],
-      "História": [7.0, 7.5],
-      "Geografia": [5.0, 5.8]
-    }
+      "Matemática": [
+        7.1,
+        7.9
+      ],
+      "Língua Portuguesa": [
+        6.3,
+        5.6
+      ],
+      "Ciências": [
+        8.2,
+        8.6
+      ],
+      "História": [
+        6.8,
+        7.4
+      ],
+      "Geografia": [
+        4.9,
+        5.6
+      ]
+    },
+    "matricula": "202610842",
+    "validade": "2026-12-18"
   }
 ]

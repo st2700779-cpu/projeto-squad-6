@@ -1,0 +1,42 @@
+{
+  "inicio": "menu",
+  "nos": {
+    "menu": {
+      "titulo": "O que você quer fazer?",
+      "fala": "O que você quer fazer? Quer fazer matrícula? Toque no botão verde. Quer ver a escola mais perto? Toque no botão azul. Quer saber quais documentos levar? Toque no botão laranja. Quer falar com a escola? Toque no botão cinza.",
+      "opcoes": [
+        { "rotulo": "Fazer matrícula", "cor": "verde", "icone": "formulario", "link": "familia/matricula.html" },
+        { "rotulo": "Ver a escola mais perto", "cor": "azul", "icone": "mapa", "link": "familia/mapa.html" },
+        { "rotulo": "Documentos para levar", "cor": "laranja", "icone": "documento", "proximo": "documentos" },
+        { "rotulo": "Falar com a escola", "cor": "cinza", "icone": "escola", "proximo": "contato" }
+      ]
+    },
+    "documentos": {
+      "titulo": "Documentos para a matrícula",
+      "lista": [
+        "Certidão de nascimento ou RG do estudante",
+        "CPF do estudante, se tiver",
+        "Comprovante de residência, como conta de luz ou de água",
+        "Documento com foto do responsável",
+        "Se o estudante vem de outra escola: declaração de transferência"
+      ],
+      "fala": "Leve estes documentos. Certidão de nascimento ou RG do estudante. CPF do estudante, se tiver. Comprovante de residência, como conta de luz ou de água. Documento com foto do responsável. Se o estudante vem de outra escola, leve também a declaração de transferência. Quer fazer a matrícula agora? Toque no botão verde.",
+      "opcoes": [
+        { "rotulo": "Fazer matrícula", "cor": "verde", "icone": "formulario", "link": "familia/matricula.html" },
+        { "rotulo": "Voltar ao início", "cor": "cinza", "icone": "voltar", "proximo": "menu" }
+      ]
+    },
+    "contato": {
+      "titulo": "Falar com a escola",
+      "lista": [
+        "Vá à secretaria da escola, de segunda a sexta, das 8 às 17 horas.",
+        "Leve um documento com foto e o número do protocolo, se já fez o pedido."
+      ],
+      "fala": "Vá à secretaria da escola, de segunda a sexta, das 8 às 17 horas. Leve um documento com foto e o número do protocolo, se já fez o pedido. Ainda não escolheu a escola? Toque no botão azul para ver as mais próximas.",
+      "opcoes": [
+        { "rotulo": "Ver a escola mais perto", "cor": "azul", "icone": "mapa", "link": "familia/mapa.html" },
+        { "rotulo": "Voltar ao início", "cor": "cinza", "icone": "voltar", "proximo": "menu" }
+      ]
+    }
+  }
+}

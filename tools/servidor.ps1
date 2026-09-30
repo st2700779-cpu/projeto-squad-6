@@ -1,6 +1,7 @@
 # Servidor local do portal: entrega o site e a API de dados, sem Node nem Python.
-# Uso: powershell -ExecutionPolicy Bypass -File tools/servidor.ps1 [-Porta 5500] [-Abrir] [-Celular]
+# Uso: powershell -ExecutionPolicy Bypass -File tools/servidor.ps1 [-Porta 5500] [-Abrir] [-Celular] [-Pagina familia/index.html]
 #   -Abrir abre o portal no navegador; com -Celular, numa janela do tamanho de um celular (Edge ou Chrome).
+#   -Pagina escolhe a pagina que abre (vazio = tela inicial).
 # Chamado pelo iniciar.bat e pelo VS Code (F5, via .vscode/tasks.json).
 #
 # API (JSON):
@@ -9,14 +10,15 @@
 #   PUT    /api/{nome}                -> salva matriculas, vagas, turmas ou diario em dados-salvos/
 #   POST   /api/protocolo/{PREFIXO}   -> { protocolo: "MAT-2026-0003" }
 #   DELETE /api/dados                 -> apaga as alteracoes salvas (reinicia a demonstracao)
-param([int]$Porta = 5500, [switch]$Abrir, [switch]$Celular)
+param([int]$Porta = 5500, [switch]$Abrir, [switch]$Celular, [string]$Pagina = '')
 
 $raiz = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\') + '\'
 $pastaDados = Join-Path $raiz 'data'
 $pastaSalvos = Join-Path $raiz 'dados-salvos'
 $prefixo = "http://localhost:$Porta/"
+$destino = $prefixo + $Pagina.TrimStart('/')
 $utf8 = New-Object System.Text.UTF8Encoding $false
-$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias')
+$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias', 'diario-meta')
 $LIMITE_CORPO = 1MB
 
 # Abre o portal. Com -Celular, usa uma janela de app do Edge/Chrome com perfil proprio,
@@ -30,12 +32,12 @@ function AbrirNavegador {
       "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe"
     ) | Where-Object { Test-Path $_ } | Select-Object -First 1
     if ($navegador) {
-      Start-Process $navegador -ArgumentList "--app=$prefixo", "--window-size=412,915", "--window-position=100,40", "--user-data-dir=$env:LOCALAPPDATA\PortalAcademicoCelular", "--no-first-run"
+      Start-Process $navegador -ArgumentList "--app=$destino", "--window-size=412,915", "--window-position=100,40", "--user-data-dir=$env:LOCALAPPDATA\PortalAcademicoCelular", "--no-first-run"
       return
     }
     Write-Host "Edge e Chrome nao encontrados: abrindo no navegador padrao (F12 e Ctrl+Shift+M simulam o celular)."
   }
-  Start-Process $prefixo
+  Start-Process $destino
 }
 
 # Se ja houver um servidor na porta (outra execucao ou o Live Server), so abre o navegador e sai.
@@ -63,6 +65,7 @@ function Enviar($resp, [int]$status, [string]$tipo, [byte[]]$bytes) {
   $resp.StatusCode = $status
   $resp.ContentType = $tipo
   $resp.Headers.Add('Cache-Control', 'no-store')
+  $resp.Headers.Add('X-Portal-Api', '1')   # o front-end usa este cabecalho para saber que a API existe
   $resp.ContentLength64 = $bytes.Length
   $resp.OutputStream.Write($bytes, 0, $bytes.Length)
 }
@@ -95,8 +98,8 @@ function ProximoProtocolo([string]$pref) {
   if (Test-Path $arquivo) {
     (LerTexto $arquivo | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $cont[$_.Name] = [int]$_.Value }
   }
-  # A base simulada ja tem os protocolos 0001 e 0002.
-  $n = if ($cont.ContainsKey($pref)) { $cont[$pref] + 1 } else { 3 }
+  # A base simulada ja tem os protocolos 0001 a 0005.
+  $n = if ($cont.ContainsKey($pref)) { $cont[$pref] + 1 } else { 6 }
   $cont[$pref] = $n
   GravarTexto $arquivo ($cont | ConvertTo-Json -Compress)
   return '{0}-{1}-{2:D4}' -f $pref, (Get-Date).Year, $n

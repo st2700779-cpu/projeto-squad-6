@@ -1,6 +1,6 @@
 // Vagas por escola e série, com busca, filtro por município e exportação para CSV.
 import { iniciar, falhaDados } from '../app.js';
-import { esc, icone, vazio, baixarCSV, combina } from '../ui.js';
+import { esc, icone, vazio, baixarCSV, combina, debounce } from '../ui.js';
 import { carregar, vagas as lerVagas } from '../dados.js';
 import { SERIES, atoDaEtapa, situacaoAto } from '../regras.js';
 
@@ -26,14 +26,15 @@ function tabela() {
   if (!lista.length) return vazio('Nenhuma escola encontrada', 'Mude a busca ou o município para ver outras escolas.', 'busca');
   const celula = (e, s) => {
     const v = valor(e, s);
-    if (v === '—') return '<td class="texto-suave">—</td>';
-    if (v === 'bloq.') return '<td><span class="etiqueta etiqueta-erro" title="Ato vencido">bloq.</span></td>';
-    return `<td${v === 0 ? ' class="texto-suave"' : ''}>${v}</td>`;
+    if (v === '—') return '<td class="num texto-suave">—</td>';
+    if (v === 'bloq.') return '<td class="num"><span class="etiqueta etiqueta-erro" title="Ato vencido">bloq.</span></td>';
+    return `<td class="num${v === 0 ? ' texto-suave' : ''}">${v}</td>`;
   };
-  return `<div class="tabela-rolagem"><table class="tabela"><caption class="sr-only">Vagas por escola e série</caption>
-    <thead><tr><th scope="col">Escola</th>${SERIES.map((s) => `<th scope="col">${s.replace(' EM', '')}${s.includes('EM') ? ' (EM)' : ''}</th>`).join('')}</tr></thead>
-    <tbody>${lista.map((e) => `<tr><th scope="row" style="background:none;color:var(--tinta);font-size:1rem">${esc(e.nome)}<br><span class="texto-suave" style="font-size:.85rem;font-weight:400">${esc(e.municipio)}</span></th>${SERIES.map((s) => celula(e, s)).join('')}</tr>`).join('')}</tbody>
-  </table></div>`;
+  return `<div class="tabela-rolagem"><table class="tabela tabela-matriz"><caption class="sr-only">Vagas por escola e série</caption>
+    <thead><tr><th scope="col">Escola</th>${SERIES.map((s) => `<th scope="col" class="num">${s.replace(' EM', '')}${s.includes('EM') ? ' (EM)' : ''}</th>`).join('')}</tr></thead>
+    <tbody>${lista.map((e) => `<tr><th class="celula-escola" scope="row">${esc(e.nome)}<br><span class="texto-suave texto-pequeno peso-normal">${esc(e.municipio)}</span></th>${SERIES.map((s) => celula(e, s)).join('')}</tr>`).join('')}</tbody>
+  </table></div>
+  <p class="contagem">${lista.length} ${lista.length === 1 ? 'escola' : 'escolas'} · ${lista.reduce((t, e) => t + SERIES.reduce((s, x) => s + (typeof valor(e, x) === 'number' ? valor(e, x) : 0), 0), 0)} vagas abertas no total</p>`;
 }
 function desenhar() {
   const municipios = [...new Set(escolas.map((e) => e.municipio))];
@@ -47,7 +48,8 @@ function desenhar() {
     </div>
     <div id="tabela-vagas">${tabela()}</div>`;
 }
-main.addEventListener('input', (e) => { if (e.target.id === 'busca') { busca = e.target.value; main.querySelector('#tabela-vagas').innerHTML = tabela(); } });
+const filtrarBusca = debounce(() => { main.querySelector('#tabela-vagas').innerHTML = tabela(); });
+main.addEventListener('input', (e) => { if (e.target.id === 'busca') { busca = e.target.value; filtrarBusca(); } });
 main.addEventListener('change', (e) => { if (e.target.id === 'municipio') { municipio = e.target.value; desenhar(); } });
 main.addEventListener('click', (e) => {
   if (!e.target.closest('#exportar')) return;

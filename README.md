@@ -1,6 +1,6 @@
 # Portal Acadêmico — Squad 6
 
-Protótipo front-end do Sistema Acadêmico para a Rede Estadual de Ensino de Sergipe (SEDUC/SE), desenvolvido na Residência RiseUp. Tem quatro visões (família e estudante, professor, escola e rede) e um **Assistente de Matrícula e Dúvidas** com IA, por texto e voz.
+Protótipo front-end do Sistema Acadêmico para a Rede Estadual de Ensino de Sergipe (SEDUC/SE), desenvolvido na Residência RiseUp. Tem cinco acessos (aluno, professor, secretaria, rede e matrícula pela família, sem login), carteirinha e declarações verificáveis por QR Code, mapa de vagas, matrícula inclusiva (balcão, outro aparelho, guia por voz), diário que funciona sem internet e um **Assistente de Matrícula e Dúvidas** com IA opcional, por texto e voz.
 
 Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC.
 
@@ -8,14 +8,21 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 
 | Pasta | Conteúdo |
 | --- | --- |
-| `index.html`, `familia/`, `professor/`, `escola/`, `rede/` | Páginas de cada perfil |
-| `assets/css/` | Tema, componentes e estilos do assistente |
+| `index.html`, `login.html`, `verificar.html`, `aluno/`, `familia/`, `professor/`, `escola/`, `rede/` | Entrada, login, verificação pública de documentos e páginas de cada perfil (`familia/` é a matrícula aberta, sem login) |
+| `manifest.json`, `sw.js`, `assets/img/` | PWA: manifesto, service worker (gerado por `tools/gerar-sw.mjs`) e ícones |
+| `assets/css/` | `tema.css` (tokens do design system), `componentes.css`, `layout.css` (cabeçalho, menu, breadcrumb) e `assistente.css` |
 | `assets/js/` | Núcleo (`app`, `estado`, `dados`, `regras`, `acessibilidade`, `ui`) e páginas |
+| `assets/js/dominio/` | Regras de negócio por domínio: `matricula`, `notas`, `turmas`, `equivalencias` (`regras.js` reexporta todas), mais `verificacao`, `impacto-atos`, `habilitacao`, `boletim-semanal`, `trajetoria` e `sincronizacao` |
+| `assets/js/matricula/`, `assets/js/mapa/`, `assets/js/componentes/` | Formulário de matrícula único (online e balcão) e rascunho por link; mapa (Leaflet, Haversine); linha do tempo |
+| `assets/js/auth.js`, `tour.js`, `qr.js`, `idb.js`, `offline.js` | Login de protótipo, guia de primeiro acesso, QR Code, IndexedDB e estado de conexão |
+| `sistema-academico-seduc-prototipo.html` | Protótipo em arquivo único, abre com duplo clique. Usa os mesmos dados e regras do portal (ver `tools/gerar-prototipo.mjs`) |
 | `assets/js/assistente/` | Assistente: interface, chamada à IA, erros, perguntas frequentes, voz |
 | `data/` | Dados simulados em JSON e a base de conhecimento do assistente |
 | `prompts/` | Prompt de sistema versionado, registro de alterações e bateria de testes |
 | `worker/` | Proxy do assistente (Cloudflare Workers), que guarda a chave da IA |
-| `tools/` | Script que roda a bateria de perguntas contra o proxy |
+| `tools/` | Servidor local, bateria de perguntas do assistente, `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único) e `verificar-contraste.mjs` (confere o contraste dos tokens) |
+| `AUDITORIA.md`, `MELHORIAS.md`, `SUGESTOES.md` | Auditoria inicial, resumo das melhorias e ideias que exigiriam funcionalidade nova |
+| `DIAGNOSTICO-UI.md`, `MELHORIAS-UI.md` | Diagnóstico visual e redesenho de interface, com o **guia do design system** (tokens e componentes) |
 
 ## Telas e versão mobile
 
@@ -36,6 +43,17 @@ Pré-requisitos: VS Code com a extensão **Live Server** (ou qualquer servidor e
 
 Sem mais nada configurado, o assistente funciona em **modo sem IA**: responde pelas perguntas frequentes da base (`data/base-conhecimento.json`).
 
+**Arquivos `.bat` (Windows, dois cliques):**
+
+| Arquivo | O que faz |
+| --- | --- |
+| `iniciar.bat` | Menu: portal no computador, em janela de celular, protótipo ou reiniciar a demonstração. Se o PowerShell estiver bloqueado, tenta com Python |
+| `iniciar-local.bat` | Um clique: sobe o servidor local (Python; sem Python, o do PowerShell), abre a entrada no navegador e mostra as contas de demonstração |
+| `iniciar-visao.bat` | Abre o portal direto em uma visão (Família, Professor, Escola ou Rede) |
+| `iniciar-python.bat` | Sobe o portal com o servidor do Python, sem PowerShell e sem API (dados ficam no navegador). Aceita a página como argumento: `iniciar-python.bat professor/index.html` |
+| `iniciar-mobile.bat` | Abre só o protótipo em arquivo único, em janela de celular |
+| `verificar.bat` | Atualiza o protótipo com os dados e regras do portal e confere o contraste das cores nos quatro temas (precisa de Node.js 18+) |
+
 **Jeito mais fácil (Windows):** dê dois cliques em `iniciar.bat`. Ele sobe o servidor com a API em `http://localhost:5500` e abre o navegador. Para parar, feche a janela preta. No VS Code, **F5** faz o mesmo. Não precisa de Node nem de Python.
 
 ### API de dados
@@ -53,6 +71,55 @@ Com o `iniciar.bat` (ou F5), as páginas leem e gravam pela API do `tools/servid
 Sem a API (Live Server, `python -m http.server`, GitLab Pages), o portal continua funcionando: lê `data/*.json` e guarda as alterações no navegador (localStorage).
 
 Alternativa sem VS Code: `python3 -m http.server 5500` na pasta do projeto.
+
+**Abrir com duplo clique:** só o protótipo `sistema-academico-seduc-prototipo.html` funciona assim. Depois de mudar `data/` ou `assets/js/dominio/notas.js`, rode `node tools/gerar-prototipo.mjs` para atualizá-lo.
+
+## Acesso e contas de demonstração
+
+O login é **só de protótipo**: as contas ficam em `data/usuarios.json` (senhas em texto simples, todas fictícias), a conferência é feita no navegador e a sessão fica em `sessionStorage`. Não protege nada.
+
+| Perfil | Login | Senha |
+| --- | --- | --- |
+| Aluno | `202610317` (Iasmim Cardoso de Jesus) ou `202610842` (Ravi Cardoso de Jesus) | `aluno2026` |
+| Professor | `PF-30412` (Profa. Rosângela Tavares Góis) | `prof2026` |
+| Secretaria | `secretaria.osvaldo` (C. E. Prof. Osvaldo Tavares Rezende) | `secretaria2026` |
+| Rede (SEDUC e DRE) | `seduc.tecnico` | `rede2026` |
+| Matrícula (família) | não pede login | |
+
+A tela de login tem um bloco "Acesso de demonstração" com essas contas e um botão que preenche os campos.
+
+## Funcionalidades
+
+| Item | Onde | O que faz |
+| --- | --- | --- |
+| Login por perfil e proteção de rotas | `login.html`, `assets/js/auth.js` | Mostrar senha, aviso de Caps Lock, erros específicos, redireciona ao login certo |
+| Guia de primeiro acesso | botão **Como usar** no cabeçalho | 4 a 6 passos por visão, com leitura em voz alta, setas e Esc |
+| Modo balcão | Secretaria › Matrículas › Atendimento presencial | Mesmo formulário da família em layout ampliado; o pedido grava a origem (presencial ou online) |
+| Continuar em outro aparelho | qualquer passo da matrícula | Link e QR Code com o rascunho no fragmento `#` do endereço |
+| Ouvir instruções | `familia/guia.html` | Árvore de decisão em `data/arvore-voz.json`, lida por `speechSynthesis`, com Repetir e Voltar |
+| Mapa de vagas | `familia/mapa.html` (escolas por distância) e `rede/mapa.html` (demanda x oferta) | Leaflet com tiles do OpenStreetMap; sem internet, lista e tabela no lugar do mapa |
+| Declaração verificável | `aluno/declaracao.html`, `verificar.html` | Código SHA-256 e QR; a página pública recalcula o código a partir de `data/` |
+| Carteirinha digital e PWA | `aluno/carteirinha.html`, `sw.js` | QR, faixa com data e hora, abre sem internet, Adicionar à tela inicial |
+| Linha do tempo | `aluno/linha-do-tempo.html`, `escola/estudante.html` | Anos, escolas, transferências e versão da matriz, com destaque quando a matriz mudou |
+| Boletim falado | `aluno/boletim-falado.html` | Modelo de texto fixo, botão Ouvir e prévia em balão de conversa (simulação) |
+| Painel de impacto de atos | `rede/atos.html` | Faixas de prioridade, turmas e estudantes afetados, filtros por município e escola |
+| Professores habilitados | `rede/professores.html`, `escola/professores.html` | Tabela escola x componente sem professor habilitado (`assets/js/dominio/habilitacao.js`) |
+| Diário offline | `professor/diario.html` | Fila em IndexedDB, faixa online/offline, botão **Ficar offline** e sincronização com conflito pelo registro mais recente |
+
+**Sem IA no que é novo:** todas essas telas usam regras fixas, modelos de texto e árvores de decisão. O assistente com IA opcional (`worker/`) continua como era e segue desligado sem `assistenteUrl` em `config.js`.
+
+## Roteiro de demonstração de 10 minutos
+
+1. **Entrada e tour (1 min).** Abra `index.html`, entre como Aluno (`202610317` / `aluno2026`) e deixe o guia de primeiro acesso rodar; clique em Ouvir em um passo.
+2. **Carteirinha e offline (2 min).** Abra Carteirinha: QR e faixa com data e hora. Em um celular, use Adicionar à tela inicial; nas ferramentas do navegador, marque Offline e recarregue: a carteirinha abre.
+3. **Declaração verificável (1 min).** Em Documentos, emita a declaração de matrícula, leia o QR com outro aparelho (ou copie o código para `verificar.html` em outra aba): Documento autêntico.
+4. **Vida escolar e boletim falado (1 min).** Veja a linha do tempo (a matriz mudou em 2024) e ouça o boletim falado da semana.
+5. **Matrícula inclusiva (2 min).** Saia e entre em Matrícula, sem login. Comece o pedido, use Continuar em outro aparelho e abra o link em outra aba: volta ao mesmo passo. Depois abra Ouvir instruções e Escolas com vaga (escolha um bairro).
+6. **Secretaria (1 min).** Entre como Secretaria (`secretaria.osvaldo` / `secretaria2026`), abra Atendimento presencial, faça um pedido e veja a origem "Presencial" na lista; abra a ficha de um estudante.
+7. **Rede (1 min).** Entre como Rede (`seduc.tecnico` / `rede2026`): Atos autorizativos (impacto em turmas e estudantes), Mapa de vagas e Professores habilitados.
+8. **Professor sem internet (1 min).** Entre como Professor (`PF-30412` / `prof2026`), abra o Diário, clique em Ficar offline, lance uma nota e registre a chamada, depois Voltar online: os registros pendentes são sincronizados.
+
+Antes de repetir a demonstração, use **Restaurar dados de demonstração** na entrada (apaga também a fila offline).
 
 ## Testar o assistente sem gastar cota
 
@@ -103,9 +170,20 @@ A chave da IA **nunca** vai para o front-end. Ela fica no proxy, na pasta `worke
 | `MODELO_GROQ` | `wrangler.toml` | Nome do modelo no Groq |
 | `ORIGEM_PERMITIDA` | `wrangler.toml` | Endereços que podem chamar o proxy, separados por vírgula |
 
-## Publicar no GitLab Pages
+## Publicar gratuitamente
 
-O arquivo `.gitlab-ci.yml` publica o site a cada commit na branch principal. O endereço aparece em **Deploy → Pages** no GitLab.
+O **QR Code que abre em outro aparelho, o PWA (service worker) e a verificação de documentos** só funcionam em `https` ou `localhost`. Publicar em GitHub Pages resolve isso, com endereço público para o celular de quem for testar.
+
+**GitHub Pages (recomendado):**
+
+1. No repositório, abra **Settings → Pages → Build and deployment** e escolha **Source: GitHub Actions**.
+2. Faça merge na branch `main` (ou rode **Actions → Publicar no GitHub Pages → Run workflow**). O arquivo `.github/workflows/pages.yml` monta a pasta do site e publica.
+3. O endereço é `https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/`. Todos os caminhos do código são relativos, então funciona dentro de uma subpasta.
+4. Depois de acrescentar arquivos às telas que abrem sem internet, rode `node tools/gerar-sw.mjs` antes do commit.
+
+**GitLab Pages:** o arquivo `.gitlab-ci.yml` publica o site a cada commit na branch principal. O endereço aparece em **Deploy → Pages**.
+
+Sem `https` (Live Server em outro computador da rede, por exemplo) o portal abre, mas o código de verificação, a instalação do PWA e o diário offline pelo service worker não funcionam.
 
 ## Rodar a bateria de testes do assistente
 
@@ -123,7 +201,8 @@ O script faz as 30 perguntas de `prompts/testes/perguntas-teste.json`, mostra ac
 - A matrícula só oferece escolas com vaga; pedir reserva uma vaga, recusar devolve.
 - Na transferência, o estudante fica na mesma série.
 - Turmas: a coordenação cria e envia; a direção aprova ou devolve com justificativa.
-- Notas de 0 a 10 e faltas até o total de aulas dadas; presença mínima de 75% e média 6 para aprovação.
+- Notas de 0 a 10 e faltas até o total de aulas dadas. Situação por matéria (`assets/js/dominio/notas.js`): média 6 ou mais aprova; de 4 a 5,9 fica em recuperação; abaixo de 4 reprova; frequência abaixo de 75% reprova.
+- Uma só turma para todas as visões: a alocação feita pela escola gera "Minhas turmas" do professor, e o estudante enturmado pela secretaria entra no diário. Notas e faltas do diário aparecem no boletim da família.
 - Enturmação só em turma aprovada da mesma série e sem passar da capacidade da sala.
 - Alocação bloqueada quando o professor não é habilitado no componente (concurso e formação) ou passaria da carga horária semanal.
 - Equivalências por regras: mesmo componente (com sinônimos) e carga de pelo menos 75% da rede é equivalente; carga menor pede complementação; componente não cursado ou nota abaixo de 6 vira pendência de adaptação.
@@ -131,6 +210,24 @@ O script faz as 30 perguntas de `prompts/testes/perguntas-teste.json`, mostra ac
 - Rematrícula mantém a escola e passa para a série seguinte, sem consumir vaga nova.
 - Declarações de matrícula, frequência e transferência numeradas (DEC-ano-número), com marca-d’água de documento simulado.
 - Ações irreversíveis pedem confirmação, e confirmações, recusas, aprovações, enturmações, alocações, chamadas e declarações ficam no histórico de ações (quem e quando).
+
+## Limitações por funcionalidade
+
+Tudo é protótipo sem servidor: o "servidor" é o `localStorage` do navegador (ou a API local do `iniciar.bat`).
+
+- **Login:** contas no arquivo de dados, senha em texto simples e sessão em `sessionStorage`. Serve para separar as visões na demonstração, não para proteger dados.
+- **Tour:** usa a voz em português instalada no aparelho; sem ela, só o texto. O "já visto" fica em `localStorage`, por navegador.
+- **Modo balcão:** o pedido só existe no navegador em que foi feito.
+- **Continuar em outro aparelho:** o rascunho vai no endereço, sem servidor. O link contém dados pessoais e não pode ser revogado. Passa de uns 1.800 caracteres, o QR deixa de ser gerado (só o link). Documentos anexados não vão no link. O `qrcodejs` vem do cdnjs, então precisa de internet na primeira vez.
+- **Guia por voz:** só leitura em voz alta; a árvore é fixa. Não há reconhecimento de fala.
+- **Mapa:** Leaflet e tiles do OpenStreetMap exigem internet (sem ela, a lista e a tabela substituem). Coordenadas, distâncias em linha reta e a demanda são fictícias.
+- **Declaração e verificação:** o código prova que os dados do papel batem com `data/`, não quem emitiu nem quando. Matrículas feitas ou confirmadas durante a demonstração não estão em `data/` e por isso não verificam em outro aparelho. Precisa de `https` ou `localhost` (`crypto.subtle`).
+- **Carteirinha e PWA:** a faixa com data e hora só dificulta print falso. O botão de instalar depende do navegador (no iPhone é pelo menu Compartilhar). O QR offline depende de o `qrcodejs` ter sido guardado numa visita anterior com internet.
+- **Linha do tempo:** trajetórias e versões de matriz do Ensino Fundamental são fictícias.
+- **Boletim falado:** usa as chamadas do diário; nada é enviado a ninguém. A "semana" termina na última chamada registrada.
+- **Impacto de atos:** turmas de outras escolas vêm de `data/turmas-rede.json` (fictício); a secretaria só gerencia as da própria escola.
+- **Professores habilitados:** conta só a habilitação e a lotação. Não olha carga horária. A matriz do Ensino Fundamental está em `data/componentes-etapa.json`.
+- **Diário offline:** a fila fica em IndexedDB e some se a pessoa limpar os dados do navegador. Não usa Background Sync (sincroniza com a página aberta). Conflito: vale o registro mais recente pelo horário do aparelho, que pode estar errado. Duas abas gravam no mesmo `localStorage`, então o último a gravar leva o estado inteiro (a sincronização relê antes de gravar para reduzir o problema).
 
 ## Padrões da equipe
 

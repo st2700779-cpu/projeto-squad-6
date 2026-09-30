@@ -1,0 +1,47 @@
+{
+  "Aracaju": {
+    "6º ano": 27,
+    "7º ano": 16,
+    "8º ano": 16,
+    "9º ano": 7,
+    "1ª série EM": 27,
+    "2ª série EM": 16,
+    "3ª série EM": 7
+  },
+  "São Cristóvão": {
+    "6º ano": 2,
+    "7º ano": 1,
+    "8º ano": 1,
+    "9º ano": 1,
+    "1ª série EM": 2,
+    "2ª série EM": 3,
+    "3ª série EM": 1
+  },
+  "Lagarto": {
+    "6º ano": 19,
+    "7º ano": 13,
+    "8º ano": 5,
+    "9º ano": 11,
+    "1ª série EM": 1,
+    "2ª série EM": 1,
+    "3ª série EM": 1
+  },
+  "Itabaiana": {
+    "6º ano": 7,
+    "7º ano": 9,
+    "8º ano": 5,
+    "9º ano": 10,
+    "1ª série EM": 36,
+    "2ª série EM": 23,
+    "3ª série EM": 17
+  },
+  "Nossa Senhora do Socorro": {
+    "6º ano": 6,
+    "7º ano": 4,
+    "8º ano": 5,
+    "9º ano": 3,
+    "1ª série EM": 9,
+    "2ª série EM": 5,
+    "3ª série EM": 2
+  }
+}

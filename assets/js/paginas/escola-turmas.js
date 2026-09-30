@@ -1,9 +1,9 @@
 // Turmas (HU13, HU14): criação bloqueada sem ato vigente; aprovação ou devolução pela direção.
 import { iniciar, falhaDados } from '../app.js';
-import { esc, etiqueta, pedirTexto, avisar, confirmar } from '../ui.js';
+import { esc, etiqueta, pedirTexto, avisar, confirmar, vazio } from '../ui.js';
 import { carregar, turmasEscola, salvar as salvarDados, registrarAcao } from '../dados.js';
 import { definir, obter } from '../estado.js';
-import { SERIES, etapaDaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
+import { SERIES, etapaDaSerie, atoDaEtapa, situacaoAto, codigoDaTurma } from '../regras.js';
 
 const ESCOLA = 'e1';
 const main = await iniciar({ perfil: 'escola', pagina: 'escola/turmas.html', assistente: true });
@@ -17,31 +17,31 @@ const tipo = (s) => ({ Aprovada: 'ok', 'Pendente de aprovação': 'atencao', Dev
 function desenhar(erro = '') {
   const coord = papel === 'coordenacao';
   main.innerHTML = `
-    <h1>Turmas</h1>
-    <div class="linha-botoes" role="group" aria-label="Papel na escola" style="margin-bottom:.8rem"><span class="texto-suave">Você está como:</span>
-      <button type="button" class="botao ${coord ? '' : 'botao-secundario'}" data-papel="coordenacao" aria-pressed="${coord}">Coordenação</button>
-      <button type="button" class="botao ${!coord ? '' : 'botao-secundario'}" data-papel="direcao" aria-pressed="${!coord}">Direção</button></div>
-    <p class="texto-suave">A coordenação monta a turma e envia para aprovação. A direção aprova ou devolve com justificativa. Professores e estudantes só veem turmas aprovadas.</p>
+    <h1>Turmas 2026</h1>
+    <div class="filtros" role="group" aria-label="Papel na escola">
+      <button type="button" data-papel="coordenacao" aria-pressed="${coord}">Atuar como coordenação</button>
+      <button type="button" data-papel="direcao" aria-pressed="${!coord}">Atuar como direção</button></div>
+    <p class="pagina-descricao">${coord ? 'Monte a turma e envie para a direção aprovar.' : 'Aprove a turma ou devolva com justificativa.'} Só turmas aprovadas aparecem para professores e estudantes.</p>
     ${coord ? `<details class="cartao" ${erro ? 'open' : ''}><summary><strong>Criar nova turma</strong></summary>
-      <div class="row g-3" style="margin-top:.2rem">
+      <div class="row g-3 esp-t-1">
         <div class="col-md-6 campo"><label for="nt-nome">Nome da turma</label><input id="nt-nome" class="entrada" placeholder="Ex.: 9º ano B"></div>
         <div class="col-md-6 campo"><label for="nt-serie">Série</label><select id="nt-serie" class="entrada">${SERIES.map((s) => `<option>${s}</option>`).join('')}</select></div>
         <div class="col-md-6 campo"><label for="nt-turno">Turno</label><select id="nt-turno" class="entrada"><option>Manhã</option><option>Tarde</option><option>Noite</option></select></div>
-        <div class="col-md-6 campo"><label for="nt-sala">Sala</label><select id="nt-sala" class="entrada"><option>Sala 01 (40 lugares)</option><option>Sala 05 (35 lugares)</option><option>Laboratório 1 (25 lugares)</option></select></div>
+        <div class="col-md-6 campo"><label for="nt-sala">Sala</label><select id="nt-sala" class="entrada"><option>Bloco A, sala 03 (36 lugares)</option><option>Bloco B, sala 06 (38 lugares)</option><option>Bloco C, sala 02 (32 lugares)</option><option>Laboratório de Ciências (24 lugares)</option></select></div>
       </div>
       <p class="erro" role="alert">${esc(erro)}</p>
-      <button type="button" class="botao" data-criar>Salvar como rascunho</button></details>` : ''}
-    ${turmas.map((t) => { const u = t.historico[t.historico.length - 1]; return `
-      <div class="cartao"><div class="d-flex justify-content-between flex-wrap gap-2"><div><strong>${esc(t.nome)}</strong> <span class="texto-suave">· ${esc(t.serie)} · ${esc(t.turno)} · ${esc(t.sala)}</span></div>${etiqueta(t.situacao, tipo(t.situacao))}</div>
-      <p class="texto-suave" style="font-size:.92rem;margin:.4rem 0">Último registro: ${esc(u[0])} — ${esc(u[1])}${u[2] ? `: “${esc(u[2])}”` : ''}</p>
-      <div class="linha-botoes">
-        ${coord && ['Rascunho', 'Devolvida'].includes(t.situacao) ? `<button type="button" class="botao" data-enviar="${t.id}">Enviar para aprovação</button>` : ''}
-        ${!coord && t.situacao === 'Pendente de aprovação' ? `<button type="button" class="botao" data-aprovar="${t.id}">Aprovar</button><button type="button" class="botao botao-perigo" data-devolver="${t.id}">Devolver</button>` : ''}
-      </div></div>`; }).join('')}`;
+      <button type="button" class="botao" data-criar>Salvar turma como rascunho</button></details>` : ''}
+    ${turmas.length ? `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Turmas da escola e situação de aprovação</caption>
+      <thead><tr><th scope="col">Turma</th><th scope="col">Série</th><th scope="col">Turno</th><th scope="col">Sala</th><th scope="col">Situação</th><th scope="col">Último registro</th><th scope="col"><span class="sr-only">Ação</span></th></tr></thead>
+      <tbody>${turmas.map((t) => { const u = t.historico[t.historico.length - 1];
+        const acao = coord && ['Rascunho', 'Devolvida'].includes(t.situacao) ? `<button type="button" class="botao botao-mini" data-enviar="${t.id}" aria-label="Enviar a turma ${esc(t.nome)} para aprovação">Enviar para aprovação</button>`
+          : !coord && t.situacao === 'Pendente de aprovação' ? `<div class="linha-botoes"><button type="button" class="botao botao-mini" data-aprovar="${t.id}" aria-label="Aprovar a turma ${esc(t.nome)}">Aprovar turma</button><button type="button" class="botao botao-perigo botao-mini" data-devolver="${t.id}" aria-label="Devolver a turma ${esc(t.nome)}">Devolver turma</button></div>` : '';
+        return `<tr><td class="titulo-linha"><strong>${esc(t.nome)}</strong><small>${esc(codigoDaTurma(t))}</small></td><td class="sem-quebra-texto" data-rotulo="Série">${esc(t.serie)}</td><td data-rotulo="Turno">${esc(t.turno)}</td><td data-rotulo="Sala">${esc(t.sala)}</td><td data-rotulo="Situação">${etiqueta(t.situacao, tipo(t.situacao))}</td><td data-rotulo="Último registro">${esc(u[0])}: ${esc(u[1])}${u[2] ? `<small>“${esc(u[2])}”</small>` : ''}</td><td class="acoes">${acao}</td></tr>`; }).join('')}</tbody></table></div>
+      <p class="contagem">${turmas.length} ${turmas.length === 1 ? 'turma' : 'turmas'} · ${turmas.filter((t) => t.situacao === 'Aprovada').length} aprovadas</p>` : vazio('Nenhuma turma cadastrada', 'Use “Criar nova turma” para montar a primeira.')}`;
 }
 // Salva as turmas e registra no histórico de ações quem fez o quê.
 async function salvar(msg, quem, acao, alvo) {
-  try { await salvarDados('turmas', turmas); await registrarAcao(quem, acao, alvo); desenhar(); avisar(msg); } catch { avisar('Não foi possível salvar. Tente de novo.'); mostrar(); }
+  try { await salvarDados('turmas', turmas); await registrarAcao(quem, acao, alvo); desenhar(); avisar(msg); } catch { avisar('A turma não foi salva e nada foi alterado. Confira a conexão e repita a ação.'); mostrar(); }
 }
 main.addEventListener('click', async (e) => {
   const b = e.target.closest('button');

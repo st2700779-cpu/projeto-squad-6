@@ -1,0 +1,20 @@
+/* Guia de primeiro acesso: balão com realce no elemento. Só usa tokens de tema.css. */
+.tour-realce { position: fixed; z-index: 60; pointer-events: none; border-radius: var(--raio); outline: 3px solid var(--cor-primaria); outline-offset: 3px; box-shadow: 0 0 0 6px var(--cor-primaria-suave); transition: top var(--transicao-rapida), left var(--transicao-rapida), width var(--transicao-rapida), height var(--transicao-rapida); }
+.tour { position: fixed; z-index: 61; width: min(360px, calc(100vw - 2 * var(--sp-4))); max-height: calc(100vh - 2 * var(--sp-4)); overflow: auto; background: var(--superficie); color: var(--texto); border: 1px solid var(--borda-forte); border-radius: var(--raio-lg); box-shadow: var(--sombra-3); padding: var(--sp-4); }
+.tour:focus { outline: none; }
+.tour-passo { margin: 0 0 var(--sp-1); font-size: var(--texto-sm); color: var(--texto-suave); }
+.tour h2 { margin: 0 0 var(--sp-2); font-size: var(--texto-lg); }
+.tour h2:focus { outline: none; }
+.tour p.tour-texto { margin: 0 0 var(--sp-4); }
+.tour-acoes { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.tour-acoes .tour-espaco { flex: 1 1 auto; }
+.tour-progresso { display: flex; gap: 6px; margin: 0 0 var(--sp-3); padding: 0; list-style: none; }
+.tour-progresso li { width: 100%; height: 4px; border-radius: 2px; background: var(--borda); }
+.tour-progresso li[aria-current="step"], .tour-progresso li.feito { background: var(--cor-primaria); }
+.tour-fechar { position: absolute; top: var(--sp-2); right: var(--sp-2); }
+@media (max-width: 559px) {
+  .tour { left: var(--sp-4) !important; right: var(--sp-4); top: auto !important; bottom: var(--sp-4); width: auto; }
+  .ferramenta-como-usar .rotulo { display: none; }
+}
+@media (min-width: 560px) { .ferramenta-como-usar svg { display: none; } }
+@media (prefers-reduced-motion: reduce) { .tour-realce { transition: none; } }

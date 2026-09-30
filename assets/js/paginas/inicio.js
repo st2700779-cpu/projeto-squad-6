@@ -1,24 +1,30 @@
-// W1 · Seleção de perfil.
+// Entrada do portal: um acesso por perfil. Aluno, Professor, Secretaria e Rede pedem login;
+// Matrícula (família) é aberta e não pede.
 import { iniciar, link } from '../app.js';
-import { icone, avisar, confirmar } from '../ui.js';
-import { botaoOuvir } from '../acessibilidade.js';
+import { avisar, confirmar, esc } from '../ui.js';
+import { sessao, sair, PERFIS } from '../auth.js';
 import { reiniciarDados } from '../dados.js';
 
 const main = await iniciar();
-const perfis = [
-  ['familia/index.html', 'Família e estudante', 'Matrícula, notas e avisos', 'usuario'],
-  ['professor/index.html', 'Professor', 'Turmas e diário', 'livro'],
-  ['escola/index.html', 'Escola', 'Secretaria, coordenação e direção', 'escola'],
-  ['rede/atos.html', 'Rede (SEDUC e DRE)', 'Atos, vagas e matrizes', 'rede']
+const acessos = [
+  ['login.html?perfil=aluno', 'Aluno', 'Notas e faltas, documentos e calendário'],
+  ['login.html?perfil=professor', 'Professor', 'Turmas e diário de classe: chamada e notas'],
+  ['login.html?perfil=escola', 'Secretaria', 'Matrículas, enturmação, turmas e alocação de professores'],
+  ['login.html?perfil=rede', 'Rede (SEDUC e DRE)', 'Atos autorizativos, vagas por escola e matrizes curriculares'],
+  ['familia/matricula.html', 'Matrícula', 'Pedido de matrícula pela família, sem login']
 ];
+const s = sessao();
 main.innerHTML = `
-  <h1 style="font-size:clamp(2rem,6vw,2.6rem);margin-top:.8rem">Quem está usando o portal?</h1>
-  <p class="texto-suave" style="font-size:1.1rem;max-width:52ch">Escolha seu perfil. No protótipo, o acesso é simulado.</p>
-  <div class="row g-3" style="margin-top:.2rem">
-    ${perfis.map(([h, t, d, i]) => `<div class="col-12 col-lg-6"><div class="bloco" style="height:100%;margin:0"><a href="${link(h)}"><span class="icone">${icone(i, 30)}</span><span><strong>${t}</strong><small>${d}</small></span></a>${botaoOuvir(`${t}. ${d}.`, '')}</div></div>`).join('')}
-  </div>
-  <p class="texto-suave" style="margin-top:2rem;font-size:.9rem">Squad 6 · Residência RiseUp · Dados fictícios · <button type="button" class="botao botao-secundario" id="reiniciar" style="min-height:36px;padding:.2rem .7rem;border-width:1.5px">Reiniciar demonstração</button></p>`;
+  <h1>Entrar no sistema</h1>
+  <p class="pagina-descricao">Acesso simulado. As contas de teste ficam na tela de login.</p>
+  ${s ? `<div class="sessao-atual" role="status"><span>Você entrou como <strong>${esc(s.nome)}</strong> (${esc(PERFIS[s.perfil]?.rotulo || s.perfil)}).</span><a class="botao botao-secundario botao-mini" href="${link(PERFIS[s.perfil]?.inicio || 'index.html')}">Continuar</a><button type="button" class="botao botao-texto botao-mini" id="sair">Sair</button></div>` : ''}
+  <ul class="lista-perfis">
+    ${acessos.map(([h, t, d]) => `<li><a href="${link(h)}"><strong>${t}</strong><span>${d}</span></a></li>`).join('')}
+  </ul>
+  <p><a href="${link('verificar.html')}">Verificar um documento pelo código</a></p>
+  <p class="aviso-prototipo">Squad 6 · Residência RiseUp · Escolas, pessoas e dados fictícios · <button type="button" class="botao botao-texto botao-mini" id="reiniciar">Restaurar dados de demonstração</button></p>`;
+main.querySelector('#sair')?.addEventListener('click', sair);
 main.querySelector('#reiniciar').addEventListener('click', async () => {
-  if (!(await confirmar({ titulo: 'Reiniciar a demonstração?', texto: 'Apaga tudo o que foi feito: pedidos enviados, confirmações, turmas, notas lançadas, chamadas e declarações. Os dados voltam ao início.', botao: 'Reiniciar', perigo: true }))) return;
-  try { await reiniciarDados(); avisar('Demonstração reiniciada.'); } catch { avisar('Não foi possível reiniciar. Tente de novo.'); }
+  if (!(await confirmar({ titulo: 'Restaurar os dados de demonstração?', texto: 'Apaga o que foi feito neste navegador e no servidor local: pedidos de matrícula, confirmações, turmas, notas lançadas, chamadas e declarações. Os dados voltam ao início.', botao: 'Restaurar dados', perigo: true }))) return;
+  try { await reiniciarDados(); avisar('Dados de demonstração restaurados.'); } catch { avisar('Não foi possível restaurar os dados. Recarregue a página e tente de novo.'); }
 });

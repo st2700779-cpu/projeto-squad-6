@@ -4,13 +4,22 @@
     "nome": "1ª série A",
     "serie": "1ª série EM",
     "turno": "Manhã",
-    "sala": "Sala 04 (40 lugares)",
-    "capacidade": 40,
-    "matriculados": 38,
+    "sala": "Bloco B, sala 04 (38 lugares)",
+    "capacidade": 38,
+    "matriculados": 37,
     "situacao": "Aprovada",
+    "escolaId": "e1",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Direção", "Aprovou", ""]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Direção",
+        "Aprovou",
+        ""
+      ]
     ]
   },
   {
@@ -18,13 +27,22 @@
     "nome": "1ª série B",
     "serie": "1ª série EM",
     "turno": "Tarde",
-    "sala": "Sala 01 (40 lugares)",
-    "capacidade": 40,
-    "matriculados": 24,
+    "sala": "Bloco A, sala 01 (36 lugares)",
+    "capacidade": 36,
+    "matriculados": 29,
     "situacao": "Aprovada",
+    "escolaId": "e1",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Direção", "Aprovou", ""]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Direção",
+        "Aprovou",
+        ""
+      ]
     ]
   },
   {
@@ -32,13 +50,22 @@
     "nome": "2ª série A",
     "serie": "2ª série EM",
     "turno": "Manhã",
-    "sala": "Sala 05 (35 lugares)",
-    "capacidade": 35,
-    "matriculados": 35,
+    "sala": "Bloco B, sala 05 (34 lugares)",
+    "capacidade": 34,
+    "matriculados": 34,
     "situacao": "Aprovada",
+    "escolaId": "e1",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Direção", "Aprovou", ""]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Direção",
+        "Aprovou",
+        ""
+      ]
     ]
   },
   {
@@ -46,13 +73,22 @@
     "nome": "1ª série C",
     "serie": "1ª série EM",
     "turno": "Tarde",
-    "sala": "Sala 07 (35 lugares)",
-    "capacidade": 35,
+    "sala": "Bloco C, sala 07 (32 lugares)",
+    "capacidade": 32,
     "matriculados": 0,
     "situacao": "Pendente de aprovação",
+    "escolaId": "e1",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Coordenação", "Enviou para aprovação", ""]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Coordenação",
+        "Enviou para aprovação",
+        ""
+      ]
     ]
   },
   {
@@ -60,14 +96,27 @@
     "nome": "2ª série B",
     "serie": "2ª série EM",
     "turno": "Noite",
-    "sala": "Sala 02 (30 lugares)",
+    "sala": "Bloco A, sala 02 (30 lugares)",
     "capacidade": 30,
     "matriculados": 0,
     "situacao": "Devolvida",
+    "escolaId": "e1",
     "historico": [
-      ["Coordenação", "Criou a turma", ""],
-      ["Coordenação", "Enviou para aprovação", ""],
-      ["Direção", "Devolveu", "A sala 02 está em reforma até dezembro. Escolher outra sala."]
+      [
+        "Coordenação",
+        "Criou a turma",
+        ""
+      ],
+      [
+        "Coordenação",
+        "Enviou para aprovação",
+        ""
+      ],
+      [
+        "Direção",
+        "Devolveu",
+        "A sala do bloco A está em reforma até dezembro. Escolher outra sala."
+      ]
     ]
   }
 ]

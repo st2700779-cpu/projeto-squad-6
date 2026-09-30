@@ -1,6 +1,6 @@
 // Textos fixos do assistente, escritos pela equipe (não gerados pela IA).
 export const MSG = {
-  saudacao: 'Olá! Posso ajudar com matrícula, documentos, prazos e notas. Escreva ou toque no microfone para falar.',
+  saudacao: 'Posso ajudar com matrícula, documentos, prazos e notas. Escreva a dúvida ou use o microfone.',
   avisoDados: 'Não escreva CPF, RG ou endereço aqui. Não é preciso.',
   carregando: 'Procurando a resposta…',
   esperaMaxima: 'Se não houver resposta em 30 segundos, a consulta é interrompida.',
@@ -27,7 +27,7 @@ export const MSG = {
 // Perguntas sugeridas por perfil.
 export const SUGESTOES = {
   familia: ['Quando é a rematrícula?', 'Quais documentos levar?', 'Como pedir transferência?'],
-  professor: ['Qual a frequência mínima?', 'Quando são as provas da 3ª unidade?', 'Quando termina o ano letivo?'],
+  professor: ['Qual a frequência mínima?', 'Quando são as provas do 3º bimestre?', 'Quando termina o ano letivo?'],
   escola: ['Quais documentos a família precisa?', 'Como funciona a transferência?', 'Qual o prazo para levar os documentos?'],
   rede: ['Quando é a matrícula nova?', 'O que é a matriz curricular?', 'Quando termina o ano letivo?']
 };
@@ -35,12 +35,12 @@ export const SUGESTOES = {
 // Ações que o assistente pode sugerir e a tela de destino de cada uma.
 export const ACOES = {
   matricula: ['familia/matricula.html', 'Fazer matrícula'],
-  documentos: ['familia/documentos.html', 'Ver lista completa'],
-  notas: ['familia/notas.html', 'Ver notas e faltas'],
-  calendario: ['familia/calendario.html', 'Ver calendário'],
-  avisos: ['familia/calendario.html#avisos', 'Ver avisos'],
+  documentos: ['aluno/documentos.html', 'Ver lista completa'],
+  notas: ['aluno/notas.html', 'Ver notas e faltas'],
+  calendario: ['aluno/calendario.html', 'Ver calendário'],
+  avisos: ['aluno/calendario.html#avisos', 'Ver avisos'],
   // Resposta fora da base (W10): encaminha à secretaria.
-  contato: ['familia/documentos.html#contato', 'Contato da escola']
+  contato: ['aluno/documentos.html#contato', 'Contato da escola']
 };
 
 // Perguntas de continuação mostradas depois de uma resposta (W9), pela ação sugerida.
@@ -49,5 +49,5 @@ export const SEGUIMENTOS = {
   matricula: ['Quais documentos levar?', 'Como pedir transferência?'],
   notas: ['Qual a frequência mínima?', 'Perdi a prova. E agora?'],
   calendario: ['Quais os próximos feriados?', 'Quando termina o ano letivo?'],
-  avisos: ['Quando são as provas da 3ª unidade?', 'Quando é a rematrícula?']
+  avisos: ['Quando são as provas do 3º bimestre?', 'Quando é a rematrícula?']
 };

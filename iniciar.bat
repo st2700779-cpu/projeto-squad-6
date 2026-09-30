@@ -40,6 +40,6 @@ echo.
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\servidor.ps1" -Porta 5500 %MODO%
 if errorlevel 1 (
   echo.
-  echo  O servidor parou com erro. Veja a mensagem acima.
-  pause
+  echo  O servidor com API nao abriu. Tentando com Python: sem API, os dados ficam no navegador.
+  call "%~dp0iniciar-python.bat"
 )
