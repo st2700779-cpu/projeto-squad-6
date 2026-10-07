@@ -213,6 +213,17 @@ node tools/testar-assistente.mjs https://SEU-PROXY.workers.dev/api/assistente ht
 
 O script faz as 30 perguntas de `prompts/testes/perguntas-teste.json`, mostra acertos e tempo mediano e salva o resultado em `prompts/testes/`. Registre o resultado e cada ajuste no `prompts/CHANGELOG.md`. As datas e prazos das respostas precisam de revisão manual.
 
+## Testes das regras e do contraste
+
+Sem instalar nada (Node 22 ou mais novo):
+
+```bash
+node tools/testar-painel.mjs        # semáforo, margem de faltas, calculadora, agenda, horários, prioridades e PROFIN
+node tools/verificar-contraste.mjs  # contraste dos tokens nos quatro temas, inclusive as cores do painel.css
+```
+
+As telas foram conferidas em Chromium (Playwright) em 360, 768 e 1440 px; esses roteiros de navegador não fazem parte do repositório.
+
 ## Regras de negócio implementadas
 
 - Escola sem ato autorizativo vigente não aparece como opção na matrícula e não pode abrir turma na etapa.

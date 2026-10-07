@@ -30,7 +30,7 @@
 @media (max-width: 559px) { .usuario { display: none; } .marca-texto strong { font-size: var(--texto-sm); } }
 @media (max-width: 479px) { .topo-interno { padding-inline: var(--sp-2); gap: var(--sp-1); } .ferramenta { padding-inline: var(--sp-2); } }
 .topo-ano { display: none; font-size: var(--texto-sm); color: var(--texto-suave); white-space: nowrap; padding-right: var(--sp-3); }
-@media (min-width: 1100px) { .topo-ano { display: inline; } }
+@media (min-width: 1400px) { .topo-ano { display: inline; } }
 .rodape-sistema { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-1) var(--sp-6); max-width: 1440px; margin: 0 auto; padding: var(--sp-4); border-top: 1px solid var(--borda); font-size: var(--texto-xs); color: var(--texto-suave); }
 
 /* Estrutura */

@@ -8,7 +8,7 @@ import { icone, esc, etiqueta, plural, numeroBR, vazio } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { carregar, matriculas, estudantes } from '../dados.js';
 import { painelDoEstudante, tentativasDoQuiz } from '../painel-dados.js';
-import { nomeCurto, proximaSerie, serieCompleta, PRESENCA_MINIMA, mediaGeral, selosDoEstudante, FAIXAS, faixaDaSerie, semaforoNota, notaNecessaria, TIPOS_DA_AGENDA, MEDIA_APROVACAO, NOME_DO_DIA, diaDaSemana } from '../regras.js';
+import { SERIES, nomeCurto, proximaSerie, serieCompleta, PRESENCA_MINIMA, mediaGeral, selosDoEstudante, FAIXAS, faixaDaSerie, semaforoNota, notaNecessaria, TIPOS_DA_AGENDA, MEDIA_APROVACAO, NOME_DO_DIA, diaDaSemana } from '../regras.js';
 import { semaforo, barraDeNivel, mascote, diaMes } from '../componentes/indicadores.js';
 
 const main = await iniciar({ perfil: 'aluno', pagina: 'aluno/index.html', assistente: true });
@@ -92,7 +92,7 @@ async function mostrar() {
       <h1>${document.body.dataset.faixa === 'iniciais' ? `Oi, ${esc(primeiroNome)}!` : esc(est.nome)}</h1>
       <p class="pagina-descricao so-detalhe">${esc(est.turma)} · ${esc(escola.nome)} · ano letivo ${lv.ano}</p>
       ${iniciais}${finais}${medio}
-      ${seguinte ? `<div class="so-detalhe esp-t-5">${rematricula
+      ${seguinte && SERIES.includes(seguinte) ? `<div class="so-detalhe esp-t-5">${rematricula
         ? `<p>Rematrícula para 2027: ${etiqueta(rematricula.situacao, cor(rematricula.situacao))} <span class="texto-suave">protocolo ${esc(rematricula.protocolo)}</span></p>`
         : `<div class="alerta-info">${icone('info', 20)}<span>Rematrícula 2027 aberta de 3 a 28 de novembro: ${esc(serieCompleta(seguinte))} em ${esc(nomeCurto(escola.nome))}. Quem faz é o responsável: avise em casa.</span></div>`}</div>` : ''}
       <div class="escolha-visual" id="visual-faixa"><label for="faixa">Ver visual de</label>

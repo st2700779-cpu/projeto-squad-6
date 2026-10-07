@@ -41,7 +41,7 @@ async function dadosDoAluno() {
 
 function texto(a) {
   const quem = `<strong>${esc(a.nome.toUpperCase())}</strong>${a.nascimento ? `, nascido(a) em ${dataBR(a.nascimento)},` : ''}`;
-  const onde = `na <strong>${esc(serieCompleta(a.serie))}</strong>${a.turma ? `, turma ${esc(a.turma.replace(/^.* /, ''))}` : ''}${a.turno ? `, turno ${esc(a.turno.toLowerCase())}` : ''}, do(a) <strong>${esc(a.escola.nome)}</strong>`;
+  const onde = `${a.serie.includes('série') ? 'na' : 'no'} <strong>${esc(serieCompleta(a.serie))}</strong>${a.turma ? `, turma ${esc(a.turma.replace(/^.* /, ''))}` : ''}${a.turno ? `, turno ${esc(a.turno.toLowerCase())}` : ''}, do(a) <strong>${esc(a.escola.nome)}</strong>`;
   if (tipo === 'frequencia') {
     return `<p>Declaramos, para os devidos fins, que ${quem} está regularmente matriculado(a) ${onde}, no ano letivo de ${ANO}, e apresenta frequência de <strong>${a.presenca.toFixed(0)}%</strong> das aulas dadas até ${hojeBR()}.</p>
       <p>A frequência mínima exigida para aprovação é de ${PRESENCA_MINIMA}% do total de horas letivas.</p>`;

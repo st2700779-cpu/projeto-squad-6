@@ -4,12 +4,13 @@ import { iniciar, link, falhaDados, controleModoSimples } from '../app.js';
 import { sessao } from '../auth.js';
 import { esc, etiqueta, icone, plural, dataBR } from '../ui.js';
 import { carregar, estudantes, escolherEstudante, matriculas, dataDeReferencia } from '../dados.js';
-import { serieCompleta, proximaSerie, semaforoPrazo, diasEntre, nomeCurto } from '../regras.js';
+import { serieCompleta, proximaSerie, semaforoPrazo, diasEntre, nomeCurto, SERIES } from '../regras.js';
 import { semaforo, seletorDeEstudante } from '../componentes/indicadores.js';
 import { blocoDePedidos, ligarPedidos } from '../componentes/pedidos.js';
 
 const main = await iniciar({ perfil: 'responsavel', pagina: 'responsavel/matricula.html', assistente: true, titulo: 'Matrícula e documentos' });
 let atual;
+const art = (serie, fem, masc) => (serie.includes('série') ? fem : masc); // "na 1ª série", "no 7º ano"
 const cor = (s) => (s === 'Confirmada' ? 'ok' : s === 'Recusada' ? 'erro' : 'atencao');
 
 async function mostrar() {
@@ -31,11 +32,13 @@ async function mostrar() {
       <div class="esp-b-3">${controleModoSimples()}</div>
       <h2 class="esp-t-0">Matrícula de 2026</h2>
       <p class="esp-b-1">${etiqueta('Matrícula ativa', 'ok')}</p>
-      <p class="esp-t-1">${esc(est.nome)} está na <strong>${esc(serieCompleta(est.serie))}</strong>, turma ${esc(est.turma.replace(/^.* /, ''))}, ${esc(est.turno.toLowerCase())}, em ${esc(nomeCurto(escola.nome))}.</p>
+      <p class="esp-t-1">${esc(est.nome)} está ${art(est.serie, 'na', 'no')} <strong>${esc(serieCompleta(est.serie))}</strong>, turma ${esc(est.turma.replace(/^.* /, ''))}, ${esc(est.turno.toLowerCase())}, em ${esc(nomeCurto(escola.nome))}.</p>
       <p class="so-completo texto-suave">Código do aluno <strong>${esc(est.codigoAluno)}</strong> · código da matrícula <strong>${esc(est.matricula)}</strong></p>
-      ${seguinte ? `<h2>Rematrícula para 2027</h2>${rematricula
+      ${seguinte ? `<h2>Rematrícula para 2027</h2>${!SERIES.includes(seguinte)
+        ? `<p>${esc(nome)} segue para ${art(seguinte, 'a', 'o')} <strong>${esc(serieCompleta(seguinte))}</strong>. A rematrícula dos anos iniciais é feita na secretaria da escola, de 3 a 28 de novembro.</p>`
+        : rematricula
         ? `<p>${etiqueta(rematricula.situacao, cor(rematricula.situacao))} <span class="texto-suave">protocolo ${esc(rematricula.protocolo)}</span></p>`
-        : `<p>A rematrícula vai de 3 a 28 de novembro. ${esc(nome)} segue para o <strong>${esc(serieCompleta(seguinte))}</strong>.</p><p>${semaforo(semaforoPrazo(diasRemat))} <span class="texto-suave">prazo final: 28/11</span></p><p><a class="botao" href="${link('familia/matricula.html')}?rematricula=${est.id}">Fazer a rematrícula de ${esc(nome)}</a></p>`}` : ''}
+        : `<p>A rematrícula vai de 3 a 28 de novembro. ${esc(nome)} segue para ${art(seguinte, 'a', 'o')} <strong>${esc(serieCompleta(seguinte))}</strong>.</p><p>${semaforo(semaforoPrazo(diasRemat))} <span class="texto-suave">prazo final: 28/11</span></p><p><a class="botao" href="${link('familia/matricula.html')}?rematricula=${est.id}">Fazer a rematrícula de ${esc(nome)}</a></p>`}` : ''}
       <h2>Documentos</h2>
       ${docs.length ? `<p class="esp-t-0">${pendentes.length ? `<strong>${pendentes.length} ${plural(pendentes.length, 'documento pendente', 'documentos pendentes')}.</strong> Leve na secretaria.` : 'Nenhum documento pendente.'}</p>
       <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Documentos da matrícula de ${esc(nome)}</caption>
