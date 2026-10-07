@@ -220,6 +220,18 @@ export function baixarCSV(nomeArquivo, cabecalho, linhas) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/** Baixa um texto simples (.txt, UTF-8). */
+export function baixarTexto(nomeArquivo, texto) {
+  const url = URL.createObjectURL(new Blob(['\ufeff' + texto], { type: 'text/plain;charset=utf-8' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nomeArquivo;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 // Busca sem acento e sem diferença de maiúsculas.
 /** Texto em minúsculas e sem acentos, para buscas. */
 export const normalizar = (s) => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');

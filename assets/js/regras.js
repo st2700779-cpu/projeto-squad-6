@@ -6,3 +6,4 @@ export * from './dominio/equivalencias.js';
 export * from './dominio/painel.js';
 export * from './dominio/horario.js';
 export * from './dominio/profin.js';
+export * from './dominio/codigos.js';

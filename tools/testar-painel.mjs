@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { semaforoNota, semaforoFrequencia, semaforoPrazo, rotuloDoPrazo, diasEntre, limiteDeFaltas, margemDeFaltas, fraseDaMargem, simularFaltas, notaNecessaria, montarAgenda, proximaProva, faixaDaSerie, selosDoEstudante, prioridades, resumoDoDiario, desempenhoDaTurma } from '../assets/js/dominio/painel.js';
 import { horaDaAula, diaDaSemana, aulasDoDia, aulasDoProfessor, conflitosDeHorario, horarioDaTurma, proximoDiaDeAula } from '../assets/js/dominio/horario.js';
-import { situacaoDaPrestacao, adimplenciaDaEscola, saldo, percentualExecutado } from '../assets/js/dominio/profin.js';
+import { situacaoDaPrestacao, adimplenciaDaEscola, saldo, percentualExecutado, rascunhoDoRelatorio } from '../assets/js/dominio/profin.js';
 import { proximaSerie, etapaDaSerie } from '../assets/js/dominio/matricula.js';
 
 const dado = (n) => JSON.parse(readFileSync(new URL(`../data/${n}.json`, import.meta.url), 'utf8'));
@@ -132,5 +132,14 @@ t('prioridades do responsável: do mais grave ao menos grave, com documento e ev
   const grave = prioridades({ nome: 'Beto', presenca: 70, margem: { restantes: -3 }, linhas: [{ materia: 'X', media: 3 }], hoje: lv.dataReferencia });
   assert.deepEqual(grave.map((i) => i.nivel.chave), ['vermelho', 'vermelho']);
   assert.deepEqual(prioridades({ nome: 'Ok', presenca: 95, margem: { restantes: 10 }, linhas: [{ materia: 'X', media: 8 }], hoje: lv.dataReferencia }), []);
+});
+t('rascunho do relatório PROFIN: números, pendências e anotações de contexto', () => {
+  const p = dado('profin'); const escolas = dado('escolas'); const notas = dado('profin-notas');
+  const texto = rascunhoDoRelatorio({ escolas, repasses: p.repasses, notas, hoje: '2026-10-07' });
+  assert.match(texto, /RELATÓRIO CONSOLIDADO/); assert.match(texto, /Escolas incluídas: 5/);
+  assert.match(texto, /Prestações de contas atrasadas: 2/); assert.match(texto, /ATRASADA: Colégio Estadual Professor Osvaldo[^\n]*Emenda Parlamentar/);
+  assert.match(texto, /Contexto \(Equipe PROFIN, 05\/10\/2026\): A direção avisou/); assert.match(texto, /\[Escreva aqui as conclusões/);
+  const soE1 = rascunhoDoRelatorio({ escolas: escolas.filter((e) => e.id === 'e1'), repasses: p.repasses.filter((r) => r.escolaId === 'e1'), hoje: '2026-10-07', categorias: ['Custeio'] });
+  assert.match(soE1, /Escolas incluídas: 1/); assert.doesNotMatch(soE1, /Merenda|Capital/); assert.match(soE1, /Total recebido: R\$\s48\.600,00/);
 });
 console.log(`\n${n} grupos de testes passaram.`);

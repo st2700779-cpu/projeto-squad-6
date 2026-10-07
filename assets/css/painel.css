@@ -189,7 +189,7 @@ body[data-visao="responsavel"] .seletor-estudante button { min-height: 64px; }
 .barra-turma .info-turma { color: var(--texto-suave); font-size: var(--texto-sm); flex: 2 1 220px; }
 .estado-conexao ~ main .barra-turma { top: calc(var(--altura-topo) + 40px); }
 .chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: var(--sp-1) 0 0; }
-.chip { min-height: 36px; padding: var(--sp-1) var(--sp-3); border: 1.5px solid var(--borda-forte); background: var(--superficie); color: var(--texto); border-radius: var(--raio); font: inherit; font-size: var(--texto-sm); font-weight: var(--peso-medio); cursor: pointer; }
+.chip { min-height: var(--toque); padding: var(--sp-1) var(--sp-3); border: 1.5px solid var(--borda-forte); background: var(--superficie); color: var(--texto); border-radius: var(--raio); font: inherit; font-size: var(--texto-sm); font-weight: var(--peso-medio); cursor: pointer; }
 .chip:hover { background: var(--cor-primaria-suave); border-color: var(--cor-primaria); }
 .chip[aria-pressed="true"] { border-color: var(--cor-primaria); background: var(--cor-primaria-suave); color: var(--cor-primaria); font-weight: var(--peso-forte); }
 .obs-celula { min-width: 14rem; }
@@ -249,3 +249,5 @@ body.projetor .reuniao .numero strong { font-size: var(--texto-4xl); }
 .codigo-par small { display: block; font-size: var(--texto-xs); color: var(--texto-suave); font-family: var(--fonte); font-weight: var(--peso-normal); }
 .ficha-resultado { border: 1px solid var(--borda); border-radius: var(--raio-lg); padding: var(--sp-4); margin: 0 0 var(--sp-3); background: var(--superficie); }
 .ficha-resultado h3 { margin: 0 0 var(--sp-2); }
+.so-impressao { display: none; }
+@media print { .so-impressao { display: block; white-space: pre-wrap; font-family: var(--fonte); font-size: 11pt; line-height: 1.5; } .rascunho { display: none; } }

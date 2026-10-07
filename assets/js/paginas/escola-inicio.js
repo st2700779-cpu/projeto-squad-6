@@ -1,14 +1,15 @@
 // Início da escola: fila de pendências da secretaria, autorizações e histórico das últimas ações.
 import { iniciar, link, falhaDados } from '../app.js';
 import { esc, dataBR, etiqueta, vazio, dataHoraBR, plural } from '../ui.js';
-import { carregar, matriculas, turmasEscola, conjunto } from '../dados.js';
-import { situacaoAto } from '../regras.js';
+import { carregar, matriculas, turmasEscola, conjunto, dataDeReferencia } from '../dados.js';
+import { situacaoAto, semaforoPrazo, diasEntre } from '../regras.js';
+import { semaforo } from '../componentes/indicadores.js';
 
 const ESCOLA = 'e1';
 const main = await iniciar({ perfil: 'escola', pagina: 'escola/index.html', assistente: true });
 async function mostrar() {
   try {
-    const [escolas, atos, pedidos, turmas, enturmacao, historico] = await Promise.all([carregar('escolas'), carregar('atos'), matriculas(), turmasEscola(), conjunto('enturmacao'), conjunto('historico')]);
+    const [escolas, atos, pedidos, turmas, enturmacao, historico, estudantes, solicitacoes, hoje] = await Promise.all([carregar('escolas'), carregar('atos'), matriculas(), turmasEscola(), conjunto('enturmacao'), conjunto('historico'), carregar('estudantes'), conjunto('solicitacoes'), dataDeReferencia()]);
     const escola = escolas.find((e) => e.id === ESCOLA);
     const daEscola = pedidos.filter((p) => p.escolaId === ESCOLA);
     const aguardando = daEscola.filter((p) => p.situacao === 'Aguardando confirmação').length;
@@ -16,18 +17,26 @@ async function mostrar() {
     const pendentes = turmas.filter((t) => t.situacao === 'Pendente de aprovação').length;
     const meusAtos = atos.filter((a) => a.escolaId === ESCOLA);
     const vencidos = meusAtos.filter((a) => !situacaoAto(a).vigente).length;
+    // Prazos em cor (cor, símbolo e palavra): a secretaria tem 10 dias para responder um pedido de matrícula; documentos e solicitações trazem o próprio prazo.
+    const iso = (br) => br.split('/').reverse().join('-');
+    const somar = (d, n) => { const x = new Date(`${d}T12:00:00`); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
+    const prazoMin = (datas) => (datas.length ? semaforo(semaforoPrazo(Math.min(...datas.map((d) => diasEntre(hoje, d))))) : '<span class="texto-suave">—</span>');
+    const docsPendentes = estudantes.filter((e) => e.escolaId === ESCOLA).flatMap((e) => (e.documentos || []).filter((d) => d.situacao === 'pendente' && d.prazo));
+    const abertas = solicitacoes.filter((s) => s.escolaId === ESCOLA && !['Pronta', 'Entregue'].includes(s.situacao));
     const fila = [
-      [aguardando, plural(aguardando, 'matrícula para confirmar', 'matrículas para confirmar'), 'escola/matriculas.html', 'Abrir pedidos de matrícula'],
-      [semTurma, plural(semTurma, 'estudante com matrícula confirmada sem turma', 'estudantes com matrícula confirmada sem turma'), 'escola/enturmacao.html', 'Enturmar estudantes'],
-      [pendentes, plural(pendentes, 'turma aguardando aprovação da direção', 'turmas aguardando aprovação da direção'), 'escola/turmas.html', 'Abrir turmas']
+      [aguardando, plural(aguardando, 'matrícula para confirmar', 'matrículas para confirmar'), 'escola/matriculas.html', 'Abrir pedidos de matrícula', prazoMin(daEscola.filter((p) => p.situacao === 'Aguardando confirmação').map((p) => somar(iso(p.data), 10)))],
+      [abertas.length, plural(abertas.length, 'solicitação aberta (declaração, histórico ou atestado)', 'solicitações abertas (declaração, histórico ou atestado)'), 'escola/solicitacoes.html', 'Abrir solicitações', prazoMin(abertas.map((s) => s.prazo))],
+      [docsPendentes.length, plural(docsPendentes.length, 'documento de estudante pendente', 'documentos de estudantes pendentes'), 'escola/estudantes.html', 'Abrir estudantes', prazoMin(docsPendentes.map((d) => d.prazo))],
+      [semTurma, plural(semTurma, 'estudante com matrícula confirmada sem turma', 'estudantes com matrícula confirmada sem turma'), 'escola/enturmacao.html', 'Enturmar estudantes', '<span class="texto-suave">—</span>'],
+      [pendentes, plural(pendentes, 'turma aguardando aprovação da direção', 'turmas aguardando aprovação da direção'), 'escola/turmas.html', 'Abrir turmas', '<span class="texto-suave">—</span>']
     ];
     main.innerHTML = `
       <h1>${esc(escola.nome)}</h1>
       <p class="pagina-descricao">${esc(escola.municipio)} · ${esc(escola.dre)} · ano letivo 2026</p>
       <h2 class="esp-t-0">Pendências da secretaria</h2>
       <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Pendências da secretaria escolar</caption>
-        <thead><tr><th scope="col" class="num">Quantidade</th><th scope="col">Pendência</th><th scope="col"><span class="sr-only">Ação</span></th></tr></thead>
-        <tbody>${fila.map(([n, texto, h, acao]) => `<tr><td class="num${n ? ' negrito' : ' texto-suave'}" data-rotulo="Quantidade">${n}</td><td class="titulo-linha">${esc(texto)}</td><td class="acoes">${n ? `<a class="botao botao-secundario botao-mini" href="${link(h)}">${acao}</a>` : '<span class="texto-suave">Nada a fazer</span>'}</td></tr>`).join('')}</tbody>
+        <thead><tr><th scope="col" class="num">Quantidade</th><th scope="col">Pendência</th><th scope="col">Prazo</th><th scope="col"><span class="sr-only">Ação</span></th></tr></thead>
+        <tbody>${fila.map(([n, texto, h, acao, prazo]) => `<tr><td class="num${n ? ' negrito' : ' texto-suave'}" data-rotulo="Quantidade">${n}</td><td class="titulo-linha">${esc(texto)}</td><td data-rotulo="Prazo">${n ? prazo : '<span class="texto-suave">—</span>'}</td><td class="acoes">${n ? `<a class="botao botao-secundario botao-mini" href="${link(h)}">${acao}</a>` : '<span class="texto-suave">Nada a fazer</span>'}</td></tr>`).join('')}</tbody>
       </table></div>
       <h2>Autorizações da escola${vencidos ? ` ${etiqueta(`${vencidos} ${plural(vencidos, 'vencida', 'vencidas')}`, 'erro')}` : ''}</h2>
       <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Atos autorizativos da escola</caption>

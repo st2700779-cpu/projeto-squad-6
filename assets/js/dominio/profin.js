@@ -36,3 +36,42 @@ export const saldo = (r) => Math.round((r.recebido - r.executado) * 100) / 100;
 /** Percentual executado do que foi recebido (0 quando não houve repasse). */
 export const percentualExecutado = (r) => (r.recebido > 0 ? Math.round((r.executado / r.recebido) * 1000) / 10 : 0);
 export const reais = (v) => Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+/**
+ * Rascunho de relatório consolidado: texto montado por modelo fixo a partir dos números do painel e das anotações de contexto.
+ * Não usa inteligência artificial: quem revisa e conclui é a pessoa.
+ * @param {{escolas: Array<{id: string, nome: string, municipio: string}>, repasses: Array<object>, notas?: Record<string, Array<{quando: string, por: string, texto: string}>>, hoje: string, categorias?: string[]}} d
+ */
+export function rascunhoDoRelatorio({ escolas, repasses, notas = {}, hoje, categorias }) {
+  const br = (iso) => iso.split('-').reverse().join('/');
+  const filtro = (r) => !categorias || categorias.includes(r.categoria);
+  const doEscopo = repasses.filter(filtro);
+  const ids = escolas.map((e) => e.id).filter((id) => doEscopo.some((r) => r.escolaId === id));
+  const recebido = doEscopo.reduce((n, r) => n + r.recebido, 0);
+  const executado = doEscopo.reduce((n, r) => n + r.executado, 0);
+  const situacoes = doEscopo.map((r) => ({ r, s: situacaoDaPrestacao(r, hoje) }));
+  const atrasadas = situacoes.filter((x) => x.s.chave === 'vermelho');
+  const aVencer = situacoes.filter((x) => x.s.chave === 'amarelo');
+  const nomeDe = (id) => escolas.find((e) => e.id === id)?.nome || id;
+  const L = [];
+  L.push('RELATÓRIO CONSOLIDADO DE PRESTAÇÃO DE CONTAS — PROFIN', `Data de referência: ${br(hoje)}`, 'Rascunho montado a partir do painel do PROFIN. Revise os números e escreva as conclusões antes de usar.', '');
+  L.push('1. RESUMO', `- Escolas incluídas: ${ids.length}`, `- Total recebido: ${reais(recebido)}`, `- Total executado: ${reais(executado)} (${recebido ? (Math.round((executado / recebido) * 1000) / 10).toLocaleString('pt-BR') : '0'}% do recebido)`, `- Prestações de contas atrasadas: ${atrasadas.length}`, `- Prestações que vencem em até ${DIAS_DE_ALERTA} dias: ${aVencer.length}`, '');
+  L.push('2. SITUAÇÃO POR ESCOLA');
+  ids.forEach((id, i) => {
+    const doIdRepasses = doEscopo.filter((r) => r.escolaId === id);
+    const adim = adimplenciaDaEscola(doIdRepasses, hoje);
+    L.push('', `2.${i + 1} ${nomeDe(id)} (${escolas.find((e) => e.id === id)?.municipio})`, `Situação geral: ${adim.texto}.`);
+    doIdRepasses.forEach((r) => {
+      const s = situacaoDaPrestacao(r, hoje);
+      L.push(r.recebido === 0 ? `- ${r.categoria}: sem repasse neste ano.` : `- ${r.categoria}: recebido ${reais(r.recebido)}; executado ${reais(r.executado)} (${percentualExecutado(r).toLocaleString('pt-BR')}%); saldo ${reais(saldo(r))}. Prestação: ${s.texto.toLowerCase()} (prazo ${br(r.prestacao.prazo)}).`);
+      (notas[`${id}|${r.categoria}`] || []).forEach((n) => L.push(`    Contexto (${n.por}, ${br(n.quando)}): ${n.texto}`));
+    });
+    (notas[`${id}|Geral`] || []).forEach((n) => L.push(`  Contexto geral (${n.por}, ${br(n.quando)}): ${n.texto}`));
+  });
+  L.push('', '3. PENDÊNCIAS');
+  if (!atrasadas.length && !aVencer.length) L.push('Nenhuma prestação atrasada ou perto do vencimento.');
+  atrasadas.forEach(({ r, s }) => L.push(`- ATRASADA: ${nomeDe(r.escolaId)}, ${r.categoria} (${s.texto.toLowerCase()}, prazo ${br(r.prestacao.prazo)}). O próximo repasse pode ser suspenso.`));
+  aVencer.forEach(({ r, s }) => L.push(`- A vencer: ${nomeDe(r.escolaId)}, ${r.categoria} (${s.texto.toLowerCase()}, prazo ${br(r.prestacao.prazo)}).`));
+  L.push('', '4. CONCLUSÕES E ENCAMINHAMENTOS', '[Escreva aqui as conclusões e os encaminhamentos.]');
+  return L.join('\n');
+}

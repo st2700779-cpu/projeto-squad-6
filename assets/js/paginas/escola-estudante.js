@@ -2,7 +2,7 @@
 import { iniciar, falhaDados, link } from '../app.js';
 import { esc, dataBR, vazio } from '../ui.js';
 import { carregar } from '../dados.js';
-import { serieCompleta } from '../regras.js';
+import { serieCompleta, codigosDoEstudante } from '../regras.js';
 import { linhaDoTempo } from '../componentes/linha-do-tempo.js';
 import { trajetoDoEstudante } from '../dominio/trajetoria.js';
 
@@ -16,7 +16,8 @@ async function mostrar() {
     const escola = escolas.find((x) => x.id === e.escolaId);
     const itens = trajetoDoEstudante(tr, e.id, escolas);
     main.innerHTML = `<h1>${esc(e.nome)}</h1>
-      <p class="pagina-descricao">Matrícula ${esc(e.matricula)} · ${esc(serieCompleta(e.serie))}, ${esc(e.turma)}, ${esc(e.turno.toLowerCase())} · ${esc(escola.nome)}</p>
+      <p class="pagina-descricao">${esc(serieCompleta(e.serie))}, ${esc(e.turma)}, ${esc(e.turno.toLowerCase())} · ${esc(escola.nome)}</p>
+      <dl class="codigos-aluno"><div class="codigo-par"><dt>Código do aluno</dt><dd>${esc(codigosDoEstudante(e).aluno)}</dd><small>Identifica a pessoa na rede. Nunca muda.</small></div><div class="codigo-par"><dt>Código da matrícula</dt><dd>${esc(codigosDoEstudante(e).matricula)}</dd><small>Identifica a matrícula deste ano, nesta escola.</small></div></dl>
       <dl class="dados-verificacao">
         <dt>Nascimento</dt><dd>${dataBR(e.nascimento)}</dd>
         <dt>Responsável</dt><dd>${esc(e.responsavel)}</dd>
