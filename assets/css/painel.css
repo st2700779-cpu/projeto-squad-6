@@ -69,8 +69,14 @@
   --fx-1: #8db6ff; --fx-1-suave: #16294a; --fx-2: #6fd08a; --fx-2-suave: #12301c; --fx-3: #ffb36b; --fx-3-suave: #3a2410;
   --fx-4: #c9a5ff; --fx-4-suave: #2a1a45; --fx-5: #ff9cc4; --fx-5-suave: #43152b;
 }
-:root[data-contraste="alto"] { --fx-1: #0a3d91; --fx-2: #0b5a28; --fx-3: #5c3b00; --fx-4: #4a1a8a; --fx-5: #8a0f3f; --fx-1-suave: #fff; --fx-2-suave: #fff; --fx-3-suave: #fff; --fx-4-suave: #fff; --fx-5-suave: #fff; }
-:root[data-tema="escuro"][data-contraste="alto"] { --fx-1: #9cc2ff; --fx-2: #6dffa4; --fx-3: #ffd08a; --fx-4: #d9bfff; --fx-5: #ffb3d2; --fx-1-suave: #000; --fx-2-suave: #000; --fx-3-suave: #000; --fx-4-suave: #000; --fx-5-suave: #000; }
+:root[data-contraste="alto"] {
+  --fx-1: #0a3d91; --fx-2: #0b5a28; --fx-3: #5c3b00; --fx-4: #4a1a8a; --fx-5: #8a0f3f;
+  --fx-1-suave: #ffffff; --fx-2-suave: #ffffff; --fx-3-suave: #ffffff; --fx-4-suave: #ffffff; --fx-5-suave: #ffffff;
+}
+:root[data-tema="escuro"][data-contraste="alto"] {
+  --fx-1: #9cc2ff; --fx-2: #6dffa4; --fx-3: #ffd08a; --fx-4: #d9bfff; --fx-5: #ffb3d2;
+  --fx-1-suave: #000000; --fx-2-suave: #000000; --fx-3-suave: #000000; --fx-4-suave: #000000; --fx-5-suave: #000000;
+}
 .fx-1 { --fx: var(--fx-1); --fx-suave: var(--fx-1-suave); } .fx-2 { --fx: var(--fx-2); --fx-suave: var(--fx-2-suave); }
 .fx-3 { --fx: var(--fx-3); --fx-suave: var(--fx-3-suave); } .fx-4 { --fx: var(--fx-4); --fx-suave: var(--fx-4-suave); }
 .fx-5 { --fx: var(--fx-5); --fx-suave: var(--fx-5-suave); }
@@ -193,6 +199,7 @@ body[data-visao="responsavel"] .seletor-estudante button { min-height: 64px; }
 .chip:hover { background: var(--cor-primaria-suave); border-color: var(--cor-primaria); }
 .chip[aria-pressed="true"] { border-color: var(--cor-primaria); background: var(--cor-primaria-suave); color: var(--cor-primaria); font-weight: var(--peso-forte); }
 .obs-celula { min-width: 14rem; }
+@media (max-width: 767px) { .tabela-notas td.obs-celula { grid-column: 1 / -1; min-width: 0; } }
 .obs-celula .entrada { max-width: none; }
 .chips-flutuantes { position: fixed; z-index: 45; display: flex; flex-wrap: wrap; gap: var(--sp-2); width: min(34rem, calc(100vw - 16px)); padding: var(--sp-2); background: var(--superficie); border: 1px solid var(--borda-forte); border-radius: var(--raio-lg); box-shadow: var(--sombra-3); }
 .painel-hoje { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 0 0 var(--sp-5); }
@@ -216,7 +223,7 @@ body.projetor .reuniao .numero strong { font-size: var(--texto-4xl); }
 @media print {
   body { background: #fff; color: #000; }
   .com-menu { display: block; } .area { padding: 0; } .conteudo { padding: 0; max-width: none; }
-  .reuniao { max-width: none; } .reuniao h2 { break-after: avoid; } .reuniao table, .reuniao .numeros { break-inside: avoid; }
+  .reuniao { max-width: none; } .reuniao h2 { break-after: avoid; } .reuniao .numeros { break-inside: avoid; } .reuniao tr { break-inside: avoid; } .tabela-rolagem { overflow: visible; max-height: none; }
   .calor, .sinal, .semaforo, .margem, .barras-trilho > span, .barra-nivel > span { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 
@@ -235,13 +242,20 @@ body.projetor .reuniao .numero strong { font-size: var(--texto-4xl); }
 .grade-horario .conflito { color: var(--erro); font-weight: var(--peso-forte); font-size: var(--texto-sm); }
 
 /* 14 · PROFIN */
-.valor-reais { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.valor-reais { font-variant-numeric: tabular-nums; }
+@media (min-width: 768px) { .valor-reais { white-space: nowrap; } }
 .rascunho { width: 100%; min-height: 26rem; font-family: var(--fonte); line-height: 1.6; }
 .nota-contexto { margin: var(--sp-2) 0 0; padding: var(--sp-2) var(--sp-3); border-left: 3px solid var(--borda-forte); background: var(--superficie-2); font-size: var(--texto-sm); border-radius: 0 var(--raio) var(--raio) 0; }
 .nota-contexto small { display: block; color: var(--texto-suave); }
 
-/* 15 · Cabeçalho: ícone e palavra juntos (nunca só ícone) */
-.rotulo-menu { font-size: var(--texto-sm); }
+/* 15 · Cabeçalho: ícone e palavra juntos (nunca só ícone). Em telas estreitas a palavra fica embaixo do ícone. */
+.rotulo-menu, .rotulo-exib, .ferramenta-como-usar .rotulo { font-size: var(--texto-sm); }
+@media (max-width: 899px) {
+  .topo .ferramenta { flex-direction: column; gap: 0; min-height: 48px; padding: 2px var(--sp-2); line-height: 1.15; }
+  .topo .ferramenta svg { width: 20px; height: 20px; }
+  .topo-interno { gap: var(--sp-1); }
+  .rotulo-menu, .rotulo-exib, .ferramenta-como-usar .rotulo { font-size: var(--texto-xs); }
+}
 .codigos-aluno { display: grid; gap: var(--sp-3); grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin: var(--sp-2) 0; }
 .codigo-par { border: 1px solid var(--borda-forte); border-radius: var(--raio); padding: var(--sp-2) var(--sp-3); background: var(--superficie); }
 .codigo-par dt { font-size: var(--texto-xs); font-weight: var(--peso-forte); color: var(--texto-suave); text-transform: none; }
@@ -251,3 +265,6 @@ body.projetor .reuniao .numero strong { font-size: var(--texto-4xl); }
 .ficha-resultado h3 { margin: 0 0 var(--sp-2); }
 .so-impressao { display: none; }
 @media print { .so-impressao { display: block; white-space: pre-wrap; font-family: var(--fonte); font-size: 11pt; line-height: 1.5; } .rascunho { display: none; } }
+/* Telas muito estreitas: o nome do portal sai do cabeçalho para dar lugar às palavras dos botões (o início continua no "Início" do caminho). */
+@media (max-width: 439px) { .topo .marca { display: none; } .topo-direita { margin-left: auto; } }
+.mapa-calor th small, .comparativo th small { display: block; font-weight: var(--peso-normal); color: var(--texto-suave); }

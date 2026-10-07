@@ -44,7 +44,7 @@ async function mostrar() {
     ];
     const cartoes = `<ul class="cartoes-grandes">${atalhos.map(([h, i, t, s], k) => `<li><a class="cartao-grande fx-${(k % 5) + 1}" href="${link(h)}">${icone(i, 52)}<span class="cg-texto"><span class="cg-titulo">${t}</span><small>${esc(s)}</small></span></a></li>`).join('')}</ul>`;
 
-    const linhaProxima = (i) => `<tr><td class="sem-quebra-texto" data-rotulo="Quando">${diaMes(i.data)}<br><small>${NOME_DO_DIA[diaDaSemana(i.data)].slice(0, 3)}${i.hora ? ` · ${i.hora}` : ''}</small></td><td class="titulo-linha">${esc(i.titulo)}<br><small>${esc(i.componente)}</small></td><td data-rotulo="Tipo">${etiqueta(TIPOS_DA_AGENDA[i.tipo], 'info')}</td><td data-rotulo="Prazo">${semaforo(i.semaforo)}</td></tr>`;
+    const linhaProxima = (i) => `<tr><td class="sem-quebra-texto" data-rotulo="Quando"><div>${diaMes(i.data)}<br><small>${NOME_DO_DIA[diaDaSemana(i.data)].slice(0, 3)}${i.hora ? ` · ${i.hora}` : ''}</small></div></td><td class="titulo-linha">${esc(i.titulo)}<br><small>${esc(i.componente)}</small></td><td data-rotulo="Tipo"><div>${etiqueta(TIPOS_DA_AGENDA[i.tipo], 'info')}</div></td><td data-rotulo="Prazo"><div>${semaforo(i.semaforo)}</div></td></tr>`;
     const tabelaProximas = proximas.length ? `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Próximas provas, trabalhos e entregas</caption>
         <thead><tr><th scope="col">Quando</th><th scope="col">O quê</th><th scope="col">Tipo</th><th scope="col">Prazo</th></tr></thead><tbody>${proximas.map(linhaProxima).join('')}</tbody></table></div>
         <p class="contagem"><a href="${link('aluno/rotina.html')}">Ver toda a agenda</a></p>` : vazio('Nada marcado por enquanto', 'Provas, trabalhos e entregas aparecem aqui.');
@@ -81,7 +81,7 @@ async function mostrar() {
           const n = notaNecessaria([l.n1, l.n2, null, null], MEDIA_APROVACAO);
           const preciso = n.estado === 'completo' ? '—' : n.estado === 'ja-alcancada' ? 'já alcançada' : n.estado === 'impossivel' ? `acima de 10${n.precisaRecuperacao !== null ? ` (rec.: ${numeroBR(n.precisaRecuperacao)})` : ''}` : `${numeroBR(n.precisa)} em cada`;
           const nf = (v) => (v === null ? '—' : numeroBR(v));
-          return `<tr><td class="titulo-linha"><strong>${esc(l.materia)}</strong></td><td class="num" data-rotulo="1º bim.">${nf(l.n1)}</td><td class="num" data-rotulo="2º bim.">${nf(l.n2)}</td><td class="num negrito" data-rotulo="Média">${nf(l.media)}</td><td data-rotulo="Nota">${semaforo(semaforoNota(l.media))}</td><td class="num" data-rotulo="Preciso tirar">${preciso}</td></tr>`;
+          return `<tr><td class="titulo-linha"><strong>${esc(l.materia)}</strong></td><td class="num" data-rotulo="1º bim."><div>${nf(l.n1)}</div></td><td class="num" data-rotulo="2º bim."><div>${nf(l.n2)}</div></td><td class="num negrito" data-rotulo="Média"><div>${nf(l.media)}</div></td><td data-rotulo="Nota"><div>${semaforo(semaforoNota(l.media))}</div></td><td class="num" data-rotulo="Preciso tirar"><div>${preciso}</div></td></tr>`;
         }).join('')}</tbody></table></div>
       <p class="contagem">Preciso tirar: nota média necessária nos bimestres que faltam para fechar o ano com média ${MEDIA_APROVACAO}. <a href="${link('aluno/rotina.html')}">Calculadora completa</a></p>
       <h2>Próximas provas e entregas</h2>${tabelaProximas}

@@ -8,11 +8,11 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 
 | Pasta | Conteúdo |
 | --- | --- |
-| `index.html`, `login.html`, `verificar.html`, `aluno/`, `familia/`, `professor/`, `escola/`, `rede/` | Entrada, login, verificação pública de documentos e páginas de cada perfil (`familia/` é a matrícula aberta, sem login) |
+| `index.html`, `login.html`, `verificar.html`, `aluno/`, `responsavel/`, `professor/`, `coordenador/`, `diretor/`, `escola/` (secretaria), `rede/`, `profin/`, `familia/` | Entrada, login, verificação pública de documentos e páginas de cada perfil (`familia/` é a matrícula aberta, sem login) |
 | `manifest.json`, `sw.js`, `assets/img/` | PWA: manifesto, service worker (gerado por `tools/gerar-sw.mjs`) e ícones |
-| `assets/css/` | `tema.css` (tokens do design system), `componentes.css`, `layout.css` (cabeçalho, menu, breadcrumb) e `assistente.css` |
+| `assets/css/` | `tema.css` (tokens do design system), `componentes.css`, `layout.css` (cabeçalho, menu, breadcrumb), `painel.css` (semáforo, anel de frequência, mapa de calor, barras, visual por faixa etária, agenda, quiz, reunião) e `assistente.css` |
 | `assets/js/` | Núcleo (`app`, `estado`, `dados`, `regras`, `acessibilidade`, `ui`) e páginas |
-| `assets/js/dominio/` | Regras de negócio por domínio: `matricula`, `notas`, `turmas`, `equivalencias` (`regras.js` reexporta todas), mais `verificacao`, `impacto-atos`, `habilitacao`, `boletim-semanal`, `trajetoria` e `sincronizacao` |
+| `assets/js/dominio/` | Regras de negócio por domínio: `matricula`, `notas`, `turmas`, `equivalencias` (`regras.js` reexporta todas), mais `painel` (semáforo, margem de faltas, nota necessária, agenda, prioridades), `horario`, `profin`, `codigos`, `verificacao`, `impacto-atos`, `habilitacao`, `boletim-semanal`, `trajetoria` e `sincronizacao` |
 | `assets/js/matricula/`, `assets/js/mapa/`, `assets/js/componentes/` | Formulário de matrícula único (online e balcão) e rascunho por link; mapa (Leaflet, Haversine); linha do tempo |
 | `assets/js/auth.js`, `tour.js`, `qr.js`, `idb.js`, `offline.js` | Login de protótipo, guia de primeiro acesso, QR Code, IndexedDB e estado de conexão |
 | `sistema-academico-seduc-prototipo.html` | Protótipo em arquivo único, abre com duplo clique. Usa os mesmos dados e regras do portal (ver `tools/gerar-prototipo.mjs`) |
@@ -20,7 +20,8 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 | `data/` | Dados simulados em JSON e a base de conhecimento do assistente |
 | `prompts/` | Prompt de sistema versionado, registro de alterações e bateria de testes |
 | `worker/` | Proxy do assistente (Cloudflare Workers), que guarda a chave da IA |
-| `tools/` | Servidor local, bateria de perguntas do assistente, `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único) e `verificar-contraste.mjs` (confere o contraste dos tokens) |
+| `tools/` | Servidor local, bateria de perguntas do assistente, `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único), `verificar-contraste.mjs` (confere o contraste dos tokens, inclusive os do `painel.css`) e `testar-painel.mjs` (testes das regras dos painéis) |
+| `CHECKLIST-PROTOTIPACAO.md` | Conferência item a item do checklist de prototipação por perfil: o que já existia, o que foi acrescentado e o que ficou para a fase 2 |
 | `AUDITORIA.md`, `MELHORIAS.md`, `SUGESTOES.md` | Auditoria inicial, resumo das melhorias e ideias que exigiriam funcionalidade nova |
 | `DIAGNOSTICO-UI.md`, `MELHORIAS-UI.md` | Diagnóstico visual e redesenho de interface, com o **guia do design system** (tokens e componentes) |
 
@@ -80,10 +81,14 @@ O login é **só de protótipo**: as contas ficam em `data/usuarios.json` (senha
 
 | Perfil | Login | Senha |
 | --- | --- | --- |
-| Aluno | `202610317` (Iasmim Cardoso de Jesus) ou `202610842` (Ravi Cardoso de Jesus) | `aluno2026` |
+| Aluno | `202610317` (Iasmim, 1ª série EM), `202610842` (Ravi, 7º ano) ou `202610955` (Heitor, 3º ano) | `aluno2026` |
+| Responsável | `RESP-20417` (Edilene Cardoso de Jesus, mãe dos três) | `resp2026` |
 | Professor | `PF-30412` (Profa. Rosângela Tavares Góis) | `prof2026` |
+| Coordenação pedagógica | `coord.osvaldo` | `coord2026` |
+| Direção | `dir.osvaldo` | `diretor2026` |
 | Secretaria | `secretaria.osvaldo` (C. E. Prof. Osvaldo Tavares Rezende) | `secretaria2026` |
 | Rede (SEDUC e DRE) | `seduc.tecnico` | `rede2026` |
+| PROFIN | `profin.seduc` | `profin2026` |
 | Matrícula (família) | não pede login | |
 
 A tela de login tem um bloco "Acesso de demonstração" com essas contas e um botão que preenche os campos.
@@ -105,6 +110,15 @@ A tela de login tem um bloco "Acesso de demonstração" com essas contas e um bo
 | Painel de impacto de atos | `rede/atos.html` | Faixas de prioridade, turmas e estudantes afetados, filtros por município e escola |
 | Professores habilitados | `rede/professores.html`, `escola/professores.html` | Tabela escola x componente sem professor habilitado (`assets/js/dominio/habilitacao.js`) |
 | Diário offline | `professor/diario.html` | Fila em IndexedDB, faixa online/offline, botão **Ficar offline** e sincronização com conflito pelo registro mais recente |
+| Visual por faixa etária | início do aluno | Anos iniciais (mascote e cartões grandes), anos finais (barra de frequência e selos) e ensino médio (painel denso); vem da série, com o seletor "Ver visual de" para comparar |
+| Frequência proativa | `aluno/frequencia.html` | Anel e barra que mudam de cor, margem de faltas em linguagem neutra e **Simular falta hoje** |
+| Provas e rotina | `aluno/rotina.html` | Agenda por urgência, calculadora "Quanto preciso tirar" e modo **Dia de Prova** |
+| Quiz por unidade | `aluno/quiz.html`, `data/quiz.json` | Uma pergunta por vez, retorno imediato e histórico só no navegador |
+| Responsável | `responsavel/` | Painel "o que precisa da sua atenção", semáforo, modo simplificado, calendário com reunião de pais e matrícula e documentos |
+| Professor: mapa de calor, painel de hoje e observações rápidas | `professor/` | Mapa de calor da turma, trocador de turma fixo, chips de observação (Alt+1 a Alt+6), materiais e comunicados |
+| Direção e coordenação | `diretor/`, `coordenador/` | Visão da escola, mapa de calor, comparativo de turmas, marcador de atenção manual, horários e telas de reunião para projetar ou imprimir |
+| Central de solicitações e busca com dois códigos | `escola/solicitacoes.html`, `escola/estudantes.html` | Fila de pedidos com prazo em cor; busca que mostra o código do aluno e o da matrícula lado a lado |
+| PROFIN | `profin/` | Painel por escola e categoria, anotações de contexto e rascunho de relatório (modelo fixo) |
 
 **Sem IA no que é novo:** todas essas telas usam regras fixas, modelos de texto e árvores de decisão. O assistente com IA opcional (`worker/`) continua como era e segue desligado sem `assistenteUrl` em `config.js`.
 
@@ -117,7 +131,11 @@ A tela de login tem um bloco "Acesso de demonstração" com essas contas e um bo
 5. **Matrícula inclusiva (2 min).** Saia e entre em Matrícula, sem login. Comece o pedido, use Continuar em outro aparelho e abra o link em outra aba: volta ao mesmo passo. Depois abra Ouvir instruções e Escolas com vaga (escolha um bairro).
 6. **Secretaria (1 min).** Entre como Secretaria (`secretaria.osvaldo` / `secretaria2026`), abra Atendimento presencial, faça um pedido e veja a origem "Presencial" na lista; abra a ficha de um estudante.
 7. **Rede (1 min).** Entre como Rede (`seduc.tecnico` / `rede2026`): Atos autorizativos (impacto em turmas e estudantes), Mapa de vagas e Professores habilitados.
-8. **Professor sem internet (1 min).** Entre como Professor (`PF-30412` / `prof2026`), abra o Diário, clique em Ficar offline, lance uma nota e registre a chamada, depois Voltar online: os registros pendentes são sincronizados.
+8. **Visual por idade (2 min).** Entre com `202610955` (3º ano), `202610842` (7º ano) e `202610317` (1ª série) e compare o início de cada um. No de 1ª série, abra Frequência e use **Simular falta hoje**; em Provas e rotina, abra o modo **Dia de Prova**.
+9. **Responsável (1 min).** Entre como Responsável (`RESP-20417` / `resp2026`), troque de filho no alto e ligue o **Modo simplificado**.
+10. **Direção e coordenação (2 min).** Entre como Coordenação (`coord.osvaldo` / `coord2026`), marque a atenção de uma turma e abra Comparar turmas; depois, como Direção (`dir.osvaldo` / `diretor2026`), abra a Tela de reunião.
+11. **PROFIN (1 min).** Entre como PROFIN (`profin.seduc` / `profin2026`), anote o contexto de uma escola e gere o rascunho do relatório.
+12. **Professor sem internet (1 min).** Entre como Professor (`PF-30412` / `prof2026`), abra o Diário, clique em Ficar offline, lance uma nota e registre a chamada, depois Voltar online: os registros pendentes são sincronizados.
 
 Antes de repetir a demonstração, use **Restaurar dados de demonstração** na entrada (apaga também a fila offline).
 
@@ -209,6 +227,10 @@ O script faz as 30 perguntas de `prompts/testes/perguntas-teste.json`, mostra ac
 - Ato autorizativo entra em alerta a 120 dias do vencimento, com botão para iniciar a renovação.
 - Rematrícula mantém a escola e passa para a série seguinte, sem consumir vaga nova.
 - Declarações de matrícula, frequência e transferência numeradas (DEC-ano-número), com marca-d’água de documento simulado.
+- Semáforo (sempre com cor, símbolo e palavra): nota verde com média 6,0 ou mais, amarelo de 4,0 a 5,9, vermelho abaixo de 4,0; frequência verde com 85% ou mais, amarelo de 75% a 84,9%, vermelho abaixo de 75%; prazo vermelho se vencido ou em até 3 dias, amarelo até 14 dias, verde depois (`assets/js/dominio/painel.js`).
+- Margem de faltas: o limite é 25% das aulas dadas até hoje (83 aulas, 20 faltas) e a margem é o que sobra dele. Faltar um dia perde as aulas do dia no horário da turma.
+- Nota necessária: a média do ano é a média dos quatro bimestres; a calculadora mostra a nota por bimestre que falta para a média escolhida.
+- PROFIN: prestação entregue é verde; atrasada é vermelha (pode suspender o repasse); a vencer em até 30 dias é amarela. O pior caso decide a situação da escola.
 - Ações irreversíveis pedem confirmação, e confirmações, recusas, aprovações, enturmações, alocações, chamadas e declarações ficam no histórico de ações (quem e quando).
 
 ## Limitações por funcionalidade
@@ -227,6 +249,7 @@ Tudo é protótipo sem servidor: o "servidor" é o `localStorage` do navegador (
 - **Boletim falado:** usa as chamadas do diário; nada é enviado a ninguém. A "semana" termina na última chamada registrada.
 - **Impacto de atos:** turmas de outras escolas vêm de `data/turmas-rede.json` (fictício); a secretaria só gerencia as da própria escola.
 - **Professores habilitados:** conta só a habilitação e a lotação. Não olha carga horária. A matriz do Ensino Fundamental está em `data/componentes-etapa.json`.
+- **Painéis por perfil:** a data de referência (07/10/2026, em `data/letivo.json`) é o "hoje" da agenda, dos prazos e do horário do dia. O diário só tem Matemática; as outras matérias e as turmas sem diário vêm de `data/desempenho.json`. Os valores do PROFIN são inventados. Materiais do professor guardam só o nome do arquivo. O mapa de calor tem três níveis, de propósito, para cada um ter símbolo e palavra. Streak, arrastar e soltar e widgets reordenáveis ficaram para a fase 2 (ver `CHECKLIST-PROTOTIPACAO.md`).
 - **Diário offline:** a fila fica em IndexedDB e some se a pessoa limpar os dados do navegador. Não usa Background Sync (sincroniza com a página aberta). Conflito: vale o registro mais recente pelo horário do aparelho, que pode estar errado. Duas abas gravam no mesmo `localStorage`, então o último a gravar leva o estado inteiro (a sincronização relê antes de gravar para reduzir o problema).
 
 ## Padrões da equipe

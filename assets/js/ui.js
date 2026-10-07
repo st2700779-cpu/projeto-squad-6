@@ -87,7 +87,7 @@ function regiaoDeAviso() {
     el = document.createElement('div');
     el.id = 'aviso-rapido';
     el.className = 'aviso-rapido';
-    el.innerHTML = `<span class="aviso-icone" aria-hidden="true"></span><span class="aviso-texto" id="aviso-texto" role="status"></span><button type="button" class="aviso-fechar" aria-label="Fechar aviso">${icone('fechar', 18)}</button>`;
+    el.innerHTML = `<span class="aviso-icone" aria-hidden="true"></span><span class="aviso-texto" id="aviso-texto" role="status"></span><button type="button" class="aviso-fechar" aria-label="Fechar aviso">${icone('fechar', 18)}<span>Fechar</span></button>`;
     el.querySelector('.aviso-fechar').addEventListener('click', esconderAviso);
     document.body.appendChild(el);
   }

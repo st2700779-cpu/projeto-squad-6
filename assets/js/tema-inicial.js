@@ -82,7 +82,7 @@
     };
     return '<div class="exibicao">' +
       '<button type="button" class="ferramenta" data-exibicao aria-expanded="false" aria-controls="painel-exibicao" aria-label="Exibição: modo escuro e alto contraste" title="Exibição">' +
-        svg('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 3v18M12 7h5M12 11h7M12 15h7') + '</button>' +
+        svg('M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 3v18M12 7h5M12 11h7M12 15h7') + '<span class="rotulo-exib">Exibição</span></button>' +
       '<div id="painel-exibicao" class="painel-exibicao" role="group" aria-label="Exibição" hidden>' +
         '<strong>Exibição</strong>' +
         chave('data-alternar-tema', escuro, 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z', 'Modo escuro') +

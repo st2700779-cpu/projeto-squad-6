@@ -34,7 +34,7 @@ function tabelaHistorico(hist) {
     <thead><tr><th scope="col">Matéria e unidade</th><th scope="col" class="num">Última</th><th scope="col" class="num">Melhor</th><th scope="col" class="num">Tentativas</th><th scope="col">Data da última</th></tr></thead>
     <tbody>${[...new Set(hist.map((t) => t.banco))].map((id) => {
       const b = bancos.find((x) => x.id === id); const t = hist.filter((x) => x.banco === id);
-      return `<tr><td class="titulo-linha"><strong>${esc(b.componente)}</strong> · ${esc(b.unidade)}</td><td class="num" data-rotulo="Última">${t[0].certas} de ${t[0].total}</td><td class="num" data-rotulo="Melhor">${melhor(t)} de ${t[0].total}</td><td class="num" data-rotulo="Tentativas">${t.length}</td><td data-rotulo="Data da última">${dataBR(t[0].quando)}</td></tr>`;
+      return `<tr><td class="titulo-linha"><strong>${esc(b.componente)}</strong> · ${esc(b.unidade)}</td><td class="num" data-rotulo="Última"><div>${t[0].certas} de ${t[0].total}</div></td><td class="num" data-rotulo="Melhor"><div>${melhor(t)} de ${t[0].total}</div></td><td class="num" data-rotulo="Tentativas"><div>${t.length}</div></td><td data-rotulo="Data da última"><div>${dataBR(t[0].quando)}</div></td></tr>`;
     }).join('')}</tbody></table></div>`;
 }
 

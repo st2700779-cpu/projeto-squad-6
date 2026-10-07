@@ -5,10 +5,11 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const css = readFileSync(fileURLToPath(new URL('../assets/css/tema.css', import.meta.url)), 'utf8');
-const bloco = (inicio) => {
-  const i = css.indexOf(inicio);
+const painelCss = readFileSync(fileURLToPath(new URL('../assets/css/painel.css', import.meta.url)), 'utf8');
+const bloco = (inicio, origem = css) => {
+  const i = origem.indexOf(inicio);
   if (i < 0) throw new Error(`Bloco não encontrado: ${inicio}`);
-  const texto = css.slice(css.indexOf('{', i) + 1, css.indexOf('\n}', i));
+  const texto = origem.slice(origem.indexOf('{', i) + 1, origem.indexOf('\n}', i));
   return Object.fromEntries([...texto.matchAll(/--([a-z0-9-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]));
 };
 // Resolve referências var(--outro) até chegar a uma cor hexadecimal.
@@ -17,10 +18,11 @@ const resolver = (tema) => Object.fromEntries(Object.keys(tema).map((k) => {
   for (let i = 0; i < 5 && /^var\(--/.test(v); i += 1) v = tema[/var\(--([a-z0-9-]+)\)/.exec(v)[1]] ?? v;
   return [k, v];
 }).filter(([, v]) => /^#[0-9a-fA-F]{6}$/.test(v)));
-const claro = bloco(':root {');
-const escuro = { ...claro, ...bloco(':root[data-tema="escuro"]:not([data-contraste="alto"]) {') };
-const altoClaro = { ...claro, ...bloco(':root[data-contraste="alto"] {') };
-const altoEscuro = { ...altoClaro, ...bloco(':root[data-tema="escuro"][data-contraste="alto"] {') };
+// painel.css acrescenta as cores dos anos iniciais e finais (--fx-*), por tema.
+const claro = { ...bloco(':root {'), ...bloco(':root {', painelCss) };
+const escuro = { ...claro, ...bloco(':root[data-tema="escuro"]:not([data-contraste="alto"]) {'), ...bloco(':root[data-tema="escuro"] {', painelCss) };
+const altoClaro = { ...claro, ...bloco(':root[data-contraste="alto"] {'), ...bloco(':root[data-contraste="alto"] {', painelCss) };
+const altoEscuro = { ...altoClaro, ...bloco(':root[data-tema="escuro"][data-contraste="alto"] {'), ...bloco(':root[data-tema="escuro"][data-contraste="alto"] {', painelCss) };
 const lum = (h) => {
   const c = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
   return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
@@ -31,7 +33,11 @@ const TEXTO = [
   ['texto', 'superficie'], ['texto', 'fundo-app'], ['texto-suave', 'superficie'], ['texto-suave', 'fundo-app'], ['texto-suave', 'superficie-2'],
   ['cor-primaria', 'superficie'], ['cor-primaria', 'cor-primaria-suave'], ['sobre-primaria', 'cor-primaria'],
   ['sucesso', 'sucesso-fundo'], ['alerta', 'alerta-fundo'], ['erro', 'erro-fundo'], ['info', 'info-fundo'],
-  ['sucesso', 'superficie'], ['erro', 'superficie'], ['sobre-erro', 'erro-solido'], ['cor-secundaria', 'superficie'], ['sobre-primaria', 'cor-secundaria']
+  ['sucesso', 'superficie'], ['erro', 'superficie'], ['sobre-erro', 'erro-solido'], ['cor-secundaria', 'superficie'], ['sobre-primaria', 'cor-secundaria'],
+  // painéis: semáforo (símbolo claro sobre a cor do nível), selos, mapa de calor e cartões por faixa etária
+  ['superficie', 'sucesso'], ['superficie', 'alerta'], ['superficie', 'erro'], ['alerta', 'superficie'], ['info', 'superficie'],
+  ['texto', 'sucesso-fundo'], ['texto', 'alerta-fundo'], ['texto', 'erro-fundo'], ['texto', 'info-fundo'], ['texto-suave', 'superficie-2'],
+  ...[1, 2, 3, 4, 5].flatMap((n) => [[`fx-${n}`, `fx-${n}-suave`], ['texto', `fx-${n}-suave`], [`fx-${n}`, 'superficie']])
 ];
 const COMPONENTE = [['borda-forte', 'superficie'], ['borda-forte', 'fundo-app'], ['foco', 'superficie'], ['erro', 'superficie']];
 let falhas = 0;

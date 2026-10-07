@@ -30,7 +30,7 @@ function historico() {
   if (!meus.length) return vazio('Nenhum comunicado enviado', 'Os comunicados que você enviar aparecem aqui, com a data e quem recebe.');
   return `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Comunicados enviados</caption>
     <thead><tr><th scope="col">Assunto</th><th scope="col">Para</th><th scope="col">Data</th></tr></thead>
-    <tbody>${meus.map((c) => `<tr><td class="titulo-linha"><strong>${esc(c.assunto)}</strong><br><small>${esc(c.texto.length > 90 ? `${c.texto.slice(0, 90)}…` : c.texto)}</small></td><td data-rotulo="Para">${esc(PUBLICOS[c.publico])}${c.publico === 'escola' ? '' : ` · ${esc(c.turma)}`}</td><td data-rotulo="Data">${dataBR(c.data)}</td></tr>`).join('')}</tbody></table></div>
+    <tbody>${meus.map((c) => `<tr><td class="titulo-linha"><strong>${esc(c.assunto)}</strong><br><small>${esc(c.texto.length > 90 ? `${c.texto.slice(0, 90)}…` : c.texto)}</small></td><td data-rotulo="Para"><div>${esc(PUBLICOS[c.publico])}${c.publico === 'escola' ? '' : ` · ${esc(c.turma)}`}</div></td><td data-rotulo="Data"><div>${dataBR(c.data)}</div></td></tr>`).join('')}</tbody></table></div>
     <p class="contagem">${meus.length} ${plural(meus.length, 'comunicado', 'comunicados')}</p>`;
 }
 async function mostrar() {

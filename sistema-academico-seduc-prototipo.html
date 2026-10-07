@@ -61,13 +61,24 @@
   "ano": 2026,
   "aulasDadas": 83,
   "bimestresLancados": 2,
-  "totalBimestres": 4
+  "totalBimestres": 4,
+  "dataReferencia": "2026-10-07",
+  "prazosLancamento": [
+   {
+    "bimestre": 3,
+    "ate": "2026-10-30",
+    "rotulo": "Lançamento das notas do 3º bimestre"
+   }
+  ]
  },
  "escola": {
   "id": "e1",
   "nome": "Colégio Estadual Professor Osvaldo Tavares Rezende",
   "municipio": "Aracaju",
-  "dre": "DEA — Aracaju"
+  "dre": "DEA — Aracaju",
+  "bairro": "Grageru",
+  "lat": -10.9445,
+  "lng": -37.0577
  },
  "turmas": [
   {
@@ -201,9 +212,11 @@
    "Matemática"
   ],
   "cargaHorariaSemanal": 30,
-  "aulasEmOutrasTurmas": 12
+  "aulasEmOutrasTurmas": 12,
+  "matriculaFuncional": "PF-30412",
+  "escolaId": "e1"
  },
- "professoresDaEscola": 5,
+ "professoresDaEscola": 25,
  "estudante": {
   "id": "a3",
   "nome": "Iasmim Cardoso de Jesus",
@@ -230,8 +243,58 @@
    "Física": [
     5.2,
     5.9
+   ],
+   "Química": [
+    6.8,
+    7.2
+   ],
+   "Geografia": [
+    7.1,
+    6.6
+   ],
+   "Filosofia": [
+    8,
+    7.5
+   ],
+   "Sociologia": [
+    7.6,
+    8.1
+   ],
+   "Inglês": [
+    6.2,
+    6.9
+   ],
+   "Educação Física": [
+    9,
+    9.5
+   ],
+   "Arte": [
+    8.4,
+    8.8
    ]
-  }
+  },
+  "matricula": "202610317",
+  "validade": "2026-12-18",
+  "codigoAluno": "ALU-31742",
+  "responsavelId": "resp1",
+  "endereco": "Rua das Palmeiras, 128 — Grageru, Aracaju/SE",
+  "telefone": "(79) 9 ****-1024",
+  "email": "e*****@exemplo.edu.br",
+  "documentos": [
+   {
+    "nome": "Certidão de nascimento ou RG",
+    "situacao": "entregue"
+   },
+   {
+    "nome": "Comprovante de residência atualizado",
+    "situacao": "pendente",
+    "prazo": "2026-10-16"
+   },
+   {
+    "nome": "Documento com foto do responsável",
+    "situacao": "entregue"
+   }
+  ]
  },
  "diario": {
   "tt1": [
@@ -505,7 +568,8 @@
    "tipo": "Matrícula nova",
    "escolaId": "e1",
    "situacao": "Aguardando confirmação",
-   "data": "22/09/2026"
+   "data": "22/09/2026",
+   "origem": "online"
   },
   {
    "protocolo": "MAT-2026-0005",
@@ -515,7 +579,8 @@
    "tipo": "Transferência",
    "escolaId": "e1",
    "situacao": "Aguardando confirmação",
-   "data": "25/09/2026"
+   "data": "25/09/2026",
+   "origem": "presencial"
   },
   {
    "protocolo": "MAT-2026-0001",
@@ -525,7 +590,8 @@
    "tipo": "Matrícula nova",
    "escolaId": "e1",
    "situacao": "Confirmada",
-   "data": "02/09/2026"
+   "data": "02/09/2026",
+   "origem": "online"
   },
   {
    "protocolo": "MAT-2026-0002",
@@ -535,7 +601,8 @@
    "tipo": "Transferência",
    "escolaId": "e1",
    "situacao": "Confirmada",
-   "data": "08/09/2026"
+   "data": "08/09/2026",
+   "origem": "online"
   },
   {
    "protocolo": "MAT-2026-0003",
@@ -545,17 +612,23 @@
    "tipo": "Matrícula nova",
    "escolaId": "e1",
    "situacao": "Confirmada",
-   "data": "15/09/2026"
+   "data": "15/09/2026",
+   "origem": "presencial"
   }
  ],
  "calendario": [
   {
    "data": "12/10/2026",
-   "titulo": "Feriado — Nossa Senhora Aparecida"
+   "inicio": "2026-10-12",
+   "titulo": "Feriado — Nossa Senhora Aparecida",
+   "tipo": "feriado"
   },
   {
-   "data": "13 a 17/10/2026",
-   "titulo": "Provas do 3º bimestre"
+   "data": "13 a 16/10/2026",
+   "inicio": "2026-10-13",
+   "fim": "2026-10-16",
+   "titulo": "Provas do 3º bimestre",
+   "tipo": "prova"
   }
  ]
 }</script>

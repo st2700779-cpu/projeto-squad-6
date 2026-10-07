@@ -20,11 +20,10 @@ export function ler(texto) {
   fala.rate = 0.95;
   speechSynthesis.speak(fala);
 }
-// Botão "Ouvir". Sem rótulo visível, vira botão só de ícone com aria-label.
+// Botão "Ouvir": ícone e palavra sempre juntos. Sem rótulo informado, a palavra é "Ouvir".
 export function botaoOuvir(texto, rotulo = 'Ouvir') {
   if (!podeLer()) return '';
-  const so = rotulo === '';
-  return `<button type="button" class="botao-ouvir${so ? ' so-icone' : ''}" data-ouvir="${esc(texto)}" aria-label="Ouvir em voz alta">${icone('alto', 20)}${so ? '' : `<span>${esc(rotulo)}</span>`}</button>`;
+  return `<button type="button" class="botao-ouvir" data-ouvir="${esc(texto)}" aria-label="${esc(rotulo || 'Ouvir')} em voz alta">${icone('alto', 20)}<span>${esc(rotulo || 'Ouvir')}</span></button>`;
 }
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-ouvir]');

@@ -14,7 +14,7 @@
 .marcador-mapa { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: var(--peso-negrito); font-size: var(--texto-sm); background: var(--cor-primaria); color: var(--sobre-primaria); border: 2px solid var(--superficie); box-shadow: var(--sombra-2); }
 .marcador-mapa.origem { background: var(--texto); color: var(--superficie); border-radius: 4px; }
 .popup-escola h3 { margin: 0 0 4px; font-size: 1rem; }
-.popup-escola table { border-collapse: collapse; margin: 6px 0; font-size: .85rem; }
+.popup-escola table { border-collapse: collapse; margin: 6px 0; font-size: .875rem; }
 .popup-escola td, .popup-escola th { padding: 2px 8px 2px 0; text-align: left; font-weight: normal; }
 .popup-escola td.num { text-align: right; font-variant-numeric: tabular-nums; }
 .legenda { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); list-style: none; margin: var(--sp-3) 0; padding: 0; font-size: var(--texto-sm); }

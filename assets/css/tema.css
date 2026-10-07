@@ -42,7 +42,7 @@
   --fonte: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --fonte-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
   --escala: 1;   /* zoom de letra do usuário (A− / A+) */
-  --texto-xs: .8125rem; --texto-sm: .875rem; --texto-base: 1rem; --texto-lg: 1.125rem;
+  --texto-xs: .875rem; --texto-sm: .875rem; --texto-base: 1rem; --texto-lg: 1.125rem;
   --texto-xl: 1.25rem;  --texto-2xl: 1.5rem; --texto-3xl: 1.875rem; --texto-4xl: 2.25rem;
   --peso-normal: 400; --peso-medio: 500; --peso-forte: 600; --peso-negrito: 700;
   --altura-linha: 1.5; --altura-titulo: 1.25;

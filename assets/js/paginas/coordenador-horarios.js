@@ -26,9 +26,9 @@ function quadroDeAulas(grade) {
   DIAS.forEach((d) => grade.aulas[d].forEach((a) => { contagem[a.componente] = (contagem[a.componente] || 0) + 1; }));
   const esperado = esperadoDaMatriz(grade);
   const itens = Object.keys({ ...(esperado || {}), ...contagem }).filter((c) => contagem[c] || esperado?.[c]).sort();
-  return `<table class="tabela" style="min-width:0"><caption class="sr-only">Aulas por semana de cada matéria</caption>
+  return `<div class="tabela-rolagem sem-limite"><table class="tabela" style="min-width:0"><caption class="sr-only">Aulas por semana de cada matéria</caption>
     <thead><tr><th scope="col">Matéria</th><th scope="col" class="num">Na grade</th>${esperado ? '<th scope="col" class="num">Na matriz</th><th scope="col">Situação</th>' : ''}</tr></thead>
-    <tbody>${itens.map((c) => { const g = contagem[c] || 0, e = esperado?.[c] ?? 0; const dif = g - e; return `<tr><td>${esc(c)}</td><td class="num">${g}</td>${esperado ? `<td class="num">${e}</td><td>${dif === 0 ? semaforo({ chave: 'verde', icone: 'ok', texto: 'Igual à matriz' }) : semaforo({ chave: 'amarelo', icone: 'alerta', texto: dif < 0 ? `Falta ${-dif} ${plural(-dif, 'aula', 'aulas')}` : `${dif} ${plural(dif, 'aula', 'aulas')} a mais` })}</td>` : ''}</tr>`; }).join('')}</tbody></table>`;
+    <tbody>${itens.map((c) => { const g = contagem[c] || 0, e = esperado?.[c] ?? 0; const dif = g - e; return `<tr><td>${esc(c)}</td><td class="num">${g}</td>${esperado ? `<td class="num">${e}</td><td>${dif === 0 ? semaforo({ chave: 'verde', icone: 'ok', texto: 'Igual à matriz' }) : semaforo({ chave: 'amarelo', icone: 'alerta', texto: dif < 0 ? `Falta ${-dif} ${plural(-dif, 'aula', 'aulas')}` : `${dif} ${plural(dif, 'aula', 'aulas')} a mais` })}</td>` : ''}</tr>`; }).join('')}</tbody></table></div>`;
 }
 function desenhar() {
   const grade = horarios.find((h) => h.turmaId === turmaId);

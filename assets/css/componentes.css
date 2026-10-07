@@ -222,7 +222,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--cor-primaria);
 .aviso-rapido.erro .aviso-icone { color: var(--erro); }
 .aviso-rapido.info .aviso-icone { color: var(--info); }
 .aviso-rapido .aviso-texto { flex: 1; padding-top: 1px; }
-.aviso-rapido .aviso-fechar { flex: none; width: var(--toque); height: var(--toque); margin: -10px -6px -10px 0; display: grid; place-items: center; border: 0; border-radius: var(--raio-sm); background: transparent; color: var(--texto-suave); cursor: pointer; }
+.aviso-rapido .aviso-fechar { flex: none; min-width: var(--toque); height: var(--toque); margin: -10px -6px -10px 0; padding: 0 var(--sp-2); display: flex; gap: var(--sp-1); align-items: center; justify-content: center; font: inherit; font-size: var(--texto-sm); font-weight: var(--peso-forte); border: 0; border-radius: var(--raio-sm); background: transparent; color: var(--texto-suave); cursor: pointer; }
 .aviso-rapido .aviso-fechar:hover { background: var(--superficie-2); color: var(--texto); }
 dialog.janela { border: 1px solid var(--borda); color: var(--texto); background: var(--superficie); border-radius: var(--raio-lg); box-shadow: var(--sombra-3); padding: var(--sp-6); width: min(520px, calc(100% - 2rem)); max-height: 88vh; overflow: auto; }
 dialog.janela::backdrop { background: var(--overlay); }
