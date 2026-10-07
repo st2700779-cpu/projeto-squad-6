@@ -31,8 +31,10 @@ async function mostrar() {
       [pendentes, plural(pendentes, 'turma aguardando aprovação da direção', 'turmas aguardando aprovação da direção'), 'escola/turmas.html', 'Abrir turmas', '<span class="texto-suave">—</span>']
     ];
     main.innerHTML = `
-      <h1>${esc(escola.nome)}</h1>
-      <p class="pagina-descricao">${esc(escola.municipio)} · ${esc(escola.dre)} · ano letivo 2026</p>
+      <header class="heroi">
+        <h1>${esc(escola.nome)}</h1>
+        <p class="heroi-linha">${esc(escola.municipio)} · ${esc(escola.dre)} · ano letivo 2026</p>
+      </header>
       <h2 class="esp-t-0">Pendências da secretaria</h2>
       <div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Pendências da secretaria escolar</caption>
         <thead><tr><th scope="col" class="num">Quantidade</th><th scope="col">Pendência</th><th scope="col">Prazo</th><th scope="col"><span class="sr-only">Ação</span></th></tr></thead>

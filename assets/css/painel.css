@@ -332,3 +332,25 @@ h1 { letter-spacing: -.02em; }
 .form-login { padding: var(--sp-6); border: 1px solid var(--borda); border-top: 5px solid var(--cor-primaria); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-2); }
 .conteudo-estreito > h1 { font-weight: 800; }
 h1, h2 { font-weight: 800; }
+
+/* 19 · Visual v3: menu lateral escuro, marca com selo, cartões e grade de perfis */
+:root { --menu-fundo: #1e1b4b; --menu-texto: #e0e7ff; --menu-ativo: #4f46e5; --menu-hover: rgba(255, 255, 255, .10); }
+.menu { background: var(--menu-fundo); border-right: 0; color: var(--menu-texto); }
+.menu-titulo { color: var(--destaque); font-weight: 800; text-transform: none; letter-spacing: .01em; }
+.menu a { color: var(--menu-texto); border-left: 0; border-radius: var(--raio); font-weight: var(--peso-forte); }
+.menu a svg { color: var(--menu-texto); }
+.menu a:hover { background: var(--menu-hover); color: #fff; }
+.menu a[aria-current="page"] { background: var(--menu-ativo); color: #fff; border-left-color: transparent; font-weight: 800; }
+.menu a[aria-current="page"] svg { color: #fff; }
+.menu a:focus-visible { outline: 3px solid var(--destaque); outline-offset: 2px; }
+.menu-recolhido .menu a[aria-current="page"] { box-shadow: none; }
+.marca::before { content: "P"; flex: none; width: 36px; height: 36px; border-radius: 10px; background: var(--destaque); color: var(--sobre-destaque); font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+.topo { box-shadow: 0 1px 0 var(--borda), var(--sombra-1); }
+.bloco, .cartao-indicador, .indicador { border-radius: var(--raio-lg); }
+.lista-perfis { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-3); max-width: none; border-top: 0; }
+.lista-perfis li { border: 1px solid var(--borda); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-1); transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida); }
+.lista-perfis li:hover { transform: translateY(-2px); box-shadow: var(--sombra-2); }
+.lista-perfis a { padding: var(--sp-5); border-radius: var(--raio-lg); }
+.lista-perfis a:hover { background: var(--acento-suave); }
+.lista-perfis strong { color: var(--cor-primaria); }
+@media (prefers-reduced-motion: reduce) { .lista-perfis li { transition: none; } .lista-perfis li:hover { transform: none; } }

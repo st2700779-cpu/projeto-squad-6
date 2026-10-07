@@ -43,8 +43,10 @@ function cartoes() {
 function desenhar() {
   const marcadas = Object.keys(atencoes).filter((id) => painel.lista.some((x) => x.turma.id === id)).length;
   main.innerHTML = `
-    <h1>Turmas e desempenho</h1>
-    <p class="pagina-descricao">Cada turma com frequência, média e estudantes em risco. O ícone de atenção aparece só nas turmas que você marcar, com a sua anotação.</p>
+    <header class="heroi">
+      <h1>Turmas e desempenho</h1>
+      <p class="heroi-linha">Cada turma com frequência, média e estudantes em risco. O ícone de atenção aparece só nas turmas que você marcar, com a sua anotação.</p>
+    </header>
     <dl class="resumo-linha">
       <div><dd>${painel.lista.length}</dd><dt>${plural(painel.lista.length, 'turma', 'turmas')}</dt></div>
       <div><dd>${painel.totais.alunos}</dd><dt>estudantes</dt></div>

@@ -43,8 +43,10 @@ function desenhar() {
   if (!sel || !escolas.some((e) => e.id === sel)) sel = lista[0]?.e.id ?? escolas[0].id;
   const municipios = [...new Set(escolas.map((e) => e.municipio))];
   main.innerHTML = `
-    <h1>PROFIN · painel por escola</h1>
-    <p class="pagina-descricao">Prestação de contas de cada escola por categoria de recurso. A prestação em atraso pode suspender o próximo repasse. Dados de ${dataBR(hoje)}.</p>
+    <header class="heroi">
+      <h1>PROFIN · painel por escola</h1>
+      <p class="heroi-linha">Prestação de contas de cada escola por categoria de recurso. A prestação em atraso pode suspender o próximo repasse. Dados de ${dataBR(hoje)}.</p>
+    </header>
     <dl class="resumo-linha">
       <div><dd>${escolas.length}</dd><dt>escolas</dt></div>
       <div><dd>${conta('verde')}</dd><dt>em dia</dt></div>

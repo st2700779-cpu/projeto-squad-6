@@ -22,8 +22,10 @@ async function mostrar() {
     const nProf = professores.filter((p) => p.escolaId === escolaId).length;
     const semFreq = totais.frequencia === null ? null : semaforoFrequencia(totais.frequencia);
     main.innerHTML = `
-      <h1>${esc(escola.nome)}</h1>
-      <p class="pagina-descricao">${esc(escola.municipio)} · ${esc(escola.dre)} · ano letivo ${painel.lv.ano} · dados de ${dataBR(hoje)}</p>
+      <header class="heroi">
+        <h1>${esc(escola.nome)}</h1>
+        <p class="heroi-linha">${esc(escola.municipio)} · ${esc(escola.dre)} · ano letivo ${painel.lv.ano} · dados de ${dataBR(hoje)}</p>
+      </header>
       <div class="linha-botoes esp-b-4"><a class="botao" id="abrir-reuniao" href="${link('diretor/reuniao.html')}">${icone('imprimir', 20)}Abrir tela de reunião</a><a class="botao botao-secundario" href="${link('diretor/mapa.html')}">${icone('grafico', 20)}Mapa de calor da escola</a></div>
       <div class="numeros">
         <div class="numero"><strong>${totais.alunos}</strong><span>${plural(totais.alunos, 'estudante', 'estudantes')}</span></div>

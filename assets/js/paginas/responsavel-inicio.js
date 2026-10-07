@@ -29,8 +29,10 @@ async function mostrar() {
     const ultimoAviso = avisos[0];
     const falado = `${est.nome}. ${itens.length ? itens.map((i) => `${i.titulo}. ${i.texto}`).join(' ') : 'Nada precisa da sua atenção agora.'}`;
     main.innerHTML = `
-      <h1>Olá, ${esc((sessao()?.nome || '').split(' ')[0] || 'responsável')}</h1>
-      <p class="pagina-descricao">Veja como ${esc(nome)} está na escola. Cor, símbolo e palavra mostram a situação.</p>
+      <header class="heroi">
+        <h1>Olá, ${esc((sessao()?.nome || '').split(' ')[0] || 'responsável')}</h1>
+        <p class="heroi-linha">Veja como ${esc(nome)} está na escola. Cor, símbolo e palavra mostram a situação.</p>
+      </header>
       ${seletorDeEstudante(lista, est.id)}
       <div class="esp-b-3">${controleModoSimples()}</div>
       <div class="resumo-filho">
