@@ -321,3 +321,4 @@ h1 { letter-spacing: -.02em; }
 :root[data-tema="escuro"] .tabela thead th { background: var(--superficie-2); }
 :root[data-contraste="alto"] #pagina h2 { border-left-color: var(--texto); }
 :root[data-contraste="alto"] .tabela thead th { background: var(--superficie); border-bottom-color: var(--texto); }
+.tabela-cartoes .etiqueta { white-space: normal; max-width: 100%; border-radius: var(--raio); }
