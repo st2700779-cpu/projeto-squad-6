@@ -4,7 +4,7 @@
 // - Uso: arquivos do próprio site vão "rede primeiro" (a versão nova aparece quando há internet e a guardada serve quando não há);
 //   arquivos de CDN vão "cache primeiro". A API local (/api/) nunca passa pelo cache.
 // Só funciona em https ou localhost.
-const VERSAO = 'portal-997159e9';
+const VERSAO = 'portal-786860c0';
 const NUCLEO = [
   "index.html",
   "login.html",

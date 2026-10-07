@@ -179,7 +179,7 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visivel'); io.unobserve(e.target); } }), { threshold: 0.1 });
     setTimeout(() => { alvos().forEach((e) => { e.classList.add('revelar'); io.observe(e); }); setTimeout(() => document.querySelectorAll('.revelar:not(.visivel)').forEach((e) => e.classList.add('visivel')), 3000); }, 1500);
   }
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.body.classList.add('entrando'); setTimeout(() => document.body.classList.remove('entrando'), 1400); }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.body.classList.add('entrando'); setTimeout(() => document.body.classList.remove('entrando'), 2200); }
   const main = document.querySelector('main');
   const menu = MENUS[perfil] || [];
   if (menu.length) {

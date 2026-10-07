@@ -387,8 +387,7 @@ body.entrando .barra span { transform-origin: left; animation: encher .8s cubic-
 @media (prefers-reduced-motion: reduce) {
   .heroi, .heroi::after { animation: none; }
   .bloco, .lista-perfis li, .materias, .menu a, .botao { transition: none; }
-  .bloco:hover, .menu a:hover, .botao:hover { transform: none; }
-}
+  .bloco:hover, .menu a:hover, }
 
 /* 21 · Visual do vídeo de referência: fundo claro e arejado, azul-marinho com verde, selos e revelação ao rolar */
 :root { --heroi-1: #12326b; --heroi-2: #0b7a5a; --destaque: #34d399; --sobre-destaque: #0b2a4a; }
@@ -403,14 +402,14 @@ body.entrando .barra span { transform-origin: left; animation: encher .8s cubic-
 
 /* 22 · Tom sério: cantos pouco arredondados, uma só cor de destaque (azul-marinho), sem degradês nem faixas coloridas.
    Vem por último de propósito: reduz o "visual vivo" das seções 16 a 21 sem remover a estrutura. */
-:root { --raio-sm: 2px; --raio: 4px; --raio-lg: 6px; --raio-pill: 4px; --heroi-1: #12326b; --heroi-2: #12326b; --destaque: #9fb8e6; --sobre-destaque: #0b2a4a; --menu-fundo: #12285a; --menu-ativo: #1e4fa8; --sombra-1: 0 1px 2px rgba(17, 24, 39, .06); --sombra-2: 0 2px 8px rgba(17, 24, 39, .12); }
+:root { --raio-sm: 6px; --raio: 10px; --raio-lg: 16px; --raio-pill: 999px; --heroi-1: #12326b; --heroi-2: #12326b; --destaque: #9fb8e6; --sobre-destaque: #0b2a4a; --menu-fundo: #12285a; --menu-ativo: #1e4fa8; --sombra-1: 0 1px 3px rgba(18, 40, 90, .10), 0 1px 2px rgba(18, 40, 90, .06); --sombra-2: 0 6px 18px rgba(18, 40, 90, .16); }
 :root:not([data-tema="escuro"]):not([data-contraste="alto"]) .topo { border-top: 3px solid #12285a; border-image: none; }
 :root:not([data-tema="escuro"]):not([data-contraste="alto"]) .botao:not(.botao-secundario):not(.botao-texto):not(.botao-perigo) { box-shadow: none; filter: none; }
 .marca-texto strong { background: none; color: var(--texto); }
-.marca::before { border-radius: 4px; background: #12285a; color: #fff; }
+.marca::before { border-radius: 10px; background: #12285a; color: #fff; }
 .heroi { background: #12326b; animation: none; border-radius: var(--raio-lg); box-shadow: none; padding: var(--sp-5) var(--sp-6); }
 .heroi::before, .heroi::after { display: none; }
-.heroi-selo { border-radius: 3px; background: rgba(255, 255, 255, .12); font-weight: var(--peso-medio); }
+.heroi-selo { border-radius: 999px; background: rgba(255, 255, 255, .12); font-weight: var(--peso-medio); }
 .heroi-selo::before { display: none; }
 .heroi h1 { font-weight: 700; }
 #pagina > h1:first-child { padding-bottom: 0; }
@@ -419,22 +418,62 @@ body.entrando .barra span { transform-origin: left; animation: encher .8s cubic-
 h1, h2 { font-weight: 700; }
 .numeros .numero, .numeros .numero:nth-child(n) { border-top: 1px solid var(--borda); border-left: 3px solid var(--cor-primaria); }
 .lista-perfis li, .lista-perfis li:nth-child(n) { border-top: 1px solid var(--borda); border-left: 3px solid var(--cor-primaria); }
-.lista-perfis li:hover { transform: none; box-shadow: var(--sombra-2); }
 .lista-perfis a { min-height: 96px; }
-.progresso span, .barra span { background-image: none; background-color: var(--cor-primaria); border-radius: 2px; }
-.progresso, .barra { border-radius: 2px; }
-.etiqueta { border-radius: 3px; }
+.progresso span, .barra span { background-image: none; background-color: var(--cor-primaria); border-radius: 999px; }
+.progresso, .barra { border-radius: 999px; }
+.etiqueta { border-radius: 999px; }
 .cartao-grande, .cartao-grande:hover { box-shadow: none; }
 .filtros button[aria-pressed="true"] { border-bottom-color: var(--cor-primaria); }
 .seletor-estudante button[aria-pressed="true"] { box-shadow: none; border-color: var(--acento); }
 .menu a[aria-current="page"] { background: var(--menu-ativo); box-shadow: none; }
 .menu-titulo { color: #9fb8e6; font-weight: 700; }
-.bloco:hover { transform: none; box-shadow: var(--sombra-2); }
-.menu a:hover { transform: none; }
-.botao:hover { transform: none; }
 .topo { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--superficie); }
 .form-login { border-top: 1px solid var(--borda); border-left: 4px solid var(--cor-primaria); box-shadow: var(--sombra-1); }
 .avatar { border-radius: 50%; }
-body.entrando #pagina > *, body.entrando main > .heroi, body.entrando .lista-perfis li { animation-duration: .25s; }
-body.entrando .barra span { animation-duration: .5s; }
-.revelar { transform: translateY(8px); transition-duration: .3s; }
+
+/* 23 · Movimento dinâmico e suave: curvas com leve "mola", entradas escalonadas, cartões que sobem, barras que enchem e rolagem macia.
+   Nada fica escondido no estado final e tudo se desliga em "reduzir movimento". */
+:root { --mola: cubic-bezier(.22, 1, .36, 1); --mola-leve: cubic-bezier(.34, 1.4, .64, 1); }
+html { scroll-behavior: smooth; }
+.bloco, .lista-perfis li, .materias, .numeros .numero, .cartao-turma, .resumo-filho > div, .painel-hoje > section, .dia-aulas, .prioridade, .selo { transition: transform .45s var(--mola), box-shadow .45s var(--mola), border-color .3s ease, background-color .3s ease; will-change: transform; }
+.bloco:hover, .lista-perfis li:hover, .numeros .numero:hover, .cartao-turma:hover, .resumo-filho > div:hover, .painel-hoje > section:hover, .dia-aulas:hover, .selo:hover { transform: translateY(-4px); box-shadow: var(--sombra-2); }
+.bloco:active, .lista-perfis li:active { transform: translateY(-1px) scale(.995); transition-duration: .12s; }
+.menu a { transition: background-color .3s ease, transform .4s var(--mola), color .3s ease; }
+.menu a:hover { transform: translateX(5px); }
+.menu a svg { transition: transform .4s var(--mola-leve); }
+.menu a:hover svg { transform: scale(1.12); }
+.botao { transition: transform .35s var(--mola-leve), box-shadow .35s var(--mola), background-color .25s ease, border-color .25s ease; }
+.botao:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(18, 40, 90, .22); }
+.botao:active { transform: translateY(0) scale(.98); transition-duration: .1s; }
+.chip, .filtros button, .seletor-estudante button { transition: transform .3s var(--mola-leve), background-color .25s ease, border-color .25s ease; }
+.chip:hover, .seletor-estudante button:hover { transform: translateY(-2px); }
+.tabela tbody tr > * { transition: background-color .25s ease; }
+.entrada { transition: border-color .25s ease, box-shadow .3s var(--mola); }
+.entrada:focus { box-shadow: 0 0 0 4px rgba(30, 79, 168, .18); }
+
+@keyframes subir-suave { from { opacity: 0; transform: translateY(22px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes deslizar-esq { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+@keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
+body.entrando #pagina > *, body.entrando main > .heroi, body.entrando .lista-perfis li { animation: subir-suave .75s var(--mola) both; }
+body.entrando #pagina > :nth-child(2), body.entrando .lista-perfis li:nth-child(2) { animation-delay: .08s; }
+body.entrando #pagina > :nth-child(3), body.entrando .lista-perfis li:nth-child(3) { animation-delay: .16s; }
+body.entrando #pagina > :nth-child(4), body.entrando .lista-perfis li:nth-child(4) { animation-delay: .24s; }
+body.entrando #pagina > :nth-child(5), body.entrando .lista-perfis li:nth-child(5) { animation-delay: .32s; }
+body.entrando #pagina > :nth-child(n+6), body.entrando .lista-perfis li:nth-child(n+6) { animation-delay: .4s; }
+body.entrando .menu a { animation: deslizar-esq .6s var(--mola) both; }
+body.entrando .menu a:nth-child(2) { animation-delay: .05s; } body.entrando .menu a:nth-child(3) { animation-delay: .1s; } body.entrando .menu a:nth-child(4) { animation-delay: .15s; } body.entrando .menu a:nth-child(5) { animation-delay: .2s; } body.entrando .menu a:nth-child(6) { animation-delay: .25s; } body.entrando .menu a:nth-child(n+7) { animation-delay: .3s; }
+body.entrando .topo { animation: aparecer .6s ease both; }
+body.entrando .barra span, body.entrando .barras-trilho > span, body.entrando .barra-nivel > span { transform-origin: left; animation: encher 1.1s var(--mola) .35s both; }
+body.entrando .anel-valor { transition: stroke-dashoffset 1.2s var(--mola) .3s; }
+.revelar { opacity: 0; transform: translateY(26px) scale(.985); transition: opacity .8s var(--mola), transform .8s var(--mola); }
+.revelar.visivel { opacity: 1; transform: none; }
+.heroi h1, .heroi-linha, .heroi-selo { animation: subir-suave .9s var(--mola) both; }
+.heroi-selo { animation-delay: .05s; } .heroi h1 { animation-delay: .15s; } .heroi-linha { animation-delay: .25s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .bloco, .lista-perfis li, .materias, .numeros .numero, .cartao-turma, .resumo-filho > div, .painel-hoje > section, .dia-aulas, .prioridade, .selo, .menu a, .menu a svg, .botao, .chip, .filtros button, .seletor-estudante button, .entrada { transition: none; will-change: auto; }
+  .bloco:hover, .lista-perfis li:hover, .numeros .numero:hover, .cartao-turma:hover, .resumo-filho > div:hover, .painel-hoje > section:hover, .dia-aulas:hover, .selo:hover, .menu a:hover, .menu a:hover svg, .botao:hover, .chip:hover, .seletor-estudante button:hover { transform: none; }
+  .heroi h1, .heroi-linha, .heroi-selo, body.entrando .menu a, body.entrando .topo { animation: none; }
+  .revelar { opacity: 1; transform: none; transition: none; }
+}
