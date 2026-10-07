@@ -322,3 +322,13 @@ h1 { letter-spacing: -.02em; }
 :root[data-contraste="alto"] #pagina h2 { border-left-color: var(--texto); }
 :root[data-contraste="alto"] .tabela thead th { background: var(--superficie); border-bottom-color: var(--texto); }
 .tabela-cartoes .etiqueta { white-space: normal; max-width: 100%; border-radius: var(--raio); }
+
+/* 18 · Visual v2: destaque âmbar, faixa de boas-vindas e tela de entrada em cartão */
+:root { --destaque: #fbbf24; --sobre-destaque: #1e1b4b; --heroi-1: #4338ca; --heroi-2: #6d28d9; }
+.heroi { margin: var(--sp-4) 0 var(--sp-5); padding: var(--sp-6) var(--sp-6); border-radius: var(--raio-lg); background: linear-gradient(120deg, var(--heroi-1), var(--heroi-2)); color: #fff; box-shadow: var(--sombra-2); }
+.heroi h1 { color: #fff; margin: 0 0 var(--sp-1); font-size: clamp(var(--texto-2xl), 1rem + 2.4vw, var(--texto-4xl)); font-weight: 800; }
+.heroi-linha { margin: 0; color: #e0e7ff; font-weight: var(--peso-medio); }
+.heroi::after { content: ""; display: block; width: 56px; height: 5px; margin-top: var(--sp-4); border-radius: var(--raio-pill); background: var(--destaque); }
+.form-login { padding: var(--sp-6); border: 1px solid var(--borda); border-top: 5px solid var(--cor-primaria); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-2); }
+.conteudo-estreito > h1 { font-weight: 800; }
+h1, h2 { font-weight: 800; }
