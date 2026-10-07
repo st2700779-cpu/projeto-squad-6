@@ -23,6 +23,7 @@ async function mostrar() {
     const semFreq = totais.frequencia === null ? null : semaforoFrequencia(totais.frequencia);
     main.innerHTML = `
       <header class="heroi">
+        <span class="heroi-selo">Visão da escola</span>
         <h1>${esc(escola.nome)}</h1>
         <p class="heroi-linha">${esc(escola.municipio)} · ${esc(escola.dre)} · ano letivo ${painel.lv.ano} · dados de ${dataBR(hoje)}</p>
       </header>

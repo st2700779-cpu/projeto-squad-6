@@ -10,8 +10,8 @@
   color-scheme: light;
 
   /* 1 · Paleta bruta (institucional: azul de governo, com neutros frios) */
-  --azul-50: #eceeff;  --azul-100: #dadcff; --azul-200: #b4b8f5; --azul-600: #4f46e5; --azul-700: #4338ca; --azul-800: #3730a3;
-  --neutro-0: #ffffff;  --neutro-50: #f4f5ff; --neutro-100: #eceefb; --neutro-200: #dcdff2; --neutro-300: #c6cbd3;
+  --azul-50: #eaf1fc;  --azul-100: #d6e4f8; --azul-200: #a9c3ec; --azul-600: #1e4fa8; --azul-700: #173f86; --azul-800: #12326b;
+  --neutro-0: #ffffff;  --neutro-50: #f3f7fc; --neutro-100: #eaf0f8; --neutro-200: #d9e2ee; --neutro-300: #c6cbd3;
   --neutro-500: #6b7280; --neutro-600: #4a4f72; --neutro-700: #353a5c; --neutro-800: #1b1d3b; --neutro-900: #111227;
 
   /* 2 · Tokens semânticos (é o que os componentes usam) */

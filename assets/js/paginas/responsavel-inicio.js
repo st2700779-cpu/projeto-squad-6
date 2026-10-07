@@ -30,6 +30,7 @@ async function mostrar() {
     const falado = `${est.nome}. ${itens.length ? itens.map((i) => `${i.titulo}. ${i.texto}`).join(' ') : 'Nada precisa da sua atenção agora.'}`;
     main.innerHTML = `
       <header class="heroi">
+        <span class="heroi-selo">Acompanhe de perto</span>
         <h1>Olá, ${esc((sessao()?.nome || '').split(' ')[0] || 'responsável')}</h1>
         <p class="heroi-linha">Veja como ${esc(nome)} está na escola. Cor, símbolo e palavra mostram a situação.</p>
       </header>

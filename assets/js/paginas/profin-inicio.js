@@ -44,6 +44,7 @@ function desenhar() {
   const municipios = [...new Set(escolas.map((e) => e.municipio))];
   main.innerHTML = `
     <header class="heroi">
+      <span class="heroi-selo">Financeiro</span>
       <h1>PROFIN · painel por escola</h1>
       <p class="heroi-linha">Prestação de contas de cada escola por categoria de recurso. A prestação em atraso pode suspender o próximo repasse. Dados de ${dataBR(hoje)}.</p>
     </header>

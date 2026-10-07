@@ -44,6 +44,7 @@ function desenhar() {
   const marcadas = Object.keys(atencoes).filter((id) => painel.lista.some((x) => x.turma.id === id)).length;
   main.innerHTML = `
     <header class="heroi">
+      <span class="heroi-selo">Coordenação</span>
       <h1>Turmas e desempenho</h1>
       <p class="heroi-linha">Cada turma com frequência, média e estudantes em risco. O ícone de atenção aparece só nas turmas que você marcar, com a sua anotação.</p>
     </header>

@@ -32,6 +32,7 @@ async function mostrar() {
     ];
     main.innerHTML = `
       <header class="heroi">
+        <span class="heroi-selo">Secretaria</span>
         <h1>${esc(escola.nome)}</h1>
         <p class="heroi-linha">${esc(escola.municipio)} · ${esc(escola.dre)} · ano letivo 2026</p>
       </header>
