@@ -89,8 +89,10 @@ async function mostrar() {
       <div class="linha-botoes">${[['aluno/frequencia.html', 'grafico', 'Frequência'], ['aluno/horario.html', 'relogio', 'Horário'], ['aluno/quiz.html', 'pergunta', 'Quiz'], ['aluno/carteirinha.html', 'cartao', 'Carteirinha'], ['aluno/documentos.html', 'documento', 'Documentos']].map(([h, i, t]) => `<a class="botao botao-secundario" href="${link(h)}">${icone(i, 20)}${t}</a>`).join('')}${botaoOuvir(falado, 'Ouvir resumo')}</div></div>`;
 
     main.innerHTML = `
-      <h1>${document.body.dataset.faixa === 'iniciais' ? `Oi, ${esc(primeiroNome)}!` : esc(est.nome)}</h1>
-      <p class="pagina-descricao so-detalhe">${esc(est.turma)} · ${esc(escola.nome)} · ano letivo ${lv.ano}</p>
+      <header class="heroi">
+        <h1>${document.body.dataset.faixa === 'iniciais' ? `Oi, ${esc(primeiroNome)}!` : `Olá, ${esc(primeiroNome)}!`}</h1>
+        <p class="heroi-linha so-detalhe">${esc(est.nome)} · ${esc(est.turma)} · ${esc(escola.nome)} · ano letivo ${lv.ano}</p>
+      </header>
       ${iniciais}${finais}${medio}
       ${seguinte && SERIES.includes(seguinte) ? `<div class="so-detalhe esp-t-5">${rematricula
         ? `<p>Rematrícula para 2027: ${etiqueta(rematricula.situacao, cor(rematricula.situacao))} <span class="texto-suave">protocolo ${esc(rematricula.protocolo)}</span></p>`
