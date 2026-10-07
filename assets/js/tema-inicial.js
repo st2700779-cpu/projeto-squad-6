@@ -26,6 +26,27 @@
 
   aplicarTema(temaEscolhido() || (sistema && sistema.matches ? 'escuro' : 'claro'));
   aplicarContraste(ler('portal-contraste') === 'alto');
+  function aplicarMovimento(reduzido) {
+    if (reduzido) raiz.setAttribute('data-movimento', 'reduzido'); else raiz.removeAttribute('data-movimento');
+  }
+  aplicarMovimento(ler('portal-movimento') === 'reduzido');
+
+  // API da tela de Configurações (tema: 'claro' | 'escuro' | 'auto').
+  window.preferenciasExibicao = {
+    tema: function () { return temaEscolhido() || 'auto'; },
+    definirTema: function (v) {
+      if (v === 'auto') { try { localStorage.removeItem('portal-tema'); } catch (e) { /* segue */ } aplicarTema(sistema && sistema.matches ? 'escuro' : 'claro'); }
+      else { gravar('portal-tema', v); aplicarTema(v); }
+    },
+    contraste: function () { return raiz.getAttribute('data-contraste') === 'alto'; },
+    definirContraste: function (alto) { gravar('portal-contraste', alto ? 'alto' : 'normal'); aplicarContraste(alto); },
+    movimento: function () { return raiz.getAttribute('data-movimento') === 'reduzido'; },
+    definirMovimento: function (r) { gravar('portal-movimento', r ? 'reduzido' : 'normal'); aplicarMovimento(r); },
+    restaurar: function () {
+      ['portal-tema', 'portal-contraste', 'portal-movimento'].forEach(function (c) { try { localStorage.removeItem(c); } catch (e) { /* segue */ } });
+      aplicarTema(sistema && sistema.matches ? 'escuro' : 'claro'); aplicarContraste(false); aplicarMovimento(false);
+    }
+  };
 
   // Sem escolha salva, acompanha a mudança do sistema com a página aberta.
   if (sistema && sistema.addEventListener) {

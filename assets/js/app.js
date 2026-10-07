@@ -17,14 +17,14 @@ const DATA_DOS_DADOS = '07/10/2026'; // data de referência dos dados de demonst
 /** Itens do menu lateral de cada visão: [página, rótulo, ícone]. */
 export const MENUS = {
   familia: [['familia/matricula.html', 'Matrícula', 'formulario'], ['familia/mapa.html', 'Escolas com vaga', 'mapa'], ['familia/guia.html', 'Ouvir instruções', 'alto']],
-  aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/frequencia.html', 'Frequência', 'grafico'], ['aluno/horario.html', 'Meu horário', 'relogio'], ['aluno/rotina.html', 'Provas e rotina', 'lista'], ['aluno/quiz.html', 'Quiz', 'pergunta'], ['aluno/carteirinha.html', 'Carteirinha', 'cartao'], ['aluno/linha-do-tempo.html', 'Vida escolar', 'linha'], ['aluno/boletim-falado.html', 'Boletim falado', 'alto'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario'], ['aluno/cadastro.html', 'Meus dados', 'cadastro']],
-  responsavel: [['responsavel/index.html', 'Início', 'usuario'], ['responsavel/boletim.html', 'Notas e faltas', 'livro'], ['responsavel/calendario.html', 'Calendário e avisos', 'calendario'], ['responsavel/matricula.html', 'Matrícula e documentos', 'documento']],
-  professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/mapa.html', 'Mapa de calor', 'grafico'], ['professor/horario.html', 'Meu horário', 'relogio'], ['professor/materiais.html', 'Materiais e planos', 'caixa'], ['professor/comunicados.html', 'Comunicados', 'megafone'], ['professor/avisos.html', 'Avisos', 'calendario']],
-  escola: [['escola/index.html', 'Início', 'escola'], ['escola/solicitacoes.html', 'Solicitações', 'lista'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/estudantes.html', 'Estudantes', 'usuario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/professores.html', 'Professores habilitados', 'pessoas'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario']],
-  diretor: [['diretor/index.html', 'Visão da escola', 'escola'], ['diretor/mapa.html', 'Mapa de calor', 'grafico'], ['diretor/reuniao.html', 'Tela de reunião', 'imprimir'], ['diretor/comunicados.html', 'Comunicados', 'megafone'], ['diretor/atos.html', 'Atos autorizativos', 'documento']],
-  coordenador: [['coordenador/index.html', 'Turmas e desempenho', 'grafico'], ['coordenador/comparativo.html', 'Comparar turmas', 'trocar'], ['coordenador/reuniao.html', 'Reunião pedagógica', 'imprimir'], ['coordenador/horarios.html', 'Horários', 'relogio']],
-  rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/mapa.html', 'Mapa de vagas', 'mapa'], ['rede/professores.html', 'Professores habilitados', 'pessoas'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro']],
-  profin: [['profin/index.html', 'Painel por escola', 'moeda'], ['profin/relatorio.html', 'Relatório consolidado', 'documento']]
+  aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/frequencia.html', 'Frequência', 'grafico'], ['aluno/horario.html', 'Meu horário', 'relogio'], ['aluno/rotina.html', 'Provas e rotina', 'lista'], ['aluno/quiz.html', 'Quiz', 'pergunta'], ['aluno/carteirinha.html', 'Carteirinha', 'cartao'], ['aluno/linha-do-tempo.html', 'Vida escolar', 'linha'], ['aluno/boletim-falado.html', 'Boletim falado', 'alto'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario'], ['aluno/cadastro.html', 'Meus dados', 'cadastro'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  responsavel: [['responsavel/index.html', 'Início', 'usuario'], ['responsavel/boletim.html', 'Notas e faltas', 'livro'], ['responsavel/calendario.html', 'Calendário e avisos', 'calendario'], ['responsavel/matricula.html', 'Matrícula e documentos', 'documento'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/mapa.html', 'Mapa de calor', 'grafico'], ['professor/horario.html', 'Meu horário', 'relogio'], ['professor/materiais.html', 'Materiais e planos', 'caixa'], ['professor/comunicados.html', 'Comunicados', 'megafone'], ['professor/avisos.html', 'Avisos', 'calendario'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  escola: [['escola/index.html', 'Início', 'escola'], ['escola/solicitacoes.html', 'Solicitações', 'lista'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/estudantes.html', 'Estudantes', 'usuario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/professores.html', 'Professores habilitados', 'pessoas'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  diretor: [['diretor/index.html', 'Visão da escola', 'escola'], ['diretor/mapa.html', 'Mapa de calor', 'grafico'], ['diretor/reuniao.html', 'Tela de reunião', 'imprimir'], ['diretor/comunicados.html', 'Comunicados', 'megafone'], ['diretor/atos.html', 'Atos autorizativos', 'documento'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  coordenador: [['coordenador/index.html', 'Turmas e desempenho', 'grafico'], ['coordenador/comparativo.html', 'Comparar turmas', 'trocar'], ['coordenador/reuniao.html', 'Reunião pedagógica', 'imprimir'], ['coordenador/horarios.html', 'Horários', 'relogio'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/mapa.html', 'Mapa de vagas', 'mapa'], ['rede/professores.html', 'Professores habilitados', 'pessoas'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  profin: [['profin/index.html', 'Painel por escola', 'moeda'], ['profin/relatorio.html', 'Relatório consolidado', 'documento'], ['configuracoes.html', 'Configurações', 'engrenagem']]
 };
 const NOMES = { familia: 'Matrícula', aluno: 'Aluno', responsavel: 'Responsável', professor: 'Professor', escola: 'Secretaria', diretor: 'Direção', coordenador: 'Coordenação', rede: 'Rede (SEDUC e DRE)', profin: 'PROFIN' };
 const CHAVE_MENU = 'portal-menu-recolhido';
@@ -50,6 +50,7 @@ function cabecalho({ perfil }) {
         ${perfil ? `<button type="button" class="ferramenta ferramenta-como-usar" data-tour aria-label="Como usar esta área">${icone('info', 20)}<span class="rotulo">Como usar</span></button>` : ''}
         ${window.botaoTema ? window.botaoTema() : ''}
         ${u ? `<div class="usuario"><span class="avatar" aria-hidden="true">${esc(iniciais(u.nome))}</span><span class="usuario-texto"><strong>${esc(u.nome)}</strong><small>${esc(u.papel)}</small></span></div>` : ''}
+        ${perfil && perfil !== 'familia' ? `<a class="ferramenta topo-config" href="${url('configuracoes.html')}" aria-label="Configurações">${icone('engrenagem', 20)}<span class="rotulo">Configurações</span></a>` : ''}
         ${u ? '<button type="button" class="ferramenta" data-sair>Sair</button>' : perfil ? `<a class="ferramenta" href="${url('index.html')}">Início</a>` : ''}
       </div>
     </div>`;
@@ -174,12 +175,13 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
 
   // Entrada suave do conteúdo só na abertura da página (não repete a cada atualização da tela); desligada em "reduzir movimento".
   // Cartões abaixo da dobra aparecem ao rolar (com reserva: em 3 s tudo fica visível).
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+  const semMovimento = matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.dataset.movimento === 'reduzido';
+  if (!semMovimento && 'IntersectionObserver' in window) {
     const alvos = () => [...document.querySelectorAll('#pagina .bloco, #pagina .materias, #pagina .numeros, #pagina .tabela-rolagem, #pagina .alerta-info')].filter((e) => !e.classList.contains('revelar') && e.getBoundingClientRect().top > innerHeight);
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visivel'); io.unobserve(e.target); } }), { threshold: 0.1 });
     setTimeout(() => { alvos().forEach((e) => { e.classList.add('revelar'); io.observe(e); }); setTimeout(() => document.querySelectorAll('.revelar:not(.visivel)').forEach((e) => e.classList.add('visivel')), 3000); }, 1500);
   }
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.body.classList.add('entrando'); setTimeout(() => document.body.classList.remove('entrando'), 2200); }
+  if (!semMovimento) { document.body.classList.add('entrando'); setTimeout(() => document.body.classList.remove('entrando'), 2200); }
   const main = document.querySelector('main');
   const menu = MENUS[perfil] || [];
   if (menu.length) {
@@ -190,6 +192,7 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
         <nav id="menu-lateral" class="menu" aria-label="Seções de ${esc(NOMES[perfil])}">
           <p class="menu-titulo">${esc(NOMES[perfil])}</p>
           ${menu.map(([h, t, i]) => `<a href="${url(h)}" ${atual && atual[0] === h ? 'aria-current="page"' : ''} title="${esc(t)}">${icone(i, 22)}<span class="menu-rotulo">${esc(t)}</span></a>`).join('')}
+          ${sessao()?.perfil === perfil ? `<div class="menu-conta so-celular"><span class="avatar" aria-hidden="true">${esc(iniciais(sessao().nome))}</span><span class="menu-conta-texto"><strong>${esc(sessao().nome)}</strong><small>${esc(sessao().papel)}</small></span><button type="button" class="botao botao-secundario botao-mini" data-sair-menu>Sair</button></div>` : ''}
         </nav>
         <div class="area${estreito ? ' estreita' : ''}">
           <div class="area-topo">${breadcrumb({ perfil, menu, atual, titulo })}<div id="topo-acoes" class="topo-acoes"></div></div>
@@ -197,6 +200,7 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
         </div>
       </div>`;
     configurarMenu(topo, main.querySelector('.com-menu'), main.querySelector('#menu-lateral'), main.querySelector('.area'));
+    main.querySelector('[data-sair-menu]')?.addEventListener('click', sair);
   }
   if (assistente) {
     const { montarAssistente } = await import('./assistente/chat.js');

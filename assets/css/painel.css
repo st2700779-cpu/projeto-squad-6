@@ -521,3 +521,43 @@ body.pagina-login > .rodape-sistema { flex: none; }
   .barra, .progresso, .barras-trilho { transition: transform .35s var(--mola); } .barra:hover, .progresso:hover, .barras-trilho:hover { transform: scaleY(1.35); }
   .heroi { transition: transform .5s var(--mola), box-shadow .5s var(--mola); } .heroi:hover { transform: translateY(-2px); box-shadow: var(--sombra-2); }
 }
+
+/* 25 · Menu enxuto no celular, Configurações e preferência "reduzir animações" */
+.so-celular { display: none; }
+.topo-config { display: none; }
+@media (max-width: 899px) {
+  .so-celular { display: block; }
+  /* cabeçalho: só Menu, marca e Configurações; letra, exibição, guia e sair vão para Configurações e para o menu */
+  .topo [data-escala], .topo .exibicao, .topo .ferramenta-como-usar, .topo [data-sair], .topo .topo-ano { display: none; }
+  .topo-config { display: inline-flex; }
+  .topo .marca-texto small { display: none; }
+  /* menu em gaveta: mais estreito, sem título e com itens compactos */
+  .menu { width: min(76vw, 268px); padding: var(--sp-2); gap: 2px; }
+  .menu-titulo { display: none; }
+  .menu a { min-height: 44px; padding: var(--sp-2) var(--sp-3); font-size: var(--texto-sm); gap: var(--sp-2); }
+  .menu a svg { width: 20px; height: 20px; }
+  .menu-conta.so-celular { display: flex; margin-top: auto; align-items: center; gap: var(--sp-2); padding: var(--sp-3) var(--sp-2) var(--sp-1); border-top: 1px solid rgba(255, 255, 255, .18); color: var(--menu-texto); }
+  .menu-conta .avatar { flex: none; width: 34px; height: 34px; font-size: var(--texto-sm); }
+  .menu-conta-texto { display: flex; flex-direction: column; min-width: 0; flex: 1; line-height: 1.2; }
+  .menu-conta-texto strong { font-size: var(--texto-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #fff; }
+  .menu-conta-texto small { font-size: var(--texto-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--menu-texto); }
+  .rodape-sistema span:last-child { display: none; }
+}
+/* tela de Configurações */
+.cfg { display: grid; gap: var(--sp-4); max-width: 720px; }
+.cfg-grupo { border: 1px solid var(--borda); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-1); padding: var(--sp-4) var(--sp-5); display: grid; gap: var(--sp-3); }
+.cfg-grupo h2 { margin: 0; font-size: var(--texto-lg); }
+.cfg-linha { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.cfg-escala, .cfg-acoes { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.cfg-dica { display: block; margin: 2px 0 0; font-size: var(--texto-sm); font-weight: var(--peso-normal); color: var(--texto-suave); }
+.cfg-grupo > p.cfg-dica { margin: 0; }
+.cfg-so-celular { display: none; }
+@media (max-width: 899px) { .cfg-so-celular.so-celular { display: grid; gap: var(--sp-2); } }
+.segmentado { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-2); }
+.seg { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-1); min-height: 64px; border: 1.5px solid var(--borda-forte); border-radius: var(--raio); background: var(--superficie); color: var(--texto); font: inherit; font-size: var(--texto-sm); font-weight: var(--peso-forte); cursor: pointer; transition: background-color .25s ease, border-color .25s ease, transform .3s var(--mola-leve); }
+.seg[aria-pressed="true"] { border-color: var(--cor-primaria); background: var(--cor-primaria-suave); color: var(--cor-primaria); }
+.seg:active { transform: scale(.97); }
+.cfg-dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--sp-1) var(--sp-4); margin: 0; }
+.cfg-dl dt { color: var(--texto-suave); font-weight: var(--peso-normal); } .cfg-dl dd { margin: 0; font-weight: var(--peso-forte); overflow-wrap: anywhere; }
+html[data-movimento="reduzido"] *, html[data-movimento="reduzido"] *::before, html[data-movimento="reduzido"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+html[data-movimento="reduzido"] .revelar { opacity: 1; transform: none; }
