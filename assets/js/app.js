@@ -172,6 +172,8 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
   rodape.innerHTML = `<span>Portal Acadêmico v${VERSAO} · SEDUC/SE</span><span>Protótipo com escolas, pessoas e dados fictícios · dados de ${DATA_DOS_DADOS}</span>`;
   document.body.append(rodape);
 
+  // Entrada suave do conteúdo só na abertura da página (não repete a cada atualização da tela); desligada em "reduzir movimento".
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.body.classList.add('entrando'); setTimeout(() => document.body.classList.remove('entrando'), 1400); }
   const main = document.querySelector('main');
   const menu = MENUS[perfil] || [];
   if (menu.length) {

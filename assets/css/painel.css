@@ -354,3 +354,38 @@ h1, h2 { font-weight: 800; }
 .lista-perfis a:hover { background: var(--acento-suave); }
 .lista-perfis strong { color: var(--cor-primaria); }
 @media (prefers-reduced-motion: reduce) { .lista-perfis li { transition: none; } .lista-perfis li:hover { transform: none; } }
+
+/* 20 · Movimento (referência: sites de gestão escolar com cartões que sobem, barra translúcida e selos).
+   Curto (até 600 ms), sem esconder conteúdo no estado final e desligado em "reduzir movimento". */
+.topo { background: color-mix(in srgb, var(--superficie) 88%, transparent); -webkit-backdrop-filter: saturate(1.4) blur(10px); backdrop-filter: saturate(1.4) blur(10px); }
+.heroi { position: relative; overflow: hidden; background-size: 160% 160%; }
+.heroi::before { content: ""; position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(251, 191, 36, .35), transparent 70%); pointer-events: none; }
+.heroi-selo { display: inline-flex; align-items: center; gap: var(--sp-2); margin: 0 0 var(--sp-3); padding: var(--sp-1) var(--sp-3); border-radius: var(--raio-pill); background: rgba(255, 255, 255, .16); color: #fff; font-size: var(--texto-sm); font-weight: var(--peso-forte); }
+.bloco, .lista-perfis li, .materias { transition: transform var(--transicao), box-shadow var(--transicao), border-color var(--transicao); }
+.bloco:hover { transform: translateY(-3px); box-shadow: var(--sombra-2); border-color: var(--cor-primaria); }
+.bloco:hover svg, .lista-perfis li:hover strong { color: var(--cor-primaria); }
+.lista-perfis li:hover { border-color: var(--cor-primaria); }
+.menu a { transition: background var(--transicao-rapida), transform var(--transicao-rapida); }
+.menu a:hover { transform: translateX(3px); }
+.botao { transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida), background var(--transicao-rapida); }
+.botao:hover { transform: translateY(-1px); }
+.botao:active { transform: translateY(0); }
+
+@keyframes subir { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes encher { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes flutuar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes deslizar { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+body.entrando #pagina > *, body.entrando main > .heroi, body.entrando .lista-perfis li { animation: subir .5s cubic-bezier(.2, .7, .2, 1) both; }
+body.entrando #pagina > :nth-child(2), body.entrando .lista-perfis li:nth-child(2) { animation-delay: .06s; }
+body.entrando #pagina > :nth-child(3), body.entrando .lista-perfis li:nth-child(3) { animation-delay: .12s; }
+body.entrando #pagina > :nth-child(4), body.entrando .lista-perfis li:nth-child(4) { animation-delay: .18s; }
+body.entrando #pagina > :nth-child(n+5), body.entrando .lista-perfis li:nth-child(n+5) { animation-delay: .24s; }
+body.entrando .barra span { transform-origin: left; animation: encher .8s cubic-bezier(.2, .7, .2, 1) .2s both; }
+.heroi::after { animation: flutuar 4s ease-in-out infinite; }
+.heroi { animation: deslizar 14s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .heroi, .heroi::after { animation: none; }
+  .bloco, .lista-perfis li, .materias, .menu a, .botao { transition: none; }
+  .bloco:hover, .menu a:hover, .botao:hover { transform: none; }
+}

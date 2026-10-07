@@ -90,6 +90,7 @@ async function mostrar() {
 
     main.innerHTML = `
       <header class="heroi">
+        <span class="heroi-selo">Seu painel de hoje</span>
         <h1>${document.body.dataset.faixa === 'iniciais' ? `Oi, ${esc(primeiroNome)}!` : `Olá, ${esc(primeiroNome)}!`}</h1>
         <p class="heroi-linha so-detalhe">${esc(est.nome)} · ${esc(est.turma)} · ${esc(escola.nome)} · ano letivo ${lv.ano}</p>
       </header>
