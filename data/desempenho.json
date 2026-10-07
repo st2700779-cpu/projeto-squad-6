@@ -45,9 +45,9 @@
       "Geografia": 6.2,
       "Inglês": 7.8
     },
-    "frequencia": 26.6,
-    "abaixo75": 2,
-    "emRisco": 7
+    "frequencia": 91.2,
+    "abaixo75": 1,
+    "emRisco": 4
   },
   "r2": {
     "alunos": 28,
@@ -59,9 +59,9 @@
       "Geografia": 6.6,
       "Inglês": 6.3
     },
-    "frequencia": 29.8,
-    "abaixo75": 3,
-    "emRisco": 6
+    "frequencia": 88.4,
+    "abaixo75": 2,
+    "emRisco": 5
   },
   "r3": {
     "alunos": 30,
@@ -73,7 +73,7 @@
       "Geografia": 6.1,
       "Inglês": 5.6
     },
-    "frequencia": 29.3,
+    "frequencia": 82.7,
     "abaixo75": 4,
     "emRisco": 8
   },
@@ -87,7 +87,7 @@
       "Geografia": 4.9,
       "Inglês": 6.2
     },
-    "frequencia": 26.2,
+    "frequencia": 86.1,
     "abaixo75": 3,
     "emRisco": 7
   }

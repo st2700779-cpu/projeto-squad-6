@@ -50,3 +50,14 @@ export function dataPorExtenso(iso) {
 }
 /** "2026-10-07" → "07/10". */
 export const diaMes = (iso) => iso.slice(8, 10) + '/' + iso.slice(5, 7);
+
+/**
+ * Gráfico de barras simples (uma barra por linha). O valor e o nível aparecem escritos ao lado de cada barra.
+ * @param {Array<{rotulo: string, valor: number|null, nivel: object, texto?: string}>} itens
+ * @param {{maximo?: number, minimo?: number|null, formato: (v: number) => string}} o `minimo` desenha a marca do mínimo.
+ */
+export function graficoDeBarras(itens, { maximo = 100, minimo = null, formato }) {
+  return `<ul class="barras">${itens.map((i) => `<li class="nivel-${i.nivel.chave}"><span class="barras-rotulo">${esc(i.rotulo)}</span>
+    <span class="barras-trilho" aria-hidden="true">${i.valor === null ? '' : `<span style="width:${Math.max(0, Math.min(100, (i.valor / maximo) * 100)).toFixed(1)}%"></span>`}${minimo === null ? '' : `<i class="minimo" style="left:calc(${(minimo / maximo) * 100}% - 1.5px)"></i>`}</span>
+    <span><strong>${i.valor === null ? 'sem dados' : esc(i.texto ?? formato(i.valor))}</strong>${semaforo(i.nivel)}</span></li>`).join('')}</ul>`;
+}

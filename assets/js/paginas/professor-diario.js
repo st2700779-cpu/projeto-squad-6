@@ -2,7 +2,7 @@
 // validação no próprio campo e gravação pela API. No celular, cada estudante vira um cartão (classe tabela-cartoes).
 // Sem conexão (real ou simulada pelo botão Ficar offline), notas e chamada ficam em IndexedDB como "pendentes"
 // (offline.js) e seguem para o "servidor" quando a conexão volta (dominio/sincronizacao.js).
-import { iniciar, falhaDados } from '../app.js';
+import { iniciar, falhaDados, link } from '../app.js';
 import { esc, avisar, icone, numeroBR, confirmar, dataHoraBR, vazio, etiqueta, comEspera } from '../ui.js';
 import { carregar, diario, letivo, matriculas, turmasEscola, salvar as salvarDados, conjunto, registrarAcao, recarregarDoServidor } from '../dados.js';
 import { estaOnline, montarIndicador, guardarPendente, pendentes, baixarPendente, pendentePorChave } from '../offline.js';
@@ -18,8 +18,44 @@ let resultadoSync = '';     // aviso do último resultado de sincronização, mo
 let indicador = null;
 const ausentes = new Set(); // chamada rápida: todos começam presentes; o professor toca em quem faltou
 const hoje = new Date().toISOString().slice(0, 10);
+// Observações rápidas: um painel flutuante sob o campo em foco (sem mexer na altura das linhas e sem ser cortado pela rolagem da tabela).
+const flutuante = document.createElement('div');
+flutuante.className = 'chips-flutuantes';
+flutuante.hidden = true;
+flutuante.setAttribute('role', 'group');
+flutuante.setAttribute('aria-label', 'Observações rápidas');
+let campoObs = null;
 
 const CAMPOS = { n1: 'Nota do 1º bimestre', n2: 'Nota do 2º bimestre', faltas: 'Faltas' };
+// Observações rápidas: o clique (ou Alt+1 a Alt+6 no campo) preenche a observação do estudante sem digitar.
+const CHIPS = ['Não entregou', 'Entregou incompleto', 'Participou bem', 'Faltou à prova', 'Precisa de apoio', 'Evoluiu'];
+const obsCelula = (a) => `<td class="obs-celula" data-rotulo="Observação"><label class="sr-only" for="${a.id}-obs">Observação sobre ${esc(a.nome)}</label><input id="${a.id}-obs" class="entrada" type="text" maxlength="140" autocomplete="off" aria-keyshortcuts="Alt+1 Alt+2 Alt+3 Alt+4 Alt+5 Alt+6" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="obs" value="${esc(a.obs ?? '')}"></td>`;
+flutuante.innerHTML = CHIPS.map((t, i) => `<button type="button" class="chip" tabindex="-1" data-chip="${esc(t)}" title="Alt+${i + 1}">${esc(t)}</button>`).join('');
+document.body.append(flutuante);
+function posicionarChips() {
+  if (!campoObs?.isConnected || flutuante.hidden) return;
+  const r = campoObs.getBoundingClientRect();
+  const h = flutuante.offsetHeight, w = flutuante.offsetWidth;
+  flutuante.style.left = `${Math.max(8, Math.min(r.left, innerWidth - w - 8))}px`;
+  flutuante.style.top = `${r.bottom + 4 + h > innerHeight ? Math.max(8, r.top - h - 4) : r.bottom + 4}px`;
+}
+const esconderChips = () => { flutuante.hidden = true; };
+flutuante.addEventListener('mousedown', (e) => e.preventDefault()); // o campo não perde o foco ao tocar num chip
+flutuante.addEventListener('click', (e) => { const c = e.target.closest('[data-chip]'); if (c && campoObs) aplicarChip(campoObs, c.dataset.chip); });
+document.addEventListener('focusin', (e) => {
+  if (e.target.dataset?.campo === 'obs' && main.contains(e.target)) { campoObs = e.target; flutuante.hidden = false; posicionarChips(); }
+  else if (!flutuante.contains(e.target)) esconderChips();
+});
+document.addEventListener('mousedown', (e) => { if (!flutuante.contains(e.target) && e.target !== campoObs) esconderChips(); });
+addEventListener('scroll', posicionarChips, { passive: true });
+addEventListener('resize', posicionarChips);
+function aplicarChip(campo, texto) {
+  if (!campo) return;
+  const atual = campo.value.trim();
+  if (atual.split('; ').includes(texto)) return;
+  campo.value = `${atual ? `${atual}; ` : ''}${texto}`.slice(0, 140);
+  campo.dispatchEvent(new Event('input', { bubbles: true }));
+}
 
 async function mostrar() {
   try {
@@ -44,10 +80,10 @@ async function mostrar() {
 }
 function tirarFoto() {
   baseline = {};
-  Object.entries(dados).forEach(([t, alunos]) => alunos.forEach((a) => { baseline[`${t}|${a.id}`] = { n1: a.n1, n2: a.n2, faltas: a.faltas }; }));
+  Object.entries(dados).forEach(([t, alunos]) => alunos.forEach((a) => { baseline[`${t}|${a.id}`] = { n1: a.n1, n2: a.n2, faltas: a.faltas, obs: a.obs ?? '' }; }));
 }
 // Estudantes da turma aberta cujas notas ou faltas mudaram desde a última foto.
-const alterados = () => dados[turmaId].filter((a) => { const b = baseline[`${turmaId}|${a.id}`]; return !b || b.n1 !== a.n1 || b.n2 !== a.n2 || b.faltas !== a.faltas; });
+const alterados = () => dados[turmaId].filter((a) => { const b = baseline[`${turmaId}|${a.id}`]; return !b || b.n1 !== a.n1 || b.n2 !== a.n2 || b.faltas !== a.faltas || b.obs !== (a.obs ?? ''); });
 
 // Envia o que ficou pendente: relê o "servidor", aplica pela regra do registro mais recente e limpa a fila.
 async function sincronizarAgora() {
@@ -72,6 +108,7 @@ async function sincronizarAgora() {
 }
 
 function desenhar() {
+  esconderChips();
   if (!minhas.length) {
     main.innerHTML = `<h1>Diário de classe</h1>${vazio('Nenhuma turma alocada', 'O diário abre quando a coordenação da escola aloca você em uma turma aprovada.')}`;
     return;
@@ -82,17 +119,19 @@ function desenhar() {
   const alunos = dados[turmaId];
   const campo = (a, c, max) => `<td data-rotulo="${CAMPOS[c]}"><label class="sr-only" for="${a.id}-${c}">${CAMPOS[c]} de ${esc(a.nome)}</label><input id="${a.id}-${c}" class="entrada" inputmode="decimal" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="${c}" data-max="${max}" data-vazio="${c !== 'faltas' && a[c] === null}" value="${c === 'faltas' ? a[c] : (a[c] === null ? '' : numeroBR(a[c]))}"></td>`;
   main.innerHTML = `
-    <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 esp-b-5">
-      <div><h1 class="esp-b-1">Diário de classe · ${esc(t.nome)} · ${esc(componente)}</h1><p class="texto-suave esp-t-0 esp-b-0">${esc(nomeCurto(escola.nome))} · turma ${esc(codigoDaTurma(t))} · ${bimestres}º bimestre lançado · ${aulasDadas} aulas dadas</p></div>
-      <div class="campo esp-t-0 esp-b-0 campo-turma"><label for="turma">Turma e componente</label><select id="turma" class="entrada">${minhas.map((m) => `<option value="${m.turma.id}" ${m.turma.id === turmaId ? 'selected' : ''}>${esc(m.turma.nome)} — ${esc(m.componente)}</option>`).join('')}</select></div>
+    <div class="barra-turma">
+      <div class="campo campo-turma"><label for="turma">Turma e componente</label><select id="turma" class="entrada">${minhas.map((m) => `<option value="${m.turma.id}" ${m.turma.id === turmaId ? 'selected' : ''}>${esc(m.turma.nome)} — ${esc(m.componente)}</option>`).join('')}</select></div>
+      <p class="info-turma esp-b-0">${esc(nomeCurto(escola.nome))} · turma ${esc(codigoDaTurma(t))} · ${bimestres}º bimestre lançado · ${aulasDadas} aulas dadas</p>
+      <a class="botao botao-secundario botao-mini" href="${link('professor/mapa.html')}?turma=${turmaId}">Mapa de calor da turma</a>
     </div>
+    <h1 class="esp-b-3">Diário de classe · ${esc(t.nome)} · ${esc(componente)}</h1>
     <div id="resultado-sync" class="esp-b-3">${resultadoSync}</div>
     ${alunos.length ? `${painelChamada(alunos)}
     <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-notas"><caption class="sr-only">Chamada, notas e faltas de ${esc(t.nome)}, ${esc(componente)}</caption>
-      <thead><tr><th scope="col">Estudante</th><th scope="col">Faltou hoje</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th></tr></thead>
-      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}${pendentesIds.has(`${turmaId}|${a.id}`) ? `<span class="pendente-marca">${etiqueta('pendente de envio', 'atencao')}</span>` : ''}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${celulaHoje(a)}${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td></tr>`; }).join('')}</tbody>
+      <thead><tr><th scope="col">Estudante</th><th scope="col">Faltou hoje</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th><th scope="col">Observação</th></tr></thead>
+      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}${pendentesIds.has(`${turmaId}|${a.id}`) ? `<span class="pendente-marca">${etiqueta('pendente de envio', 'atencao')}</span>` : ''}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${celulaHoje(a)}${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td>${obsCelula(a)}</tr>`; }).join('')}</tbody>
     </table></div>
-    <p class="contagem">${alunos.length} ${alunos.length === 1 ? 'estudante' : 'estudantes'} · Enter desce para o próximo estudante · Tab vai para o campo seguinte</p>
+    <p class="contagem">${alunos.length} ${alunos.length === 1 ? 'estudante' : 'estudantes'} · Enter desce para o próximo estudante · Shift+Enter sobe · Tab vai para o campo seguinte · Alt+1 a Alt+6 inserem uma observação rápida</p>
     <div class="barra-acoes compacta"><button type="button" class="botao" id="salvar">Salvar notas e faltas</button><span class="texto-suave" id="estado-diario">As notas salvas aparecem para a família.</span></div>
     <div id="erro-diario" role="alert"></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.')}`;
 }
@@ -158,6 +197,7 @@ async function registrarChamada() {
 // Regra de um campo do diário: devolve a mensagem de erro ou '' se está certo.
 // Nota: 0 a 10 (vírgula ou ponto); faltas: inteiro de 0 ao total de aulas dadas. Nota em branco só vale se ainda não foi lançada.
 function erroDoCampo(c) {
+  if (c.dataset.campo === 'obs') return '';
   const texto = c.value.trim();
   if (texto === '' && c.dataset.vazio === 'true') return '';
   const v = Number(texto.replace(',', '.'));
@@ -190,6 +230,7 @@ async function salvar() {
   }
   for (const c of campos) {
     const a = dados[turmaId].find((x) => x.id === c.dataset.aluno);
+    if (c.dataset.campo === 'obs') { a.obs = c.value.trim(); continue; }
     if (c.value.trim() === '') continue; // nota ainda não lançada: continua em branco
     const v = Number(c.value.replace(',', '.'));
     a[c.dataset.campo] = c.dataset.campo === 'faltas' ? v : Math.round(v * 10) / 10;
@@ -201,7 +242,7 @@ async function salvar() {
       for (const a of mudaram) {
         const chave = `notas|${turmaId}|${a.id}`;
         const anterior = await pendentePorChave(chave);
-        await guardarPendente({ chave, tipo: 'notas', turmaId, alunoId: a.id, valores: { n1: a.n1, n2: a.n2, faltas: a.faltas }, baseEm: anterior ? anterior.baseEm : (meta[`${turmaId}|${a.id}`]?.em ?? null), criadoEm: new Date().toISOString() });
+        await guardarPendente({ chave, tipo: 'notas', turmaId, alunoId: a.id, valores: { n1: a.n1, n2: a.n2, faltas: a.faltas, obs: a.obs ?? '' }, baseEm: anterior ? anterior.baseEm : (meta[`${turmaId}|${a.id}`]?.em ?? null), criadoEm: new Date().toISOString() });
         pendentesIds.add(`${turmaId}|${a.id}`);
       }
       tirarFoto();
@@ -249,17 +290,21 @@ main.addEventListener('input', (e) => {
 main.addEventListener('focusin', (e) => { if (e.target.dataset?.aluno) e.target.select(); });
 main.addEventListener('keydown', (e) => {
   const c = e.target;
-  if (e.key !== 'Enter' || !c.dataset?.aluno) return;
+  if (!c.dataset?.aluno) return;
+  const alt = /^Digit([1-6])$/.exec(e.code);
+  if (e.altKey && alt && c.dataset.campo === 'obs') { e.preventDefault(); aplicarChip(c, CHIPS[Number(alt[1]) - 1]); return; }
+  const passo = e.key === 'Enter' ? (e.shiftKey ? -1 : 1) : e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+  if (!passo) return;
   e.preventDefault();
   const mesmos = [...main.querySelectorAll(`[data-campo="${c.dataset.campo}"]`)];
-  mesmos[(mesmos.indexOf(c) + 1) % mesmos.length]?.focus();
+  mesmos[(mesmos.indexOf(c) + passo + mesmos.length) % mesmos.length]?.focus();
 });
 main.addEventListener('focusout', (e) => {
   const c = e.target;
   if (!c.dataset?.aluno) return;
   const texto = erroDoCampo(c);
   mostrarErro(c, texto);
-  if (!texto && c.dataset.campo !== 'faltas' && c.value.trim() !== '') c.value = numeroBR(Number(c.value.replace(',', '.')));
+  if (!texto && c.dataset.campo !== 'faltas' && c.dataset.campo !== 'obs' && c.value.trim() !== '') c.value = numeroBR(Number(c.value.replace(',', '.')));
 });
 main.addEventListener('change', (e) => { if (e.target.id === 'turma') { turmaId = e.target.value; ausentes.clear(); desenhar(); } });
 mostrar();

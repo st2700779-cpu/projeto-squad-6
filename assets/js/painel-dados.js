@@ -1,8 +1,8 @@
 // Carrega e junta os dados que os painéis do aluno e do responsável usam (desempenho, horário, agenda, quiz).
-import { carregar, conjunto, diario, letivo, dataDeReferencia } from './dados.js';
+import { carregar, conjunto, diario, letivo, dataDeReferencia, turmasDaRede } from './dados.js';
 import { obter, definir } from './estado.js';
 import { dataBR } from './ui.js';
-import { desempenho, margemDeFaltas, semaforoFrequencia, horarioDaTurma, montarAgenda, diaDaSemana, aulasDoDia, notaNecessaria } from './regras.js';
+import { desempenhoDaTurma, mediaGeral, SERIES, desempenho, margemDeFaltas, semaforoFrequencia, horarioDaTurma, montarAgenda, diaDaSemana, aulasDoDia, notaNecessaria } from './regras.js';
 
 const feitos = (id) => (obter('agenda-feitos', {})[id] || []);
 /** Marca ou desmarca um item da agenda como feito (só no navegador). */
@@ -51,4 +51,28 @@ export async function avisosVisiveis({ perfil, est }) {
   const doEstudante = (c) => c.escolaId === est?.escolaId && (c.publico === 'escola' || (c.turma === est?.turma && (c.publico === 'turma' || (c.publico === 'responsaveis' && perfil === 'responsavel'))));
   const enviados = comunicados.filter(doEstudante).map((c) => ({ titulo: c.assunto, texto: c.texto, iso: c.data, origem: c.de, reuniao: false }));
   return [...enviados, ...base].sort((a, b) => b.iso.localeCompare(a.iso)).map((a) => ({ ...a, data: dataBR(a.iso) }));
+}
+
+/**
+ * Desempenho de cada turma aprovada da escola (do diário quando existe; senão, dos dados-base) e os totais da escola.
+ * @returns {Promise<{lista: Array<{turma: object, alunos: number, frequencia: number|null, abaixo75: number, emRisco: number, componentes: object, media: number|null, doDiario: boolean}>, totais: {alunos: number, frequencia: number|null, abaixo75: number, emRisco: number}, lv: object, hoje: string}>}
+ */
+export async function desempenhoDaEscola(escolaId) {
+  const [turmas, dia, sementes, lv] = await Promise.all([turmasDaRede(), diario(), carregar('desempenho'), letivo()]);
+  const lista = turmas
+    .filter((t) => t.escolaId === escolaId && t.situacao === 'Aprovada' && (dia[t.id]?.length || sementes[t.id]))
+    .map((t) => { const d = desempenhoDaTurma(t, dia[t.id], sementes[t.id], lv.aulasDadas); return { turma: t, ...d, media: mediaGeral(d.componentes) }; })
+    .sort((a, b) => SERIES.indexOf(a.turma.serie) - SERIES.indexOf(b.turma.serie) || a.turma.nome.localeCompare(b.turma.nome, 'pt-BR'));
+  const alunos = lista.reduce((n, x) => n + x.alunos, 0);
+  const comFreq = lista.filter((x) => x.frequencia !== null);
+  const pesoFreq = comFreq.reduce((n, x) => n + x.alunos, 0);
+  return {
+    lista, lv, hoje: lv.dataReferencia,
+    totais: {
+      alunos,
+      frequencia: pesoFreq ? Math.round((comFreq.reduce((n, x) => n + x.frequencia * x.alunos, 0) / pesoFreq) * 10) / 10 : null,
+      abaixo75: lista.reduce((n, x) => n + x.abaixo75, 0),
+      emRisco: lista.reduce((n, x) => n + x.emRisco, 0)
+    }
+  };
 }
