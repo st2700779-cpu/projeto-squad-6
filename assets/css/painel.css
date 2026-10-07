@@ -400,3 +400,41 @@ body.entrando .barra span { transform-origin: left; animation: encher .8s cubic-
 .revelar { opacity: 0; transform: translateY(18px); transition: opacity .55s cubic-bezier(.2,.7,.2,1), transform .55s cubic-bezier(.2,.7,.2,1); }
 .revelar.visivel { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .revelar { opacity: 1; transform: none; transition: none; } }
+
+/* 22 · Tom sério: cantos pouco arredondados, uma só cor de destaque (azul-marinho), sem degradês nem faixas coloridas.
+   Vem por último de propósito: reduz o "visual vivo" das seções 16 a 21 sem remover a estrutura. */
+:root { --raio-sm: 2px; --raio: 4px; --raio-lg: 6px; --raio-pill: 4px; --heroi-1: #12326b; --heroi-2: #12326b; --destaque: #9fb8e6; --sobre-destaque: #0b2a4a; --menu-fundo: #12285a; --menu-ativo: #1e4fa8; --sombra-1: 0 1px 2px rgba(17, 24, 39, .06); --sombra-2: 0 2px 8px rgba(17, 24, 39, .12); }
+:root:not([data-tema="escuro"]):not([data-contraste="alto"]) .topo { border-top: 3px solid #12285a; border-image: none; }
+:root:not([data-tema="escuro"]):not([data-contraste="alto"]) .botao:not(.botao-secundario):not(.botao-texto):not(.botao-perigo) { box-shadow: none; filter: none; }
+.marca-texto strong { background: none; color: var(--texto); }
+.marca::before { border-radius: 4px; background: #12285a; color: #fff; }
+.heroi { background: #12326b; animation: none; border-radius: var(--raio-lg); box-shadow: none; padding: var(--sp-5) var(--sp-6); }
+.heroi::before, .heroi::after { display: none; }
+.heroi-selo { border-radius: 3px; background: rgba(255, 255, 255, .12); font-weight: var(--peso-medio); }
+.heroi-selo::before { display: none; }
+.heroi h1 { font-weight: 700; }
+#pagina > h1:first-child { padding-bottom: 0; }
+#pagina > h1:first-child::after { display: none; }
+#pagina h2 { border-left-width: 3px; padding-left: var(--sp-2); font-weight: 700; }
+h1, h2 { font-weight: 700; }
+.numeros .numero, .numeros .numero:nth-child(n) { border-top: 1px solid var(--borda); border-left: 3px solid var(--cor-primaria); }
+.lista-perfis li, .lista-perfis li:nth-child(n) { border-top: 1px solid var(--borda); border-left: 3px solid var(--cor-primaria); }
+.lista-perfis li:hover { transform: none; box-shadow: var(--sombra-2); }
+.lista-perfis a { min-height: 96px; }
+.progresso span, .barra span { background-image: none; background-color: var(--cor-primaria); border-radius: 2px; }
+.progresso, .barra { border-radius: 2px; }
+.etiqueta { border-radius: 3px; }
+.cartao-grande, .cartao-grande:hover { box-shadow: none; }
+.filtros button[aria-pressed="true"] { border-bottom-color: var(--cor-primaria); }
+.seletor-estudante button[aria-pressed="true"] { box-shadow: none; border-color: var(--acento); }
+.menu a[aria-current="page"] { background: var(--menu-ativo); box-shadow: none; }
+.menu-titulo { color: #9fb8e6; font-weight: 700; }
+.bloco:hover { transform: none; box-shadow: var(--sombra-2); }
+.menu a:hover { transform: none; }
+.botao:hover { transform: none; }
+.topo { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--superficie); }
+.form-login { border-top: 1px solid var(--borda); border-left: 4px solid var(--cor-primaria); box-shadow: var(--sombra-1); }
+.avatar { border-radius: 50%; }
+body.entrando #pagina > *, body.entrando main > .heroi, body.entrando .lista-perfis li { animation-duration: .25s; }
+body.entrando .barra span { animation-duration: .5s; }
+.revelar { transform: translateY(8px); transition-duration: .3s; }
