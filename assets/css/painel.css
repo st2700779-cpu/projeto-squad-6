@@ -268,3 +268,28 @@ body.projetor .reuniao .numero strong { font-size: var(--texto-4xl); }
 /* Telas muito estreitas: o nome do portal sai do cabeçalho para dar lugar às palavras dos botões (o início continua no "Início" do caminho). */
 @media (max-width: 439px) { .topo .marca { display: none; } .topo-direita { margin-left: auto; } }
 .mapa-calor th small, .comparativo th small { display: block; font-weight: var(--peso-normal); color: var(--texto-suave); }
+
+/* 16 · Visual vivo (claro): faixa colorida no topo, botões em degradê, cartões com relevo, cantos arredondados */
+:root:not([data-tema="escuro"]):not([data-contraste="alto"]) .topo { border-top: 5px solid transparent; border-image: linear-gradient(90deg, #4f46e5, #a855f7 45%, #ec4899 75%, #f59e0b) 1; }
+:root:not([data-tema="escuro"]):not([data-contraste="alto"]) .botao:not(.botao-secundario):not(.botao-texto):not(.botao-perigo) { background-image: linear-gradient(135deg, #4f46e5, #7c3aed); border-color: #5b3fe0; box-shadow: 0 2px 8px rgba(79, 70, 229, .35); }
+:root:not([data-tema="escuro"]):not([data-contraste="alto"]) .botao:not(.botao-secundario):not(.botao-texto):not(.botao-perigo):hover { filter: brightness(1.08); box-shadow: 0 4px 12px rgba(79, 70, 229, .45); }
+.cartao, .numero, .ficha-resultado, .cartao-turma, .painel-hoje > section, .resumo-filho > div, .tabela-rolagem, .materias, .dia-aulas, .selo { box-shadow: var(--sombra-1); }
+.menu a { border-radius: var(--raio); }
+.menu a[aria-current="page"] { background: var(--acento-suave); box-shadow: inset 4px 0 0 var(--acento); border-left-color: transparent; }
+h1 { letter-spacing: -.02em; }
+.marca-texto strong { background: linear-gradient(90deg, var(--cor-primaria), #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+:root[data-tema="escuro"] .marca-texto strong, :root[data-contraste="alto"] .marca-texto strong { background: none; color: var(--texto); }
+.etiqueta { border-radius: var(--raio-pill); padding-inline: var(--sp-3); }
+.cartao-grande { box-shadow: 0 4px 0 var(--fx); }
+.cartao-grande:hover { box-shadow: 0 6px 0 var(--fx); }
+.lista-perfis li { transition: transform var(--transicao-rapida); }
+.lista-perfis li:hover { transform: translateX(4px); }
+.lista-perfis strong { color: var(--cor-primaria); }
+/* Entrada: cartões em grade, um por perfil */
+.lista-perfis { max-width: none; border-top: 0; display: grid; gap: var(--sp-4); grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.lista-perfis li { display: block; border: 1px solid var(--borda); border-top: 5px solid var(--cor-primaria); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-1); }
+.lista-perfis li:nth-child(5n+2) { border-top-color: #ec4899; } .lista-perfis li:nth-child(5n+3) { border-top-color: #f59e0b; }
+.lista-perfis li:nth-child(5n+4) { border-top-color: #0b7a5a; } .lista-perfis li:nth-child(5n+5) { border-top-color: #a855f7; }
+.lista-perfis li:hover { transform: translateY(-3px); box-shadow: var(--sombra-2); }
+.lista-perfis a { padding: var(--sp-5); min-height: 120px; border-radius: var(--raio-lg); }
+.lista-perfis a:hover { background: var(--cor-primaria-suave); }

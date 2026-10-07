@@ -10,9 +10,9 @@
   color-scheme: light;
 
   /* 1 · Paleta bruta (institucional: azul de governo, com neutros frios) */
-  --azul-50: #eaf1fb;  --azul-100: #d4e2f7; --azul-200: #a9c5ee; --azul-600: #1351b4; --azul-700: #0f408e; --azul-800: #0c326f;
-  --neutro-0: #ffffff;  --neutro-50: #f6f7f9; --neutro-100: #edeff2; --neutro-200: #dfe2e7; --neutro-300: #c6cbd3;
-  --neutro-500: #6b7280; --neutro-600: #4b5563; --neutro-700: #374151; --neutro-800: #1f2937; --neutro-900: #111827;
+  --azul-50: #eceeff;  --azul-100: #dadcff; --azul-200: #b4b8f5; --azul-600: #4f46e5; --azul-700: #4338ca; --azul-800: #3730a3;
+  --neutro-0: #ffffff;  --neutro-50: #f4f5ff; --neutro-100: #eceefb; --neutro-200: #dcdff2; --neutro-300: #c6cbd3;
+  --neutro-500: #6b7280; --neutro-600: #4a4f72; --neutro-700: #353a5c; --neutro-800: #1b1d3b; --neutro-900: #111227;
 
   /* 2 · Tokens semânticos (é o que os componentes usam) */
   --cor-primaria: var(--azul-600);        /* ações principais, links, foco */
@@ -20,17 +20,17 @@
   --cor-primaria-ativa: var(--azul-800);
   --cor-primaria-suave: var(--azul-50);   /* fundo de item selecionado */
   --sobre-primaria: #ffffff;              /* texto sobre a cor primária */
-  --cor-secundaria: #0f5b3a;              /* apoio institucional (verde escuro) */
+  --cor-secundaria: #0b7a5a;              /* apoio institucional (verde escuro) */
   --fundo-app: var(--neutro-50);          /* fundo da página */
   --superficie: var(--neutro-0);          /* cartões, painéis, campos */
   --superficie-2: var(--neutro-100);      /* cabeçalho de tabela, itens inativos */
   --texto: var(--neutro-800);
   --texto-suave: var(--neutro-600);
   --borda: var(--neutro-200);             /* separadores decorativos */
-  --borda-forte: #767e8b;                 /* contorno de campos e botões (3:1 sobre a superfície) */
+  --borda-forte: #70769a;                 /* contorno de campos e botões (3:1 sobre a superfície) */
   --foco: var(--azul-600);
   --overlay: rgba(17, 24, 39, .6);
-  --zebra: #f9fafb;                       /* linhas alternadas de tabela */
+  --zebra: #f8f9ff;                       /* linhas alternadas de tabela */
   --erro-solido: #b42318; --sobre-erro: #ffffff;   /* botão de perigo */
 
   --sucesso: #157a2b;  --sucesso-fundo: #e6f4e9;  --sucesso-borda: #8fcf9d;
@@ -52,10 +52,10 @@
   --sp-8: 2rem; --sp-10: 2.5rem; --sp-12: 3rem; --sp-16: 4rem;
 
   /* Forma, elevação e movimento */
-  --raio-sm: 3px; --raio: 4px; --raio-lg: 6px; --raio-pill: 999px;  /* círculo só em avatar e chave liga/desliga */
+  --raio-sm: 6px; --raio: 10px; --raio-lg: 16px; --raio-pill: 999px;  /* círculo só em avatar e chave liga/desliga */
   /* Sombra só em elemento que flutua (menu gaveta, painéis suspensos, janelas, aviso). Cartões e tabelas usam só borda. */
-  --sombra-1: none;
-  --sombra-2: 0 2px 8px rgba(17, 24, 39, .14);
+  --sombra-1: 0 1px 3px rgba(40, 40, 110, .10), 0 1px 2px rgba(40, 40, 110, .06);
+  --sombra-2: 0 4px 14px rgba(40, 40, 110, .16);
   --sombra-3: 0 8px 24px rgba(17, 24, 39, .22);
   --transicao-rapida: 150ms ease; --transicao: 200ms ease; --transicao-lenta: 250ms ease;
   --toque: 44px;             /* alvo mínimo de toque e clique */
