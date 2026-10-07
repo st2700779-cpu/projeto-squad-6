@@ -8,6 +8,7 @@ import { esc, icone, comEspera } from '../ui.js';
 const params = new URLSearchParams(location.search);
 const perfil = params.get('perfil');
 const main = await iniciar();
+document.body.classList.add('pagina-login');
 
 if (!PERFIS[perfil]) {
   location.replace(link('index.html'));

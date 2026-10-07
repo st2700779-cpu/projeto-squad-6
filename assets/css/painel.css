@@ -477,3 +477,47 @@ body.entrando .anel-valor { transition: stroke-dashoffset 1.2s var(--mola) .3s; 
   .heroi h1, .heroi-linha, .heroi-selo, body.entrando .menu a, body.entrando .topo { animation: none; }
   .revelar { opacity: 1; transform: none; transition: none; }
 }
+
+/* 24 · Tela de login centralizada e movimento ao passar o mouse */
+body.pagina-login { display: flex; flex-direction: column; min-height: 100vh; }
+body.pagina-login > main.conteudo { flex: 1 0 auto; width: 100%; max-width: 520px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: var(--sp-6); padding-bottom: var(--sp-8); }
+body.pagina-login main > h1 { margin-bottom: var(--sp-2); }
+body.pagina-login main > .pagina-descricao { margin-inline: auto; }
+body.pagina-login .form-login, body.pagina-login .demo, body.pagina-login .sessao-atual { width: 100%; max-width: 420px; margin-inline: auto; text-align: left; }
+body.pagina-login .rodape-sistema { margin-top: auto; width: 100%; }
+body.pagina-login > .rodape-sistema { flex: none; }
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  /* cartão e campos */
+  .form-login { transition: transform .5s var(--mola), box-shadow .5s var(--mola); }
+  .form-login:hover { transform: translateY(-4px); box-shadow: var(--sombra-2); }
+  .form-login .entrada:hover { border-color: var(--cor-primaria); box-shadow: 0 0 0 4px rgba(30, 79, 168, .10); }
+  /* botão principal: brilho que atravessa */
+  .botao { position: relative; overflow: hidden; isolation: isolate; }
+  .botao:not(.botao-secundario):not(.botao-texto)::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .28) 50%, transparent 65%); transform: translateX(-120%); transition: transform .8s var(--mola); }
+  .botao:not(.botao-secundario):not(.botao-texto):hover::after { transform: translateX(120%); }
+  /* botão secundário: preenchimento que cresce a partir de baixo */
+  .botao-secundario::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--cor-primaria-suave); transform: scaleY(0); transform-origin: bottom; transition: transform .35s var(--mola); }
+  .botao-secundario:hover::before { transform: scaleY(1); }
+  .botao-secundario:hover { border-color: var(--cor-primaria); color: var(--cor-primaria); }
+  /* detalhes e links */
+  .demo summary { transition: background-color .25s ease, padding-left .35s var(--mola); }
+  .demo summary:hover { background: var(--cor-primaria-suave); padding-left: calc(var(--sp-4) + 6px); }
+  .demo-conta { transition: background-color .25s ease; } .demo-conta:hover { background: var(--superficie-2); }
+  a:not(.botao):not(.marca):not(.bloco):not([class*="cartao"]) { text-decoration-thickness: 1px; text-underline-offset: 3px; transition: color .25s ease, text-decoration-thickness .25s ease, text-underline-offset .3s var(--mola); }
+  a:not(.botao):not(.marca):not(.bloco):not([class*="cartao"]):hover { text-decoration-thickness: 2px; text-underline-offset: 5px; }
+  /* cabeçalho e menu */
+  .ferramenta { transition: transform .35s var(--mola-leve), background-color .25s ease, border-color .25s ease; }
+  .ferramenta:hover { transform: translateY(-2px) scale(1.04); }
+  .ferramenta:active { transform: scale(.97); transition-duration: .1s; }
+  .avatar { transition: transform .4s var(--mola-leve), box-shadow .3s ease; }
+  .avatar:hover { transform: scale(1.12) rotate(-4deg); box-shadow: 0 4px 10px rgba(18, 40, 90, .25); }
+  .marca { transition: transform .4s var(--mola); } .marca:hover { transform: translateX(3px); }
+  .marca::before { transition: transform .5s var(--mola-leve); } .marca:hover::before { transform: rotate(-8deg) scale(1.08); }
+  /* tabelas, etiquetas, indicadores */
+  .tabela tbody tr:hover > * { background: var(--cor-primaria-suave); }
+  .tabela tbody tr:hover > :first-child { box-shadow: inset 3px 0 0 var(--cor-primaria); }
+  .etiqueta, .sinal { transition: transform .35s var(--mola-leve); } .etiqueta:hover, .sinal:hover { transform: scale(1.08); }
+  .barra, .progresso, .barras-trilho { transition: transform .35s var(--mola); } .barra:hover, .progresso:hover, .barras-trilho:hover { transform: scaleY(1.35); }
+  .heroi { transition: transform .5s var(--mola), box-shadow .5s var(--mola); } .heroi:hover { transform: translateY(-2px); box-shadow: var(--sombra-2); }
+}
