@@ -76,7 +76,7 @@ async function entrar() {
   const senha = main.querySelector('#senha').value;
   limpar();
   const vazios = [];
-  if (!login.trim()) vazios.push(erro('login', `Informe ${P.campo.toLowerCase() === 'matrícula' ? 'a matrícula' : P.campo.toLowerCase() === 'usuário institucional' ? 'o usuário institucional' : 'a matrícula funcional'}.`));
+  if (!login.trim()) vazios.push(erro('login', `Informe ${P.informe}.`));
   if (!senha) vazios.push(erro('senha', 'Informe a senha.'));
   if (vazios.length) { vazios[0].focus(); return; }
   await comEspera(main.querySelector('#entrar'), async () => {
@@ -87,7 +87,7 @@ async function entrar() {
     if (!conta) {
       const outra = todas.find((u) => normaliza(u.login) === normaliza(login));
       if (outra) erro('login', `Este acesso é de ${PERFIS[outra.perfil].rotulo}. Volte à entrada e escolha esse perfil.`).focus();
-      else erro('login', `Não encontramos ${perfil === 'aluno' ? 'essa matrícula' : perfil === 'professor' ? 'essa matrícula funcional' : 'esse usuário'}. Confira os dados ou use a conta de demonstração abaixo.`).focus();
+      else erro('login', `Não encontramos ${P.naoEncontrado}. Confira os dados ou use a conta de demonstração abaixo.`).focus();
       return;
     }
     if (conta.senha !== senha) {

@@ -2,7 +2,8 @@
 import { icone, esc } from './ui.js';
 import { aplicarEscala, mudarEscala } from './acessibilidade.js';
 import { definir } from './estado.js';
-import { RAIZ, letivo } from './dados.js';
+import { RAIZ, letivo, estudantes } from './dados.js';
+import { faixaDaSerie } from './dominio/painel.js';
 import { sessao, exigirPerfil, sair } from './auth.js';
 
 const url = (caminho) => new URL(caminho, RAIZ).href;
@@ -11,17 +12,21 @@ const VERSAO = '1.0';
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
   navigator.serviceWorker.register(new URL('sw.js', RAIZ)).catch(() => { /* sem service worker o portal funciona igual, só não abre sem internet */ });
 }
-const DATA_DOS_DADOS = '29/09/2026'; // data de referência dos dados de demonstração
+const DATA_DOS_DADOS = '07/10/2026'; // data de referência dos dados de demonstração (igual a dataReferencia em data/letivo.json)
 
 /** Itens do menu lateral de cada visão: [página, rótulo, ícone]. */
 export const MENUS = {
   familia: [['familia/matricula.html', 'Matrícula', 'formulario'], ['familia/mapa.html', 'Escolas com vaga', 'mapa'], ['familia/guia.html', 'Ouvir instruções', 'alto']],
-  aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/carteirinha.html', 'Carteirinha', 'cartao'], ['aluno/linha-do-tempo.html', 'Vida escolar', 'linha'], ['aluno/boletim-falado.html', 'Boletim falado', 'alto'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario']],
-  professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/avisos.html', 'Avisos', 'calendario']],
-  escola: [['escola/index.html', 'Início', 'escola'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/estudantes.html', 'Estudantes', 'usuario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/professores.html', 'Professores habilitados', 'pessoas'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario']],
-  rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/mapa.html', 'Mapa de vagas', 'mapa'], ['rede/professores.html', 'Professores habilitados', 'pessoas'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro']]
+  aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/frequencia.html', 'Frequência', 'grafico'], ['aluno/horario.html', 'Meu horário', 'relogio'], ['aluno/rotina.html', 'Provas e rotina', 'lista'], ['aluno/quiz.html', 'Quiz', 'pergunta'], ['aluno/carteirinha.html', 'Carteirinha', 'cartao'], ['aluno/linha-do-tempo.html', 'Vida escolar', 'linha'], ['aluno/boletim-falado.html', 'Boletim falado', 'alto'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario'], ['aluno/cadastro.html', 'Meus dados', 'cadastro']],
+  responsavel: [['responsavel/index.html', 'Início', 'usuario'], ['responsavel/boletim.html', 'Notas e faltas', 'livro'], ['responsavel/calendario.html', 'Calendário e avisos', 'calendario'], ['responsavel/matricula.html', 'Matrícula e documentos', 'documento']],
+  professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/mapa.html', 'Mapa de calor', 'grafico'], ['professor/horario.html', 'Meu horário', 'relogio'], ['professor/materiais.html', 'Materiais e planos', 'caixa'], ['professor/comunicados.html', 'Comunicados', 'megafone'], ['professor/avisos.html', 'Avisos', 'calendario']],
+  escola: [['escola/index.html', 'Início', 'escola'], ['escola/solicitacoes.html', 'Solicitações', 'lista'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/estudantes.html', 'Estudantes', 'usuario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/professores.html', 'Professores habilitados', 'pessoas'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario']],
+  diretor: [['diretor/index.html', 'Visão da escola', 'escola'], ['diretor/mapa.html', 'Mapa de calor', 'grafico'], ['diretor/reuniao.html', 'Tela de reunião', 'imprimir'], ['diretor/comunicados.html', 'Comunicados', 'megafone'], ['diretor/atos.html', 'Atos autorizativos', 'documento']],
+  coordenador: [['coordenador/index.html', 'Turmas e desempenho', 'grafico'], ['coordenador/comparativo.html', 'Comparar turmas', 'trocar'], ['coordenador/reuniao.html', 'Reunião pedagógica', 'imprimir'], ['coordenador/horarios.html', 'Horários', 'relogio']],
+  rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/mapa.html', 'Mapa de vagas', 'mapa'], ['rede/professores.html', 'Professores habilitados', 'pessoas'], ['rede/matrizes.html', 'Matrizes curriculares', 'livro']],
+  profin: [['profin/index.html', 'Painel por escola', 'moeda'], ['profin/relatorio.html', 'Relatório consolidado', 'documento']]
 };
-const NOMES = { familia: 'Matrícula', aluno: 'Aluno', professor: 'Professor', escola: 'Escola', rede: 'Rede (SEDUC e DRE)' };
+const NOMES = { familia: 'Matrícula', aluno: 'Aluno', responsavel: 'Responsável', professor: 'Professor', escola: 'Secretaria', diretor: 'Direção', coordenador: 'Coordenação', rede: 'Rede (SEDUC e DRE)', profin: 'PROFIN' };
 const CHAVE_MENU = 'portal-menu-recolhido';
 const lerPreferencia = () => { try { return localStorage.getItem(CHAVE_MENU) === '1'; } catch { return false; } };
 const gravarPreferencia = (v) => { try { localStorage.setItem(CHAVE_MENU, v ? '1' : '0'); } catch { /* segue sem guardar */ } };
@@ -34,7 +39,7 @@ function cabecalho({ perfil }) {
   topo.className = 'topo';
   topo.innerHTML = `
     <div class="topo-interno">
-      ${perfil ? `<button type="button" class="ferramenta topo-menu-botao" aria-controls="menu-lateral" aria-expanded="false" aria-label="Abrir menu">${icone('menu', 22)}</button>` : ''}
+      ${perfil ? `<button type="button" class="ferramenta topo-menu-botao" aria-controls="menu-lateral" aria-expanded="false" aria-label="Abrir menu">${icone('menu', 22)}<span class="rotulo-menu">Menu</span></button>` : ''}
       <a class="marca" href="${url('index.html')}" aria-label="Portal Acadêmico, página inicial">
         <span class="marca-texto"><small>Secretaria de Estado da Educação · Sergipe</small><strong>Portal Acadêmico</strong></span>
       </a>
@@ -116,9 +121,33 @@ function configurarMenu(topo, conteudo, menu, area) {
   ajustar();
 }
 
+// Visual por faixa etária: "iniciais", "finais" ou "medio" (data-faixa no body). Vem da série do estudante logado; a escolha
+// "Ver visual" (guardada no navegador) existe para comparar os três desenhos na demonstração.
+const CHAVE_FAIXA = 'portal-faixa';
+export const faixaEscolhida = () => { try { return localStorage.getItem(CHAVE_FAIXA) || ''; } catch { return ''; } };
+export function escolherFaixa(valor) { try { if (valor) localStorage.setItem(CHAVE_FAIXA, valor); else localStorage.removeItem(CHAVE_FAIXA); } catch { /* sem armazenamento: vale só nesta página */ } document.body.dataset.faixa = valor || document.body.dataset.faixaAuto; }
+async function aplicarFaixa() {
+  try {
+    const { atual } = await estudantes();
+    document.body.dataset.faixaAuto = faixaDaSerie(atual.serie);
+    document.body.dataset.faixa = faixaEscolhida() || document.body.dataset.faixaAuto;
+  } catch { document.body.dataset.faixa = faixaEscolhida() || 'medio'; document.body.dataset.faixaAuto = 'medio'; }
+}
+
+// Modo simplificado do responsável: reduz a tela ao essencial (nota, falta, próxima data). Fica guardado no navegador.
+const CHAVE_SIMPLES = 'portal-modo-simples';
+const lerSimples = () => { try { return localStorage.getItem(CHAVE_SIMPLES) === '1'; } catch { return false; } };
+/** Chave "Modo simplificado" (use uma vez por tela; o clique é tratado aqui). */
+export const controleModoSimples = () => `<label class="chave-simples" id="modo-simples"><input type="checkbox" data-modo-simples ${lerSimples() ? 'checked' : ''}><span>Modo simplificado: só nota, faltas e próxima data</span></label>`;
+document.addEventListener('change', (e) => {
+  if (!e.target.matches?.('[data-modo-simples]')) return;
+  try { localStorage.setItem(CHAVE_SIMPLES, e.target.checked ? '1' : '0'); } catch { /* vale só nesta página */ }
+  document.body.classList.toggle('modo-simples', e.target.checked);
+});
+
 /**
  * Monta cabeçalho, menu do perfil, breadcrumb e assistente. Chamada uma vez por página.
- * @param {{perfil?: 'familia'|'professor'|'escola'|'rede'|null, pagina?: string, assistente?: boolean, titulo?: string, voltar?: string, papel?: string, estreito?: boolean}} opcoes
+ * @param {{perfil?: 'familia'|'aluno'|'responsavel'|'professor'|'escola'|'diretor'|'coordenador'|'rede'|'profin'|null, pagina?: string, assistente?: boolean, titulo?: string, voltar?: string, papel?: string, estreito?: boolean}} opcoes
  *   titulo: nome da página quando ela não está no menu (ex.: declaração); papel: sem efeito, o nome vem da sessão;
  *   estreito: limita a largura do conteúdo (formulários e documentos).
  * @returns {Promise<HTMLElement>} O elemento onde a página desenha seu conteúdo.
@@ -129,6 +158,8 @@ export async function iniciar({ perfil = null, pagina = '', assistente = false, 
   if (perfil && perfil !== 'familia' && !exigirPerfil(perfil)) await new Promise(() => {});
   if (perfil) definir('perfil', perfil);
   document.body.dataset.visao = perfil || 'geral';
+  if (perfil === 'aluno') await aplicarFaixa();
+  if (perfil === 'responsavel') document.body.classList.toggle('modo-simples', lerSimples());
   const topo = cabecalho({ perfil });
   document.body.prepend(topo);
   // Ano letivo e bimestre em curso no cabeçalho (dados de data/letivo.json).

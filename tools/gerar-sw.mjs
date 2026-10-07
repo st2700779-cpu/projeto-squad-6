@@ -10,7 +10,7 @@ const lista = (dir) => readdirSync(join(raiz, dir)).flatMap((n) => {
   const rel = `${dir}/${n}`;
   return statSync(join(raiz, rel)).isDirectory() ? lista(rel) : [rel];
 });
-const paginasDeOutrosPerfis = /paginas\/(escola|rede|familia|professores-habilitados)/; // abrem sem internet só o aluno e o professor
+const paginasDeOutrosPerfis = /paginas\/(escola|rede|familia|professores-habilitados|responsavel|diretor|coordenador|profin)/; // abrem sem internet só o aluno e o professor
 const nucleo = [
   'index.html', 'login.html', 'verificar.html', 'manifest.json', 'config.js',
   ...lista('aluno'), ...lista('professor'),

@@ -2,5 +2,13 @@
   "ano": 2026,
   "aulasDadas": 83,
   "bimestresLancados": 2,
-  "totalBimestres": 4
+  "totalBimestres": 4,
+  "dataReferencia": "2026-10-07",
+  "prazosLancamento": [
+    {
+      "bimestre": 3,
+      "ate": "2026-10-30",
+      "rotulo": "Lançamento das notas do 3º bimestre"
+    }
+  ]
 }

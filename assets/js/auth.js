@@ -10,10 +10,14 @@ const RAIZ = new URL('../../', import.meta.url);
 
 /** Perfis com login. "familia" (matrícula) é público e não aparece aqui. */
 export const PERFIS = {
-  aluno: { rotulo: 'Aluno', campo: 'Matrícula', dica: 'Número de 9 dígitos, sem pontos', inicio: 'aluno/index.html' },
-  professor: { rotulo: 'Professor', campo: 'Matrícula funcional', dica: 'Exemplo: PF-30412', inicio: 'professor/index.html' },
-  escola: { rotulo: 'Secretaria', campo: 'Usuário institucional', dica: 'Usuário da secretaria da escola', inicio: 'escola/index.html' },
-  rede: { rotulo: 'Rede (SEDUC e DRE)', campo: 'Usuário institucional', dica: 'Usuário da equipe técnica da SEDUC', inicio: 'rede/atos.html' }
+  aluno: { rotulo: 'Aluno', campo: 'Matrícula', dica: 'Número de 9 dígitos, sem pontos', inicio: 'aluno/index.html', informe: 'a matrícula', naoEncontrado: 'essa matrícula' },
+  responsavel: { rotulo: 'Responsável', campo: 'Código do responsável', dica: 'Exemplo: RESP-20417', inicio: 'responsavel/index.html', informe: 'o código do responsável', naoEncontrado: 'esse código' },
+  professor: { rotulo: 'Professor', campo: 'Matrícula funcional', dica: 'Exemplo: PF-30412', inicio: 'professor/index.html', informe: 'a matrícula funcional', naoEncontrado: 'essa matrícula funcional' },
+  escola: { rotulo: 'Secretaria', campo: 'Usuário institucional', dica: 'Usuário da secretaria da escola', inicio: 'escola/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
+  diretor: { rotulo: 'Direção', campo: 'Usuário institucional', dica: 'Usuário da direção da escola', inicio: 'diretor/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
+  coordenador: { rotulo: 'Coordenação pedagógica', campo: 'Usuário institucional', dica: 'Usuário da coordenação da escola', inicio: 'coordenador/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
+  rede: { rotulo: 'Rede (SEDUC e DRE)', campo: 'Usuário institucional', dica: 'Usuário da equipe técnica da SEDUC', inicio: 'rede/atos.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
+  profin: { rotulo: 'PROFIN (financeiro)', campo: 'Usuário institucional', dica: 'Usuário da equipe de gestão financeira', inicio: 'profin/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' }
 };
 
 /** Sessão atual ({ perfil, login, nome, papel, refId, escolaId }) ou null. */

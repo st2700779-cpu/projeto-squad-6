@@ -39,5 +39,47 @@
     "refId": null,
     "nome": "Equipe técnica",
     "papel": "SEDUC/SE"
+  },
+  {
+    "perfil": "aluno",
+    "login": "202610955",
+    "senha": "aluno2026",
+    "refId": "c5",
+    "nome": "Heitor Cardoso de Jesus",
+    "papel": "Estudante · 3º ano A"
+  },
+  {
+    "perfil": "responsavel",
+    "login": "RESP-20417",
+    "senha": "resp2026",
+    "refId": "resp1",
+    "nome": "Edilene Cardoso de Jesus",
+    "papel": "Responsável por 3 estudantes"
+  },
+  {
+    "perfil": "diretor",
+    "login": "dir.osvaldo",
+    "senha": "diretor2026",
+    "refId": "e1",
+    "escolaId": "e1",
+    "nome": "Direção escolar",
+    "papel": "C. E. Prof. Osvaldo Tavares Rezende"
+  },
+  {
+    "perfil": "coordenador",
+    "login": "coord.osvaldo",
+    "senha": "coord2026",
+    "refId": "e1",
+    "escolaId": "e1",
+    "nome": "Coordenação pedagógica",
+    "papel": "C. E. Prof. Osvaldo Tavares Rezende"
+  },
+  {
+    "perfil": "profin",
+    "login": "profin.seduc",
+    "senha": "profin2026",
+    "refId": null,
+    "nome": "Equipe PROFIN",
+    "papel": "SEDUC/SE · Gestão financeira"
   }
 ]

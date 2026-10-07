@@ -98,13 +98,18 @@ export async function reiniciarDados() {
   }
 }
 
-// Família com mais de um estudante: lista e estudante escolhido no seletor do topo.
+// Estudantes que a sessão pode ver. Aluno: só o próprio cadastro. Responsável: os filhos (seletor no topo).
+// Sem login (matrícula pública) ou com outro perfil: o cadastro todo. O estudante escolhido fica guardado no navegador.
 export async function estudantes() {
   let lista = await carregar('estudantes');
   const login = sessao();
-  // Com login de aluno, a pessoa só vê o próprio cadastro.
-  if (login?.perfil === 'aluno' && lista.some((e) => e.id === login.refId)) { lista = lista.filter((e) => e.id === login.refId); definir('estudanteId', login.refId); }
-  const id = obter('estudanteId', lista[0].id);
+  let id;
+  if (login?.perfil === 'aluno' && lista.some((e) => e.id === login.refId)) { lista = lista.filter((e) => e.id === login.refId); id = login.refId; }
+  else if (login?.perfil === 'responsavel') { const filhos = lista.filter((e) => e.responsavelId === login.refId); if (filhos.length) lista = filhos; }
+  id ??= obter('estudanteId', lista[0].id);
   return { lista, atual: lista.find((e) => e.id === id) || lista[0] };
 }
 export const escolherEstudante = (id) => definir('estudanteId', id);
+
+/** Data de referência da demonstração (AAAA-MM-DD): "hoje" para agenda, prazos e horário do dia. Vem de data/letivo.json. */
+export async function dataDeReferencia() { return (await letivo()).dataReferencia; }

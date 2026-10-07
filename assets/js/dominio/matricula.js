@@ -11,7 +11,7 @@ export const DIAS_RENOVACAO = 120;
  * @param {string} serie Ex.: "1ª série EM".
  * @returns {string} "Ensino Médio" ou "Ensino Fundamental — Anos Finais".
  */
-export const etapaDaSerie = (serie) => (serie.includes('EM') ? 'Ensino Médio' : 'Ensino Fundamental — Anos Finais');
+export const etapaDaSerie = (serie) => (serie.includes('EM') ? 'Ensino Médio' : /^[1-5]º ano$/.test(serie) ? 'Ensino Fundamental — Anos Iniciais' : 'Ensino Fundamental — Anos Finais');
 
 /** "1ª série EM" → "1ª série do Ensino Médio"; "6º ano" → "6º ano do Ensino Fundamental". */
 export const serieCompleta = (serie) => (serie.includes('EM') ? serie.replace(' EM', ' do Ensino Médio') : `${serie} do Ensino Fundamental`);
@@ -19,8 +19,13 @@ export const serieCompleta = (serie) => (serie.includes('EM') ? serie.replace(' 
 /** "Colégio Estadual Professor Osvaldo Tavares Rezende" → "C. E. Professor Osvaldo Tavares Rezende" (telas estreitas). */
 export const nomeCurto = (nome) => nome.replace(/^Colégio Estadual /, 'C. E. ').replace(/^Escola Estadual /, 'E. E. ');
 
-/** Série seguinte, para a rematrícula (null no fim do Ensino Médio). */
-export const proximaSerie = (serie) => SERIES[SERIES.indexOf(serie) + 1] || null;
+/** Série seguinte, para a rematrícula (null no fim do Ensino Médio). Os anos iniciais (1º ao 5º) não estão em SERIES: seguem em sequência. */
+export function proximaSerie(serie) {
+  const i = SERIES.indexOf(serie);
+  if (i >= 0) return SERIES[i + 1] || null;
+  const m = /^(\d)º ano$/.exec(serie);
+  return m ? (Number(m[1]) < 5 ? `${Number(m[1]) + 1}º ano` : SERIES[0]) : null;
+}
 
 /** Coluna da matriz do Ensino Médio para a série ("2ª série EM" → 2). Null fora do EM. */
 export const colunaDaMatriz = (serie) => { const m = /^(\d)ª série/.exec(serie); return m ? Number(m[1]) : null; };

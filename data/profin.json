@@ -1,0 +1,35 @@
+{
+  "categorias": ["Custeio", "Capital", "Merenda", "Emenda Parlamentar"],
+  "descricoes": {
+    "Custeio": "Despesas do dia a dia: material de consumo, pequenos reparos, serviços.",
+    "Capital": "Compra de bens duráveis: equipamentos, mobiliário, obras.",
+    "Merenda": "Complemento da alimentação escolar.",
+    "Emenda Parlamentar": "Recurso indicado por parlamentar para um fim definido."
+  },
+  "repasses": [
+    { "escolaId": "e1", "categoria": "Custeio", "recebido": 48600, "executado": 41230.5, "prestacao": { "prazo": "2026-10-30", "entregue": false } },
+    { "escolaId": "e1", "categoria": "Capital", "recebido": 32000, "executado": 32000, "prestacao": { "prazo": "2026-09-30", "entregue": true } },
+    { "escolaId": "e1", "categoria": "Merenda", "recebido": 27450, "executado": 25980.2, "prestacao": { "prazo": "2026-10-20", "entregue": true } },
+    { "escolaId": "e1", "categoria": "Emenda Parlamentar", "recebido": 15000, "executado": 9400, "prestacao": { "prazo": "2026-10-02", "entregue": false } },
+
+    { "escolaId": "e2", "categoria": "Custeio", "recebido": 39800, "executado": 36100, "prestacao": { "prazo": "2026-10-30", "entregue": true } },
+    { "escolaId": "e2", "categoria": "Capital", "recebido": 18000, "executado": 12750, "prestacao": { "prazo": "2026-11-27", "entregue": false } },
+    { "escolaId": "e2", "categoria": "Merenda", "recebido": 22100, "executado": 21890.4, "prestacao": { "prazo": "2026-10-20", "entregue": true } },
+    { "escolaId": "e2", "categoria": "Emenda Parlamentar", "recebido": 0, "executado": 0, "prestacao": { "prazo": "2026-12-15", "entregue": false } },
+
+    { "escolaId": "e3", "categoria": "Custeio", "recebido": 31200, "executado": 30410, "prestacao": { "prazo": "2026-10-30", "entregue": true } },
+    { "escolaId": "e3", "categoria": "Capital", "recebido": 0, "executado": 0, "prestacao": { "prazo": "2026-12-15", "entregue": false } },
+    { "escolaId": "e3", "categoria": "Merenda", "recebido": 18900, "executado": 17220, "prestacao": { "prazo": "2026-10-20", "entregue": false } },
+    { "escolaId": "e3", "categoria": "Emenda Parlamentar", "recebido": 12000, "executado": 12000, "prestacao": { "prazo": "2026-09-15", "entregue": true } },
+
+    { "escolaId": "e4", "categoria": "Custeio", "recebido": 27500, "executado": 14300, "prestacao": { "prazo": "2026-09-25", "entregue": false } },
+    { "escolaId": "e4", "categoria": "Capital", "recebido": 24000, "executado": 24000, "prestacao": { "prazo": "2026-08-31", "entregue": true } },
+    { "escolaId": "e4", "categoria": "Merenda", "recebido": 16400, "executado": 15900, "prestacao": { "prazo": "2026-10-20", "entregue": true } },
+    { "escolaId": "e4", "categoria": "Emenda Parlamentar", "recebido": 0, "executado": 0, "prestacao": { "prazo": "2026-12-15", "entregue": false } },
+
+    { "escolaId": "e5", "categoria": "Custeio", "recebido": 35100, "executado": 33200, "prestacao": { "prazo": "2026-10-30", "entregue": true } },
+    { "escolaId": "e5", "categoria": "Capital", "recebido": 21500, "executado": 21500, "prestacao": { "prazo": "2026-09-30", "entregue": true } },
+    { "escolaId": "e5", "categoria": "Merenda", "recebido": 19800, "executado": 19420, "prestacao": { "prazo": "2026-10-20", "entregue": true } },
+    { "escolaId": "e5", "categoria": "Emenda Parlamentar", "recebido": 20000, "executado": 6000, "prestacao": { "prazo": "2026-11-13", "entregue": false } }
+  ]
+}

@@ -1,0 +1,8 @@
+[
+  { "id": "SOL-2026-0001", "tipo": "Declaração de matrícula", "estudanteId": "a3", "estudante": "Iasmim Cardoso de Jesus", "solicitante": "Edilene Cardoso de Jesus", "escolaId": "e1", "criadaEm": "2026-10-05", "prazo": "2026-10-09", "situacao": "Pendente" },
+  { "id": "SOL-2026-0002", "tipo": "Histórico escolar", "estudante": "Ítalo Vasconcelos Dantas", "solicitante": "Cleide Vasconcelos", "escolaId": "e1", "criadaEm": "2026-09-29", "prazo": "2026-10-13", "situacao": "Em andamento" },
+  { "id": "SOL-2026-0003", "tipo": "Atestado de escolaridade", "estudante": "Rayssa Bispo Amorim", "solicitante": "Ednaldo Amorim", "escolaId": "e1", "criadaEm": "2026-09-30", "prazo": "2026-10-06", "situacao": "Pendente" },
+  { "id": "SOL-2026-0004", "tipo": "Declaração de frequência", "estudante": "Thaís Aragão Fontes", "solicitante": "Eliane Aragão", "escolaId": "e1", "criadaEm": "2026-10-02", "prazo": "2026-10-16", "situacao": "Pendente" },
+  { "id": "SOL-2026-0005", "tipo": "Declaração de matrícula", "estudante": "Josué Menezes Batista", "solicitante": "Gilvan Batista", "escolaId": "e1", "criadaEm": "2026-09-28", "prazo": "2026-10-02", "situacao": "Pronta" },
+  { "id": "SOL-2026-0006", "tipo": "Histórico escolar", "estudante": "Rafaela Menezes Prado", "solicitante": "Próprio estudante", "escolaId": "e1", "criadaEm": "2026-09-21", "prazo": "2026-10-05", "situacao": "Entregue" }
+]

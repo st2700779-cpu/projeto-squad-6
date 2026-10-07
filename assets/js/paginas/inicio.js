@@ -1,4 +1,4 @@
-// Entrada do portal: um acesso por perfil. Aluno, Professor, Secretaria e Rede pedem login;
+// Entrada do portal: um acesso por perfil. Todos os perfis, menos a Matrícula, pedem login;
 // Matrícula (família) é aberta e não pede.
 import { iniciar, link } from '../app.js';
 import { avisar, confirmar, esc } from '../ui.js';
@@ -7,10 +7,14 @@ import { reiniciarDados } from '../dados.js';
 
 const main = await iniciar();
 const acessos = [
-  ['login.html?perfil=aluno', 'Aluno', 'Notas e faltas, documentos e calendário'],
-  ['login.html?perfil=professor', 'Professor', 'Turmas e diário de classe: chamada e notas'],
-  ['login.html?perfil=escola', 'Secretaria', 'Matrículas, enturmação, turmas e alocação de professores'],
+  ['login.html?perfil=aluno', 'Aluno', 'Notas, faltas, horário, provas e quiz, com o visual da sua idade'],
+  ['login.html?perfil=responsavel', 'Responsável', 'Boletim e frequência dos filhos, o que precisa de atenção e a situação da matrícula'],
+  ['login.html?perfil=professor', 'Professor', 'Turmas, horário e diário de classe: chamada, notas e mapa de calor'],
+  ['login.html?perfil=coordenador', 'Coordenação pedagógica', 'Turmas lado a lado, horários e reunião pedagógica'],
+  ['login.html?perfil=diretor', 'Direção', 'Visão da escola, mapa de calor, prestação de contas e tela de reunião'],
+  ['login.html?perfil=escola', 'Secretaria', 'Matrículas, solicitações, enturmação, turmas e alocação de professores'],
   ['login.html?perfil=rede', 'Rede (SEDUC e DRE)', 'Atos autorizativos, vagas por escola e matrizes curriculares'],
+  ['login.html?perfil=profin', 'PROFIN (financeiro)', 'Prestação de contas por escola e categoria de recurso'],
   ['familia/matricula.html', 'Matrícula', 'Pedido de matrícula pela família, sem login']
 ];
 const s = sessao();

@@ -13,7 +13,7 @@
         "id": "a2",
         "nome": "Ana Beatriz Aragão Franco",
         "n1": 6.5,
-        "n2": 5.0,
+        "n2": 5,
         "faltas": 6
       },
       {
@@ -90,7 +90,7 @@
         "id": "a13",
         "nome": "Elias Bispo Rocha",
         "n1": 5.7,
-        "n2": 8.0,
+        "n2": 8,
         "faltas": 7
       },
       {
@@ -125,7 +125,7 @@
         "id": "a18",
         "nome": "Jamile Lins Azevedo",
         "n1": 7.6,
-        "n2": 7.0,
+        "n2": 7,
         "faltas": 11
       },
       {
@@ -201,7 +201,7 @@
       {
         "id": "a29",
         "nome": "Rayssa Duarte Peixoto",
-        "n1": 4.0,
+        "n1": 4,
         "n2": 3.5,
         "faltas": 11
       },
@@ -236,8 +236,8 @@
       {
         "id": "a34",
         "nome": "Tainá Tavares Cunha",
-        "n1": 6.0,
-        "n2": 6.0,
+        "n1": 6,
+        "n2": 6,
         "faltas": 3
       },
       {
@@ -257,7 +257,7 @@
       {
         "id": "a37",
         "nome": "Wallace Cunha Souza",
-        "n1": 8.0,
+        "n1": 8,
         "n2": 7.7,
         "faltas": 7
       }
@@ -288,7 +288,7 @@
         "id": "f4",
         "nome": "Ariel Moura Machado",
         "n1": 5.7,
-        "n2": 8.0,
+        "n2": 8,
         "faltas": 2
       },
       {
@@ -329,7 +329,7 @@
       {
         "id": "f10",
         "nome": "Heitor Duarte Coutinho",
-        "n1": 10.0,
+        "n1": 10,
         "n2": 9.9,
         "faltas": 20
       },
@@ -350,7 +350,7 @@
       {
         "id": "f13",
         "nome": "Jônatas Pereira Duarte",
-        "n1": 7.0,
+        "n1": 7,
         "n2": 6.7,
         "faltas": 19
       },
@@ -372,7 +372,7 @@
         "id": "f16",
         "nome": "Kelly Coutinho",
         "n1": 6.7,
-        "n2": 6.0,
+        "n2": 6,
         "faltas": 18
       },
       {
@@ -392,14 +392,14 @@
       {
         "id": "f19",
         "nome": "Manuela Guimarães Lins",
-        "n1": 10.0,
+        "n1": 10,
         "n2": 8.5,
         "faltas": 7
       },
       {
         "id": "f20",
         "nome": "Maria Clara Barros",
-        "n1": 6.0,
+        "n1": 6,
         "n2": null,
         "faltas": 1
       },
@@ -414,7 +414,7 @@
         "id": "f22",
         "nome": "Nathália Prado Bispo",
         "n1": 9.1,
-        "n2": 10.0,
+        "n2": 10,
         "faltas": 12
       },
       {
@@ -455,7 +455,7 @@
       {
         "id": "f28",
         "nome": "Vinícius Menezes Moura",
-        "n1": 5.0,
+        "n1": 5,
         "n2": 4.2,
         "faltas": 2
       },
@@ -471,7 +471,7 @@
       {
         "id": "g1",
         "nome": "Ana Beatriz Andrade Ramos",
-        "n1": 7.0,
+        "n1": 7,
         "n2": 7.5,
         "faltas": 9
       },
@@ -492,7 +492,7 @@
       {
         "id": "g4",
         "nome": "Bruno Andrade Ferreira",
-        "n1": 8.0,
+        "n1": 8,
         "n2": 7.1,
         "faltas": 2
       },
@@ -513,8 +513,8 @@
       {
         "id": "g7",
         "nome": "Cauã Freire Amorim",
-        "n1": 10.0,
-        "n2": 10.0,
+        "n1": 10,
+        "n2": 10,
         "faltas": 17
       },
       {
@@ -535,14 +535,14 @@
         "id": "g10",
         "nome": "Eduarda Sobral Pinheiro",
         "n1": 5.8,
-        "n2": 6.0,
+        "n2": 6,
         "faltas": 18
       },
       {
         "id": "g11",
         "nome": "Elis Bonfim Matos",
         "n1": 3.3,
-        "n2": 4.0,
+        "n2": 4,
         "faltas": 22
       },
       {
@@ -591,13 +591,13 @@
         "id": "g18",
         "nome": "João Guilherme Sampaio Barros",
         "n1": 7.4,
-        "n2": 5.0,
+        "n2": 5,
         "faltas": 9
       },
       {
         "id": "g19",
         "nome": "Larissa Fontes",
-        "n1": 5.0,
+        "n1": 5,
         "n2": 4.1,
         "faltas": 10
       },
@@ -612,7 +612,7 @@
         "id": "g21",
         "nome": "Lorena Cavalcante Melo",
         "n1": 6.9,
-        "n2": 7.0,
+        "n2": 7,
         "faltas": 7
       },
       {
@@ -689,7 +689,7 @@
         "id": "g32",
         "nome": "Vitória Régia Ramos",
         "n1": 9.1,
-        "n2": 10.0,
+        "n2": 10,
         "faltas": 1
       },
       {
@@ -702,10 +702,33 @@
       {
         "id": "g34",
         "nome": "Yasmin Sobral",
-        "n1": 7.0,
+        "n1": 7,
         "n2": 6.8,
         "faltas": 7
       }
     ]
-  }
+  },
+  "atividades": [
+    {
+      "turmaId": "tt1",
+      "titulo": "Lista de exercícios — Funções",
+      "entregues": 34,
+      "corrigidas": 20,
+      "prazo": "2026-10-09"
+    },
+    {
+      "turmaId": "tt4",
+      "titulo": "Prova surpresa — Progressões",
+      "entregues": 31,
+      "corrigidas": 31,
+      "prazo": "2026-10-02"
+    },
+    {
+      "turmaId": "tt5",
+      "titulo": "Trabalho em dupla — Estatística",
+      "entregues": 26,
+      "corrigidas": 9,
+      "prazo": "2026-10-14"
+    }
+  ]
 }

@@ -169,5 +169,14 @@
     "escolaId": "e5",
     "situacao": "Aprovada",
     "matriculados": 27
+  },
+  {
+    "id": "r20",
+    "nome": "3º ano A",
+    "serie": "3º ano",
+    "turno": "Manhã",
+    "escolaId": "e2",
+    "situacao": "Aprovada",
+    "matriculados": 24
   }
 ]
