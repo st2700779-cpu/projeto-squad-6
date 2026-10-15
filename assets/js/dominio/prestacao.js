@@ -115,10 +115,37 @@ export function aplicarDeclaracoes(repasses, declaracoes) {
     const aprovado = ds.reduce((t, d) => t + valorAprovado(d), 0);
     const emAnalise = ds.filter((d) => PENDENTES_DE_ANALISE.includes(d.situacao)).reduce((t, d) => t + d.total, 0);
     const devolvida = ds.some((d) => d.situacao === 'Devolvida');
-    const entregue = devolvida ? false : (r.prestacao.entregue || ds.some((d) => PENDENTES_DE_ANALISE.includes(d.situacao) || APROVADAS.includes(d.situacao)));
+    // Depois de um repasse novo, só as declarações enviadas a partir dele contam para a prestação do ciclo.
+    const doCiclo = r.ultimoRepasseEm ? ds.filter((d) => String(d.enviadaEm || '').slice(0, 10) >= r.ultimoRepasseEm) : ds;
+    const entregue = devolvida ? false : (r.prestacao.entregue || doCiclo.some((d) => PENDENTES_DE_ANALISE.includes(d.situacao) || APROVADAS.includes(d.situacao)));
     return { ...r, executado: Math.round((r.executado + aprovado) * 100) / 100, prestacao: { ...r.prestacao, entregue }, declaracoes: ds, emAnalise, devolvida };
   });
 }
 
 /** Dias que a declaração está esperando análise (para ordenar a fila do PROFIN). */
 export const diasEmEspera = (d, hoje) => (d.enviadaEm ? Math.max(0, diasEntre(d.enviadaEm.slice(0, 10), hoje)) : 0);
+
+// ---------------- Repasses lançados pelo PROFIN ----------------
+/** Lançamento de um repasse recebido por uma escola: soma ao recebido da categoria e abre um novo prazo de prestação. */
+export function validarRepasse(f, { escolas, categorias, hoje }) {
+  const e = {};
+  if (!escolas.some((x) => x.id === f.escolaId)) e.escolaId = 'Escolha a escola.';
+  if (!categorias.includes(f.categoria)) e.categoria = 'Escolha a categoria do recurso.';
+  const v = Number(f.valor);
+  if (!(v > 0) || Math.abs(v * 100 - Math.round(v * 100)) > 1e-6 || v > 5000000) e.valor = 'Informe um valor maior que zero, com até 2 casas e no máximo R$ 5.000.000,00.';
+  if (!dataValida(f.data)) e.data = 'Informe a data em que o recurso foi creditado.';
+  else if (f.data > hoje) e.data = 'A data do crédito não pode ser depois de hoje.';
+  else if (!f.data.startsWith(hoje.slice(0, 4))) e.data = `Só entram repasses de ${hoje.slice(0, 4)}.`;
+  if (!dataValida(f.prazo)) e.prazo = 'Informe o prazo para a escola prestar contas.';
+  else if (dataValida(f.data) && f.prazo <= f.data) e.prazo = 'O prazo tem de ser depois da data do crédito.';
+  return { ok: !Object.keys(e).length, erros: e };
+}
+/** Soma os repasses lançados aos de data/profin.json. A prestação da categoria reinicia com o novo prazo. */
+export function aplicarRepasses(repasses, lancados) {
+  return repasses.map((r) => {
+    const ls = lancados.filter((l) => l.escolaId === r.escolaId && l.categoria === r.categoria);
+    if (!ls.length) return r;
+    const ultimo = [...ls].sort((a, b) => (a.data + a.id).localeCompare(b.data + b.id)).at(-1);
+    return { ...r, recebido: Math.round((r.recebido + ls.reduce((t, l) => t + Number(l.valor), 0)) * 100) / 100, prestacao: { prazo: ultimo.prazo, entregue: false }, ultimoRepasseEm: ultimo.data, lancados: ls };
+  });
+}

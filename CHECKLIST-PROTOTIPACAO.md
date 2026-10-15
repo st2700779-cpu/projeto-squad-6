@@ -147,6 +147,21 @@ A SEED enviou uma lista curta de pendências. A sigla correta é **SEED**, não 
 
 Pontos que a nota não dizia e foram acrescentados por serem o básico de cada área: abrir e editar as **vagas** por série (antes ninguém podia), histórico de cada declaração, cadastro de escola recém-criada sem quebrar os painéis (sem repasse até o PROFIN lançar) e a seção de declarações no relatório consolidado do PROFIN.
 
+## Leitura por perfil (melhorias essenciais)
+
+Feitas depois de ler o sistema como cada usuário (detalhes em `ANALISE-POR-PERFIL.md`).
+
+| Perfil | Item | Onde |
+| --- | --- | --- |
+| Todos | Alterar senha, esqueci minha senha, sessão encerrada em 30 min sem uso, "hoje" único da demonstração | `configuracoes.html`, `login.html` |
+| Responsável | Justificar falta com período, motivo, anexo e andamento; imprimir boletim | `responsavel/justificar.html` |
+| Aluno | Imprimir boletim | `aluno/notas.html` |
+| Secretaria | Decidir justificativas (aceitar ou recusar com explicação) | `escola/justificativas.html` |
+| Professor | Registro de aula (conteúdo, tarefa, nº de aulas) | `professor/registro-aula.html` |
+| Coordenação | Consulta dos registros de aula por turma | `coordenador/registros-aula.html` |
+| Rede | Editar escola, registrar ato renovado, editar e desligar professor | `rede/escolas.html`, `rede/professores.html` |
+| PROFIN | Lançar repasse | `profin/index.html` |
+
 ## Regras visuais transversais
 
 | Regra | Situação |

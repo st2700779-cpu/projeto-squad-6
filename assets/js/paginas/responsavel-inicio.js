@@ -48,6 +48,7 @@ async function mostrar() {
       </section>
       <div class="linha-botoes esp-t-4 esp-b-4">
         <a class="botao" href="${link('responsavel/boletim.html')}">${icone('livro', 22)}Ver boletim</a>
+        <a class="botao botao-secundario" href="${link('responsavel/justificar.html')}">${icone('documento', 22)}Justificar falta</a>
         <a class="botao botao-secundario so-completo" href="${link('responsavel/calendario.html')}">${icone('calendario', 22)}Calendário e avisos</a>
         <a class="botao botao-secundario so-completo" href="${link('responsavel/matricula.html')}">${icone('documento', 22)}Matrícula e documentos</a>
       </div>

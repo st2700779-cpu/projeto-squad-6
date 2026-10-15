@@ -2,17 +2,17 @@
 // Na rede mostra todas as escolas e o resumo por município; na secretaria, só a escola da pessoa.
 import { iniciar, falhaDados } from '../app.js';
 import { sessao } from '../auth.js';
-import { esc, etiqueta, icone, baixarCSV, vazio, avisar, comEspera, plural, combina } from '../ui.js';
-import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia } from '../dados.js';
+import { esc, etiqueta, icone, baixarCSV, vazio, avisar, comEspera, plural, combina, confirmar } from '../ui.js';
+import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia, professoresComInativos } from '../dados.js';
 import { mapaDeFalta } from '../dominio/habilitacao.js';
-import { VINCULOS, validarProfessor, montarProfessor, mascararCpf } from '../dominio/cadastros.js';
+import { VINCULOS, validarProfessor, montarProfessor, mascararCpf, validarEdicaoDeProfessor, aplicarEdicaoDeProfessor, podeDesligar } from '../dominio/cadastros.js';
 import { campo, marcas, lerFormulario, mostrarErros } from '../componentes/formulario.js';
 
 const perfil = document.body.dataset.perfil === 'escola' ? 'escola' : 'rede';
 const main = await iniciar({ perfil, pagina: `${perfil}/professores.html`, assistente: true });
 const ETAPA_EM = 'Ensino Médio';
 let aberto = false;
-let escolasDoAcesso = [], todosProfessores = [], componentesDaRede = [], hoje = '', busca = '';
+let escolasDoAcesso = [], todosProfessores = [], componentesDaRede = [], hoje = '', busca = '', alocacoes = [];
 
 async function mostrar() {
   try {
@@ -21,7 +21,7 @@ async function mostrar() {
     // A matriz do Ensino Médio vem da versão vigente de data/matrizes.json; a do Fundamental, de data/componentes-etapa.json.
     const componentesPorEtapa = { [ETAPA_EM]: matrizes.versoes[0].componentes.map((c) => c[0]), ...extra };
     const proprias = perfil === 'escola' ? escolas.filter((e) => e.id === sessao()?.escolaId) : escolas;
-    escolasDoAcesso = proprias; todosProfessores = professores; componentesDaRede = [...new Set(Object.values(componentesPorEtapa).flat())];
+    escolasDoAcesso = proprias; todosProfessores = await professoresComInativos(); alocacoes = await conjunto('alocacoes'); componentesDaRede = [...new Set(Object.values(componentesPorEtapa).flat())];
     const { componentes, linhas } = mapaDeFalta({ escolas: proprias, atos, professores, componentesPorEtapa });
     const total = linhas.reduce((t, l) => t + l.faltam.length, 0);
     const porMunicipio = [...new Set(linhas.map((l) => l.escola.municipio))].map((m) => {
@@ -41,6 +41,7 @@ async function mostrar() {
       </dl>
       <div class="linha-botoes nao-imprimir esp-b-3"><button type="button" class="botao" id="novo-professor">${icone('pessoas', 20)}Cadastrar professor</button><button type="button" class="botao botao-secundario" id="imprimir">${icone('imprimir', 20)}Imprimir</button><button type="button" class="botao botao-secundario" id="exportar">${icone('baixar', 20)}Exportar CSV</button></div>
       ${formularioProfessor()}
+      <div id="area-edicao"></div>
       <h2>Professores cadastrados</h2>
       <div class="campo campo-busca nao-imprimir"><label for="busca-prof">Buscar professor</label><input id="busca-prof" class="entrada" type="search" placeholder="Nome, matrícula ou componente" value="${esc(busca)}">${icone('busca', 20)}</div>
       <div id="tabela-prof">${tabelaProfessores()}</div>
@@ -78,25 +79,74 @@ function formularioProfessor() {
     </fieldset>
     <div class="form-acoes"><button type="submit" class="botao">${icone('ok', 20)}Cadastrar professor</button><button type="button" class="botao botao-secundario" id="cancelar-professor">Cancelar</button></div></form>`;
 }
+function formularioEdicao(p) {
+  const lotacao = escolasDoAcesso.length === 1 ? '' : campo({ prefixo: 'pe', nome: 'escolaId', rotulo: 'Escola de lotação', valor: p.escolaId, obrigatorio: true, opcoes: escolasDoAcesso.map((e) => [e.id, `${e.nome} (${e.municipio})`]) });
+  return `<form id="form-prof-editar" class="form-cadastro" novalidate data-id="${p.id}" aria-labelledby="pe-titulo">
+    <h2 id="pe-titulo">Editar professor: ${esc(p.nome)}</h2>
+    <p class="texto-suave esp-t-0">Matrícula funcional ${esc(p.matriculaFuncional)}${p.cpf ? ` · CPF ${esc(mascararCpf(p.cpf))}` : ''}. Nome, matrícula e CPF não mudam aqui.</p>
+    <fieldset class="form-bloco"><legend>Dados do professor</legend>
+      ${campo({ prefixo: 'pe', nome: 'vinculo', rotulo: 'Vínculo', valor: p.vinculo || 'Efetivo', obrigatorio: true, opcoes: VINCULOS.map((v) => [v, v]) })}
+      ${campo({ prefixo: 'pe', nome: 'cargaHorariaSemanal', rotulo: 'Carga horária semanal', valor: String(p.cargaHorariaSemanal), obrigatorio: true, opcoes: [['10', '10 horas'], ['20', '20 horas'], ['30', '30 horas'], ['40', '40 horas']] })}
+      ${lotacao}
+      <div class="largo">${campo({ prefixo: 'pe', nome: 'formacao', rotulo: 'Formação', valor: p.formacao, obrigatorio: true })}</div>
+      <div class="largo">${marcas({ prefixo: 'pe', nome: 'habilitacao', rotulo: 'Componentes em que é habilitado', obrigatorio: true, itens: componentesDaRede.map((c) => [c, c]), marcados: p.habilitacao })}</div>
+      ${campo({ prefixo: 'pe', nome: 'email', rotulo: 'E-mail', valor: p.email || '', tipo: 'email', dica: 'Opcional' })}
+      ${campo({ prefixo: 'pe', nome: 'telefone', rotulo: 'Telefone', valor: p.telefone || '', tipo: 'tel', dica: 'Com DDD. Opcional' })}
+    </fieldset>
+    <div class="form-acoes"><button type="submit" class="botao">${icone('ok', 20)}Salvar alterações</button><button type="button" class="botao botao-secundario" id="cancelar-edicao">Cancelar</button></div></form>`;
+}
 function tabelaProfessores() {
   const ids = new Set(escolasDoAcesso.map((e) => e.id));
   const lista = todosProfessores.filter((p) => ids.has(p.escolaId) && combina(busca, p.nome, p.matriculaFuncional, p.habilitacao.join(' ')));
   if (!lista.length) return vazio('Nenhum professor encontrado', 'Mude a busca ou cadastre um professor.');
   return `<div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Professores cadastrados</caption>
-    <thead><tr><th scope="col">Professor</th><th scope="col">Habilitação</th><th scope="col" class="num">Carga semanal</th>${perfil === 'rede' ? '<th scope="col">Escola</th>' : ''}</tr></thead>
-    <tbody>${lista.map((p) => `<tr><td class="titulo-linha"><strong>${esc(p.nome)}</strong> ${p.cadastradoEm ? etiqueta('Novo', 'info') : ''}<br><span class="texto-suave texto-pequeno">${esc(p.matriculaFuncional)} · ${esc(p.vinculo || 'Efetivo')}${p.cpf ? ` · CPF ${esc(mascararCpf(p.cpf))}` : ''}</span></td>
+    <thead><tr><th scope="col">Professor</th><th scope="col">Habilitação</th><th scope="col" class="num">Carga semanal</th>${perfil === 'rede' ? '<th scope="col">Escola</th>' : ''}<th scope="col" class="nao-imprimir"><span class="sr-only">Ações</span></th></tr></thead>
+    <tbody>${lista.map((p) => `<tr><td class="titulo-linha"><strong>${esc(p.nome)}</strong> ${p.ativo === false ? etiqueta('Desligado', 'neutra') : p.cadastradoEm ? etiqueta('Novo', 'info') : ''}<br><span class="texto-suave texto-pequeno">${esc(p.matriculaFuncional)} · ${esc(p.vinculo || 'Efetivo')}${p.cpf ? ` · CPF ${esc(mascararCpf(p.cpf))}` : ''}</span></td>
       <td data-rotulo="Habilitação"><div>${esc(p.habilitacao.join(', '))}<br><span class="texto-suave texto-pequeno">${esc(p.formacao)}</span></div></td>
       <td class="num" data-rotulo="Carga semanal"><div>${p.cargaHorariaSemanal} h<br><span class="texto-suave texto-pequeno">${p.aulasEmOutrasTurmas ?? 0} aulas em turmas</span></div></td>
-      ${perfil === 'rede' ? `<td data-rotulo="Escola"><div>${esc(escolasDoAcesso.find((e) => e.id === p.escolaId)?.nome || '')}</div></td>` : ''}</tr>`).join('')}</tbody></table></div>
+      ${perfil === 'rede' ? `<td data-rotulo="Escola"><div>${esc(escolasDoAcesso.find((e) => e.id === p.escolaId)?.nome || '')}</div></td>` : ''}
+      <td class="acoes nao-imprimir"><div class="linha-botoes"><button type="button" class="botao botao-secundario botao-mini" data-prof-editar="${p.id}" aria-label="Editar ${esc(p.nome)}">Editar</button><button type="button" class="botao botao-texto botao-mini" data-prof-desligar="${p.id}" aria-label="${p.ativo === false ? 'Reativar' : 'Desligar'} ${esc(p.nome)}">${p.ativo === false ? 'Reativar' : 'Desligar'}</button></div></td></tr>`).join('')}</tbody></table></div>
     <p class="contagem">${lista.length} ${plural(lista.length, 'professor', 'professores')}</p>`;
 }
 main.addEventListener('input', (e) => { if (e.target.id === 'busca-prof') { busca = e.target.value; main.querySelector('#tabela-prof').innerHTML = tabelaProfessores(); } });
 main.addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (b?.id === 'novo-professor') { aberto = true; const f = main.querySelector('#form-professor'); f.hidden = false; f.querySelector('input').focus(); f.scrollIntoView({ block: 'start' }); }
+  if (b?.dataset.profEditar) { const p = todosProfessores.find((x) => x.id === b.dataset.profEditar); main.querySelector('#area-edicao').innerHTML = formularioEdicao(p); const f = main.querySelector('#form-prof-editar'); f.querySelector('select, input').focus(); f.scrollIntoView({ block: 'start' }); }
+  if (b?.id === 'cancelar-edicao') main.querySelector('#area-edicao').innerHTML = '';
+  if (b?.dataset.profDesligar) desligarOuReativar(todosProfessores.find((x) => x.id === b.dataset.profDesligar));
   if (b?.id === 'cancelar-professor') { aberto = false; main.querySelector('#form-professor').hidden = true; main.querySelector('#novo-professor').focus(); }
 });
+async function guardarProfessor(novo, acao) {
+  const lista = (await conjunto('professores-novos')).filter((x) => x.id !== novo.id);
+  await salvar('professores-novos', [...lista, novo]);
+  await registrarAcao(sessao().nome, acao, novo.nome);
+}
+async function desligarOuReativar(p) {
+  const reativar = p.ativo === false;
+  if (!reativar) {
+    const r = podeDesligar(p, alocacoes);
+    if (!r.ok) { avisar(r.motivo, 'erro'); return; }
+    if (!(await confirmar({ titulo: 'Desligar este professor?', texto: `${p.nome} deixa de contar na habilitação e não pode mais ser alocado. O cadastro fica guardado e dá para reativar.`, botao: 'Desligar', perigo: true }))) return;
+  }
+  try {
+    await guardarProfessor(reativar ? { ...p, ativo: true, desligadoEm: null } : { ...p, ativo: false, desligadoEm: hoje }, reativar ? 'Reativou o professor' : 'Desligou o professor');
+    await mostrar(); avisar(reativar ? 'Professor reativado.' : 'Professor desligado.');
+  } catch { avisar('Não foi possível salvar a mudança. Confira a conexão e tente de novo.'); }
+}
 main.addEventListener('submit', async (e) => {
+  if (e.target.id === 'form-prof-editar') {
+    e.preventDefault();
+    const dados = lerFormulario(e.target);
+    if (escolasDoAcesso.length === 1) dados.escolaId = escolasDoAcesso[0].id;
+    dados.habilitacao ||= [];
+    if (!mostrarErros(e.target, validarEdicaoDeProfessor(dados, { escolas: escolasDoAcesso, componentes: componentesDaRede }).erros, 'pe-')) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
+    try {
+      await comEspera(e.submitter, async () => guardarProfessor(aplicarEdicaoDeProfessor(todosProfessores.find((x) => x.id === e.target.dataset.id), dados, hoje), 'Editou o cadastro do professor'));
+      await mostrar(); avisar('Alterações salvas.');
+    } catch { avisar('Não foi possível salvar as alterações. Confira a conexão e tente de novo.'); }
+    return;
+  }
   if (e.target.id !== 'form-professor') return;
   e.preventDefault();
   const dados = lerFormulario(e.target);

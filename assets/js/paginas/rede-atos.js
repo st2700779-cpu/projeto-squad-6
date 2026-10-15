@@ -1,7 +1,7 @@
 // Atos autorizativos (W15): painel por urgência, com faixas de prioridade (vencido, até 30 e até 90 dias),
 // quantas turmas e quantos estudantes dependem de cada ato, filtros por município e escola, exportação para CSV
 // e pedido de renovação quando faltam 120 dias ou menos (ou o ato já venceu).
-import { iniciar, falhaDados } from '../app.js';
+import { iniciar, falhaDados, link } from '../app.js';
 import { esc, etiqueta, dataBR, icone, avisar, confirmar, vazio, baixarCSV, combina, dataHoraBR, debounce } from '../ui.js';
 import { carregar, conjunto, salvar, registrarAcao, turmasDaRede } from '../dados.js';
 import { situacaoAto, DIAS_RENOVACAO } from '../regras.js';
@@ -28,7 +28,7 @@ function tabela(linhas) {
   return `<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Atos autorizativos ordenados pelo vencimento</caption>
     <thead><tr><th scope="col">Escola</th><th scope="col">Ato</th><th scope="col">Prioridade</th><th scope="col">Afetados</th><th scope="col">Renovação</th></tr></thead>
     <tbody>${linhas.map(({ a, e, s, r, faixa, impacto }) => `<tr><td class="titulo-linha">${esc(e.nome)}<br><span class="texto-suave texto-pequeno">${esc(e.municipio)} · ${esc(e.dre)}</span></td><td data-rotulo="Ato"><div>${esc(a.tipo)} · ${esc(a.etapa)}<br><span class="texto-suave texto-pequeno">${esc(a.numero)}</span></div></td><td data-rotulo="Prioridade"><div>${etiqueta(faixa.rotulo, faixa.tipo)}<br><span class="texto-suave texto-pequeno">${dataBR(a.validade)} · ${s.dias < 0 ? `há ${-s.dias} ${-s.dias === 1 ? 'dia' : 'dias'}` : `em ${s.dias} ${s.dias === 1 ? 'dia' : 'dias'}`}</span></div></td><td data-rotulo="Afetados"><div>${impacto.turmas ? `${impacto.turmas} ${impacto.turmas === 1 ? 'turma' : 'turmas'}<br><span class="texto-suave texto-pequeno">${impacto.alunos} estudantes</span>` : '<span class="texto-suave">nenhuma turma</span>'}</div></td>
-      ${r ? `<td data-rotulo="Renovação">${etiqueta('Pedida', 'info')}<span class="texto-suave texto-pequeno">${dataHoraBR(r.quando)}</span></td>` : s.dias <= DIAS_RENOVACAO ? `<td class="acoes"><button type="button" class="botao botao-secundario botao-mini" data-renovar="${esc(chave(a))}">Iniciar renovação</button></td>` : '<td data-rotulo="Renovação"><span class="texto-suave">—</span></td>'}</tr>`).join('')}</tbody>
+      ${r ? `<td data-rotulo="Renovação">${etiqueta('Pedida', 'info')}<span class="texto-suave texto-pequeno">${dataHoraBR(r.quando)}</span><br><a class="botao botao-secundario botao-mini" href="${link(`rede/escolas.html?renovar=${encodeURIComponent(`${a.escolaId}|${a.etapa}`)}`)}">Registrar ato renovado</a></td>` : s.dias <= DIAS_RENOVACAO ? `<td class="acoes"><button type="button" class="botao botao-secundario botao-mini" data-renovar="${esc(chave(a))}">Iniciar renovação</button></td>` : '<td data-rotulo="Renovação"><span class="texto-suave">—</span></td>'}</tr>`).join('')}</tbody>
   </table></div>
   <p class="contagem">${linhas.length} ${linhas.length === 1 ? 'ato' : 'atos'} · ordenados pelo vencimento mais próximo</p>`;
 }

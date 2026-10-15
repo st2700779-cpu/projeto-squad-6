@@ -3,10 +3,11 @@
 // Sem conexão (real ou simulada pelo botão Ficar offline), notas e chamada ficam em IndexedDB como "pendentes"
 // (offline.js) e seguem para o "servidor" quando a conexão volta (dominio/sincronizacao.js).
 import { iniciar, falhaDados, link } from '../app.js';
-import { esc, avisar, icone, numeroBR, confirmar, dataHoraBR, vazio, etiqueta, comEspera } from '../ui.js';
+import { esc, avisar, icone, numeroBR, confirmar, dataHoraBR, dataBR, vazio, etiqueta, comEspera } from '../ui.js';
 import { carregar, diario, letivo, matriculas, turmasEscola, salvar as salvarDados, conjunto, registrarAcao, recarregarDoServidor } from '../dados.js';
 import { estaOnline, montarIndicador, guardarPendente, pendentes, baixarPendente, pendentePorChave } from '../offline.js';
 import { aplicarPendentes, sobreporPendentes } from '../dominio/sincronizacao.js';
+import { hojeISO } from '../dominio/hoje.js';
 import { presenca, media, situacao, nomeCurto, turmasDoProfessor, sincronizarDiario, codigoDaTurma } from '../regras.js';
 
 const main = await iniciar({ perfil: 'professor', pagina: 'professor/diario.html', assistente: true });
@@ -17,7 +18,7 @@ let pendentesIds = new Set(); // estudantes com nota pendente de envio ('turma|a
 let resultadoSync = '';     // aviso do último resultado de sincronização, mostrado na tela
 let indicador = null;
 const ausentes = new Set(); // chamada rápida: todos começam presentes; o professor toca em quem faltou
-const hoje = new Date().toISOString().slice(0, 10);
+const hoje = hojeISO();
 // Observações rápidas: um painel flutuante sob o campo em foco (sem mexer na altura das linhas e sem ser cortado pela rolagem da tabela).
 const flutuante = document.createElement('div');
 flutuante.className = 'chips-flutuantes';
@@ -144,7 +145,7 @@ function celulaHoje(a) {
 // Chamada: todos começam presentes; marque só quem faltou. Registrar soma 1 falta a cada ausente.
 function painelChamada(alunos) {
   const feita = chamadas[turmaId]?.[hoje];
-  const dataHoje = new Date().toLocaleDateString('pt-BR');
+  const dataHoje = dataBR(hoje);
   if (feita) {
     const nomes = alunos.filter((a) => feita.ausentes.includes(a.id)).map((a) => a.nome);
     return `<p class="esp-b-3"><strong>Chamada de ${dataHoje} registrada</strong> ${etiqueta('Registrada', 'ok')} ${nomes.length ? `${nomes.length} ${nomes.length > 1 ? 'faltas' : 'falta'}: ${esc(nomes.join(', '))}.` : 'Todos presentes.'} <span class="registro">Registrada em ${dataHoraBR(feita.quando)}</span>${feita.pendente ? ` ${etiqueta('pendente de envio', 'atencao')}` : ''}</p>`;

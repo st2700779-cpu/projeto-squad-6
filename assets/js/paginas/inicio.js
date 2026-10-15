@@ -21,6 +21,7 @@ const s = sessao();
 main.innerHTML = `
   <header class="heroi"><h1>Entrar no sistema</h1>
   <p class="heroi-linha">Acesso simulado. As contas de teste ficam na tela de login.</p></header>
+  ${!s && new URLSearchParams(location.search).get('motivo') === 'inatividade' ? `<div class="sessao-atual" role="status"><span>Por segurança, a sua sessão foi encerrada depois de 30 minutos sem uso. Entre de novo para continuar.</span></div>` : ''}
   ${s ? `<div class="sessao-atual" role="status"><span>Você entrou como <strong>${esc(s.nome)}</strong> (${esc(PERFIS[s.perfil]?.rotulo || s.perfil)}).</span><a class="botao botao-secundario botao-mini" href="${link(PERFIS[s.perfil]?.inicio || 'index.html')}">Continuar</a><button type="button" class="botao botao-texto botao-mini" id="sair">Sair</button></div>` : ''}
   <ul class="lista-perfis">
     ${acessos.map(([h, t, d]) => `<li><a href="${link(h)}"><strong>${t}</strong><span>${d}</span></a></li>`).join('')}

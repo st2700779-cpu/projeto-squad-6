@@ -2,7 +2,7 @@
 // e as alterações ficam salvas em disco (pasta dados-salvos/). Em hospedagem estática
 // (GitLab Pages, Live Server) não há API: lê data/*.json e guarda as alterações no localStorage.
 import { obter, definir, reiniciar, proximoProtocolo, recarregar } from './estado.js';
-import { sessao } from './auth.js';
+import { sessao, restaurarSenhas } from './auth.js';
 
 export const RAIZ = new URL('../../', import.meta.url);
 const API = new URL('api/', RAIZ);
@@ -27,12 +27,13 @@ export function usarApi() {
  * @param {string} nome Ex.: 'escolas', 'atos', 'letivo'.
  * @throws {Error} DADOS_INDISPONIVEIS quando a leitura falha.
  */
+const fetchBase = (nome) => usarApi()
+  .then((api) => fetch(api ? new URL(nome, API) : new URL(`data/${nome}.json`, RAIZ), { cache: 'no-store' }))
+  .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); });
 export async function carregar(nome) {
   if (cache.has(nome)) return cache.get(nome);
-  const promessa = usarApi()
-    .then((api) => fetch(api ? new URL(nome, API) : new URL(`data/${nome}.json`, RAIZ), { cache: 'no-store' }))
-    .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
-    .then((base) => (ACRESCIMOS[nome] ? acrescentar(base, ACRESCIMOS[nome]) : base))
+  const promessa = fetchBase(nome)
+    .then((base) => (ACRESCIMOS[nome] ? acrescentar(base, ACRESCIMOS[nome], nome) : base))
     .catch((e) => { cache.delete(nome); const erro = new Error('DADOS_INDISPONIVEIS'); erro.causa = e; throw erro; });
   cache.set(nome, promessa);
   return promessa;
@@ -41,9 +42,25 @@ export async function carregar(nome) {
 // Cadastros feitos durante a demonstração (nova escola, novo ato, novo professor) ficam em conjuntos próprios e são somados
 // ao arquivo-base quando alguém lê 'escolas', 'atos' ou 'professores'. Assim todas as telas já enxergam o que foi cadastrado.
 const ACRESCIMOS = { escolas: 'escolas-novas', atos: 'atos-novos', professores: 'professores-novos' };
-async function acrescentar(base, nomeExtra) {
+// Um registro do conjunto extra com a mesma chave de um do arquivo-base SUBSTITUI o original: é assim que a edição de uma escola,
+// a renovação de um ato e a mudança de um professor funcionam sem mexer nos arquivos de data/.
+const CHAVE_DO_REGISTRO = { escolas: (r) => r.id, atos: (r) => `${r.escolaId}|${r.etapa}`, professores: (r) => r.id };
+export const mesclar = (nome, base, extra) => {
+  const chave = CHAVE_DO_REGISTRO[nome];
+  const novas = new Set(extra.map(chave));
+  return [...base.filter((r) => !novas.has(chave(r))), ...extra];
+};
+async function acrescentar(base, nomeExtra, nome) {
   const extra = await alteravel(nomeExtra, () => carregar(nomeExtra));
-  return [...base, ...extra];
+  const todos = mesclar(nome, base, extra);
+  // Professor desligado da escola não conta em habilitação nem em alocação; a tela de professores usa professoresComInativos().
+  return nome === 'professores' ? todos.filter((p) => p.ativo !== false) : todos;
+}
+/** Todos os professores, inclusive os desligados (para a tela de cadastro poder reativar). */
+export async function professoresComInativos() {
+  const base = await fetchBase('professores');
+  const extra = await alteravel('professores-novos', () => carregar('professores-novos'));
+  return mesclar('professores', base, extra);
 }
 
 // Dados que o usuário altera durante a demonstração.
@@ -101,6 +118,7 @@ export function recarregarDoServidor() { recarregar(); cache.clear(); }
 /** Restaura os dados de demonstração: apaga o que foi salvo no navegador e na API local. */
 export async function reiniciarDados() {
   reiniciar();
+  restaurarSenhas();
   cache.clear();
   await import('./idb.js').then((m) => m.limpar()).catch(() => { /* sem IndexedDB não há fila para limpar */ });
   if (await usarApi()) {

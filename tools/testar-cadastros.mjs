@@ -3,9 +3,13 @@
 // Uso (Node 22+, sem instalar nada):  node tools/testar-cadastros.mjs
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { cpfValido, validarEscola, montarEscola, validarProfessor, montarProfessor, validarMembroProfin, montarMembroProfin, podeDesativar, cargaAnualHoras, situacaoDaCarga, validarCarga, cargaPadrao, seriesDaEtapa, ETAPAS, mascararCpf } from '../assets/js/dominio/cadastros.js';
-import { validarLancamento, validarDeclaracao, validarRetorno, aplicarDeclaracoes, valorAprovado, totalDosLancamentos, situacaoDaDeclaracao } from '../assets/js/dominio/prestacao.js';
+import { validarEdicaoDeEscola, aplicarEdicaoDeEscola, validarRenovacaoDeAto, aplicarRenovacaoDeAto, validarEdicaoDeProfessor, aplicarEdicaoDeProfessor, podeDesligar, cpfValido, validarEscola, montarEscola, validarProfessor, montarProfessor, validarMembroProfin, montarMembroProfin, podeDesativar, cargaAnualHoras, situacaoDaCarga, validarCarga, cargaPadrao, seriesDaEtapa, ETAPAS, mascararCpf } from '../assets/js/dominio/cadastros.js';
+import { validarRepasse, aplicarRepasses, validarLancamento, validarDeclaracao, validarRetorno, aplicarDeclaracoes, valorAprovado, totalDosLancamentos, situacaoDaDeclaracao } from '../assets/js/dominio/prestacao.js';
 import { adimplenciaDaEscola, situacaoDaPrestacao } from '../assets/js/dominio/profin.js';
+import { validarTrocaDeSenha, forcaDaSenha } from '../assets/js/dominio/senha.js';
+import { situacaoAto } from '../assets/js/dominio/matricula.js';
+import { definirDataBase, hojeISO, diasEntreDatas } from '../assets/js/dominio/hoje.js';
+import { validarRegistroDeAula, montarRegistroDeAula, datasSemRegistro, validarJustificativa, montarJustificativa, validarDecisao, aplicarDecisao, ordenarJustificativas, diasDoPeriodo } from '../assets/js/dominio/vida-escolar.js';
 
 const dado = (n) => JSON.parse(readFileSync(new URL(`../data/${n}.json`, import.meta.url), 'utf8'));
 const HOJE = '2026-10-07';
@@ -182,6 +186,132 @@ t('declarações entram no painel: aprovada soma ao executado, enviada conta com
   // devolvida com prazo vencido: atrasada
   assert.equal(situacaoDaPrestacao(e1e, HOJE).chave, 'vermelho');
   assert.equal(adimplenciaDaEscola(novo.filter((r) => r.escolaId === 'e1'), HOJE).chave, 'vermelho');
+});
+
+t('troca de senha: atual correta, nova forte, diferente, sem o usuário e confirmada', () => {
+  const ctx = { atualCorreta: true, login: 'RESP-20417' };
+  assert.equal(validarTrocaDeSenha({ atual: 'x', nova: 'abc12345', confirmacao: 'abc12345' }, ctx).ok, true);
+  assert.ok(validarTrocaDeSenha({ atual: '', nova: 'abc12345', confirmacao: 'abc12345' }, ctx).erros.atual);
+  assert.ok(validarTrocaDeSenha({ atual: 'x', nova: 'abc12345', confirmacao: 'abc12345' }, { ...ctx, atualCorreta: false }).erros.atual);
+  assert.ok(validarTrocaDeSenha({ atual: 'x', nova: 'abc123', confirmacao: 'abc123' }, ctx).erros.nova, 'curta');
+  assert.ok(validarTrocaDeSenha({ atual: 'x', nova: 'abcdefgh', confirmacao: 'abcdefgh' }, ctx).erros.nova, 'sem número');
+  assert.ok(validarTrocaDeSenha({ atual: 'abc12345', nova: 'abc12345', confirmacao: 'abc12345' }, ctx).erros.nova, 'igual à atual');
+  assert.ok(validarTrocaDeSenha({ atual: 'x', nova: 'resp-20417a1', confirmacao: 'resp-20417a1' }, ctx).erros.nova, 'contém o usuário');
+  assert.ok(validarTrocaDeSenha({ atual: 'x', nova: 'abc12345', confirmacao: 'abc12346' }, ctx).erros.confirmacao);
+  assert.deepEqual([forcaDaSenha('').nivel, forcaDaSenha('abc').nivel, forcaDaSenha('abcdefgh1').nivel, forcaDaSenha('abcdefgh1!').nivel], [0, 0, 2, 3]);
+});
+t('data de hoje da demonstração: ato vence no dia da validade e vence de verdade no dia seguinte', () => {
+  definirDataBase('2026-10-07');
+  assert.equal(hojeISO(), '2026-10-07');
+  assert.equal(diasEntreDatas('2026-10-07', '2026-10-17'), 10);
+  assert.equal(situacaoAto({ validade: '2026-10-07' }).vigente, true); assert.equal(situacaoAto({ validade: '2026-10-07' }).texto, 'Vence hoje');
+  assert.equal(situacaoAto({ validade: '2026-10-06' }).vigente, false);
+  assert.equal(situacaoAto({ validade: '2026-10-08' }).texto, 'Vence em 1 dia');
+  assert.equal(situacaoAto({ validade: '2027-12-31' }).texto, 'Vigente');
+  assert.equal(situacaoAto({ validade: '2026-10-08' }, '2026-10-09').vigente, false, 'a data pode ser passada por parâmetro');
+  definirDataBase('data-ruim'); assert.match(hojeISO(), /^\d{4}-\d{2}-\d{2}$/); definirDataBase(null);
+});
+t('editar escola: não deixa nome ou INEP repetirem e mantém o que não muda', () => {
+  const e1 = escolas[0], e2 = escolas[1];
+  const f = { nome: e1.nome, inep: e1.inep || '', municipio: e1.municipio, dre: e1.dre, endereco: 'Rua Nova, 100', bairro: 'Centro', telefone: '(79) 3333-4444', email: 'escola@escola.se.gov.br' };
+  assert.equal(validarEdicaoDeEscola(f, { escolas, id: e1.id }).ok, true);
+  assert.ok(validarEdicaoDeEscola({ ...f, nome: e2.nome, municipio: e2.municipio }, { escolas, id: e1.id }).erros.nome, 'nome de outra escola');
+  assert.ok(validarEdicaoDeEscola({ ...f, inep: '123' }, { escolas, id: e1.id }).erros.inep);
+  assert.ok(validarEdicaoDeEscola({ ...f, email: 'sem-arroba' }, { escolas, id: e1.id }).erros.email);
+  assert.ok(validarEdicaoDeEscola({ ...f, endereco: '' }, { escolas, id: e1.id }).erros.endereco);
+  const novo = aplicarEdicaoDeEscola(e1, f, HOJE);
+  assert.equal(novo.id, e1.id); assert.equal(novo.endereco, 'Rua Nova, 100'); assert.equal(novo.atualizadaEm, HOJE); assert.equal(novo.telefone, '7933334444');
+});
+t('registrar ato renovado: novo número, publicação passada e vencimento depois do atual', () => {
+  const ato = { numero: 'Resolução CEE nº 10/2021', validade: '2026-12-18' };
+  const ok = { numero: 'Resolução CEE nº 200/2026', publicacao: '2026-10-01', vencimento: '2031-12-18' };
+  assert.equal(validarRenovacaoDeAto(ok, { atoAtual: ato, hoje: HOJE }).ok, true);
+  assert.ok(validarRenovacaoDeAto({ ...ok, numero: ato.numero }, { atoAtual: ato, hoje: HOJE }).erros.numero);
+  assert.ok(validarRenovacaoDeAto({ ...ok, publicacao: '2026-11-01' }, { atoAtual: ato, hoje: HOJE }).erros.publicacao, 'publicação no futuro');
+  assert.ok(validarRenovacaoDeAto({ ...ok, vencimento: '2026-12-18' }, { atoAtual: ato, hoje: HOJE }).erros.vencimento, 'não passa do vencimento atual');
+  assert.ok(validarRenovacaoDeAto({ ...ok, vencimento: '2026-09-01' }, { atoAtual: ato, hoje: HOJE }).erros.vencimento);
+  assert.ok(validarRenovacaoDeAto(ok, { atoAtual: null, hoje: HOJE }).erros.etapa);
+  const r = aplicarRenovacaoDeAto(ato, ok);
+  assert.equal(r.numero, ok.numero); assert.equal(r.validade, ok.vencimento); assert.equal(r.numeroAnterior, ato.numero); assert.equal(r.validadeAnterior, ato.validade);
+});
+t('editar e desligar professor: matrícula fica, desligar só sem turma', () => {
+  const p = profs[0];
+  const comps = ['Matemática', 'Língua Portuguesa', 'Física'];
+  const f = { vinculo: 'Efetivo', formacao: 'Licenciatura em Matemática', habilitacao: ['Matemática'], cargaHorariaSemanal: '20', escolaId: escolas[0].id, email: '', telefone: '' };
+  assert.equal(validarEdicaoDeProfessor(f, { escolas, componentes: comps }).ok, true);
+  assert.ok(validarEdicaoDeProfessor({ ...f, habilitacao: [] }, { escolas, componentes: comps }).erros.habilitacao);
+  assert.ok(validarEdicaoDeProfessor({ ...f, cargaHorariaSemanal: '25' }, { escolas, componentes: comps }).erros.cargaHorariaSemanal);
+  assert.ok(validarEdicaoDeProfessor({ ...f, escolaId: 'zz' }, { escolas, componentes: comps }).erros.escolaId);
+  const novo = aplicarEdicaoDeProfessor(p, f, HOJE);
+  assert.equal(novo.id, p.id); assert.equal(novo.cargaHorariaSemanal, 20); assert.deepEqual(novo.habilitacao, ['Matemática']);
+  assert.equal(podeDesligar(p, []).ok, true);
+  const bloqueio = podeDesligar(p, [{ professorId: p.id }, { professorId: p.id }]);
+  assert.equal(bloqueio.ok, false); assert.match(bloqueio.motivo, /2 turmas/);
+});
+t('lançar repasse: valor com 2 casas, data até hoje, prazo depois do crédito, soma ao recebido e reabre a prestação', () => {
+  const cats = [...new Set(repasses.map((r) => r.categoria))];
+  const f = { escolaId: 'e1', categoria: 'Custeio', valor: '1500.50', data: '2026-10-05', prazo: '2026-12-05' };
+  assert.equal(validarRepasse(f, { escolas, categorias: cats, hoje: HOJE }).ok, true);
+  assert.ok(validarRepasse({ ...f, valor: '10.123' }, { escolas, categorias: cats, hoje: HOJE }).erros.valor);
+  assert.ok(validarRepasse({ ...f, valor: '0' }, { escolas, categorias: cats, hoje: HOJE }).erros.valor);
+  assert.ok(validarRepasse({ ...f, data: '2026-11-01' }, { escolas, categorias: cats, hoje: HOJE }).erros.data);
+  assert.ok(validarRepasse({ ...f, data: '2025-12-01' }, { escolas, categorias: cats, hoje: HOJE }).erros.data, 'só do ano corrente');
+  assert.ok(validarRepasse({ ...f, prazo: '2026-10-05' }, { escolas, categorias: cats, hoje: HOJE }).erros.prazo);
+  assert.ok(validarRepasse({ ...f, categoria: 'Inexistente' }, { escolas, categorias: cats, hoje: HOJE }).erros.categoria);
+  const antes = rep('e1', 'Custeio');
+  const depois = aplicarRepasses(repasses, [{ id: 'RP-1', ...f, valor: 1500.5 }]).find((r) => r.escolaId === 'e1' && r.categoria === 'Custeio');
+  assert.equal(depois.recebido, Math.round((antes.recebido + 1500.5) * 100) / 100); assert.equal(depois.prestacao.entregue, false); assert.equal(depois.prestacao.prazo, '2026-12-05');
+  assert.equal(antes.recebido, rep('e1', 'Custeio').recebido, 'o original não muda');
+  assert.equal(aplicarRepasses(repasses, []).length, repasses.length);
+});
+t('registro de aula: turma sua, data até hoje, 1 a 6 aulas, conteúdo, sem duplicar o mesmo dia', () => {
+  const ctx = { hoje: HOJE, minhasTurmas: ['tt1'], existentes: [] };
+  const f = { turma: 'tt1|Matemática', data: '2026-10-06', aulas: '2', conteudo: 'Funções do 1º grau: gráfico e coeficientes.', tarefa: '' };
+  assert.equal(validarRegistroDeAula(f, ctx).ok, true);
+  assert.ok(validarRegistroDeAula({ ...f, turma: 'tt9|Matemática' }, ctx).erros.turma);
+  assert.ok(validarRegistroDeAula({ ...f, data: '2026-10-08' }, ctx).erros.data, 'futuro');
+  assert.ok(validarRegistroDeAula({ ...f, data: '2025-01-10' }, ctx).erros.data, 'mais de 6 meses');
+  assert.ok(validarRegistroDeAula({ ...f, data: '2026-02-30' }, ctx).erros.data, 'data impossível');
+  assert.ok(validarRegistroDeAula({ ...f, aulas: '0' }, ctx).erros.aulas); assert.ok(validarRegistroDeAula({ ...f, aulas: '7' }, ctx).erros.aulas); assert.ok(validarRegistroDeAula({ ...f, aulas: '1.5' }, ctx).erros.aulas);
+  assert.ok(validarRegistroDeAula({ ...f, conteudo: 'curto' }, ctx).erros.conteudo);
+  const r = montarRegistroDeAula(f, { id: 'RA-1', professorId: 'p1', turmaNome: '1ª série A', hoje: HOJE });
+  assert.equal(r.aulas, 2); assert.equal(r.componente, 'Matemática'); assert.equal(r.turmaId, 'tt1');
+  assert.ok(validarRegistroDeAula(f, { ...ctx, existentes: [r] }).erros.data, 'duplicado');
+  assert.equal(validarRegistroDeAula(f, { ...ctx, existentes: [r], editandoId: 'RA-1' }).ok, true, 'editar o mesmo registro vale');
+  assert.deepEqual(datasSemRegistro(dado('chamadas'), [r], 'tt1', 'Matemática', 3), ['2026-09-28', '2026-09-25', '2026-09-24']);
+  assert.deepEqual(datasSemRegistro(dado('chamadas'), [{ ...r, data: '2026-09-28' }], 'tt1', 'Matemática', 2), ['2026-09-25', '2026-09-24']);
+});
+t('justificar falta: estudante do responsável, datas até hoje e em 30 dias, motivo, atestado se saúde > 3 dias, sem duplicar', () => {
+  const ctx = { hoje: HOJE, estudantesDoResponsavel: ['a3'], existentes: [] };
+  const f = { estudanteId: 'a3', de: '2026-10-05', ate: '', motivo: 'saude', descricao: '' };
+  assert.equal(validarJustificativa(f, ctx).ok, true);
+  assert.ok(validarJustificativa({ ...f, estudanteId: 'a9' }, ctx).erros.estudanteId, 'filho de outro responsável');
+  assert.ok(validarJustificativa({ ...f, de: '2026-10-08' }, ctx).erros.de, 'futuro');
+  assert.ok(validarJustificativa({ ...f, de: '2026-08-01' }, ctx).erros.de, 'fora do prazo de 30 dias');
+  assert.ok(validarJustificativa({ ...f, ate: '2026-10-04' }, ctx).erros.ate, 'fim antes do início');
+  assert.ok(validarJustificativa({ ...f, de: '2026-09-20', ate: '2026-10-07' }, ctx).erros.ate, 'mais de 15 dias');
+  assert.ok(validarJustificativa({ ...f, motivo: '' }, ctx).erros.motivo);
+  assert.ok(validarJustificativa({ ...f, motivo: 'outro', descricao: 'curto' }, ctx).erros.descricao);
+  assert.equal(validarJustificativa({ ...f, motivo: 'outro', descricao: 'Consulta de rotina no interior.' }, ctx).ok, true);
+  assert.ok(validarJustificativa({ ...f, de: '2026-10-01', ate: '2026-10-05' }, ctx).erros.anexo, 'saúde por 5 dias sem atestado');
+  assert.equal(validarJustificativa({ ...f, de: '2026-10-01', ate: '2026-10-05' }, { ...ctx, anexo: { nome: 'atestado.pdf', tamanho: 1000 } }).ok, true);
+  assert.equal(diasDoPeriodo('2026-10-01', '2026-10-05'), 5); assert.equal(diasDoPeriodo('2026-10-01', ''), 1);
+  const j = montarJustificativa(f, { protocolo: 'JUS-2026-0006', estudante: { id: 'a3', nome: 'Iasmim', turma: '1ª série A', turmaId: 'tt1', escolaId: 'e1', responsavel: 'Edilene' }, hoje: HOJE });
+  assert.equal(j.situacao, 'Aguardando análise'); assert.equal(j.ate, j.de);
+  assert.ok(validarJustificativa(f, { ...ctx, existentes: [j] }).erros.de, 'mesmas datas');
+  assert.equal(validarJustificativa(f, { ...ctx, existentes: [{ ...j, situacao: 'Recusada' }] }).ok, true, 'recusada não bloqueia nova tentativa');
+});
+t('decisão da secretaria: recusar exige explicação, só decide o que aguarda, pendentes primeiro', () => {
+  const j = { protocolo: 'JUS-1', situacao: 'Aguardando análise', enviadaEm: '2026-10-05' };
+  assert.equal(validarDecisao(j, { decisao: 'Aceita', parecer: '' }).ok, true);
+  assert.ok(validarDecisao(j, { decisao: 'Recusada', parecer: 'não' }).erros.parecer);
+  assert.equal(validarDecisao(j, { decisao: 'Recusada', parecer: 'Sem atestado anexado.' }).ok, true);
+  assert.ok(validarDecisao({ ...j, situacao: 'Aceita' }, { decisao: 'Recusada', parecer: 'Sem atestado.' }).erros.geral, 'já decidida');
+  assert.ok(validarDecisao(j, { decisao: 'Talvez', parecer: '' }).erros.geral);
+  const d = aplicarDecisao(j, { decisao: 'Recusada', parecer: ' Sem atestado. ', por: 'Secretaria', hoje: HOJE });
+  assert.equal(d.situacao, 'Recusada'); assert.equal(d.parecer, 'Sem atestado.'); assert.equal(d.decididaEm, HOJE); assert.equal(j.situacao, 'Aguardando análise');
+  const ordem = ordenarJustificativas([d, { ...j, protocolo: 'B', enviadaEm: '2026-10-06' }, { ...j, protocolo: 'A', enviadaEm: '2026-10-01' }]).map((x) => x.protocolo);
+  assert.deepEqual(ordem, ['A', 'B', 'JUS-1']);
 });
 
 console.log(`\n${n} grupos de testes passaram.`);

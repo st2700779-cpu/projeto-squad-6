@@ -4,6 +4,8 @@
 import { iniciar, falhaDados, link } from '../app.js';
 import { profinComDeclaracoes } from '../prestacao-dados.js';
 import { etiquetaDaDeclaracao, mesAno } from '../componentes/declaracao.js';
+import { campo, lerFormulario, mostrarErros } from '../componentes/formulario.js';
+import { validarRepasse } from '../dominio/prestacao.js';
 import { sessao } from '../auth.js';
 import { esc, numeroBR, dataBR, plural, vazio, avisar, comEspera, icone } from '../ui.js';
 import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia } from '../dados.js';
@@ -21,6 +23,17 @@ function linhas() {
     .filter(({ adim }) => !filtro || (filtro === 'atraso' ? adim.chave === 'vermelho' : filtro === 'vencendo' ? adim.chave === 'amarelo' : adim.chave === 'verde'))
     .sort((a, b) => GRAVE[a.adim.chave] - GRAVE[b.adim.chave] || a.e.nome.localeCompare(b.e.nome, 'pt-BR'));
 }
+function repassesDe(e) {
+  const ls = (dados.lancados || []).filter((l) => l.escolaId === e.id);
+  return `<h3>Repasses lançados</h3>${ls.length ? `<ul class="lista-simples">${ls.map((l) => `<li>${esc(l.categoria)} · ${reais(l.valor)} · crédito em ${dataBR(l.data)} · prestar contas até ${dataBR(l.prazo)} <span class="texto-suave texto-pequeno">(${esc(l.lancadoPor)})</span></li>`).join('')}</ul>` : '<p class="texto-suave">Nenhum repasse lançado por aqui. Os valores do painel vêm da base inicial.</p>'}
+    <form id="form-repasse" class="painel-inline esp-t-2" novalidate data-escola-id="${e.id}"><h3 class="esp-t-0">Lançar repasse</h3>
+      <p class="texto-suave esp-t-0">Registre o recurso que entrou na conta da escola. O valor soma ao recebido e a prestação de contas ganha um novo prazo.</p>
+      <div class="form-bloco">${campo({ nome: 'categoria', rotulo: 'Categoria do recurso', obrigatorio: true, opcoes: [['', 'Escolha a categoria'], ...dados.categorias.map((c) => [c, c])] })}
+        ${campo({ nome: 'valor', rotulo: 'Valor (R$)', tipo: 'number', obrigatorio: true, atributos: 'min="0.01" step="0.01" inputmode="decimal"' })}
+        ${campo({ nome: 'data', rotulo: 'Data do crédito', tipo: 'date', obrigatorio: true, atributos: `max="${hoje}"` })}
+        ${campo({ nome: 'prazo', rotulo: 'Prazo para prestar contas', tipo: 'date', obrigatorio: true, dica: 'Em geral de 60 a 90 dias depois do crédito' })}</div>
+      <button type="submit" class="botao">${icone('moeda', 20)}Lançar repasse</button></form>`;
+}
 function decsDe(id) {
   const ds = dados.declaracoes.filter((d) => d.escolaId === id && d.situacao !== 'Rascunho');
   if (!ds.length) return '<h3>Declarações de gastos</h3><p class="texto-suave">A escola ainda não enviou declaração de gastos.</p>';
@@ -37,6 +50,7 @@ function detalhe(e) {
       <tbody>${reps.map((r) => `<tr><td class="titulo-linha"><strong>${esc(r.categoria)}</strong><small>${esc(dados.descricoes[r.categoria])}</small>${lista(`${e.id}|${r.categoria}`)}</td><td class="num valor-reais" data-rotulo="Recebido"><div>${reais(r.recebido)}</div></td><td class="num valor-reais" data-rotulo="Executado"><div>${reais(r.executado)}<small>${numeroBR(percentualExecutado(r))}%</small></div></td><td class="num valor-reais" data-rotulo="Saldo"><div>${reais(saldo(r))}</div></td><td data-rotulo="Prestação"><div>${semaforo(situacaoDaPrestacao(r, hoje))}<small>prazo ${dataBR(r.prestacao.prazo)}</small></div></td></tr>`).join('')}</tbody></table></div>
     ${decsDe(e.id)}
     ${lista(`${e.id}|Geral`) ? `<h3>Anotações gerais da escola</h3>${lista(`${e.id}|Geral`)}` : ''}
+    ${repassesDe(e)}
     <form id="form-nota" class="painel-inline esp-t-4" novalidate><h3 class="esp-t-0">Anotação de contexto</h3>
       <p class="texto-suave esp-t-0">Registre o que os documentos não mostram. A anotação fica com a data e o seu nome.</p>
       <div class="campo"><label for="n-cat">Sobre</label><select id="n-cat" class="entrada"><option value="Geral">A escola em geral</option>${dados.categorias.map((c) => `<option>${esc(c)}</option>`).join('')}</select></div>
@@ -85,12 +99,30 @@ main.addEventListener('change', (e) => {
   if (e.target.id === 'f-municipio') { municipio = e.target.value; desenhar(); main.querySelector('#f-municipio').focus(); }
 });
 main.addEventListener('click', (e) => {
-  const b = e.target.closest('[data-escola]');
+  const b = e.target.closest('button[data-escola]');
   if (!b) return;
   sel = b.dataset.escola;
   main.querySelector('#detalhe').innerHTML = detalhe(escolas.find((x) => x.id === sel));
   main.querySelectorAll('[data-escola]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.escola === sel)));
   main.querySelector('#det-titulo').scrollIntoView({ block: 'start' });
+});
+main.addEventListener('submit', async (e) => {
+  if (e.target.id !== 'form-repasse') return;
+  e.preventDefault();
+  const form = e.target;
+  const f = { ...lerFormulario(form), escolaId: form.dataset.escolaId };
+  if (!mostrarErros(form, validarRepasse(f, { escolas, categorias: dados.categorias, hoje }).erros)) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
+  try {
+    await comEspera(e.submitter, async () => {
+      const lista = await conjunto('repasses-lancados');
+      const id = `RP-2026-${String(1 + Math.max(0, ...lista.map((l) => Number(/(\d+)$/.exec(l.id)?.[1] || 0)))).padStart(4, '0')}`;
+      lista.push({ id, escolaId: f.escolaId, categoria: f.categoria, valor: Number(f.valor), data: f.data, prazo: f.prazo, lancadoPor: sessao().nome, lancadoEm: hoje });
+      await salvar('repasses-lancados', lista);
+      await registrarAcao(sessao().nome, `Lançou repasse de ${reais(Number(f.valor))} (${f.categoria})`, escolas.find((x) => x.id === f.escolaId).nome);
+    });
+    dados = await profinComDeclaracoes(); desenhar();
+    avisar('Repasse lançado. A prestação de contas da categoria tem novo prazo.');
+  } catch { avisar('Não foi possível lançar o repasse. Confira a conexão e tente de novo.'); }
 });
 main.addEventListener('submit', async (e) => {
   if (e.target.id !== 'form-nota') return;

@@ -28,11 +28,36 @@ export function iniciarSessao(usuario) {
   const { perfil, login, nome, papel, refId, escolaId } = usuario;
   try { sessionStorage.setItem(CHAVE, JSON.stringify({ perfil, login, nome, papel, refId, escolaId: escolaId ?? null })); } catch { /* sem armazenamento: não há como manter a sessão */ }
 }
-/** Encerra a sessão e volta para a entrada. Os dados da demonstração ficam como estão. */
-export function sair() {
+/** Encerra a sessão e volta para a entrada. Os dados da demonstração ficam como estão. motivo: 'inatividade' mostra o aviso na entrada. */
+export function sair(motivo = '') {
   try { sessionStorage.removeItem(CHAVE); } catch { /* nada a limpar */ }
-  location.href = new URL('index.html', RAIZ).href;
+  const url = new URL('index.html', RAIZ);
+  if (motivo) url.searchParams.set('motivo', motivo);
+  location.href = url.href;
 }
+
+// Senhas trocadas pelo usuário ficam neste aparelho, só como resumo (SHA-256 de "login:senha"); a senha original continua em data/usuarios.json.
+// Também faz parte do protótipo: em produção a senha é conferida no servidor, com hash e sal.
+const CHAVE_SENHAS = 'portal-senhas';
+const lerSenhas = () => { try { return JSON.parse(localStorage.getItem(CHAVE_SENHAS)) || {}; } catch { return {}; } };
+export async function resumoDaSenha(login, senha) {
+  const texto = `${String(login).trim().toLowerCase()}:${senha}`;
+  if (!globalThis.crypto?.subtle) return `txt:${texto}`;
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(texto));
+  return [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+/** A senha digitada confere com a da conta (a trocada neste aparelho, se houver, ou a original). */
+export async function senhaConfere(conta, senha) {
+  const trocada = lerSenhas()[conta.login];
+  return trocada ? trocada === await resumoDaSenha(conta.login, senha) : conta.senha === senha;
+}
+export async function trocarSenha(conta, nova) {
+  const todas = lerSenhas();
+  todas[conta.login] = await resumoDaSenha(conta.login, nova);
+  try { localStorage.setItem(CHAVE_SENHAS, JSON.stringify(todas)); } catch { throw new Error('FALHA_AO_SALVAR'); }
+}
+export const senhaFoiTrocada = (login) => Boolean(lerSenhas()[login]);
+export const restaurarSenhas = () => { try { localStorage.removeItem(CHAVE_SENHAS); } catch { /* nada a limpar */ } };
 
 /** Endereço relativo à raiz do site que pode ser usado depois do login (nunca um endereço de outro site). */
 export function destinoSeguro(valor) {

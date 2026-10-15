@@ -176,3 +176,65 @@ export function validarCarga(linha) {
 export function cargaPadrao() {
   return ETAPAS.flatMap((t) => t.series.map((serie) => ({ etapa: t.etapa, serie, aulasSemana: t.etapa === 'Ensino Médio' ? 30 : 25, minutosAula: 50 })));
 }
+
+// ---------------- Edição de escola, renovação de ato e edição de professor ----------------
+/** Edição dos dados de uma escola já cadastrada (o ato e os níveis mudam pela renovação do ato). */
+export function validarEdicaoDeEscola(f, { escolas, id }) {
+  const e = {};
+  const outras = escolas.filter((x) => x.id !== id);
+  if (String(f.nome ?? '').trim().length < 5) e.nome = 'Escreva o nome da escola, com pelo menos 5 letras.';
+  else if (outras.some((x) => iguais(x.nome, f.nome) && iguais(x.municipio, f.municipio))) e.nome = 'Já existe outra escola com esse nome neste município.';
+  if (String(f.inep ?? '').trim()) {
+    if (!inepValido(f.inep)) e.inep = 'O código INEP tem 8 números.';
+    else if (outras.some((x) => x.inep && somenteDigitos(x.inep) === somenteDigitos(f.inep))) e.inep = 'Esse código INEP já está em outra escola.';
+  }
+  if (!String(f.municipio ?? '').trim()) e.municipio = 'Escolha o município.';
+  if (!String(f.dre ?? '').trim()) e.dre = 'Escolha a DRE (diretoria regional).';
+  if (String(f.endereco ?? '').trim().length < 5) e.endereco = 'Escreva o endereço completo.';
+  if (String(f.bairro ?? '').trim().length < 2) e.bairro = 'Escreva o bairro ou povoado.';
+  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
+  if (String(f.email ?? '').trim() && !emailValido(f.email)) e.email = 'Escreva um e-mail válido.';
+  return resultado(e);
+}
+export const aplicarEdicaoDeEscola = (escola, f, hoje) => ({
+  ...escola, nome: f.nome.trim(), inep: somenteDigitos(f.inep) || escola.inep || '', municipio: f.municipio.trim(), dre: f.dre.trim(), endereco: f.endereco.trim(),
+  bairro: f.bairro.trim(), telefone: somenteDigitos(f.telefone), email: String(f.email ?? '').trim(), atualizadaEm: hoje
+});
+
+/** Registro do ato renovado: novo número, publicação e vencimento, sempre depois do vencimento anterior. */
+export function validarRenovacaoDeAto(f, { atoAtual, hoje }) {
+  const e = {};
+  if (!atoAtual) e.etapa = 'Escolha o nível de ensino do ato.';
+  if (String(f.numero ?? '').trim().length < 3) e.numero = 'Escreva o número do novo ato, como Resolução CEE nº 200/2026.';
+  else if (atoAtual && iguais(f.numero, atoAtual.numero)) e.numero = 'O número é o mesmo do ato atual. Informe o número do ato renovado.';
+  if (!dataValida(f.publicacao)) e.publicacao = 'Informe a data de publicação do novo ato.';
+  else if (f.publicacao > hoje) e.publicacao = 'A publicação não pode ser depois de hoje.';
+  if (!dataValida(f.vencimento)) e.vencimento = 'Informe o novo vencimento.';
+  else if (dataValida(f.publicacao) && f.vencimento <= f.publicacao) e.vencimento = 'O vencimento tem de ser depois da publicação.';
+  else if (atoAtual && f.vencimento <= atoAtual.validade) e.vencimento = 'O novo vencimento tem de ser depois do vencimento do ato atual.';
+  else if (f.vencimento < hoje) e.vencimento = 'Esse ato já venceu. Informe um ato vigente.';
+  return resultado(e);
+}
+export const aplicarRenovacaoDeAto = (ato, f) => ({ ...ato, numero: f.numero.trim(), validade: f.vencimento, publicacao: f.publicacao, tipo: 'Renovação de reconhecimento', numeroAnterior: ato.numero, validadeAnterior: ato.validade });
+
+/** Edição de professor: matrícula e CPF não mudam. Habilitação, lotação, vínculo e carga podem mudar. */
+export function validarEdicaoDeProfessor(f, { escolas, componentes }) {
+  const e = {};
+  if (!VINCULOS.includes(f.vinculo)) e.vinculo = 'Escolha o vínculo do professor.';
+  if (String(f.formacao ?? '').trim().length < 5) e.formacao = 'Escreva a formação, como Licenciatura em Matemática.';
+  if (!(f.habilitacao || []).some((c) => componentes.includes(c))) e.habilitacao = 'Marque pelo menos um componente em que o professor é habilitado.';
+  if (![10, 20, 30, 40].includes(Number(f.cargaHorariaSemanal))) e.cargaHorariaSemanal = 'Escolha a carga horária semanal: 10, 20, 30 ou 40 horas.';
+  if (!escolas.some((x) => x.id === f.escolaId)) e.escolaId = 'Escolha a escola de lotação.';
+  if (String(f.email ?? '').trim() && !emailValido(f.email)) e.email = 'Escreva um e-mail válido.';
+  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
+  return resultado(e);
+}
+export function aplicarEdicaoDeProfessor(p, f, hoje) {
+  const hab = (f.habilitacao || []).filter(Boolean);
+  return { ...p, vinculo: f.vinculo, formacao: f.formacao.trim(), habilitacao: hab, concurso: `Professor de ${hab[0]}`, cargaHorariaSemanal: Number(f.cargaHorariaSemanal), escolaId: f.escolaId, email: String(f.email ?? '').trim(), telefone: somenteDigitos(f.telefone), atualizadoEm: hoje };
+}
+/** Só desliga quem não tem turma: a secretaria tira a alocação antes. */
+export function podeDesligar(professor, alocacoes) {
+  const n = alocacoes.filter((a) => a.professorId === professor.id).length;
+  return n ? { ok: false, motivo: `${professor.nome} está alocado em ${n} ${n === 1 ? 'turma' : 'turmas'}. Tire a alocação em Secretaria, Alocação, antes de desligar.` } : { ok: true, motivo: '' };
+}

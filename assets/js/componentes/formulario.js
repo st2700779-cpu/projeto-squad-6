@@ -3,10 +3,11 @@
 import { esc } from '../ui.js';
 
 /**
- * @param {{nome: string, rotulo: string, tipo?: string, valor?: string, dica?: string, obrigatorio?: boolean, opcoes?: Array<string|[string,string]>|null, atributos?: string}} p
+ * @param {{nome: string, rotulo: string, tipo?: string, valor?: string, dica?: string, obrigatorio?: boolean, opcoes?: Array<string|[string,string]>|null, atributos?: string, prefixo?: string}} p
+ *   prefixo: início do id (padrão "f"). Use outro quando dois formulários com os mesmos campos ficam na mesma página (ids repetidos quebram o rótulo).
  */
-export function campo({ nome, rotulo, tipo = 'text', valor = '', dica = '', obrigatorio = false, opcoes = null, atributos = '' }) {
-  const id = `f-${nome}`;
+export function campo({ nome, rotulo, tipo = 'text', valor = '', dica = '', obrigatorio = false, opcoes = null, atributos = '', prefixo = 'f' }) {
+  const id = `${prefixo}-${nome}`;
   const desc = `${dica ? `${id}-dica ` : ''}${id}-erro`;
   const marca = obrigatorio ? ' <span class="obrigatorio" aria-hidden="true">*</span>' : '';
   const controle = opcoes
@@ -16,8 +17,8 @@ export function campo({ nome, rotulo, tipo = 'text', valor = '', dica = '', obri
 }
 
 /** Grupo de caixas de marcar. itens: [valor, texto, apoio?]. */
-export function marcas({ nome, rotulo, itens, marcados = [], dica = '', obrigatorio = false }) {
-  const id = `f-${nome}`;
+export function marcas({ nome, rotulo, itens, marcados = [], dica = '', obrigatorio = false, prefixo = 'f' }) {
+  const id = `${prefixo}-${nome}`;
   return `<fieldset class="campo" id="${id}" aria-describedby="${dica ? `${id}-dica ` : ''}${id}-erro"><legend>${esc(rotulo)}${obrigatorio ? ' <span class="obrigatorio" aria-hidden="true">*</span>' : ''}</legend>
     <div class="marcas">${itens.map(([v, t, apoio]) => `<label class="marca-item"><input type="checkbox" name="${nome}" value="${esc(v)}" ${marcados.includes(v) ? 'checked' : ''}><span>${esc(t)}${apoio ? `<small>${esc(apoio)}</small>` : ''}</span></label>`).join('')}</div>
     ${dica ? `<span class="dica" id="${id}-dica">${esc(dica)}</span>` : ''}<p class="erro" id="${id}-erro" role="alert"></p></fieldset>`;

@@ -4,6 +4,7 @@ import { aplicarEscala, mudarEscala } from './acessibilidade.js';
 import { definir } from './estado.js';
 import { RAIZ, letivo, estudantes } from './dados.js';
 import { faixaDaSerie } from './dominio/painel.js';
+import { definirDataBase } from './dominio/hoje.js';
 import { sessao, exigirPerfil, sair } from './auth.js';
 
 const url = (caminho) => new URL(caminho, RAIZ).href;
@@ -18,15 +19,23 @@ const DATA_DOS_DADOS = '07/10/2026'; // data de referência dos dados de demonst
 export const MENUS = {
   familia: [['familia/matricula.html', 'Matrícula', 'formulario'], ['familia/mapa.html', 'Escolas com vaga', 'mapa'], ['familia/guia.html', 'Ouvir instruções', 'alto']],
   aluno: [['aluno/index.html', 'Início', 'usuario'], ['aluno/notas.html', 'Notas e faltas', 'livro'], ['aluno/frequencia.html', 'Frequência', 'grafico'], ['aluno/horario.html', 'Meu horário', 'relogio'], ['aluno/rotina.html', 'Provas e rotina', 'lista'], ['aluno/quiz.html', 'Quiz', 'pergunta'], ['aluno/carteirinha.html', 'Carteirinha', 'cartao'], ['aluno/linha-do-tempo.html', 'Vida escolar', 'linha'], ['aluno/boletim-falado.html', 'Boletim falado', 'alto'], ['aluno/documentos.html', 'Documentos', 'documento'], ['aluno/calendario.html', 'Calendário e avisos', 'calendario'], ['aluno/cadastro.html', 'Meus dados', 'cadastro'], ['configuracoes.html', 'Configurações', 'engrenagem']],
-  responsavel: [['responsavel/index.html', 'Início', 'usuario'], ['responsavel/boletim.html', 'Notas e faltas', 'livro'], ['responsavel/calendario.html', 'Calendário e avisos', 'calendario'], ['responsavel/matricula.html', 'Matrícula e documentos', 'documento'], ['configuracoes.html', 'Configurações', 'engrenagem']],
-  professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/mapa.html', 'Mapa de calor', 'grafico'], ['professor/horario.html', 'Meu horário', 'relogio'], ['professor/materiais.html', 'Materiais e planos', 'caixa'], ['professor/comunicados.html', 'Comunicados', 'megafone'], ['professor/avisos.html', 'Avisos', 'calendario'], ['configuracoes.html', 'Configurações', 'engrenagem']],
-  escola: [['escola/index.html', 'Início', 'escola'], ['escola/solicitacoes.html', 'Solicitações', 'lista'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/estudantes.html', 'Estudantes', 'usuario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/professores.html', 'Professores', 'pessoas'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  responsavel: [['responsavel/index.html', 'Início', 'usuario'], ['responsavel/boletim.html', 'Notas e faltas', 'livro'], ['responsavel/justificar.html', 'Justificar falta', 'documento'], ['responsavel/calendario.html', 'Calendário e avisos', 'calendario'], ['responsavel/matricula.html', 'Matrícula e documentos', 'documento'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  professor: [['professor/index.html', 'Minhas turmas', 'livro'], ['professor/diario.html', 'Diário de classe', 'formulario'], ['professor/registro-aula.html', 'Registro de aula', 'lista'], ['professor/mapa.html', 'Mapa de calor', 'grafico'], ['professor/horario.html', 'Meu horário', 'relogio'], ['professor/materiais.html', 'Materiais e planos', 'caixa'], ['professor/comunicados.html', 'Comunicados', 'megafone'], ['professor/avisos.html', 'Avisos', 'calendario'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  escola: [['escola/index.html', 'Início', 'escola'], ['escola/solicitacoes.html', 'Solicitações', 'lista'], ['escola/justificativas.html', 'Justificativas', 'documento'], ['escola/matriculas.html', 'Matrículas', 'formulario'], ['escola/estudantes.html', 'Estudantes', 'usuario'], ['escola/enturmacao.html', 'Enturmação', 'pessoas'], ['escola/turmas.html', 'Turmas', 'usuario'], ['escola/alocacao.html', 'Alocação', 'livro'], ['escola/professores.html', 'Professores', 'pessoas'], ['escola/equivalencias.html', 'Equivalências', 'trocar'], ['escola/avisos.html', 'Avisos', 'calendario'], ['configuracoes.html', 'Configurações', 'engrenagem']],
   diretor: [['diretor/index.html', 'Visão da escola', 'escola'], ['diretor/mapa.html', 'Mapa de calor', 'grafico'], ['diretor/reuniao.html', 'Tela de reunião', 'imprimir'], ['diretor/comunicados.html', 'Comunicados', 'megafone'], ['diretor/prestacao.html', 'Prestação de contas', 'moeda'], ['diretor/atos.html', 'Atos autorizativos', 'documento'], ['configuracoes.html', 'Configurações', 'engrenagem']],
-  coordenador: [['coordenador/index.html', 'Turmas e desempenho', 'grafico'], ['coordenador/comparativo.html', 'Comparar turmas', 'trocar'], ['coordenador/reuniao.html', 'Reunião pedagógica', 'imprimir'], ['coordenador/horarios.html', 'Horários', 'relogio'], ['configuracoes.html', 'Configurações', 'engrenagem']],
+  coordenador: [['coordenador/index.html', 'Turmas e desempenho', 'grafico'], ['coordenador/comparativo.html', 'Comparar turmas', 'trocar'], ['coordenador/registros-aula.html', 'Registros de aula', 'lista'], ['coordenador/reuniao.html', 'Reunião pedagógica', 'imprimir'], ['coordenador/horarios.html', 'Horários', 'relogio'], ['configuracoes.html', 'Configurações', 'engrenagem']],
   rede: [['rede/atos.html', 'Atos autorizativos', 'documento'], ['rede/escolas.html', 'Escolas', 'escola'], ['rede/vagas.html', 'Vagas por escola', 'escola'], ['rede/mapa.html', 'Mapa de vagas', 'mapa'], ['rede/professores.html', 'Professores', 'pessoas'], ['rede/matrizes.html', 'Matrizes e carga horária', 'livro'], ['rede/equipe-profin.html', 'Equipe do PROFIN', 'pessoas'], ['configuracoes.html', 'Configurações', 'engrenagem']],
   profin: [['profin/index.html', 'Painel por escola', 'moeda'], ['profin/analise.html', 'Análise das declarações', 'lista'], ['profin/relatorio.html', 'Relatório consolidado', 'documento'], ['profin/equipe.html', 'Equipe do PROFIN', 'pessoas'], ['configuracoes.html', 'Configurações', 'engrenagem']]
 };
 const NOMES = { familia: 'Matrícula', aluno: 'Aluno', responsavel: 'Responsável', professor: 'Professor', escola: 'Secretaria', diretor: 'Direção', coordenador: 'Coordenação', rede: 'Rede (SEED e DRE)', profin: 'PROFIN' };
+// Sessão de perfil com login encerra sozinha depois de 30 minutos sem uso (protege o aparelho compartilhado da escola).
+const LIMITE_DE_INATIVIDADE_MS = 30 * 60 * 1000;
+function vigiarInatividade() {
+  let tempo;
+  const reiniciar = () => { clearTimeout(tempo); tempo = setTimeout(() => { if (sessao()) sair('inatividade'); }, LIMITE_DE_INATIVIDADE_MS); };
+  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((ev) => addEventListener(ev, reiniciar, { passive: true }));
+  reiniciar();
+}
 const CHAVE_MENU = 'portal-menu-recolhido';
 const lerPreferencia = () => { try { return localStorage.getItem(CHAVE_MENU) === '1'; } catch { return false; } };
 const gravarPreferencia = (v) => { try { localStorage.setItem(CHAVE_MENU, v ? '1' : '0'); } catch { /* segue sem guardar */ } };
@@ -155,16 +164,20 @@ document.addEventListener('change', (e) => {
  */
 export async function iniciar({ perfil = null, pagina = '', assistente = false, titulo = '', papel = '', estreito = false } = {}) {
   aplicarEscala();
+  // "Hoje" da demonstração vem de data/letivo.json (atos, prazos e carteirinha usam a mesma data); sem o dado, vale a data do aparelho.
+  const periodo = letivo();
+  try { definirDataBase((await periodo).dataReferencia); } catch { definirDataBase(null); }
   // Páginas internas exigem o login do perfil; sem ele, o navegador já foi levado ao login e a página nunca termina de montar.
   if (perfil && perfil !== 'familia' && !exigirPerfil(perfil)) await new Promise(() => {});
   if (perfil) definir('perfil', perfil);
+  if (perfil && perfil !== 'familia') vigiarInatividade();
   document.body.dataset.visao = perfil || 'geral';
   if (perfil === 'aluno') await aplicarFaixa();
   if (perfil === 'responsavel') document.body.classList.toggle('modo-simples', lerSimples());
   const topo = cabecalho({ perfil });
   document.body.prepend(topo);
   // Ano letivo e bimestre em curso no cabeçalho (dados de data/letivo.json).
-  letivo().then((l) => {
+  periodo.then((l) => {
     const emCurso = Math.min(l.totalBimestres, l.bimestresLancados + 1);
     topo.querySelector('#topo-ano').textContent = `Ano letivo ${l.ano} · ${emCurso}º bimestre em curso`;
   }).catch(() => { /* sem o dado, o cabeçalho segue sem essa linha */ });

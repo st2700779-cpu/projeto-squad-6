@@ -6,6 +6,7 @@ import { carregar, estudantes } from '../dados.js';
 import { qrParaElemento } from '../qr.js';
 import { codigoDeVerificacao, verificacaoDisponivel } from '../dominio/verificacao.js';
 import { serieCompleta } from '../regras.js';
+import { hojeISO } from '../dominio/hoje.js';
 
 const main = await iniciar({ perfil: 'aluno', pagina: 'aluno/carteirinha.html', assistente: false });
 let instalar = null; // evento beforeinstallprompt guardado
@@ -17,7 +18,7 @@ async function mostrar() {
   try {
     const [{ atual: est }, escolas] = await Promise.all([estudantes(), carregar('escolas')]);
     const escola = escolas.find((e) => e.id === est.escolaId);
-    const vencida = new Date().toISOString().slice(0, 10) > est.validade;
+    const vencida = hojeISO() > est.validade;
     const codigo = verificacaoDisponivel()
       ? await codigoDeVerificacao({ tipo: 'carteirinha', fonte: 'E', chave: est.matricula, nome: est.nome, nascimento: est.nascimento, serie: est.serie, turma: est.turma, escola: escola.nome })
       : null;
@@ -26,7 +27,7 @@ async function mostrar() {
       <h1>Carteirinha</h1>
       <p class="pagina-descricao">Apresente na entrada da escola. Abre também sem internet.</p>
       <article class="carteirinha${vencida ? ' vencida' : ''}" aria-label="Carteirinha de ${esc(est.nome)}">
-        <header><span>Rede Estadual de Ensino de Sergipe</span><strong>Carteirinha do estudante ${new Date().getFullYear()}</strong></header>
+        <header><span>Rede Estadual de Ensino de Sergipe</span><strong>Carteirinha do estudante ${hojeISO().slice(0, 4)}</strong></header>
         <div class="carteirinha-corpo">
           <div class="avatar-carteirinha" aria-hidden="true">${esc(iniciais(est.nome))}</div>
           <dl>

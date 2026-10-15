@@ -1,4 +1,5 @@
 // Utilitários de interface: escape de texto, ícones, aviso rápido e janela de texto.
+import { hojeISO } from './dominio/hoje.js';
 /** Escapa texto para uso seguro dentro de HTML (evita injeção de código). */
 export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const $ = (sel, raiz = document) => raiz.querySelector(sel);
@@ -166,7 +167,7 @@ export function pedirTexto({ titulo, rotulo, minimo = 5 }) {
 /** Escolhe singular ou plural conforme a quantidade. */
 export const plural = (n, singular, pluralTexto) => (n === 1 ? singular : pluralTexto);
 
-export const hojeBR = () => new Date().toLocaleDateString('pt-BR');
+export const hojeBR = () => dataBR(hojeISO());
 /** Data ISO (AAAA-MM-DD) para dd/mm/aaaa. */
 export const dataBR = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR');
 /** Número no formato brasileiro (vírgula decimal). */

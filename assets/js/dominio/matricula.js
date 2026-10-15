@@ -1,4 +1,5 @@
 // Domínio: séries, atos autorizativos e vagas (regras de matrícula da rede).
+import { hojeISO, diasEntreDatas } from './hoje.js';
 
 /** Séries atendidas pela rede, em ordem. */
 export const SERIES = ['6º ano', '7º ano', '8º ano', '9º ano', '1ª série EM', '2ª série EM', '3ª série EM'];
@@ -31,16 +32,16 @@ export function proximaSerie(serie) {
 export const colunaDaMatriz = (serie) => { const m = /^(\d)ª série/.exec(serie); return m ? Number(m[1]) : null; };
 
 /**
- * Situação de um ato autorizativo em relação a hoje.
+ * Situação de um ato autorizativo em relação a hoje (dias contados no calendário: no dia da validade ainda vale, com 0 dia).
  * @param {{validade: string}} ato Validade em AAAA-MM-DD.
- * @param {Date} [hoje]
+ * @param {string|Date} [hoje] Data AAAA-MM-DD (ou Date); sem ela, a data de referência da demonstração.
  * @returns {{vigente: boolean, texto: string, tipo: 'erro'|'atencao'|'ok', dias: number}}
  */
-export function situacaoAto(ato, hoje = new Date()) {
-  const fim = new Date(ato.validade + 'T23:59:59');
-  const dias = Math.ceil((fim - hoje) / 86400000);
+export function situacaoAto(ato, hoje = hojeISO()) {
+  const dia = hoje instanceof Date ? hoje.toISOString().slice(0, 10) : hoje;
+  const dias = diasEntreDatas(dia, ato.validade);
   if (dias < 0) return { vigente: false, texto: 'Vencido', tipo: 'erro', dias };
-  if (dias <= DIAS_RENOVACAO) return { vigente: true, texto: `Vence em ${dias} dias`, tipo: 'atencao', dias };
+  if (dias <= DIAS_RENOVACAO) return { vigente: true, texto: dias === 0 ? 'Vence hoje' : `Vence em ${dias} ${dias === 1 ? 'dia' : 'dias'}`, tipo: 'atencao', dias };
   return { vigente: true, texto: 'Vigente', tipo: 'ok', dias };
 }
 

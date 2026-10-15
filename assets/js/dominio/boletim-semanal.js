@@ -1,9 +1,10 @@
 // Boletim falado semanal: texto de um modelo fixo, sem inteligência artificial.
 // "Nesta semana, [nome] teve [n] faltas. A nota de [disciplina] foi [x]. Aviso da escola: [aviso]."
+import { hojeISO } from './hoje.js';
 const dataISO = (br) => br.split('/').reverse().join('-');
 
 /** Faltas do estudante nos 7 dias que terminam na chamada mais recente registrada (ou hoje, se for mais nova). */
-export function faltasDaSemana(chamadas, turmaId, estudanteId, hoje = new Date().toISOString().slice(0, 10)) {
+export function faltasDaSemana(chamadas, turmaId, estudanteId, hoje = hojeISO()) {
   const dias = Object.entries(chamadas?.[turmaId] || {});
   if (!dias.length) return { faltas: 0, de: null, ate: null };
   const ate = dias.map(([d]) => d).sort().at(-1);

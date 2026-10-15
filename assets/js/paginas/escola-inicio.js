@@ -10,6 +10,7 @@ const main = await iniciar({ perfil: 'escola', pagina: 'escola/index.html', assi
 async function mostrar() {
   try {
     const [escolas, atos, pedidos, turmas, enturmacao, historico, estudantes, solicitacoes, hoje] = await Promise.all([carregar('escolas'), carregar('atos'), matriculas(), turmasEscola(), conjunto('enturmacao'), conjunto('historico'), carregar('estudantes'), conjunto('solicitacoes'), dataDeReferencia()]);
+    const justPend = (await conjunto('justificativas')).filter((j) => j.escolaId === ESCOLA && j.situacao === 'Aguardando análise');
     const escola = escolas.find((e) => e.id === ESCOLA);
     const daEscola = pedidos.filter((p) => p.escolaId === ESCOLA);
     const aguardando = daEscola.filter((p) => p.situacao === 'Aguardando confirmação').length;
@@ -26,6 +27,7 @@ async function mostrar() {
     const fila = [
       [aguardando, plural(aguardando, 'matrícula para confirmar', 'matrículas para confirmar'), 'escola/matriculas.html', 'Abrir pedidos de matrícula', prazoMin(daEscola.filter((p) => p.situacao === 'Aguardando confirmação').map((p) => somar(iso(p.data), 10)))],
       [abertas.length, plural(abertas.length, 'solicitação aberta (declaração, histórico ou atestado)', 'solicitações abertas (declaração, histórico ou atestado)'), 'escola/solicitacoes.html', 'Abrir solicitações', prazoMin(abertas.map((s) => s.prazo))],
+      [justPend.length, plural(justPend.length, 'justificativa de falta para analisar', 'justificativas de falta para analisar'), 'escola/justificativas.html', 'Analisar justificativas', prazoMin(justPend.map((j) => somar(String(j.enviadaEm).slice(0, 10), 5)))],
       [docsPendentes.length, plural(docsPendentes.length, 'documento de estudante pendente', 'documentos de estudantes pendentes'), 'escola/estudantes.html', 'Abrir estudantes', prazoMin(docsPendentes.map((d) => d.prazo))],
       [semTurma, plural(semTurma, 'estudante com matrícula confirmada sem turma', 'estudantes com matrícula confirmada sem turma'), 'escola/enturmacao.html', 'Enturmar estudantes', '<span class="texto-suave">—</span>'],
       [pendentes, plural(pendentes, 'turma aguardando aprovação da direção', 'turmas aguardando aprovação da direção'), 'escola/turmas.html', 'Abrir turmas', '<span class="texto-suave">—</span>']

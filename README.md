@@ -94,6 +94,8 @@ O login é **só de protótipo**: as contas ficam em `data/usuarios.json` (senha
 
 A tela de login tem um bloco "Acesso de demonstração" com essas contas e um botão que preenche os campos.
 
+A senha pode ser trocada em **Configurações › Conta › Alterar senha**. A troca vale só no aparelho (fica como resumo SHA-256 no `localStorage`); **Restaurar dados de demonstração** volta às senhas da tabela. A sessão encerra sozinha depois de 30 minutos sem uso.
+
 ## Funcionalidades
 
 | Item | Onde | O que faz |
@@ -123,6 +125,23 @@ A tela de login tem um bloco "Acesso de demonstração" com essas contas e um bo
 
 **Sem IA no que é novo:** todas essas telas usam regras fixas, modelos de texto e árvores de decisão. O assistente com IA opcional (`worker/`) continua como era e segue desligado sem `assistenteUrl` em `config.js`.
 
+## Leitura por perfil (melhorias essenciais)
+
+Depois de ler o sistema como cada usuário, foram acrescentadas as peças que faltavam para o trabalho do dia. O detalhe de cada perfil, o que ficou para depois e os erros achados no caminho estão em [`ANALISE-POR-PERFIL.md`](ANALISE-POR-PERFIL.md).
+
+| Perfil | O que ganhou | Onde |
+| --- | --- | --- |
+| Todos | **Alterar senha**, "Esqueci minha senha" e encerramento da sessão depois de 30 minutos sem uso | `configuracoes.html`, `login.html`, `assets/js/app.js` |
+| Responsável | **Justificar falta** (período, motivo, anexo, protocolo e andamento) e **Imprimir boletim** | `responsavel/justificar.html`, `responsavel/boletim.html` |
+| Aluno | **Imprimir boletim** | `aluno/notas.html` |
+| Secretaria | **Justificativas**: aceitar (abonar) ou recusar com explicação; pendência na fila do início | `escola/justificativas.html` |
+| Professor | **Registro de aula**: conteúdo, tarefa e nº de aulas por turma, com sugestão dos dias sem registro | `professor/registro-aula.html` |
+| Coordenação | **Registros de aula** (consulta por turma) | `coordenador/registros-aula.html` |
+| Rede | **Editar escola**, **registrar ato renovado**, **editar e desligar professor** | `rede/escolas.html`, `rede/atos.html`, `rede/professores.html` |
+| PROFIN | **Lançar repasse** (soma ao recebido e abre novo prazo de prestação) | `profin/index.html` |
+
+As regras ficam em `assets/js/dominio/` (`senha.js`, `vida-escolar.js`, `hoje.js`, e `cadastros.js` e `prestacao.js` ampliados) e têm testes em `tools/testar-cadastros.mjs`.
+
 ## Roteiro de demonstração de 10 minutos
 
 1. **Entrada e tour (1 min).** Abra `index.html`, entre como Aluno (`202610317` / `aluno2026`) e deixe o guia de primeiro acesso rodar; clique em Ouvir em um passo.
@@ -137,6 +156,8 @@ A tela de login tem um bloco "Acesso de demonstração" com essas contas e um bo
 10. **Direção e coordenação (2 min).** Entre como Coordenação (`coord.osvaldo` / `coord2026`), marque a atenção de uma turma e abra Comparar turmas; depois, como Direção (`dir.osvaldo` / `diretor2026`), abra a Tela de reunião.
 11. **PROFIN (1 min).** Entre como PROFIN (`profin.seed` / `profin2026`), anote o contexto de uma escola e gere o rascunho do relatório. Abra a **Análise das declarações**, confira os gastos de uma escola e devolva o retorno; a direção (`dir.osvaldo` / `diretor2026`) vê o retorno em **Prestação de contas**, onde também declara os gastos.
 12. **Professor sem internet (1 min).** Entre como Professor (`PF-30412` / `prof2026`), abra o Diário, clique em Ficar offline, lance uma nota e registre a chamada, depois Voltar online: os registros pendentes são sincronizados.
+13. **Justificar falta (2 min).** Como Responsável, abra **Justificar falta**, escolha uma data sugerida e o motivo e envie. Entre como Secretaria, abra **Justificativas** e aceite ou recuse (a recusa pede uma explicação); volte como Responsável e veja a decisão.
+14. **Registro de aula e senha (1 min).** Como Professor (`PF-30412` / `prof2026`), abra **Registro de aula** e registre o conteúdo de um dia; a Coordenação vê em **Registros de aula**. Em **Configurações › Conta**, troque a senha e saia; entre com a nova.
 
 Antes de repetir a demonstração, use **Restaurar dados de demonstração** na entrada (apaga também a fila offline).
 
@@ -220,7 +241,7 @@ Sem instalar nada (Node 22 ou mais novo):
 
 ```bash
 node tools/testar-painel.mjs        # semáforo, margem de faltas, calculadora, agenda, horários, prioridades e PROFIN
-node tools/testar-cadastros.mjs     # cadastro de escola e ato, professor, equipe do PROFIN, carga horária, declaração dos gastos e retorno
+node tools/testar-cadastros.mjs     # cadastro e edição de escola e ato, professor, equipe do PROFIN, carga horária, declaração dos gastos, repasse, senha, registro de aula e justificativa de falta
 node tools/verificar-contraste.mjs  # contraste dos tokens nos quatro temas, inclusive as cores do painel.css
 ```
 
@@ -250,6 +271,8 @@ As telas foram conferidas em Chromium (Playwright) em 360, 768 e 1440 px; esses 
 
 Tudo é protótipo sem servidor: o "servidor" é o `localStorage` do navegador (ou a API local do `iniciar.bat`).
 
+- **Senha trocada:** vale só no aparelho em que foi trocada; não há redefinição pela secretaria (só a orientação na tela de login).
+- **Justificativa de falta:** só o nome e o tamanho do anexo ficam registrados. Aceitar abona a falta no registro da justificativa, mas não muda a contagem de faltas do diário.
 - **Login:** contas no arquivo de dados, senha em texto simples e sessão em `sessionStorage`. Serve para separar as visões na demonstração, não para proteger dados.
 - **Tour:** usa a voz em português instalada no aparelho; sem ela, só o texto. O "já visto" fica em `localStorage`, por navegador.
 - **Modo balcão:** o pedido só existe no navegador em que foi feito.

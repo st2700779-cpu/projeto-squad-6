@@ -3,9 +3,11 @@
 import { iniciar, link } from '../app.js';
 import { aplicarEscala, mudarEscala } from '../acessibilidade.js';
 import { obter, definir } from '../estado.js';
-import { sessao, sair, PERFIS } from '../auth.js';
-import { reiniciarDados } from '../dados.js';
-import { avisar, confirmar, icone, esc } from '../ui.js';
+import { sessao, sair, PERFIS, senhaConfere, trocarSenha, senhaFoiTrocada } from '../auth.js';
+import { reiniciarDados, carregar } from '../dados.js';
+import { avisar, confirmar, icone, esc, comEspera } from '../ui.js';
+import { campo, lerFormulario, mostrarErros } from '../componentes/formulario.js';
+import { validarTrocaDeSenha, forcaDaSenha, TAMANHO_MINIMO_DA_SENHA } from '../dominio/senha.js';
 
 const usuario = sessao();
 const perfil = usuario?.perfil && PERFIS[usuario.perfil] ? usuario.perfil : null;
@@ -56,7 +58,17 @@ function desenhar() {
       <section class="cfg-grupo" aria-labelledby="cfg-conta">
         <h2 id="cfg-conta">Conta</h2>
         ${usuario ? `<dl class="cfg-dl"><dt>Nome</dt><dd>${esc(usuario.nome)}</dd><dt>Perfil</dt><dd>${esc(usuario.papel)}</dd><dt>Usuário</dt><dd>${esc(usuario.login)}</dd></dl>
-          <button type="button" class="botao botao-secundario" data-acao="sair">Sair da conta</button>` : `<p>Você não entrou em nenhuma conta. <a href="${link('index.html')}">Escolher um perfil</a></p>`}
+          <div class="cfg-acoes"><button type="button" class="botao botao-secundario" data-acao="senha" aria-expanded="false" aria-controls="form-senha">Alterar senha</button><button type="button" class="botao botao-secundario" data-acao="sair">Sair da conta</button></div>
+          ${senhaFoiTrocada(usuario.login) ? '<p class="cfg-dica">A senha desta conta foi trocada neste aparelho.</p>' : ''}
+          <form id="form-senha" class="form-senha" novalidate hidden>
+            <p class="cfg-dica">Use ${TAMANHO_MINIMO_DA_SENHA} caracteres ou mais, com letras e números. Na demonstração a troca vale só neste aparelho.</p>
+            ${campo({ nome: 'atual', rotulo: 'Senha atual', tipo: 'password', obrigatorio: true, atributos: 'autocomplete="current-password"' })}
+            ${campo({ nome: 'nova', rotulo: 'Nova senha', tipo: 'password', obrigatorio: true, atributos: 'autocomplete="new-password"' })}
+            <p class="forca-senha" id="forca-senha" role="status" aria-live="polite"></p>
+            ${campo({ nome: 'confirmacao', rotulo: 'Repita a nova senha', tipo: 'password', obrigatorio: true, atributos: 'autocomplete="new-password"' })}
+            <p class="erro" id="f-geral-erro" role="alert"></p>
+            <div class="cfg-acoes"><button type="submit" class="botao">Salvar nova senha</button><button type="button" class="botao botao-texto" data-acao="cancelar-senha">Cancelar</button></div>
+          </form>` : `<p>Você não entrou em nenhuma conta. <a href="${link('index.html')}">Escolher um perfil</a></p>`}
       </section>
 
       <section class="cfg-grupo" aria-labelledby="cfg-ajuda">
@@ -92,6 +104,13 @@ main.addEventListener('click', async (e) => {
   }
   const acao = e.target.closest('[data-acao]')?.dataset.acao;
   if (acao === 'sair') sair();
+  if (acao === 'senha' || acao === 'cancelar-senha') {
+    const f = main.querySelector('#form-senha');
+    const abrir = acao === 'senha' && f.hidden;
+    f.hidden = !abrir; f.reset?.(); mostrarErros(f, {}); main.querySelector('#forca-senha').textContent = '';
+    main.querySelector('[data-acao="senha"]').setAttribute('aria-expanded', String(abrir));
+    (abrir ? f.querySelector('#f-atual') : main.querySelector('[data-acao="senha"]'))?.focus();
+  }
   if (acao === 'guia') import('../tour.js').then((t) => t.abrirTour(perfil, e.target));
   if (acao === 'padrao') {
     p?.restaurar(); definir('escala', 1); aplicarEscala(); definir('cfg-notif', null);
@@ -101,5 +120,28 @@ main.addEventListener('click', async (e) => {
     if (!(await confirmar({ titulo: 'Restaurar os dados de demonstração?', texto: 'Apaga o que foi feito neste navegador e no servidor local: pedidos, confirmações, notas lançadas e chamadas. Esta ação não pode ser desfeita.', botao: 'Restaurar', perigo: true }))) return;
     try { await reiniciarDados(); avisar('Dados de demonstração restaurados.'); } catch { avisar('Não foi possível restaurar os dados. Recarregue a página e tente de novo.'); }
   }
+});
+main.addEventListener('input', (e) => {
+  if (e.target.id !== 'f-nova') return;
+  const { nivel, texto } = forcaDaSenha(e.target.value);
+  const alvo = main.querySelector('#forca-senha');
+  alvo.textContent = texto ? `Força da senha: ${texto}` : '';
+  alvo.dataset.nivel = String(nivel);
+});
+main.addEventListener('submit', async (e) => {
+  if (e.target.id !== 'form-senha') return;
+  e.preventDefault();
+  const f = e.target;
+  const dados = lerFormulario(f);
+  let conta = null;
+  try { conta = (await carregar('usuarios')).find((u) => u.login === usuario.login && u.perfil === usuario.perfil); } catch { /* tratado abaixo */ }
+  if (!conta) { mostrarErros(f, {}); f.querySelector('#f-geral-erro').textContent = 'Não foi possível confirmar a sua conta agora. Tente de novo.'; return; }
+  const { ok, erros } = validarTrocaDeSenha(dados, { atualCorreta: dados.atual ? await senhaConfere(conta, dados.atual) : false, login: usuario.login });
+  if (!mostrarErros(f, erros) || !ok) return;
+  try { await comEspera(f.querySelector('[type="submit"]'), () => trocarSenha(conta, dados.nova)); }
+  catch { f.querySelector('#f-geral-erro').textContent = 'Não foi possível guardar a nova senha neste navegador.'; return; }
+  desenhar();
+  avisar('Senha alterada. Use a nova senha no próximo acesso.');
+  main.querySelector('[data-acao="senha"]')?.focus();
 });
 desenhar();

@@ -4,7 +4,7 @@
 // - Uso: arquivos do próprio site vão "rede primeiro" (a versão nova aparece quando há internet e a guardada serve quando não há);
 //   arquivos de CDN vão "cache primeiro". A API local (/api/) nunca passa pelo cache.
 // Só funciona em https ou localhost.
-const VERSAO = 'portal-968708ef';
+const VERSAO = 'portal-a299f606';
 const NUCLEO = [
   "index.html",
   "login.html",
@@ -31,6 +31,7 @@ const NUCLEO = [
   "professor/index.html",
   "professor/mapa.html",
   "professor/materiais.html",
+  "professor/registro-aula.html",
   "assets/css/acesso.css",
   "assets/css/assistente.css",
   "assets/css/balcao.css",
@@ -61,6 +62,7 @@ const NUCLEO = [
   "assets/js/dominio/codigos.js",
   "assets/js/dominio/equivalencias.js",
   "assets/js/dominio/habilitacao.js",
+  "assets/js/dominio/hoje.js",
   "assets/js/dominio/horario.js",
   "assets/js/dominio/impacto-atos.js",
   "assets/js/dominio/matricula.js",
@@ -68,11 +70,13 @@ const NUCLEO = [
   "assets/js/dominio/painel.js",
   "assets/js/dominio/prestacao.js",
   "assets/js/dominio/profin.js",
+  "assets/js/dominio/senha.js",
   "assets/js/dominio/sincronizacao.js",
   "assets/js/dominio/texto.js",
   "assets/js/dominio/trajetoria.js",
   "assets/js/dominio/turmas.js",
   "assets/js/dominio/verificacao.js",
+  "assets/js/dominio/vida-escolar.js",
   "assets/js/estado.js",
   "assets/js/idb.js",
   "assets/js/mapa/distancia.js",
@@ -102,6 +106,7 @@ const NUCLEO = [
   "assets/js/paginas/professor-horario.js",
   "assets/js/paginas/professor-mapa.js",
   "assets/js/paginas/professor-materiais.js",
+  "assets/js/paginas/professor-registro-aula.js",
   "assets/js/paginas/professor-turmas.js",
   "assets/js/paginas/verificar.js",
   "assets/js/painel-dados.js",
@@ -138,6 +143,7 @@ const NUCLEO = [
   "data/historico.json",
   "data/historicos.json",
   "data/horarios.json",
+  "data/justificativas.json",
   "data/letivo.json",
   "data/localidades.json",
   "data/materiais.json",
@@ -149,7 +155,9 @@ const NUCLEO = [
   "data/profin-notas.json",
   "data/profin.json",
   "data/quiz.json",
+  "data/registros-aula.json",
   "data/renovacoes.json",
+  "data/repasses-lancados.json",
   "data/solicitacoes.json",
   "data/tour.json",
   "data/trajetorias.json",

@@ -1,7 +1,7 @@
 // Login por perfil (protótipo: ver aviso em auth.js). O perfil vem de ?perfil=aluno|professor|escola|rede
 // e o destino depois do login, de ?voltar=<caminho dentro do site>.
 import { iniciar, link } from '../app.js';
-import { PERFIS, sessao, iniciarSessao, destinoSeguro } from '../auth.js';
+import { PERFIS, sessao, iniciarSessao, destinoSeguro, senhaConfere } from '../auth.js';
 import { carregar } from '../dados.js';
 import { esc, icone, comEspera } from '../ui.js';
 
@@ -51,10 +51,15 @@ async function desenhar() {
       <p class="erro" id="erro-form" role="alert"></p>
       <button type="submit" class="botao botao-grande" id="entrar">Entrar</button>
     </form>
+    <details class="demo" id="esqueci">
+      <summary>Esqueci minha senha</summary>
+      <p class="demo-nota">${['aluno', 'responsavel', 'professor'].includes(perfil) ? 'Procure a secretaria da sua escola: ela confere os seus dados e gera uma senha nova.' : 'Peça a redefinição à equipe técnica da SEED, pelo canal institucional.'} Nunca informe a sua senha a outra pessoa.</p>
+      <p class="demo-nota">Na demonstração: se você trocou a senha neste aparelho e não lembra, use "Restaurar dados de demonstração" na tela de entrada para voltar às senhas de teste.</p>
+    </details>
     <details class="demo">
       <summary>Acesso de demonstração</summary>
       ${contas.map((c) => `<div class="demo-conta"><dl><dt>${esc(P.campo)}</dt><dd>${esc(c.login)}</dd><dt>Senha</dt><dd>${esc(c.senha)}</dd><dt>Perfil</dt><dd>${esc(c.nome)}</dd></dl><button type="button" class="botao botao-secundario botao-mini" data-preencher="${esc(c.login)}" aria-label="Preencher com a conta de ${esc(c.nome)}">Preencher</button></div>`).join('') || '<p class="demo-nota">As contas de demonstração não carregaram.</p>'}
-      <p class="demo-nota">Contas fictícias, só para testar o protótipo.</p>
+      <p class="demo-nota">Contas fictícias, só para testar o protótipo. Se você trocou a senha, use a nova.</p>
     </details>
     <p><a href="${link('index.html')}">Voltar e escolher outro perfil</a></p>`;
   main.querySelector('h1').focus();
@@ -91,7 +96,7 @@ async function entrar() {
       else erro('login', `Não encontramos ${P.naoEncontrado}. Confira os dados ou use a conta de demonstração abaixo.`).focus();
       return;
     }
-    if (conta.senha !== senha) {
+    if (!(await senhaConfere(conta, senha))) {
       const s = erro('senha', 'A senha não confere. Confira as letras e tente de novo.');
       main.querySelector('#senha').value = '';
       s.focus();

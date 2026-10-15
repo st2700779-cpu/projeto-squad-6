@@ -1,7 +1,7 @@
 // Dados do PROFIN já somados às declarações de gastos das escolas (aprovadas, em análise ou devolvidas).
 // Escola recém-cadastrada ainda não tem repasse: ganha uma linha "sem repasse" por categoria, para os painéis não quebrarem.
 import { carregar, conjunto } from './dados.js';
-import { aplicarDeclaracoes } from './dominio/prestacao.js';
+import { aplicarDeclaracoes, aplicarRepasses } from './dominio/prestacao.js';
 
 export function completarRepasses(repasses, escolas, categorias, prazoPadrao) {
   const extras = escolas.flatMap((e) => categorias
@@ -12,7 +12,7 @@ export function completarRepasses(repasses, escolas, categorias, prazoPadrao) {
 
 /** @returns {Promise<{categorias: string[], descricoes: object, repasses: object[], repassesBase: object[], declaracoes: object[]}>} */
 export async function profinComDeclaracoes() {
-  const [dados, declaracoes, escolas, letivo] = await Promise.all([carregar('profin'), conjunto('declaracoes-gastos'), carregar('escolas'), carregar('letivo')]);
-  const base = completarRepasses(dados.repasses, escolas, dados.categorias, `${letivo.dataReferencia.slice(0, 4)}-12-15`);
-  return { ...dados, repassesBase: base, repasses: aplicarDeclaracoes(base, declaracoes), declaracoes };
+  const [dados, declaracoes, escolas, letivo, lancados] = await Promise.all([carregar('profin'), conjunto('declaracoes-gastos'), carregar('escolas'), carregar('letivo'), conjunto('repasses-lancados')]);
+  const base = aplicarRepasses(completarRepasses(dados.repasses, escolas, dados.categorias, `${letivo.dataReferencia.slice(0, 4)}-12-15`), lancados);
+  return { ...dados, repassesBase: base, repasses: aplicarDeclaracoes(base, declaracoes), declaracoes, lancados };
 }

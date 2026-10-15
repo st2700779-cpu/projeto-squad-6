@@ -1,8 +1,8 @@
 // Notas e faltas do estudante. Serve ao aluno e ao responsável (o perfil vem de <body data-perfil>).
 // Cada matéria mostra as notas por bimestre, o semáforo da nota (cor, símbolo e palavra) e a situação.
 // O responsável escolhe o filho no alto e pode ligar o modo simplificado (só matéria, nota e semáforo).
-import { iniciar, falhaDados, controleModoSimples } from '../app.js';
-import { esc, numeroBR, etiqueta, plural } from '../ui.js';
+import { iniciar, falhaDados, controleModoSimples, link } from '../app.js';
+import { esc, numeroBR, etiqueta, plural, icone, hojeBR } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { diario, letivo, estudantes, escolherEstudante } from '../dados.js';
 import { desempenho, MEDIA_APROVACAO, MEDIA_RECUPERACAO, PRESENCA_MINIMA, semaforoNota, semaforoFrequencia, margemDeFaltas } from '../regras.js';
@@ -35,10 +35,12 @@ async function mostrar() {
       </table></div>
       <p class="contagem so-completo">${linhas.length} matérias · aprovação: média ${MEDIA_APROVACAO} e frequência de ${PRESENCA_MINIMA}%; recuperação: média de ${MEDIA_RECUPERACAO} a menos de ${MEDIA_APROVACAO}.${matematicaDoDiario ? ' A nota de Matemática vem do diário do professor.' : ''}</p>
       <p class="contagem">Nota: verde é média ${MEDIA_APROVACAO} ou mais; amarelo, de ${MEDIA_RECUPERACAO} a menos de ${MEDIA_APROVACAO}; vermelho, abaixo de ${MEDIA_RECUPERACAO}.</p>
-      <div class="linha-botoes esp-t-3">${botaoOuvir(resumo, 'Ouvir resumo')}</div>`;
+      <p class="so-impressao-boletim">Boletim emitido em ${hojeBR()} pelo Portal Acadêmico · ${esc(est.nome)} · ${esc(est.turma)} · situação parcial, sem valor de documento oficial.</p>
+      <div class="linha-botoes esp-t-3 nao-imprimir">${botaoOuvir(resumo, 'Ouvir resumo')}<button type="button" class="botao botao-secundario" data-imprimir>${icone('imprimir', 20)}Imprimir boletim</button>${perfil === 'responsavel' ? `<a class="botao botao-secundario" href="${link('responsavel/justificar.html')}">${icone('documento', 20)}Justificar falta</a>` : ''}</div>`;
   } catch { falhaDados(main, mostrar); }
 }
 main.addEventListener('click', (e) => {
+  if (e.target.closest('[data-imprimir]')) { window.print(); return; }
   const b = e.target.closest('[data-estudante]');
   if (!b) return;
   escolherEstudante(b.dataset.estudante);
