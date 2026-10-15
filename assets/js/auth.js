@@ -26,7 +26,8 @@ export function sessao() {
 }
 export function iniciarSessao(usuario) {
   const { perfil, login, nome, papel, refId, escolaId } = usuario;
-  try { sessionStorage.setItem(CHAVE, JSON.stringify({ perfil, login, nome, papel, refId, escolaId: escolaId ?? null })); } catch { /* sem armazenamento: não há como manter a sessão */ }
+  // trocarSenha: entrou com senha temporária, então só pode usar a tela de Configurações até definir uma nova
+  try { sessionStorage.setItem(CHAVE, JSON.stringify({ perfil, login, nome, papel, refId, escolaId: escolaId ?? null, trocarSenha: senhaTemporaria(login) })); } catch { /* sem armazenamento: não há como manter a sessão */ }
 }
 /** Encerra a sessão e volta para a entrada. Os dados da demonstração ficam como estão. motivo: 'inatividade' mostra o aviso na entrada. */
 export function sair(motivo = '') {
@@ -47,16 +48,34 @@ export async function resumoDaSenha(login, senha) {
   return [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 /** A senha digitada confere com a da conta (a trocada neste aparelho, se houver, ou a original). */
+// Cada registro é o resumo (texto, senha trocada pelo usuário) ou { h: resumo, t: true } (senha temporária gerada pela secretaria ou pela rede).
+const resumoDoRegistro = (reg) => (typeof reg === 'string' ? reg : reg?.h);
 export async function senhaConfere(conta, senha) {
-  const trocada = lerSenhas()[conta.login];
-  return trocada ? trocada === await resumoDaSenha(conta.login, senha) : conta.senha === senha;
+  const h = resumoDoRegistro(lerSenhas()[conta.login]);
+  return h ? h === await resumoDaSenha(conta.login, senha) : conta.senha === senha;
 }
+const gravarSenhas = (todas) => { try { localStorage.setItem(CHAVE_SENHAS, JSON.stringify(todas)); } catch { throw new Error('FALHA_AO_SALVAR'); } };
 export async function trocarSenha(conta, nova) {
   const todas = lerSenhas();
   todas[conta.login] = await resumoDaSenha(conta.login, nova);
-  try { localStorage.setItem(CHAVE_SENHAS, JSON.stringify(todas)); } catch { throw new Error('FALHA_AO_SALVAR'); }
+  gravarSenhas(todas);
+  concluirTrocaObrigatoria();
 }
-export const senhaFoiTrocada = (login) => Boolean(lerSenhas()[login]);
+/** Senha temporária: a pessoa escolhe a definitiva no primeiro acesso. */
+export async function redefinirSenha(conta, temporaria) {
+  const todas = lerSenhas();
+  todas[conta.login] = { h: await resumoDaSenha(conta.login, temporaria), t: true };
+  gravarSenhas(todas);
+}
+export const senhaTemporaria = (login) => Boolean(lerSenhas()[login]?.t);
+/** 'original' (a de demonstração), 'trocada' (pelo usuário) ou 'temporaria' (troca pendente). */
+export const situacaoDaSenha = (login) => { const r = lerSenhas()[login]; return !r ? 'original' : r.t ? 'temporaria' : 'trocada'; };
+export const senhaFoiTrocada = (login) => situacaoDaSenha(login) === 'trocada';
+/** Libera a navegação depois que a pessoa definiu a senha nova. */
+export function concluirTrocaObrigatoria() {
+  const s = sessao();
+  if (s?.trocarSenha) { try { sessionStorage.setItem(CHAVE, JSON.stringify({ ...s, trocarSenha: false })); } catch { /* sem armazenamento: a sessão acaba ao recarregar */ } }
+}
 export const restaurarSenhas = () => { try { localStorage.removeItem(CHAVE_SENHAS); } catch { /* nada a limpar */ } };
 
 /** Endereço relativo à raiz do site que pode ser usado depois do login (nunca um endereço de outro site). */

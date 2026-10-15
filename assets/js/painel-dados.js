@@ -1,5 +1,6 @@
 // Carrega e junta os dados que os painéis do aluno e do responsável usam (desempenho, horário, agenda, quiz).
-import { carregar, conjunto, diario, letivo, dataDeReferencia, turmasDaRede } from './dados.js';
+import { isoDoAviso } from './dominio/avisos.js';
+import { carregar, conjunto, diarioParaLeitura, letivo, dataDeReferencia, turmasDaRede } from './dados.js';
 import { obter, definir } from './estado.js';
 import { dataBR } from './ui.js';
 import { desempenhoDaTurma, mediaGeral, SERIES, desempenho, margemDeFaltas, semaforoFrequencia, horarioDaTurma, montarAgenda, diaDaSemana, aulasDoDia, notaNecessaria } from './regras.js';
@@ -24,7 +25,7 @@ export function registrarTentativa(estudanteId, tentativa) {
  * @returns {Promise<{d: object, lv: object, hoje: string, margem: object, semFreq: object, grade: object|null, aulasHoje: Array, agenda: {aFazer: Array, feitos: Array}}>}
  */
 export async function painelDoEstudante(est) {
-  const [dia, lv, horarios, agenda, hoje] = await Promise.all([diario(), letivo(), conjunto('horarios'), carregar('agenda'), dataDeReferencia()]);
+  const [dia, lv, horarios, agenda, hoje] = await Promise.all([diarioParaLeitura(), letivo(), conjunto('horarios'), carregar('agenda'), dataDeReferencia()]);
   const d = desempenho(est, dia, lv.aulasDadas);
   const grade = horarioDaTurma(horarios, est);
   return {
@@ -37,7 +38,6 @@ export async function painelDoEstudante(est) {
 }
 export { notaNecessaria };
 
-const isoDoAviso = (a) => (a.data.includes('/') ? a.data.split('/').reverse().join('-') : a.data);
 
 /**
  * Avisos que um perfil vê: os da escola (data/avisos.json, com `para`) e os comunicados enviados por professores e direção.
@@ -58,7 +58,7 @@ export async function avisosVisiveis({ perfil, est }) {
  * @returns {Promise<{lista: Array<{turma: object, alunos: number, frequencia: number|null, abaixo75: number, emRisco: number, componentes: object, media: number|null, doDiario: boolean}>, totais: {alunos: number, frequencia: number|null, abaixo75: number, emRisco: number}, lv: object, hoje: string}>}
  */
 export async function desempenhoDaEscola(escolaId) {
-  const [turmas, dia, sementes, lv] = await Promise.all([turmasDaRede(), diario(), carregar('desempenho'), letivo()]);
+  const [turmas, dia, sementes, lv] = await Promise.all([turmasDaRede(), diarioParaLeitura({ soAtivos: true }), carregar('desempenho'), letivo()]);
   const lista = turmas
     .filter((t) => t.escolaId === escolaId && t.situacao === 'Aprovada' && (dia[t.id]?.length || sementes[t.id]))
     .map((t) => { const d = desempenhoDaTurma(t, dia[t.id], sementes[t.id], lv.aulasDadas); return { turma: t, ...d, media: mediaGeral(d.componentes) }; })

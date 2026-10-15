@@ -5,16 +5,16 @@ import { iniciar, falhaDados, link } from '../app.js';
 import { profinComDeclaracoes } from '../prestacao-dados.js';
 import { etiquetaDaDeclaracao, mesAno } from '../componentes/declaracao.js';
 import { campo, lerFormulario, mostrarErros } from '../componentes/formulario.js';
-import { validarRepasse } from '../dominio/prestacao.js';
+import { validarRepasse, podeEstornar, validarEstorno, aplicarEstorno } from '../dominio/prestacao.js';
 import { sessao } from '../auth.js';
-import { esc, numeroBR, dataBR, plural, vazio, avisar, comEspera, icone } from '../ui.js';
+import { esc, numeroBR, dataBR, plural, vazio, avisar, comEspera, icone, etiqueta } from '../ui.js';
 import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia } from '../dados.js';
 import { situacaoDaPrestacao, adimplenciaDaEscola, saldo, percentualExecutado, reais, nomeCurto } from '../regras.js';
 import { semaforo, celulaDeCalor, legendaDeNiveis } from '../componentes/indicadores.js';
 
 const main = await iniciar({ perfil: 'profin', pagina: 'profin/index.html', assistente: false });
 const GRAVE = { vermelho: 0, amarelo: 1, verde: 2, neutro: 3 };
-let dados, escolas, notas, hoje, sel = null, filtro = '', municipio = '';
+let dados, escolas, notas, hoje, sel = null, filtro = '', municipio = '', estornando = null;
 
 const doEscola = (id) => dados.repasses.filter((r) => r.escolaId === id);
 function linhas() {
@@ -25,7 +25,15 @@ function linhas() {
 }
 function repassesDe(e) {
   const ls = (dados.lancados || []).filter((l) => l.escolaId === e.id);
-  return `<h3>Repasses lançados</h3>${ls.length ? `<ul class="lista-simples">${ls.map((l) => `<li>${esc(l.categoria)} · ${reais(l.valor)} · crédito em ${dataBR(l.data)} · prestar contas até ${dataBR(l.prazo)} <span class="texto-suave texto-pequeno">(${esc(l.lancadoPor)})</span></li>`).join('')}</ul>` : '<p class="texto-suave">Nenhum repasse lançado por aqui. Os valores do painel vêm da base inicial.</p>'}
+  const linhaDe = (l) => {
+    if (l.estornadoEm) return `<li class="repasse-estornado"><div>${esc(l.categoria)} · ${reais(l.valor)} · crédito em ${dataBR(l.data)} ${etiqueta('Estornado', 'neutra')}<small class="repasse-nota">${dataBR(l.estornadoEm)} · ${esc(l.estornadoPor)} · motivo: ${esc(l.estornoMotivo)}</small></div></li>`;
+    const pode = podeEstornar(l, doEscola(e.id).find((r) => r.categoria === l.categoria) || { recebido: 0, executado: 0 });
+    const acao = estornando === l.id
+      ? `<form class="form-recusa" data-estornar-form="${esc(l.id)}" novalidate><label for="est-${esc(l.id)}">Motivo do estorno <span class="dica">Fica no histórico.</span></label><textarea id="est-${esc(l.id)}" name="motivo" class="entrada" rows="2" maxlength="300" aria-describedby="est-${esc(l.id)}-erro"></textarea><p class="erro" id="est-${esc(l.id)}-erro" role="alert"></p><div class="linha-botoes"><button type="submit" class="botao botao-perigo botao-mini">Confirmar estorno</button><button type="button" class="botao botao-texto botao-mini" data-cancelar-estorno>Cancelar</button></div></form>`
+      : pode.ok ? `<button type="button" class="botao botao-secundario botao-mini" data-estornar="${esc(l.id)}" aria-label="Estornar repasse de ${reais(l.valor)} (${esc(l.categoria)})">Estornar</button>` : `<small class="texto-suave">${esc(pode.motivo)}</small>`;
+    return `<li><div>${esc(l.categoria)} · ${reais(l.valor)} · crédito em ${dataBR(l.data)} · prestar contas até ${dataBR(l.prazo)} <span class="texto-suave texto-pequeno">(${esc(l.lancadoPor)})</span><div class="esp-t-1">${acao}</div></div></li>`;
+  };
+  return `<h3>Repasses lançados</h3>${ls.length ? `<ul class="lista-simples">${ls.map(linhaDe).join('')}</ul>` : '<p class="texto-suave">Nenhum repasse lançado por aqui. Os valores do painel vêm da base inicial.</p>'}
     <form id="form-repasse" class="painel-inline esp-t-2" novalidate data-escola-id="${e.id}"><h3 class="esp-t-0">Lançar repasse</h3>
       <p class="texto-suave esp-t-0">Registre o recurso que entrou na conta da escola. O valor soma ao recebido e a prestação de contas ganha um novo prazo.</p>
       <div class="form-bloco">${campo({ nome: 'categoria', rotulo: 'Categoria do recurso', obrigatorio: true, opcoes: [['', 'Escolha a categoria'], ...dados.categorias.map((c) => [c, c])] })}
@@ -98,7 +106,14 @@ main.addEventListener('change', (e) => {
   if (e.target.id === 'f-situacao') { filtro = e.target.value === 'dia' ? 'dia' : e.target.value; desenhar(); main.querySelector('#f-situacao').focus(); }
   if (e.target.id === 'f-municipio') { municipio = e.target.value; desenhar(); main.querySelector('#f-municipio').focus(); }
 });
+function redesenharDetalhe(foco = '') {
+  main.querySelector('#detalhe').innerHTML = detalhe(escolas.find((x) => x.id === sel));
+  if (foco) main.querySelector(foco)?.focus();
+}
 main.addEventListener('click', (e) => {
+  const est = e.target.closest('[data-estornar]');
+  if (est) { estornando = est.dataset.estornar; redesenharDetalhe(`#est-${estornando}`); return; }
+  if (e.target.closest('[data-cancelar-estorno]')) { const id = estornando; estornando = null; redesenharDetalhe(`[data-estornar="${id}"]`); return; }
   const b = e.target.closest('button[data-escola]');
   if (!b) return;
   sel = b.dataset.escola;
@@ -123,6 +138,28 @@ main.addEventListener('submit', async (e) => {
     dados = await profinComDeclaracoes(); desenhar();
     avisar('Repasse lançado. A prestação de contas da categoria tem novo prazo.');
   } catch { avisar('Não foi possível lançar o repasse. Confira a conexão e tente de novo.'); }
+});
+main.addEventListener('submit', async (e) => {
+  const idEstorno = e.target.dataset?.estornarForm;
+  if (!idEstorno) return;
+  e.preventDefault();
+  const form = e.target, motivo = form.querySelector('[name="motivo"]').value;
+  const { ok, erros } = validarEstorno({ motivo });
+  if (!ok) { form.querySelector('.erro').textContent = erros.motivo; form.querySelector('textarea').setAttribute('aria-invalid', 'true'); form.querySelector('textarea').focus(); return; }
+  try {
+    await comEspera(e.submitter, async () => {
+      const lista = await conjunto('repasses-lancados');
+      const alvo = lista.find((l) => l.id === idEstorno);
+      if (!alvo) throw new Error('NAO_ENCONTRADO');
+      const linha = dados.repasses.find((r) => r.escolaId === alvo.escolaId && r.categoria === alvo.categoria);
+      const pode = podeEstornar(alvo, linha || { recebido: 0, executado: 0 });
+      if (!pode.ok) { avisar(pode.motivo, 'erro'); throw Object.assign(new Error('BLOQUEADO'), { tratado: true }); }
+      await salvar('repasses-lancados', lista.map((l) => (l === alvo ? aplicarEstorno(alvo, { motivo, por: sessao().nome, hoje }) : l)));
+      await registrarAcao(sessao().nome, `Estornou repasse de ${reais(alvo.valor)} (${alvo.categoria})`, escolas.find((x) => x.id === alvo.escolaId).nome);
+    });
+    estornando = null; dados = await profinComDeclaracoes(); desenhar();
+    avisar('Repasse estornado. O valor saiu do recebido e o prazo anterior voltou.');
+  } catch (err) { if (!err.tratado) avisar('Não foi possível estornar. Confira a conexão e tente de novo.'); }
 });
 main.addEventListener('submit', async (e) => {
   if (e.target.id !== 'form-nota') return;

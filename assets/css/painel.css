@@ -619,3 +619,21 @@ textarea.entrada { min-height: 5rem; resize: vertical; font: inherit; }
 }
 h2 .etiqueta, h3 .etiqueta { white-space: normal; max-width: 100%; }
 #form-aula, #form-justificativa { max-width: 46rem; }
+.abono-marca { display: block; font-size: var(--texto-xs); font-weight: var(--peso-forte); color: var(--sucesso); }
+.repasse-nota { display: block; color: var(--texto-suave); font-size: var(--texto-sm); }
+.repasse-estornado { color: var(--texto-suave); }
+.lista-planos { display: grid; gap: var(--sp-3); }
+.cartao-plano { border: 1px solid var(--borda); border-radius: var(--raio-lg); padding: var(--sp-4) var(--sp-5); background: var(--superficie); box-shadow: var(--sombra-1); min-width: 0; overflow-wrap: anywhere; }
+.codigo-bncc { display: inline-block; padding: 1px var(--sp-2); border: 1px solid var(--borda-forte, var(--borda)); border-radius: var(--raio-sm); font-family: var(--fonte-mono, ui-monospace, monospace); font-size: var(--texto-sm); font-weight: var(--peso-forte); }
+#form-plano { max-width: 46rem; }
+@media print {
+  #pagina[data-imprimindo] > *:not(.lista-planos), #pagina[data-imprimindo] .lista-planos > :not(.plano-para-imprimir), #pagina[data-imprimindo] .contagem { display: none !important; }
+  #pagina[data-imprimindo] .plano-para-imprimir { border: 0; box-shadow: none; padding: 0; }
+}
+.menu-contador { margin-left: auto; min-width: 1.5rem; padding: 0 var(--sp-2); border-radius: 999px; background: var(--destaque, #9fb8e6); color: var(--sobre-destaque, #0b2a4a); font-size: var(--texto-xs); font-weight: var(--peso-negrito); line-height: 1.5rem; text-align: center; }
+.aviso-novo { border-left: 4px solid var(--info); }
+.barra-leitura { margin: 0 0 var(--sp-3); }
+.barra-leitura:focus { outline: none; }
+.senha-gerada { margin: 0 0 var(--sp-4); padding: var(--sp-4) var(--sp-5); border: 2px solid var(--alerta-borda); border-radius: var(--raio-lg); background: var(--alerta-fundo); }
+.senha-gerada:focus { outline: 3px solid var(--foco, var(--cor-primaria)); outline-offset: 2px; }
+.senha-codigo { font-family: var(--fonte-mono, ui-monospace, monospace); font-size: var(--texto-2xl, 1.75rem); font-weight: var(--peso-negrito); letter-spacing: .08em; user-select: all; }

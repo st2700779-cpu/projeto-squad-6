@@ -8,7 +8,7 @@ import { sessao } from '../auth.js';
 import { qrParaElemento } from '../qr.js';
 import { codigoDeVerificacao, verificacaoDisponivel } from '../dominio/verificacao.js';
 import { esc, icone, dataBR, hojeBR, avisar } from '../ui.js';
-import { carregar, diario, letivo, estudantes, matriculas, novoProtocolo, registrarAcao } from '../dados.js';
+import { carregar, diarioParaLeitura, letivo, estudantes, matriculas, novoProtocolo, registrarAcao } from '../dados.js';
 import { desempenho, serieCompleta, PRESENCA_MINIMA } from '../regras.js';
 
 const params = new URLSearchParams(location.search);
@@ -34,7 +34,7 @@ async function dadosDoAluno() {
     const central = (await carregar('matriculas')).some((x) => x.protocolo === protocolo && x.situacao === 'Confirmada');
     return { nome: p.estudante, serie: p.serie, turma: null, turno: null, nascimento: null, escola: escolas.find((e) => e.id === p.escolaId), presenca: null, canonico: { fonte: 'P', chave: p.protocolo }, central };
   }
-  const [{ lista, atual }, dia, lv] = await Promise.all([estudantes(), diario(), letivo()]);
+  const [{ lista, atual }, dia, lv] = await Promise.all([estudantes(), diarioParaLeitura(), letivo()]);
   const est = lista.find((e) => e.id === params.get('estudante')) || atual;
   return { ...est, escola: escolas.find((e) => e.id === est.escolaId), presenca: desempenho(est, dia, lv.aulasDadas).presenca, canonico: { fonte: 'E', chave: est.matricula || est.id }, central: true };
 }

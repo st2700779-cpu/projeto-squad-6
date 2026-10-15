@@ -149,18 +149,19 @@ Pontos que a nota não dizia e foram acrescentados por serem o básico de cada �
 
 ## Leitura por perfil (melhorias essenciais)
 
-Feitas depois de ler o sistema como cada usuário (detalhes em `ANALISE-POR-PERFIL.md`).
+Feitas depois de ler o sistema como cada usuário, em duas rodadas (detalhes em `ANALISE-POR-PERFIL.md`).
 
 | Perfil | Item | Onde |
 | --- | --- | --- |
-| Todos | Alterar senha, esqueci minha senha, sessão encerrada em 30 min sem uso, "hoje" único da demonstração | `configuracoes.html`, `login.html` |
-| Responsável | Justificar falta com período, motivo, anexo e andamento; imprimir boletim | `responsavel/justificar.html` |
-| Aluno | Imprimir boletim | `aluno/notas.html` |
-| Secretaria | Decidir justificativas (aceitar ou recusar com explicação) | `escola/justificativas.html` |
-| Professor | Registro de aula (conteúdo, tarefa, nº de aulas) | `professor/registro-aula.html` |
-| Coordenação | Consulta dos registros de aula por turma | `coordenador/registros-aula.html` |
-| Rede | Editar escola, registrar ato renovado, editar e desligar professor | `rede/escolas.html`, `rede/professores.html` |
-| PROFIN | Lançar repasse | `profin/index.html` |
+| Todos | Alterar senha, esqueci minha senha, sessão encerrada em 30 min sem uso, senha temporária com troca obrigatória, "hoje" único da demonstração | `configuracoes.html`, `login.html` |
+| Responsável | Justificar falta com período, motivo, anexo e andamento; imprimir boletim; aviso de matrícula transferida ou cancelada | `responsavel/justificar.html` |
+| Aluno | Imprimir boletim; frequência sem as faltas abonadas | `aluno/notas.html`, `aluno/frequencia.html` |
+| Aluno, responsável, professor, secretaria | Avisos lidos: Novo, marcar como lido, marcar todos, contador no menu | `aluno/calendario.html`, `professor/avisos.html`, `escola/avisos.html` |
+| Secretaria | Decidir justificativas; transferir e cancelar matrícula (com desfazer); redefinir senha | `escola/justificativas.html`, `escola/movimentacoes.html`, `escola/acessos.html` |
+| Professor | Registro de aula; plano de aula com habilidades da BNCC; vê o diário sem os estudantes que saíram e com as faltas abonadas marcadas | `professor/registro-aula.html`, `professor/plano-aula.html` |
+| Coordenação | Registros e planos de aula por turma; alerta de turma sem registro há mais de 7 dias | `coordenador/registros-aula.html` |
+| Rede | Editar escola, registrar ato renovado, editar e desligar professor, mudar de escola com histórico de lotação, redefinir senha das contas institucionais | `rede/escolas.html`, `rede/professores.html`, `rede/acessos.html` |
+| PROFIN | Lançar e estornar repasse | `profin/index.html` |
 
 ## Regras visuais transversais
 

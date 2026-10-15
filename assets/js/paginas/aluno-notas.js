@@ -4,7 +4,7 @@
 import { iniciar, falhaDados, controleModoSimples, link } from '../app.js';
 import { esc, numeroBR, etiqueta, plural, icone, hojeBR } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
-import { diario, letivo, estudantes, escolherEstudante } from '../dados.js';
+import { diarioParaLeitura, letivo, estudantes, escolherEstudante } from '../dados.js';
 import { desempenho, MEDIA_APROVACAO, MEDIA_RECUPERACAO, PRESENCA_MINIMA, semaforoNota, semaforoFrequencia, margemDeFaltas } from '../regras.js';
 import { semaforo, seletorDeEstudante } from '../componentes/indicadores.js';
 
@@ -12,8 +12,8 @@ const perfil = document.body.dataset.perfil || 'aluno';
 const main = await iniciar({ perfil, pagina: perfil === 'aluno' ? 'aluno/notas.html' : 'responsavel/boletim.html', assistente: true, titulo: 'Notas e faltas', estreito: true });
 async function mostrar() {
   try {
-    const [{ lista, atual: est }, dia, lv] = await Promise.all([estudantes(), diario(), letivo()]);
-    const { linhas, presenca: pres, faltas, matematicaDoDiario } = desempenho(est, dia, lv.aulasDadas);
+    const [{ lista, atual: est }, dia, lv] = await Promise.all([estudantes(), diarioParaLeitura(), letivo()]);
+    const { linhas, presenca: pres, faltas, abonadas, matematicaDoDiario } = desempenho(est, dia, lv.aulasDadas);
     const atencao = linhas.filter((l) => ['recuperacao', 'reprovado'].includes(l.situacao.chave)).map((l) => l.materia);
     const semFreq = semaforoFrequencia(pres);
     const margem = margemDeFaltas(faltas, lv.aulasDadas);
@@ -26,6 +26,7 @@ async function mostrar() {
       ${perfil === 'responsavel' ? `${seletorDeEstudante(lista, est.id)}<div class="esp-b-3">${controleModoSimples()}</div>` : ''}
       <dl class="resumo-linha">
         <div class="${pres < PRESENCA_MINIMA ? 'alerta' : semFreq.chave === 'amarelo' ? 'atencao' : ''}"><dd>${numeroBR(pres)}%</dd><dt>de frequência (mínimo ${PRESENCA_MINIMA}%) · ${semaforo(semFreq)}</dt></div>
+        ${abonadas ? `<div class="so-completo"><dd>${abonadas}</dd><dt>${plural(abonadas, 'falta abonada', 'faltas abonadas')} (justificativa aceita, não conta na frequência)</dt></div>` : ''}
         <div class="so-completo"><dd>${Math.max(0, margem.restantes)}</dd><dt>${plural(Math.max(0, margem.restantes), 'falta ainda cabe', 'faltas ainda cabem')}</dt></div>
         <div class="${atencao.length ? 'atencao' : ''}"><dd>${atencao.length}</dd><dt>${plural(atencao.length, 'matéria em atenção', 'matérias em atenção')}</dt></div>
       </dl>

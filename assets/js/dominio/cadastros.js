@@ -218,20 +218,33 @@ export function validarRenovacaoDeAto(f, { atoAtual, hoje }) {
 export const aplicarRenovacaoDeAto = (ato, f) => ({ ...ato, numero: f.numero.trim(), validade: f.vencimento, publicacao: f.publicacao, tipo: 'Renovação de reconhecimento', numeroAnterior: ato.numero, validadeAnterior: ato.validade });
 
 /** Edição de professor: matrícula e CPF não mudam. Habilitação, lotação, vínculo e carga podem mudar. */
-export function validarEdicaoDeProfessor(f, { escolas, componentes }) {
+export function validarEdicaoDeProfessor(f, { escolas, componentes, escolaAtual }) {
   const e = {};
   if (!VINCULOS.includes(f.vinculo)) e.vinculo = 'Escolha o vínculo do professor.';
   if (String(f.formacao ?? '').trim().length < 5) e.formacao = 'Escreva a formação, como Licenciatura em Matemática.';
   if (!(f.habilitacao || []).some((c) => componentes.includes(c))) e.habilitacao = 'Marque pelo menos um componente em que o professor é habilitado.';
   if (![10, 20, 30, 40].includes(Number(f.cargaHorariaSemanal))) e.cargaHorariaSemanal = 'Escolha a carga horária semanal: 10, 20, 30 ou 40 horas.';
   if (!escolas.some((x) => x.id === f.escolaId)) e.escolaId = 'Escolha a escola de lotação.';
+  else if (escolaAtual && f.escolaId !== escolaAtual && String(f.motivoLotacao ?? '').trim().length < 5) e.motivoLotacao = 'Explique a mudança de escola (pelo menos 5 letras): fica no histórico de lotação.';
   if (String(f.email ?? '').trim() && !emailValido(f.email)) e.email = 'Escreva um e-mail válido.';
   if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
   return resultado(e);
 }
+/**
+ * Turmas de que o professor sai ao mudar de escola: as alocações dele em turmas que não são da escola nova.
+ * @returns {Array<{turmaId: string, componente: string, turma: string, escolaId: string}>}
+ */
+export function turmasQueDeixa(professor, novaEscolaId, alocacoes, turmas) {
+  return alocacoes.filter((a) => a.professorId === professor.id).map((a) => ({ ...a, t: turmas.find((t) => t.id === a.turmaId) })).filter(({ t }) => t && t.escolaId !== novaEscolaId)
+    .map(({ turmaId, componente, t }) => ({ turmaId, componente, turma: t.nome, escolaId: t.escolaId }));
+}
+/** Alocações sem as turmas de que o professor saiu. */
+export const semAlocacoesDe = (alocacoes, professorId, saidas) => alocacoes.filter((a) => !(a.professorId === professorId && saidas.some((s) => s.turmaId === a.turmaId && s.componente === a.componente)));
 export function aplicarEdicaoDeProfessor(p, f, hoje) {
   const hab = (f.habilitacao || []).filter(Boolean);
-  return { ...p, vinculo: f.vinculo, formacao: f.formacao.trim(), habilitacao: hab, concurso: `Professor de ${hab[0]}`, cargaHorariaSemanal: Number(f.cargaHorariaSemanal), escolaId: f.escolaId, email: String(f.email ?? '').trim(), telefone: somenteDigitos(f.telefone), atualizadoEm: hoje };
+  const mudouDeEscola = f.escolaId !== p.escolaId;
+  const lotacao = mudouDeEscola ? { historicoLotacao: [...(p.historicoLotacao || []), { escolaId: p.escolaId, de: p.lotadoDesde || null, ate: hoje, motivo: String(f.motivoLotacao ?? '').trim() }], lotadoDesde: hoje } : {};
+  return { ...p, ...lotacao, vinculo: f.vinculo, formacao: f.formacao.trim(), habilitacao: hab, concurso: `Professor de ${hab[0]}`, cargaHorariaSemanal: Number(f.cargaHorariaSemanal), escolaId: f.escolaId, email: String(f.email ?? '').trim(), telefone: somenteDigitos(f.telefone), atualizadoEm: hoje };
 }
 /** Só desliga quem não tem turma: a secretaria tira a alocação antes. */
 export function podeDesligar(professor, alocacoes) {

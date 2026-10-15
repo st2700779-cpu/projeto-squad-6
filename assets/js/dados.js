@@ -3,6 +3,8 @@
 // (GitLab Pages, Live Server) não há API: lê data/*.json e guarda as alterações no localStorage.
 import { obter, definir, reiniciar, proximoProtocolo, recarregar } from './estado.js';
 import { sessao, restaurarSenhas } from './auth.js';
+import { abonosPorEstudante, aplicarAbonos } from './dominio/vida-escolar.js';
+import { estudantesInativos } from './dominio/movimentacao.js';
 
 export const RAIZ = new URL('../../', import.meta.url);
 const API = new URL('api/', RAIZ);
@@ -78,6 +80,18 @@ export async function turmasDaRede() {
 }
 /** Diário de classe por turma: { [turmaId]: [{id, nome, n1, n2, faltas}] }. Base inicial em professor.json. */
 export const diario = () => alteravel('diario', async () => (await carregar('professor')).diario);
+/**
+ * Diário só para leitura (frequência de aluno, responsável, painéis): as faltas abonadas por justificativa aceita já saem descontadas
+ * e cada estudante afetado traz `abonadas`. Quem grava no diário (professor) usa diario(), que guarda as faltas como foram registradas.
+ * soAtivos: tira transferidos e cancelados (use nos painéis da escola e do professor; o estudante vê o próprio boletim completo).
+ */
+export async function diarioParaLeitura({ soAtivos = false } = {}) {
+  const [dia, chamadas, justificativas, movs] = await Promise.all([diario(), conjunto('chamadas'), conjunto('justificativas'), soAtivos ? conjunto('movimentacoes') : []]);
+  const comAbonos = aplicarAbonos(dia, abonosPorEstudante(chamadas, justificativas));
+  if (!soAtivos) return comAbonos;
+  const fora = estudantesInativos(movs);
+  return Object.fromEntries(Object.entries(comAbonos).map(([turmaId, alunos]) => [turmaId, alunos.filter((a) => !fora.has(a.id))]));
+}
 /** Dados do ano letivo (aulas dadas, bimestre atual). Fonte única para o cálculo de frequência. */
 export const letivo = () => carregar('letivo');
 // Demais conjuntos alteráveis, cada um com arquivo-base em data/:
@@ -138,7 +152,10 @@ export async function estudantes() {
   id ??= obter('estudanteId', lista[0].id);
   return { lista, atual: lista.find((e) => e.id === id) || lista[0] };
 }
-export const escolherEstudante = (id) => definir('estudanteId', id);
+export function escolherEstudante(id) {
+  definir('estudanteId', id);
+  globalThis.dispatchEvent?.(new Event('estudante-escolhido')); // o aviso de matrícula e o contador de avisos do menu acompanham a troca de filho
+}
 
 /** Data de referência da demonstração (AAAA-MM-DD): "hoje" para agenda, prazos e horário do dia. Vem de data/letivo.json. */
 export async function dataDeReferencia() { return (await letivo()).dataReferencia; }

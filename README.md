@@ -21,7 +21,7 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEED.
 | `prompts/` | Prompt de sistema versionado, registro de alterações e bateria de testes |
 | `worker/` | Proxy do assistente (Cloudflare Workers), que guarda a chave da IA |
 | `tools/` | Servidor local, bateria de perguntas do assistente, `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único), `verificar-contraste.mjs` (confere o contraste dos tokens, inclusive os do `painel.css`) e `testar-painel.mjs` (testes das regras dos painéis) |
-| `wireframes/` | Wireframes e fluxos de todas as telas (91 quadros, inclusive mobile, login centralizado, Configurações, cadastros da rede, prestação de contas e fluxos), em HTML comum: abra `wireframes/index.html` com duplo clique, sem servidor e sem internet |
+| `wireframes/` | Wireframes e fluxos de todas as telas (110 quadros, inclusive mobile, login centralizado, Configurações, cadastros da rede, prestação de contas, justificativa de falta, registro e plano de aula, transferência de matrícula, senha temporária e fluxos), em HTML comum: abra `wireframes/index.html` com duplo clique, sem servidor e sem internet |
 | `CHECKLIST-PROTOTIPACAO.md` | Conferência item a item do checklist de prototipação por perfil: o que já existia, o que foi acrescentado e o que ficou para a fase 2 |
 | `AUDITORIA.md`, `MELHORIAS.md`, `SUGESTOES.md` | Auditoria inicial, resumo das melhorias e ideias que exigiriam funcionalidade nova |
 | `DIAGNOSTICO-UI.md`, `MELHORIAS-UI.md` | Diagnóstico visual e redesenho de interface, com o **guia do design system** (tokens e componentes) |
@@ -127,20 +127,21 @@ A senha pode ser trocada em **Configurações › Conta › Alterar senha**. A t
 
 ## Leitura por perfil (melhorias essenciais)
 
-Depois de ler o sistema como cada usuário, foram acrescentadas as peças que faltavam para o trabalho do dia. O detalhe de cada perfil, o que ficou para depois e os erros achados no caminho estão em [`ANALISE-POR-PERFIL.md`](ANALISE-POR-PERFIL.md).
+Depois de ler o sistema como cada usuário, foram acrescentadas as peças que faltavam para o trabalho do dia, em duas rodadas. O detalhe de cada perfil, os erros achados no caminho e os limites que continuam estão em [`ANALISE-POR-PERFIL.md`](ANALISE-POR-PERFIL.md).
 
 | Perfil | O que ganhou | Onde |
 | --- | --- | --- |
-| Todos | **Alterar senha**, "Esqueci minha senha" e encerramento da sessão depois de 30 minutos sem uso | `configuracoes.html`, `login.html`, `assets/js/app.js` |
-| Responsável | **Justificar falta** (período, motivo, anexo, protocolo e andamento) e **Imprimir boletim** | `responsavel/justificar.html`, `responsavel/boletim.html` |
-| Aluno | **Imprimir boletim** | `aluno/notas.html` |
-| Secretaria | **Justificativas**: aceitar (abonar) ou recusar com explicação; pendência na fila do início | `escola/justificativas.html` |
-| Professor | **Registro de aula**: conteúdo, tarefa e nº de aulas por turma, com sugestão dos dias sem registro | `professor/registro-aula.html` |
-| Coordenação | **Registros de aula** (consulta por turma) | `coordenador/registros-aula.html` |
-| Rede | **Editar escola**, **registrar ato renovado**, **editar e desligar professor** | `rede/escolas.html`, `rede/atos.html`, `rede/professores.html` |
-| PROFIN | **Lançar repasse** (soma ao recebido e abre novo prazo de prestação) | `profin/index.html` |
+| Todos | **Alterar senha**, "Esqueci minha senha", encerramento da sessão depois de 30 minutos sem uso e **senha temporária com troca obrigatória** no primeiro acesso | `configuracoes.html`, `login.html`, `assets/js/app.js` |
+| Responsável | **Justificar falta** (período, motivo, anexo, protocolo e andamento) e **Imprimir boletim**; aviso quando a matrícula do estudante foi transferida ou cancelada | `responsavel/justificar.html`, `responsavel/boletim.html` |
+| Aluno | **Imprimir boletim**, frequência já **sem as faltas abonadas** | `aluno/notas.html`, `aluno/frequencia.html` |
+| Aluno, responsável, professor e secretaria | **Avisos lidos**: etiqueta *Novo*, marcar como lido, marcar todos e contador no menu | `aluno/calendario.html`, `professor/avisos.html`, `escola/avisos.html` |
+| Secretaria | **Justificativas** (aceitar abona a falta; recusar pede explicação), **Transferências** (transferir para outra escola ou cancelar matrícula, com desfazer) e **Acessos e senhas** (senha temporária) | `escola/justificativas.html`, `escola/movimentacoes.html`, `escola/acessos.html` |
+| Professor | **Registro de aula** (conteúdo, tarefa, nº de aulas) e **Plano de aula** com habilidades da BNCC pelo código (confere o formato e o ano da turma) | `professor/registro-aula.html`, `professor/plano-aula.html` |
+| Coordenação | **Registros de aula** (consulta por turma, **alerta de turma sem registro há mais de 7 dias** e planos de aula) | `coordenador/registros-aula.html` |
+| Rede | **Editar escola**, **registrar ato renovado**, **editar e desligar professor**, **mudar o professor de escola** (com histórico de lotação) e **Acessos e senhas** das contas institucionais | `rede/escolas.html`, `rede/atos.html`, `rede/professores.html`, `rede/acessos.html` |
+| PROFIN | **Lançar repasse** e **estornar repasse** (só se o valor ainda estiver livre) | `profin/index.html` |
 
-As regras ficam em `assets/js/dominio/` (`senha.js`, `vida-escolar.js`, `hoje.js`, e `cadastros.js` e `prestacao.js` ampliados) e têm testes em `tools/testar-cadastros.mjs`.
+As regras ficam em `assets/js/dominio/` (`senha.js`, `vida-escolar.js`, `plano-aula.js`, `movimentacao.js`, `avisos.js`, `hoje.js`, e `cadastros.js` e `prestacao.js` ampliados) e têm testes em `tools/testar-cadastros.mjs`.
 
 ## Roteiro de demonstração de 10 minutos
 
@@ -158,6 +159,8 @@ As regras ficam em `assets/js/dominio/` (`senha.js`, `vida-escolar.js`, `hoje.js
 12. **Professor sem internet (1 min).** Entre como Professor (`PF-30412` / `prof2026`), abra o Diário, clique em Ficar offline, lance uma nota e registre a chamada, depois Voltar online: os registros pendentes são sincronizados.
 13. **Justificar falta (2 min).** Como Responsável, abra **Justificar falta**, escolha uma data sugerida e o motivo e envie. Entre como Secretaria, abra **Justificativas** e aceite ou recuse (a recusa pede uma explicação); volte como Responsável e veja a decisão.
 14. **Registro de aula e senha (1 min).** Como Professor (`PF-30412` / `prof2026`), abra **Registro de aula** e registre o conteúdo de um dia; a Coordenação vê em **Registros de aula**. Em **Configurações › Conta**, troque a senha e saia; entre com a nova.
+15. **Transferência e senha temporária (2 min).** Como Secretaria, abra **Transferências**, transfira um estudante para outra escola (a lista mostra as vagas de cada destino) e depois **Desfazer**; abra **Acessos e senhas**, gere uma senha temporária para a aluna e entre como ela: o portal só abre as Configurações até ela definir a senha nova.
+16. **Abono e avisos (1 min).** Aceite uma justificativa de falta e veja a frequência da aluna subir (as faltas abonadas aparecem no boletim e no diário, que não muda). Em **Calendário e avisos**, marque avisos como lidos e acompanhe o contador no menu.
 
 Antes de repetir a demonstração, use **Restaurar dados de demonstração** na entrada (apaga também a fila offline).
 
@@ -241,7 +244,7 @@ Sem instalar nada (Node 22 ou mais novo):
 
 ```bash
 node tools/testar-painel.mjs        # semáforo, margem de faltas, calculadora, agenda, horários, prioridades e PROFIN
-node tools/testar-cadastros.mjs     # cadastro e edição de escola e ato, professor, equipe do PROFIN, carga horária, declaração dos gastos, repasse, senha, registro de aula e justificativa de falta
+node tools/testar-cadastros.mjs     # cadastro e edição de escola e ato, professor e lotação, equipe do PROFIN, carga horária, declaração dos gastos, repasse e estorno, senha, aula e plano de aula, justificativa e abono, avisos lidos, transferência e cancelamento
 node tools/verificar-contraste.mjs  # contraste dos tokens nos quatro temas, inclusive as cores do painel.css
 ```
 
@@ -271,8 +274,10 @@ As telas foram conferidas em Chromium (Playwright) em 360, 768 e 1440 px; esses 
 
 Tudo é protótipo sem servidor: o "servidor" é o `localStorage` do navegador (ou a API local do `iniciar.bat`).
 
-- **Senha trocada:** vale só no aparelho em que foi trocada; não há redefinição pela secretaria (só a orientação na tela de login).
-- **Justificativa de falta:** só o nome e o tamanho do anexo ficam registrados. Aceitar abona a falta no registro da justificativa, mas não muda a contagem de faltas do diário.
+- **Senha trocada ou temporária:** vale só no navegador em que foi feita; não há servidor de contas.
+- **Justificativa de falta:** só o nome e o tamanho do anexo ficam registrados. O abono vale para a falta que veio da chamada, com data; o diário do professor guarda a falta como foi lançada.
+- **Transferência:** o pedido chega à secretaria de destino, mas a demonstração só tem a secretaria de uma escola; a outra ponta é testada, não demonstrável.
+- **Plano de aula:** a tela confere o formato do código da BNCC e se ele combina com o ano da turma, não o texto da habilidade.
 - **Login:** contas no arquivo de dados, senha em texto simples e sessão em `sessionStorage`. Serve para separar as visões na demonstração, não para proteger dados.
 - **Tour:** usa a voz em português instalada no aparelho; sem ela, só o texto. O "já visto" fica em `localStorage`, por navegador.
 - **Modo balcão:** o pedido só existe no navegador em que foi feito.

@@ -2,7 +2,7 @@
 // Mostra de relance quem está com nota baixa ou falta alta, sem abrir aluno por aluno.
 import { iniciar, link, falhaDados } from '../app.js';
 import { esc, numeroBR, plural, vazio } from '../ui.js';
-import { carregar, turmasEscola, conjunto, diario, letivo } from '../dados.js';
+import { carregar, turmasEscola, conjunto, diarioParaLeitura, letivo } from '../dados.js';
 import { turmasDoProfessor, presenca, media, semaforoNota, semaforoFrequencia, PRESENCA_MINIMA, nomeCurto } from '../regras.js';
 import { celulaDeCalor, legendaDeNiveis, semaforo } from '../componentes/indicadores.js';
 
@@ -53,7 +53,7 @@ async function mostrar() {
     const [logado, professores, turmas, alocacoes, matrizes, escolas, lv] = await Promise.all([carregar('professor'), carregar('professores'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), carregar('escolas'), letivo()]);
     const prof = professores.find((p) => p.id === logado.professorId);
     const minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes.versoes[0].componentes });
-    ctx = { minhas, dados: await diario(), escola: escolas.find((e) => e.id === prof.escolaId), aulasDadas: lv.aulasDadas, bimestres: lv.bimestresLancados };
+    ctx = { minhas, dados: await diarioParaLeitura({ soAtivos: true }), escola: escolas.find((e) => e.id === prof.escolaId), aulasDadas: lv.aulasDadas, bimestres: lv.bimestresLancados };
     desenhar();
   } catch { falhaDados(main, mostrar); }
 }

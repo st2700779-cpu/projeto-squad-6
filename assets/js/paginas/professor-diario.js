@@ -8,11 +8,13 @@ import { carregar, diario, letivo, matriculas, turmasEscola, salvar as salvarDad
 import { estaOnline, montarIndicador, guardarPendente, pendentes, baixarPendente, pendentePorChave } from '../offline.js';
 import { aplicarPendentes, sobreporPendentes } from '../dominio/sincronizacao.js';
 import { hojeISO } from '../dominio/hoje.js';
+import { abonosPorEstudante } from '../dominio/vida-escolar.js';
+import { estudantesInativos, situacaoDoEstudante } from '../dominio/movimentacao.js';
 import { presenca, media, situacao, nomeCurto, turmasDoProfessor, sincronizarDiario, codigoDaTurma } from '../regras.js';
 
 const main = await iniciar({ perfil: 'professor', pagina: 'professor/diario.html', assistente: true });
 let turmaId = new URLSearchParams(location.search).get('turma');
-let dados, prof, escolas, chamadas, minhas, aulasDadas, bimestres, meta;
+let dados, prof, escolas, chamadas, minhas, aulasDadas, bimestres, meta, abonos = {}, movs = [];
 let baseline = {};          // valores de cada estudante no último carregamento ou gravação (para achar o que mudou)
 let pendentesIds = new Set(); // estudantes com nota pendente de envio ('turma|aluno')
 let resultadoSync = '';     // aviso do último resultado de sincronização, mostrado na tela
@@ -63,6 +65,8 @@ async function mostrar() {
     const [logado, professores, turmas, alocacoes, matrizes, pedidos, enturmacao, lv] = await Promise.all([carregar('professor'), carregar('professores'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), matriculas(), conjunto('enturmacao'), letivo()]);
     recarregarDoServidor();
     [dados, escolas, chamadas, meta] = await Promise.all([diario(), carregar('escolas'), conjunto('chamadas'), conjunto('diario-meta')]);
+    abonos = abonosPorEstudante(chamadas, await conjunto('justificativas'));
+    movs = await conjunto('movimentacoes');
     prof = professores.find((p) => p.id === logado.professorId);
     aulasDadas = lv.aulasDadas;
     bimestres = lv.bimestresLancados;
@@ -117,7 +121,9 @@ function desenhar() {
   if (!minhas.some((m) => m.turma.id === turmaId)) turmaId = minhas[0].turma.id;
   const { turma: t, componente } = minhas.find((m) => m.turma.id === turmaId);
   const escola = escolas.find((e) => e.id === t.escolaId);
-  const alunos = dados[turmaId];
+  const inativos = estudantesInativos(movs);
+  const alunos = dados[turmaId].filter((a) => !inativos.has(a.id)); // transferidos e cancelados saem da chamada e do lançamento
+  const fora = dados[turmaId].filter((a) => inativos.has(a.id));
   const campo = (a, c, max) => `<td data-rotulo="${CAMPOS[c]}"><label class="sr-only" for="${a.id}-${c}">${CAMPOS[c]} de ${esc(a.nome)}</label><input id="${a.id}-${c}" class="entrada" inputmode="decimal" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="${c}" data-max="${max}" data-vazio="${c !== 'faltas' && a[c] === null}" value="${c === 'faltas' ? a[c] : (a[c] === null ? '' : numeroBR(a[c]))}"></td>`;
   main.innerHTML = `
     <div class="barra-turma">
@@ -127,12 +133,14 @@ function desenhar() {
     </div>
     <h1 class="esp-b-3">Diário de classe · ${esc(t.nome)} · ${esc(componente)}</h1>
     <div id="resultado-sync" class="esp-b-3">${resultadoSync}</div>
+    ${fora.length ? `<p class="texto-suave texto-pequeno esp-b-3">Fora da lista (saíram da escola): ${fora.map((a) => `${esc(a.nome)} (${esc(situacaoDoEstudante(a.id, movs).texto.toLowerCase())})`).join(', ')}.</p>` : ''}
     ${alunos.length ? `${painelChamada(alunos)}
     <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-notas"><caption class="sr-only">Chamada, notas e faltas de ${esc(t.nome)}, ${esc(componente)}</caption>
       <thead><tr><th scope="col">Estudante</th><th scope="col">Faltou hoje</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th><th scope="col">Observação</th></tr></thead>
-      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}${pendentesIds.has(`${turmaId}|${a.id}`) ? `<span class="pendente-marca">${etiqueta('pendente de envio', 'atencao')}</span>` : ''}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${celulaHoje(a)}${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td>${obsCelula(a)}</tr>`; }).join('')}</tbody>
+      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}${pendentesIds.has(`${turmaId}|${a.id}`) ? `<span class="pendente-marca">${etiqueta('pendente de envio', 'atencao')}</span>` : ''}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${celulaHoje(a)}${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}${abonos[a.id] ? `<small class="abono-marca">${abonos[a.id]} ${abonos[a.id] > 1 ? 'abonadas' : 'abonada'}</small>` : ''}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td>${obsCelula(a)}</tr>`; }).join('')}</tbody>
     </table></div>
     <p class="contagem">${alunos.length} ${alunos.length === 1 ? 'estudante' : 'estudantes'} · Enter desce para o próximo estudante · Shift+Enter sobe · Tab vai para o campo seguinte · Alt+1 a Alt+6 inserem uma observação rápida</p>
+    ${alunos.some((a) => abonos[a.id]) ? '<p class="contagem">Faltas abonadas (justificativa aceita pela secretaria) continuam no diário, mas não contam na frequência que o estudante e a família veem.</p>' : ''}
     <div class="barra-acoes compacta"><button type="button" class="botao" id="salvar">Salvar notas e faltas</button><span class="texto-suave" id="estado-diario">As notas salvas aparecem para a família.</span></div>
     <div id="erro-diario" role="alert"></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.')}`;
 }

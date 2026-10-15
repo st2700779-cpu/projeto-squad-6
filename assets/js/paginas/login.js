@@ -1,7 +1,7 @@
 // Login por perfil (protótipo: ver aviso em auth.js). O perfil vem de ?perfil=aluno|professor|escola|rede
 // e o destino depois do login, de ?voltar=<caminho dentro do site>.
 import { iniciar, link } from '../app.js';
-import { PERFIS, sessao, iniciarSessao, destinoSeguro, senhaConfere } from '../auth.js';
+import { PERFIS, sessao, iniciarSessao, destinoSeguro, senhaConfere, senhaTemporaria } from '../auth.js';
 import { carregar } from '../dados.js';
 import { esc, icone, comEspera } from '../ui.js';
 
@@ -103,7 +103,7 @@ async function entrar() {
       return;
     }
     iniciarSessao(conta);
-    location.href = link(destino);
+    location.href = link(senhaTemporaria(conta.login) ? 'configuracoes.html?trocar=1' : destino);
   });
 }
 

@@ -53,7 +53,7 @@ export function situacao(mediaMateria, frequencia = 100) {
  * @param {object} est Estudante de estudantes.json.
  * @param {object} diario Diário por turma: { [turmaId]: [{id, n1, n2, faltas}] }.
  * @param {number} aulasDadas Aulas dadas no ano (data/letivo.json).
- * @returns {{linhas: Array, faltas: number, presenca: number, matematicaDoDiario: boolean}}
+ * @returns {{linhas: Array, faltas: number, abonadas: number, presenca: number, matematicaDoDiario: boolean}} faltas já sem as abonadas (quando o diário vem de diarioParaLeitura)
  */
 export function desempenho(est, diario, aulasDadas) {
   const doDiario = est.turmaId && diario?.[est.turmaId]?.find((a) => a.id === est.id);
@@ -66,5 +66,5 @@ export function desempenho(est, diario, aulasDadas) {
     return { materia, n1, n2, media: m, situacao: situacao(m, freq) };
   });
   linhas.sort((a, b) => (a.materia === 'Matemática' ? -1 : b.materia === 'Matemática' ? 1 : 0));
-  return { linhas, faltas, presenca: freq, matematicaDoDiario: Boolean(doDiario) };
+  return { linhas, faltas, abonadas: doDiario?.abonadas ?? 0, presenca: freq, matematicaDoDiario: Boolean(doDiario) };
 }

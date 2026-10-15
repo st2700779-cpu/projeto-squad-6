@@ -2,7 +2,7 @@
 // Nada é enviado: é uma simulação do que a escola mandaria à família.
 import { iniciar, falhaDados } from '../app.js';
 import { esc, icone } from '../ui.js';
-import { carregar, estudantes, diario, letivo, conjunto } from '../dados.js';
+import { carregar, estudantes, diarioParaLeitura, letivo, conjunto } from '../dados.js';
 import { desempenho } from '../regras.js';
 import { faltasDaSemana, disciplinaEmDestaque, avisoRecente, montarBoletim } from '../dominio/boletim-semanal.js';
 import { ler, podeLer } from '../acessibilidade.js';
@@ -10,7 +10,7 @@ import { ler, podeLer } from '../acessibilidade.js';
 const main = await iniciar({ perfil: 'aluno', pagina: 'aluno/boletim-falado.html', assistente: false });
 async function mostrar() {
   try {
-    const [{ atual: est }, dia, lv, chamadas, avisos] = await Promise.all([estudantes(), diario(), letivo(), conjunto('chamadas'), carregar('avisos')]);
+    const [{ atual: est }, dia, lv, chamadas, avisos] = await Promise.all([estudantes(), diarioParaLeitura(), letivo(), conjunto('chamadas'), carregar('avisos')]);
     const d = desempenho(est, dia, lv.aulasDadas);
     const semana = faltasDaSemana(chamadas, est.turmaId, est.id);
     const foco = disciplinaEmDestaque(d.linhas);

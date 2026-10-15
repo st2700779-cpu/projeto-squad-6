@@ -3,13 +3,16 @@
 // Uso (Node 22+, sem instalar nada):  node tools/testar-cadastros.mjs
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { validarEdicaoDeEscola, aplicarEdicaoDeEscola, validarRenovacaoDeAto, aplicarRenovacaoDeAto, validarEdicaoDeProfessor, aplicarEdicaoDeProfessor, podeDesligar, cpfValido, validarEscola, montarEscola, validarProfessor, montarProfessor, validarMembroProfin, montarMembroProfin, podeDesativar, cargaAnualHoras, situacaoDaCarga, validarCarga, cargaPadrao, seriesDaEtapa, ETAPAS, mascararCpf } from '../assets/js/dominio/cadastros.js';
-import { validarRepasse, aplicarRepasses, validarLancamento, validarDeclaracao, validarRetorno, aplicarDeclaracoes, valorAprovado, totalDosLancamentos, situacaoDaDeclaracao } from '../assets/js/dominio/prestacao.js';
+import { validarEdicaoDeEscola, aplicarEdicaoDeEscola, validarRenovacaoDeAto, aplicarRenovacaoDeAto, validarEdicaoDeProfessor, aplicarEdicaoDeProfessor, podeDesligar, turmasQueDeixa, semAlocacoesDe, cpfValido, validarEscola, montarEscola, validarProfessor, montarProfessor, validarMembroProfin, montarMembroProfin, podeDesativar, cargaAnualHoras, situacaoDaCarga, validarCarga, cargaPadrao, seriesDaEtapa, ETAPAS, mascararCpf } from '../assets/js/dominio/cadastros.js';
+import { validarRepasse, aplicarRepasses, podeEstornar, validarEstorno, aplicarEstorno, validarLancamento, validarDeclaracao, validarRetorno, aplicarDeclaracoes, valorAprovado, totalDosLancamentos, situacaoDaDeclaracao } from '../assets/js/dominio/prestacao.js';
 import { adimplenciaDaEscola, situacaoDaPrestacao } from '../assets/js/dominio/profin.js';
-import { validarTrocaDeSenha, forcaDaSenha } from '../assets/js/dominio/senha.js';
+import { validarTrocaDeSenha, forcaDaSenha, podeRedefinir, contasDoOperador, gerarSenhaTemporaria } from '../assets/js/dominio/senha.js';
+import { validarPlano, montarPlano, normalizarCodigos, codigoCombinaComSerie, CODIGO_BNCC, EXEMPLOS_DE_CODIGOS } from '../assets/js/dominio/plano-aula.js';
+import { chaveDoAviso, marcarLidos, lidosDe, naoLidos, isoDoAviso } from '../assets/js/dominio/avisos.js';
+import { situacaoDoEstudante, estudantesInativos, validarTransferencia, validarCancelamento, montarMovimentacao, pedidoDeTransferencia, podeDesfazer, ajusteDeVagas, aplicarAjusteDeVagas } from '../assets/js/dominio/movimentacao.js';
 import { situacaoAto } from '../assets/js/dominio/matricula.js';
 import { definirDataBase, hojeISO, diasEntreDatas } from '../assets/js/dominio/hoje.js';
-import { validarRegistroDeAula, montarRegistroDeAula, datasSemRegistro, validarJustificativa, montarJustificativa, validarDecisao, aplicarDecisao, ordenarJustificativas, diasDoPeriodo } from '../assets/js/dominio/vida-escolar.js';
+import { validarRegistroDeAula, montarRegistroDeAula, datasSemRegistro, validarJustificativa, montarJustificativa, validarDecisao, aplicarDecisao, ordenarJustificativas, diasDoPeriodo, abonosPorEstudante, aplicarAbonos, situacaoDosRegistros, turmasSemRegistro } from '../assets/js/dominio/vida-escolar.js';
 
 const dado = (n) => JSON.parse(readFileSync(new URL(`../data/${n}.json`, import.meta.url), 'utf8'));
 const HOJE = '2026-10-07';
@@ -312,6 +315,174 @@ t('decisão da secretaria: recusar exige explicação, só decide o que aguarda,
   assert.equal(d.situacao, 'Recusada'); assert.equal(d.parecer, 'Sem atestado.'); assert.equal(d.decididaEm, HOJE); assert.equal(j.situacao, 'Aguardando análise');
   const ordem = ordenarJustificativas([d, { ...j, protocolo: 'B', enviadaEm: '2026-10-06' }, { ...j, protocolo: 'A', enviadaEm: '2026-10-01' }]).map((x) => x.protocolo);
   assert.deepEqual(ordem, ['A', 'B', 'JUS-1']);
+});
+t('abono: só justificativa aceita desconta, só em dia de chamada com falta, sem passar das faltas e sem mexer no diário', () => {
+  const chamadas = dado('chamadas');
+  const j = (extra) => ({ estudanteId: 'a3', turmaId: 'tt1', de: '2026-09-24', ate: '2026-09-25', situacao: 'Aceita', ...extra });
+  assert.deepEqual(abonosPorEstudante(chamadas, [j()]), { a3: 2 });
+  assert.deepEqual(abonosPorEstudante(chamadas, [j({ situacao: 'Aguardando análise' })]), {});
+  assert.deepEqual(abonosPorEstudante(chamadas, [j({ situacao: 'Recusada' })]), {});
+  assert.deepEqual(abonosPorEstudante(chamadas, [j({ de: '2026-09-26', ate: '2026-09-27' })]), {}, 'sem chamada com falta no período');
+  assert.deepEqual(abonosPorEstudante(chamadas, [j(), j({ de: '2026-09-25', ate: '2026-09-25' })]), { a3: 2 }, 'períodos sobrepostos não contam duas vezes');
+  assert.deepEqual(abonosPorEstudante(chamadas, [j({ estudanteId: 'a1' })]), {}, 'estudante que não faltou');
+  const dia = { tt1: [{ id: 'a3', faltas: 5 }, { id: 'a5', faltas: 1 }] };
+  const novo = aplicarAbonos(dia, { a3: 2, a5: 4 });
+  assert.equal(novo.tt1[0].faltas, 3); assert.equal(novo.tt1[0].abonadas, 2);
+  assert.equal(novo.tt1[1].faltas, 0); assert.equal(novo.tt1[1].abonadas, 1, 'nunca abona mais do que as faltas registradas');
+  assert.equal(dia.tt1[0].faltas, 5, 'o diário original não muda');
+  assert.deepEqual(aplicarAbonos(undefined, {}), {});
+});
+t('estornar repasse: só se o valor ainda estiver livre, com motivo, e some do recebido e do prazo', () => {
+  const l = { id: 'RP-1', escolaId: 'e1', categoria: 'Custeio', valor: 1500.5, data: '2026-10-05', prazo: '2026-12-05' };
+  const com = aplicarRepasses(repasses, [l]).find((r) => r.escolaId === 'e1' && r.categoria === 'Custeio');
+  const base = rep('e1', 'Custeio');
+  assert.equal(podeEstornar(l, com).ok, true, 'ninguém gastou o valor novo');
+  assert.equal(podeEstornar(l, { ...com, executado: com.recebido - 1000 }).ok, false, 'já gastou além do que sobraria');
+  assert.match(podeEstornar(l, { ...com, executado: com.recebido - 1000 }).motivo, /saldo negativo/);
+  assert.equal(podeEstornar(l, { ...com, executado: base.recebido - 1, emAnalise: 1 }).ok, true, 'exatamente no limite');
+  assert.equal(podeEstornar(l, { ...com, executado: base.recebido, emAnalise: 1 }).ok, false, 'em análise também conta');
+  assert.equal(podeEstornar({ ...l, estornadoEm: '2026-10-06' }, com).ok, false, 'já estornado');
+  assert.ok(validarEstorno({ motivo: 'x' }).erros.motivo); assert.equal(validarEstorno({ motivo: 'Lançado na escola errada.' }).ok, true);
+  const est = aplicarEstorno(l, { motivo: ' Lançado na escola errada. ', por: 'PROFIN', hoje: HOJE });
+  assert.equal(est.estornadoEm, HOJE); assert.equal(est.estornoMotivo, 'Lançado na escola errada.'); assert.equal(l.estornadoEm, undefined);
+  const depois = aplicarRepasses(repasses, [est]).find((r) => r.escolaId === 'e1' && r.categoria === 'Custeio');
+  assert.equal(depois.recebido, base.recebido, 'volta ao recebido anterior'); assert.deepEqual(depois.prestacao, base.prestacao, 'volta ao prazo anterior');
+  // dois repasses: estornar o mais novo deixa o prazo do mais antigo
+  const l2 = { id: 'RP-2', escolaId: 'e1', categoria: 'Custeio', valor: 100, data: '2026-10-06', prazo: '2027-01-10' };
+  const um = aplicarRepasses(repasses, [l, aplicarEstorno(l2, { motivo: 'Duplicado', por: 'P', hoje: HOJE })]).find((r) => r.escolaId === 'e1' && r.categoria === 'Custeio');
+  assert.equal(um.prestacao.prazo, '2026-12-05'); assert.equal(um.recebido, Math.round((base.recebido + 1500.5) * 100) / 100);
+});
+t('mudar o professor de escola: motivo, turmas que deixa, alocações liberadas e histórico de lotação', () => {
+  const p = { ...profs[0], escolaId: 'e1', habilitacao: ['Matemática'], vinculo: 'Efetivo', formacao: 'Licenciatura em Matemática', cargaHorariaSemanal: 20 };
+  const f = { vinculo: 'Efetivo', formacao: p.formacao, habilitacao: ['Matemática'], cargaHorariaSemanal: '20', escolaId: 'e2', email: '', telefone: '' };
+  const v = (x) => validarEdicaoDeProfessor(x, { escolas, componentes: ['Matemática'], escolaAtual: 'e1' });
+  assert.ok(v(f).erros.motivoLotacao, 'mudar de escola pede motivo');
+  assert.equal(v({ ...f, motivoLotacao: 'Remoção a pedido' }).ok, true);
+  assert.equal(v({ ...f, escolaId: 'e1' }).ok, true, 'sem mudança não pede motivo');
+  const turmas = [{ id: 'tt1', nome: '1ª série A', escolaId: 'e1' }, { id: 'tt9', nome: '9º ano B', escolaId: 'e2' }];
+  const aloc = [{ turmaId: 'tt1', componente: 'Matemática', professorId: p.id }, { turmaId: 'tt9', componente: 'Matemática', professorId: p.id }, { turmaId: 'tt1', componente: 'Física', professorId: 'outro' }];
+  const saidas = turmasQueDeixa(p, 'e2', aloc, turmas);
+  assert.deepEqual(saidas.map((s) => s.turma), ['1ª série A'], 'só sai das turmas da escola antiga');
+  assert.deepEqual(turmasQueDeixa(p, 'e1', aloc, turmas).map((s) => s.turma), ['9º ano B']);
+  const resto = semAlocacoesDe(aloc, p.id, saidas);
+  assert.equal(resto.length, 2); assert.ok(resto.some((a) => a.professorId === 'outro'), 'não mexe nas alocações dos outros');
+  const novo = aplicarEdicaoDeProfessor(p, { ...f, motivoLotacao: ' Remoção a pedido ' }, HOJE);
+  assert.equal(novo.escolaId, 'e2'); assert.equal(novo.lotadoDesde, HOJE);
+  assert.deepEqual(novo.historicoLotacao, [{ escolaId: 'e1', de: null, ate: HOJE, motivo: 'Remoção a pedido' }]);
+  const volta = aplicarEdicaoDeProfessor(novo, { ...f, escolaId: 'e1', motivoLotacao: 'Volta' }, '2026-11-01');
+  assert.equal(volta.historicoLotacao.length, 2); assert.equal(volta.historicoLotacao[1].de, HOJE, 'o início da lotação vira o "de" do histórico');
+  assert.equal(aplicarEdicaoDeProfessor(p, { ...f, escolaId: 'e1' }, HOJE).historicoLotacao, undefined, 'sem mudança não cria histórico');
+});
+t('registros de aula: verde até 7 dias, amarelo de 8 a 14, vermelho acima ou sem registro, mais atrasadas primeiro', () => {
+  const reg = (turmaId, data) => ({ turmaId, data });
+  const rs = [reg('t1', '2026-10-07'), reg('t2', '2026-10-01'), reg('t3', '2026-09-26'), reg('t3', '2026-09-20'), reg('t4', '2026-09-20')];
+  assert.equal(situacaoDosRegistros('t1', rs, HOJE).chave, 'verde'); assert.match(situacaoDosRegistros('t1', rs, HOJE).texto, /hoje/);
+  assert.equal(situacaoDosRegistros('t2', rs, HOJE).chave, 'verde'); assert.equal(situacaoDosRegistros('t2', rs, HOJE).dias, 6);
+  assert.equal(situacaoDosRegistros('t3', rs, HOJE).chave, 'amarelo'); assert.equal(situacaoDosRegistros('t3', rs, HOJE).dias, 11, 'vale o registro mais recente da turma');
+  assert.equal(situacaoDosRegistros('t4', rs, HOJE).chave, 'vermelho');
+  assert.equal(situacaoDosRegistros('t5', rs, HOJE).chave, 'vermelho'); assert.equal(situacaoDosRegistros('t5', rs, HOJE).texto, 'Nenhum registro');
+  assert.equal(situacaoDosRegistros('t2', [reg('t2', '2026-09-30')], HOJE).dias, 7, 'sete dias ainda é verde'); assert.equal(situacaoDosRegistros('t2', [reg('t2', '2026-09-30')], HOJE).chave, 'verde');
+  assert.equal(situacaoDosRegistros('t2', [reg('t2', '2026-09-29')], HOJE).chave, 'amarelo', 'oito dias já alerta');
+  assert.equal(situacaoDosRegistros('t2', [reg('t2', '2026-10-09')], HOJE).dias, 0, 'registro à frente do hoje não dá dias negativos');
+  const turmas = ['t1', 't2', 't3', 't4', 't5'].map((id) => ({ id, nome: `Turma ${id}` }));
+  assert.deepEqual(turmasSemRegistro(turmas, rs, HOJE).map((x) => x.turma.id), ['t5', 't4', 't3']);
+});
+t('plano de aula: códigos da BNCC no formato certo e combinando com a etapa e o ano da turma', () => {
+  assert.deepEqual(normalizarCodigos(' ef06ma01, EF06MA02;ef06ma01  EM13MAT101 '), ['EF06MA01', 'EF06MA02', 'EM13MAT101']);
+  for (const [c] of EXEMPLOS_DE_CODIGOS) assert.ok(CODIGO_BNCC.test(c), c);
+  for (const ruim of ['EF6MA01', 'EF06MA1', 'XX06MA01', 'EM13MAT10', 'EM12MAT101', 'EF06M01', 'abc']) assert.equal(CODIGO_BNCC.test(ruim), false, ruim);
+  for (const bom of ['EF69LP01', 'EF67LP05', 'EM13LP01', 'EM13LGG101', 'EM13CNT101', 'EM13CHS101', 'EF08MA06']) assert.equal(CODIGO_BNCC.test(bom), true, bom);
+  assert.equal(codigoCombinaComSerie('EF06MA01', '6º ano'), true); assert.equal(codigoCombinaComSerie('EF06MA01', '7º ano'), false);
+  assert.equal(codigoCombinaComSerie('EF69LP01', '8º ano'), true, 'EF69 cobre do 6º ao 9º'); assert.equal(codigoCombinaComSerie('EF67LP05', '8º ano'), false); assert.equal(codigoCombinaComSerie('EF67LP05', '7º ano'), true);
+  assert.equal(codigoCombinaComSerie('EF89LP01', '9º ano'), true);
+  assert.equal(codigoCombinaComSerie('EM13MAT101', '1ª série EM'), true); assert.equal(codigoCombinaComSerie('EM13MAT101', '9º ano'), false); assert.equal(codigoCombinaComSerie('EF09MA09', '3ª série EM'), false);
+  const ctx = { minhasTurmas: [{ id: 'tt1', serie: '1ª série EM' }, { id: 'tt2', serie: '7º ano' }], hoje: HOJE };
+  const f = { turma: 'tt1|Matemática', tema: 'Funções do 2º grau', data: '2026-10-14', aulas: '2', habilidades: 'em13mat302, EM13MAT101', objetivos: 'Construir e interpretar gráficos.', atividades: 'Exposição, exercícios em dupla e correção.', recursos: '', avaliacao: '' };
+  assert.equal(validarPlano(f, ctx).ok, true);
+  assert.ok(validarPlano({ ...f, turma: 'tt9|x' }, ctx).erros.turma);
+  assert.ok(validarPlano({ ...f, tema: 'ab' }, ctx).erros.tema);
+  assert.ok(validarPlano({ ...f, data: '2028-10-14' }, ctx).erros.data, 'a mais de um ano');
+  assert.ok(validarPlano({ ...f, aulas: '9' }, ctx).erros.aulas);
+  assert.match(validarPlano({ ...f, habilidades: '' }, ctx).erros.habilidades, /pelo menos uma/);
+  assert.match(validarPlano({ ...f, habilidades: 'EF06MA' }, ctx).erros.habilidades, /fora do formato/);
+  assert.match(validarPlano({ ...f, habilidades: 'EF06MA01' }, ctx).erros.habilidades, /não combina/, 'código de 6º ano em turma de Ensino Médio');
+  assert.equal(validarPlano({ ...f, turma: 'tt2|Matemática', habilidades: 'EF07MA04' }, ctx).ok, true);
+  assert.ok(validarPlano({ ...f, objetivos: 'curto' }, ctx).erros.objetivos); assert.ok(validarPlano({ ...f, atividades: '' }, ctx).erros.atividades);
+  assert.ok(validarPlano({ ...f, habilidades: 'EM13MAT101,EM13MAT102,EM13MAT103,EM13MAT104,EM13MAT105,EM13MAT106,EM13MAT107' }, ctx).erros.habilidades, 'mais de 6');
+  const pl = montarPlano(f, { id: 'PL-1', professorId: 'p1', turmaNome: '1ª série A', agora: '2026-10-07T10:00:00Z' });
+  assert.deepEqual(pl.habilidades, ['EM13MAT302', 'EM13MAT101']); assert.equal(pl.componente, 'Matemática'); assert.equal(pl.aulas, 2);
+});
+t('avisos lidos: marcação por usuário, chave estável, marcar e desmarcar sem mexer no original', () => {
+  const a1 = { titulo: 'Rematrícula para 2027', data: '15/09/2026' }, a2 = { titulo: 'Reunião de pais', iso: '2026-10-05' };
+  assert.equal(isoDoAviso(a1), '2026-09-15'); assert.equal(chaveDoAviso(a1), '2026-09-15|Rematrícula para 2027'); assert.equal(chaveDoAviso(a2), '2026-10-05|Reunião de pais');
+  const vazio = {};
+  const um = marcarLidos(vazio, 'u1', [chaveDoAviso(a1)]);
+  assert.deepEqual(vazio, {}, 'não altera o original');
+  assert.equal(naoLidos([a1, a2], lidosDe(um, 'u1')).length, 1); assert.equal(naoLidos([a1, a2], lidosDe(um, 'u2')).length, 2, 'cada usuário tem a sua marcação');
+  const todos = marcarLidos(um, 'u1', [chaveDoAviso(a1), chaveDoAviso(a2)]);
+  assert.equal(naoLidos([a1, a2], lidosDe(todos, 'u1')).length, 0); assert.equal(todos.u1.length, 2, 'sem repetir');
+  const volta = marcarLidos(todos, 'u1', [chaveDoAviso(a1)], false);
+  assert.deepEqual(naoLidos([a1, a2], lidosDe(volta, 'u1')).map((a) => a.titulo), ['Rematrícula para 2027']);
+  assert.equal(lidosDe(undefined, 'u1').size, 0);
+});
+t('redefinir senha: quem pode redefinir de quem, só a própria escola, senha temporária ditável e que passa na regra', () => {
+  assert.equal(podeRedefinir('escola', 'aluno'), true); assert.equal(podeRedefinir('escola', 'professor'), true); assert.equal(podeRedefinir('escola', 'diretor'), false);
+  assert.equal(podeRedefinir('rede', 'escola'), true); assert.equal(podeRedefinir('rede', 'profin'), true); assert.equal(podeRedefinir('rede', 'rede'), false, 'a rede não redefine a própria equipe');
+  assert.equal(podeRedefinir('aluno', 'aluno'), false); assert.equal(podeRedefinir('profin', 'escola'), false); assert.equal(podeRedefinir(undefined, 'aluno'), false);
+  const contas = dado('usuarios');
+  const escolaDe = (c) => (c.perfil === 'aluno' || c.perfil === 'professor' || c.perfil === 'responsavel' ? { a3: 'e1', b7: 'e1', c5: 'e1', p1: 'e1', resp1: 'e1' }[c.refId] : c.escolaId ?? null);
+  const daSecretaria = contasDoOperador('escola', 'e1', contas, escolaDe);
+  assert.ok(daSecretaria.length >= 5 && daSecretaria.every((c) => ['aluno', 'responsavel', 'professor'].includes(c.perfil)), 'só alunos, responsáveis e professores');
+  assert.deepEqual(contasDoOperador('escola', 'e2', contas, escolaDe), [], 'outra escola não enxerga estas contas');
+  assert.deepEqual(contasDoOperador('rede', null, contas, escolaDe).map((c) => c.perfil).sort(), ['coordenador', 'diretor', 'escola', 'profin']);
+  // gerador determinístico para o teste
+  let k = 0; const fixo = (n) => (k++ * 7) % n;
+  const s = gerarSenhaTemporaria(fixo);
+  assert.match(s, /^[A-Z][a-z]{4}-\d{4}$/); assert.doesNotMatch(s, /[ilo]/i, 'sem letras que confundem');
+  for (let i = 0; i < 200; i++) { const t = gerarSenhaTemporaria((n) => Math.floor(Math.random() * n)); assert.match(t, /^[A-Z][a-z]{4}-[2-9]{4}$/); assert.doesNotMatch(t, /[ilo]/i); }
+  assert.equal(validarTrocaDeSenha({ atual: s, nova: 'Definitiva2026', confirmacao: 'Definitiva2026' }, { atualCorreta: true, login: 'x' }).ok, true, 'a definitiva pode ser escolhida usando a temporária como atual');
+});
+t('transferência e cancelamento: destino com ato vigente e vaga, motivo, data, situação do estudante, vagas e desfazer', () => {
+  const atos = dado('atos'), vagas = dado('vagas');
+  const estudante = { id: 'a3', nome: 'Iasmim Cardoso de Jesus', serie: '1ª série EM', turma: '1ª série A', turmaId: 'tt1', responsavel: 'Edilene' };
+  const ativo = { chave: 'ativo' };
+  const ctx = { estudante, situacao: ativo, escolaOrigemId: 'e1', escolas, atos, vagas, hoje: HOJE };
+  const f = { destinoId: 'e2', data: '2026-10-06', motivo: 'Mudança de bairro da família' };
+  assert.equal(validarTransferencia(f, ctx).ok, true, 'e2 tem ato vigente e vaga na 1ª série EM');
+  assert.ok(validarTransferencia({ ...f, destinoId: 'e1' }, ctx).erros.destinoId, 'destino igual à origem');
+  assert.ok(validarTransferencia({ ...f, destinoId: 'zz' }, ctx).erros.destinoId);
+  assert.match(validarTransferencia({ ...f, destinoId: 'e3' }, ctx).erros.destinoId, /não oferece|Sem /, 'escola sem a série ou sem vaga');
+  assert.match(validarTransferencia(f, { ...ctx, vagas: { ...vagas, e2: { ...vagas.e2, '1ª série EM': 0 } } }).erros.destinoId, /Sem vagas/);
+  assert.ok(validarTransferencia({ ...f, data: '2026-10-09' }, ctx).erros.data, 'futuro'); assert.ok(validarTransferencia({ ...f, data: '2026-08-01' }, ctx).erros.data, 'mais de 30 dias');
+  assert.ok(validarTransferencia({ ...f, motivo: 'x' }, ctx).erros.motivo);
+  assert.ok(validarTransferencia(f, { ...ctx, situacao: { chave: 'cancelado' } }).erros.estudanteId, 'já cancelado'); assert.ok(validarTransferencia(f, { ...ctx, estudante: null }).erros.estudanteId);
+  const c = { motivoChave: 'mudanca', descricao: '', data: '2026-10-06' };
+  assert.equal(validarCancelamento(c, ctx).ok, true);
+  assert.ok(validarCancelamento({ ...c, motivoChave: '' }, ctx).erros.motivoChave); assert.ok(validarCancelamento({ ...c, motivoChave: 'outro' }, ctx).erros.descricao);
+  assert.equal(validarCancelamento({ ...c, motivoChave: 'outro', descricao: 'Família viajou para o exterior.' }, ctx).ok, true);
+  const mov = montarMovimentacao('Transferência', f, { id: 'MOV-1', estudante, escolaOrigemId: 'e1', escolas, protocoloDestino: 'MAT-2026-0006', hoje: HOJE, por: 'Secretaria' });
+  assert.equal(mov.destinoNome, escolas.find((x) => x.id === 'e2').nome); assert.equal(mov.turmaId, 'tt1');
+  const canc = montarMovimentacao('Cancelamento', { ...c, motivoChave: 'obito' }, { id: 'MOV-2', estudante: { ...estudante, id: 'a5' }, escolaOrigemId: 'e1', escolas, hoje: HOJE, por: 'Secretaria' });
+  assert.equal(canc.motivo, 'Óbito');
+  // situação: a mais recente que não foi desfeita
+  assert.equal(situacaoDoEstudante('a3', [mov]).chave, 'transferido'); assert.match(situacaoDoEstudante('a3', [mov]).texto, /Transferido para/);
+  assert.equal(situacaoDoEstudante('a3', [{ ...mov, desfeitaEm: HOJE }]).chave, 'ativo', 'desfeita volta a ativo'); assert.equal(situacaoDoEstudante('a9', [mov]).chave, 'ativo');
+  assert.equal(situacaoDoEstudante('a5', [canc]).chave, 'cancelado');
+  assert.deepEqual([...estudantesInativos([mov, canc, { ...canc, id: 'MOV-3', estudanteId: 'a9', desfeitaEm: HOJE }])].sort(), ['a3', 'a5']);
+  // pedido no destino
+  const pedido = pedidoDeTransferencia(mov, { estudante, protocolo: 'MAT-2026-0006', dataBR: '07/10/2026' });
+  assert.equal(pedido.tipo, 'Transferência'); assert.equal(pedido.escolaId, 'e2'); assert.equal(pedido.situacao, 'Aguardando confirmação'); assert.equal(pedido.movimentacao, 'MOV-1');
+  // desfazer
+  assert.equal(podeDesfazer(mov, { situacao: 'Aguardando confirmação' }).ok, true); assert.equal(podeDesfazer(mov, { situacao: 'Recusada' }).ok, true);
+  assert.equal(podeDesfazer(mov, { situacao: 'Confirmada' }).ok, false); assert.equal(podeDesfazer(canc, null).ok, true); assert.equal(podeDesfazer({ ...mov, desfeitaEm: HOJE }, null).ok, false);
+  // vagas: origem libera e destino reserva; desfazer devolve só o que ainda está reservado
+  assert.deepEqual(ajusteDeVagas(mov, 'movimentar'), [{ escolaId: 'e1', serie: '1ª série EM', delta: 1 }, { escolaId: 'e2', serie: '1ª série EM', delta: -1 }]);
+  assert.deepEqual(ajusteDeVagas(canc, 'movimentar'), [{ escolaId: 'e1', serie: '1ª série EM', delta: 1 }]);
+  assert.deepEqual(ajusteDeVagas(mov, 'desfazer', 'Aguardando confirmação'), [{ escolaId: 'e1', serie: '1ª série EM', delta: -1 }, { escolaId: 'e2', serie: '1ª série EM', delta: 1 }]);
+  assert.deepEqual(ajusteDeVagas(mov, 'desfazer', 'Recusada'), [{ escolaId: 'e1', serie: '1ª série EM', delta: -1 }], 'destino já devolveu a vaga ao recusar');
+  const depois = aplicarAjusteDeVagas(vagas, ajusteDeVagas(mov, 'movimentar'));
+  assert.equal(depois.e1['1ª série EM'], vagas.e1['1ª série EM'] + 1); assert.equal(depois.e2['1ª série EM'], vagas.e2['1ª série EM'] - 1); assert.equal(vagas.e2['1ª série EM'], 13, 'o original não muda');
+  assert.equal(aplicarAjusteDeVagas({ e1: { s: 0 } }, [{ escolaId: 'e1', serie: 's', delta: -1 }]).e1.s, 0, 'nunca fica negativa');
 });
 
 console.log(`\n${n} grupos de testes passaram.`);

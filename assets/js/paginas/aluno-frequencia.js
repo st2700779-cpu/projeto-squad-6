@@ -61,7 +61,7 @@ async function mostrar() {
         ${anelDeFrequencia(d.presenca, semFreq)}
         <div>
           <p class="esp-t-0 esp-b-2">${semaforo(semFreq, { grande: true })}</p>
-          <p class="esp-b-3"><strong>${d.faltas} ${plural(d.faltas, 'falta', 'faltas')}</strong> em ${lv.aulasDadas} aulas dadas. O mínimo para aprovar é <strong>${PRESENCA_MINIMA}%</strong>.</p>
+          <p class="esp-b-3"><strong>${d.faltas} ${plural(d.faltas, 'falta', 'faltas')}</strong> em ${lv.aulasDadas} aulas dadas${d.abonadas ? ` (já sem ${d.abonadas} ${plural(d.abonadas, 'falta abonada', 'faltas abonadas')} por justificativa aceita)` : ''}. O mínimo para aprovar é <strong>${PRESENCA_MINIMA}%</strong>.</p>
           ${barraDeNivel(d.presenca, semFreq)}
           <div class="barra-legenda"><span>0%</span><span>mínimo ${PRESENCA_MINIMA}%</span><span>100%</span></div>
         </div>

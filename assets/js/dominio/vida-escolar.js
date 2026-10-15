@@ -116,3 +116,53 @@ export function ordenarJustificativas(lista) {
   const fim = lista.filter((j) => j.situacao !== 'Aguardando análise').sort((a, b) => String(b.decididaEm).localeCompare(String(a.decididaEm)));
   return [...pend, ...fim];
 }
+
+// ───── Abono de faltas ─────
+
+/**
+ * Quantas faltas registradas na chamada cada estudante tem abonadas: dias de chamada em que o estudante constou como ausente
+ * e que caem dentro de uma justificativa aceita. Não mexe no diário: só na leitura da frequência.
+ * @returns {Record<string, number>} estudanteId → faltas abonadas
+ */
+export function abonosPorEstudante(chamadas, justificativas) {
+  const dias = {};
+  for (const j of justificativas || []) {
+    if (j.situacao !== 'Aceita') continue;
+    for (const [data, c] of Object.entries(chamadas?.[j.turmaId] || {})) {
+      if (data >= j.de && data <= j.ate && c.ausentes?.includes(j.estudanteId)) (dias[j.estudanteId] ||= new Set()).add(`${j.turmaId}|${data}`);
+    }
+  }
+  return Object.fromEntries(Object.entries(dias).map(([id, s]) => [id, s.size]));
+}
+
+/** Cópia do diário com as faltas abonadas descontadas (`faltas`) e o total abonado em `abonadas`. O diário original não muda. */
+export function aplicarAbonos(diario, abonos) {
+  return Object.fromEntries(Object.entries(diario || {}).map(([turmaId, alunos]) => [turmaId, alunos.map((a) => {
+    const n = Math.min(abonos?.[a.id] || 0, a.faltas ?? 0);
+    return n ? { ...a, faltas: a.faltas - n, abonadas: n } : a;
+  })]));
+}
+
+// ───── Acompanhamento dos registros de aula ─────
+export const LIMITE_SEM_REGISTRO_DIAS = 7;
+const NIVEL_REGISTRO = { verde: { chave: 'verde', tipo: 'ok', icone: 'ok' }, amarelo: { chave: 'amarelo', tipo: 'atencao', icone: 'alerta' }, vermelho: { chave: 'vermelho', tipo: 'erro', icone: 'fechar' } };
+
+/**
+ * Há quanto tempo a turma está sem registro de aula. Verde até 7 dias, amarelo de 8 a 14 e vermelho acima disso (ou sem nenhum registro).
+ * @returns {{chave: string, tipo: string, icone: string, texto: string, dias: number|null, ultimo: string|null}}
+ */
+export function situacaoDosRegistros(turmaId, registros, hoje) {
+  const datas = registros.filter((r) => r.turmaId === turmaId).map((r) => r.data).sort();
+  const ultimo = datas.at(-1) || null;
+  if (!ultimo) return { ...NIVEL_REGISTRO.vermelho, texto: 'Nenhum registro', dias: null, ultimo };
+  const dias = Math.max(0, diasEntreDatas(ultimo, hoje));
+  if (dias <= LIMITE_SEM_REGISTRO_DIAS) return { ...NIVEL_REGISTRO.verde, texto: dias === 0 ? 'Em dia (registro de hoje)' : `Em dia (há ${dias} ${dias === 1 ? 'dia' : 'dias'})`, dias, ultimo };
+  return { ...NIVEL_REGISTRO[dias <= 14 ? 'amarelo' : 'vermelho'], texto: `Sem registro há ${dias} dias`, dias, ultimo };
+}
+
+/** Turmas que passaram do limite, as mais atrasadas primeiro (sem nenhum registro vêm na frente). */
+export function turmasSemRegistro(turmas, registros, hoje) {
+  return turmas.map((turma) => ({ turma, situacao: situacaoDosRegistros(turma.id, registros, hoje) }))
+    .filter(({ situacao }) => situacao.chave !== 'verde')
+    .sort((a, b) => (b.situacao.dias ?? Infinity) - (a.situacao.dias ?? Infinity) || a.turma.nome.localeCompare(b.turma.nome, 'pt-BR'));
+}

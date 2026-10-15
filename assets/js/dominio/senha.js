@@ -29,3 +29,30 @@ export function validarTrocaDeSenha(f, { atualCorreta, login }) {
   else if (f.confirmacao !== nova) e.confirmacao = 'A confirmação não é igual à nova senha.';
   return { ok: !Object.keys(e).length, erros: e };
 }
+
+// ───── Redefinição de senha por quem atende (secretaria e rede) ─────
+/** Quem redefine a senha de quem: a secretaria, de alunos, responsáveis e professores da própria escola; a rede, das contas institucionais. */
+export const PODE_REDEFINIR = { escola: ['aluno', 'responsavel', 'professor'], rede: ['escola', 'diretor', 'coordenador', 'profin'] };
+export const podeRedefinir = (operador, alvo) => (PODE_REDEFINIR[operador] || []).includes(alvo);
+
+/**
+ * Contas que o operador enxerga na tela de acessos. escolaDaConta(conta) devolve a escola da conta (ou null).
+ * A secretaria só vê a própria escola; a rede vê todas as contas institucionais.
+ */
+export function contasDoOperador(operador, escolaDoOperador, contas, escolaDaConta) {
+  return contas.filter((c) => podeRedefinir(operador, c.perfil) && (operador === 'rede' || escolaDaConta(c) === escolaDoOperador));
+}
+
+const LETRAS = 'abcdefghjkmnpqrstuvwxyz'; // sem i, l, o: confundem com 1 e 0
+const NUMEROS = '23456789';
+/**
+ * Senha temporária fácil de ditar: cinco letras (a primeira maiúscula), hífen e quatro números. Ex.: "Kqwdm-4827".
+ * @param {(n: number) => number} aleatorio devolve um inteiro de 0 a n-1 (use crypto no navegador)
+ */
+export function gerarSenhaTemporaria(aleatorio) {
+  const letra = () => LETRAS[aleatorio(LETRAS.length)];
+  const primeira = letra().toUpperCase();
+  const resto = Array.from({ length: 4 }, letra).join('');
+  const numeros = Array.from({ length: 4 }, () => NUMEROS[aleatorio(NUMEROS.length)]).join('');
+  return `${primeira}${resto}-${numeros}`;
+}

@@ -3,15 +3,16 @@
 import { iniciar, link, falhaDados } from '../app.js';
 import { sessao } from '../auth.js';
 import { esc, numeroBR, plural, pedirTexto, confirmar, avisar, vazio, etiqueta, icone, dataBR } from '../ui.js';
-import { conjunto, salvar, registrarAcao, diario } from '../dados.js';
+import { conjunto, salvar, registrarAcao, diarioParaLeitura } from '../dados.js';
 import { desempenhoDaEscola } from '../painel-dados.js';
 import { semaforoFrequencia, semaforoNota, presenca, media, situacao, PRESENCA_MINIMA } from '../regras.js';
 import { semaforo } from '../componentes/indicadores.js';
+import { turmasSemRegistro, LIMITE_SEM_REGISTRO_DIAS } from '../dominio/vida-escolar.js';
 import { marcaDeAtencao } from '../componentes/comparativo.js';
 
 const main = await iniciar({ perfil: 'coordenador', pagina: 'coordenador/index.html', assistente: false });
 let filtro = '';
-let painel, atencoes, dia;
+let painel, atencoes, dia, registros;
 
 function acompanhamento() {
   const lv = painel.lv;
@@ -42,6 +43,7 @@ function cartoes() {
 
 function desenhar() {
   const marcadas = Object.keys(atencoes).filter((id) => painel.lista.some((x) => x.turma.id === id)).length;
+  const semRegistro = turmasSemRegistro(painel.lista.map((x) => x.turma), registros, painel.hoje).length;
   main.innerHTML = `
     <header class="heroi">
       <span class="heroi-selo">Coordenação</span>
@@ -52,7 +54,8 @@ function desenhar() {
       <div><dd>${painel.lista.length}</dd><dt>${plural(painel.lista.length, 'turma', 'turmas')}</dt></div>
       <div><dd>${painel.totais.alunos}</dd><dt>estudantes</dt></div>
       <div class="${painel.totais.emRisco ? 'alerta' : ''}"><dd>${painel.totais.emRisco}</dd><dt>em risco</dt></div>
-      <div class="${marcadas ? 'atencao' : ''}"><dd>${marcadas}</dd><dt>${plural(marcadas, 'turma marcada', 'turmas marcadas')}</dt></div></dl>
+      <div class="${marcadas ? 'atencao' : ''}"><dd>${marcadas}</dd><dt>${plural(marcadas, 'turma marcada', 'turmas marcadas')}</dt></div>
+      <div class="${semRegistro ? 'alerta' : ''}"><dd>${semRegistro}</dd><dt>${plural(semRegistro, 'turma sem registro de aula', 'turmas sem registro de aula')} há mais de ${LIMITE_SEM_REGISTRO_DIAS} dias · <a href="${link('coordenador/registros-aula.html')}">ver</a></dt></div></dl>
     <div class="linha-botoes esp-b-4"><a class="botao" href="${link('coordenador/comparativo.html')}">${icone('trocar', 20)}Comparar turmas</a><a class="botao botao-secundario" href="${link('coordenador/reuniao.html')}">${icone('imprimir', 20)}Reunião pedagógica</a></div>
     ${cartoes()}
     <h2>Acompanhamento pedagógico</h2>
@@ -62,7 +65,7 @@ function desenhar() {
 async function mostrar() {
   try {
     const escolaId = sessao().escolaId;
-    [painel, atencoes, dia] = await Promise.all([desempenhoDaEscola(escolaId), conjunto('atencao-turmas'), diario()]);
+    [painel, atencoes, dia, registros] = await Promise.all([desempenhoDaEscola(escolaId), conjunto('atencao-turmas'), diarioParaLeitura({ soAtivos: true }), conjunto('registros-aula')]);
     desenhar();
   } catch { falhaDados(main, mostrar); }
 }

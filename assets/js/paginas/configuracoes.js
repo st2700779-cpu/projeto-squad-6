@@ -3,7 +3,7 @@
 import { iniciar, link } from '../app.js';
 import { aplicarEscala, mudarEscala } from '../acessibilidade.js';
 import { obter, definir } from '../estado.js';
-import { sessao, sair, PERFIS, senhaConfere, trocarSenha, senhaFoiTrocada } from '../auth.js';
+import { sessao, sair, PERFIS, senhaConfere, trocarSenha, senhaFoiTrocada, concluirTrocaObrigatoria } from '../auth.js';
 import { reiniciarDados, carregar } from '../dados.js';
 import { avisar, confirmar, icone, esc, comEspera } from '../ui.js';
 import { campo, lerFormulario, mostrarErros } from '../componentes/formulario.js';
@@ -12,6 +12,9 @@ import { validarTrocaDeSenha, forcaDaSenha, TAMANHO_MINIMO_DA_SENHA } from '../d
 const usuario = sessao();
 const perfil = usuario?.perfil && PERFIS[usuario.perfil] ? usuario.perfil : null;
 const main = await iniciar({ perfil, pagina: 'configuracoes.html', titulo: 'Configurações' });
+
+// Entrou com senha temporária (gerada pela secretaria ou pela rede): precisa definir a senha nova antes de usar o resto do portal.
+let obrigatoria = Boolean(usuario?.trocarSenha);
 
 const NOTIF_PADRAO = { avisos: true, prazos: true, resumo: false };
 const notif = () => ({ ...NOTIF_PADRAO, ...(obter('cfg-notif', null) || {}) });
@@ -26,6 +29,7 @@ function desenhar() {
   const escala = Math.round(obter('escala', 1) * 100);
   main.innerHTML = `
     <h1 tabindex="-1">Configurações</h1>
+    ${obrigatoria ? `<div class="alerta-erro" role="alert">${icone('alerta', 20)}<span><strong>Defina uma senha nova para continuar.</strong> Você entrou com uma senha temporária. Digite-a como "senha atual" e escolha a sua.</span></div>` : ''}
     <p class="pagina-descricao">Ajuste o portal ao seu jeito. As escolhas ficam guardadas neste aparelho.</p>
     <div class="cfg">
       <section class="cfg-grupo" aria-labelledby="cfg-aparencia">
@@ -58,16 +62,16 @@ function desenhar() {
       <section class="cfg-grupo" aria-labelledby="cfg-conta">
         <h2 id="cfg-conta">Conta</h2>
         ${usuario ? `<dl class="cfg-dl"><dt>Nome</dt><dd>${esc(usuario.nome)}</dd><dt>Perfil</dt><dd>${esc(usuario.papel)}</dd><dt>Usuário</dt><dd>${esc(usuario.login)}</dd></dl>
-          <div class="cfg-acoes"><button type="button" class="botao botao-secundario" data-acao="senha" aria-expanded="false" aria-controls="form-senha">Alterar senha</button><button type="button" class="botao botao-secundario" data-acao="sair">Sair da conta</button></div>
+          <div class="cfg-acoes"><button type="button" class="botao botao-secundario" data-acao="senha" aria-expanded="${obrigatoria}" aria-controls="form-senha">Alterar senha</button><button type="button" class="botao botao-secundario" data-acao="sair">Sair da conta</button></div>
           ${senhaFoiTrocada(usuario.login) ? '<p class="cfg-dica">A senha desta conta foi trocada neste aparelho.</p>' : ''}
-          <form id="form-senha" class="form-senha" novalidate hidden>
+          <form id="form-senha" class="form-senha" novalidate ${obrigatoria ? '' : 'hidden'}>
             <p class="cfg-dica">Use ${TAMANHO_MINIMO_DA_SENHA} caracteres ou mais, com letras e números. Na demonstração a troca vale só neste aparelho.</p>
             ${campo({ nome: 'atual', rotulo: 'Senha atual', tipo: 'password', obrigatorio: true, atributos: 'autocomplete="current-password"' })}
             ${campo({ nome: 'nova', rotulo: 'Nova senha', tipo: 'password', obrigatorio: true, atributos: 'autocomplete="new-password"' })}
             <p class="forca-senha" id="forca-senha" role="status" aria-live="polite"></p>
             ${campo({ nome: 'confirmacao', rotulo: 'Repita a nova senha', tipo: 'password', obrigatorio: true, atributos: 'autocomplete="new-password"' })}
             <p class="erro" id="f-geral-erro" role="alert"></p>
-            <div class="cfg-acoes"><button type="submit" class="botao">Salvar nova senha</button><button type="button" class="botao botao-texto" data-acao="cancelar-senha">Cancelar</button></div>
+            <div class="cfg-acoes"><button type="submit" class="botao">Salvar nova senha</button>${obrigatoria ? '' : '<button type="button" class="botao botao-texto" data-acao="cancelar-senha">Cancelar</button>'}</div>
           </form>` : `<p>Você não entrou em nenhuma conta. <a href="${link('index.html')}">Escolher um perfil</a></p>`}
       </section>
 
@@ -106,7 +110,7 @@ main.addEventListener('click', async (e) => {
   if (acao === 'sair') sair();
   if (acao === 'senha' || acao === 'cancelar-senha') {
     const f = main.querySelector('#form-senha');
-    const abrir = acao === 'senha' && f.hidden;
+    const abrir = acao === 'senha' && (f.hidden || obrigatoria);
     f.hidden = !abrir; f.reset?.(); mostrarErros(f, {}); main.querySelector('#forca-senha').textContent = '';
     main.querySelector('[data-acao="senha"]').setAttribute('aria-expanded', String(abrir));
     (abrir ? f.querySelector('#f-atual') : main.querySelector('[data-acao="senha"]'))?.focus();
@@ -118,7 +122,7 @@ main.addEventListener('click', async (e) => {
   }
   if (acao === 'dados') {
     if (!(await confirmar({ titulo: 'Restaurar os dados de demonstração?', texto: 'Apaga o que foi feito neste navegador e no servidor local: pedidos, confirmações, notas lançadas e chamadas. Esta ação não pode ser desfeita.', botao: 'Restaurar', perigo: true }))) return;
-    try { await reiniciarDados(); avisar('Dados de demonstração restaurados.'); } catch { avisar('Não foi possível restaurar os dados. Recarregue a página e tente de novo.'); }
+    try { await reiniciarDados(); concluirTrocaObrigatoria(); obrigatoria = false; desenhar(); avisar('Dados de demonstração restaurados.'); } catch { avisar('Não foi possível restaurar os dados. Recarregue a página e tente de novo.'); }
   }
 });
 main.addEventListener('input', (e) => {
@@ -140,8 +144,10 @@ main.addEventListener('submit', async (e) => {
   if (!mostrarErros(f, erros) || !ok) return;
   try { await comEspera(f.querySelector('[type="submit"]'), () => trocarSenha(conta, dados.nova)); }
   catch { f.querySelector('#f-geral-erro').textContent = 'Não foi possível guardar a nova senha neste navegador.'; return; }
+  if (obrigatoria) { obrigatoria = false; avisar('Senha definida. Você já pode usar o portal.'); setTimeout(() => { location.href = link(PERFIS[perfil].inicio); }, 900); return; }
   desenhar();
   avisar('Senha alterada. Use a nova senha no próximo acesso.');
   main.querySelector('[data-acao="senha"]')?.focus();
 });
 desenhar();
+if (obrigatoria) main.querySelector('#f-atual')?.focus();

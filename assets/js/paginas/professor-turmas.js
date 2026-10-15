@@ -1,7 +1,7 @@
 // Minhas turmas: nasce da alocação feita pela escola (turmas aprovadas + componente), sem cadastro paralelo.
 import { iniciar, link, falhaDados } from '../app.js';
 import { esc, vazio, plural, dataBR } from '../ui.js';
-import { carregar, turmasEscola, conjunto, diario, letivo } from '../dados.js';
+import { carregar, turmasEscola, conjunto, diarioParaLeitura, letivo } from '../dados.js';
 import { turmasDoProfessor, aulasAlocadas, presenca, PRESENCA_MINIMA, codigoDaTurma, nomeCurto, aulasDoProfessor, diaDaSemana, NOME_DO_DIA, semaforoPrazo, diasEntre } from '../regras.js';
 import { hojeISO } from '../dominio/hoje.js';
 import { semaforo, dataPorExtenso } from '../componentes/indicadores.js';
@@ -9,7 +9,7 @@ import { semaforo, dataPorExtenso } from '../componentes/indicadores.js';
 const main = await iniciar({ perfil: 'professor', pagina: 'professor/index.html', assistente: true });
 async function mostrar() {
   try {
-    const [logado, professores, escolas, turmas, alocacoes, matrizes, dia, lv, horarios] = await Promise.all([carregar('professor'), carregar('professores'), carregar('escolas'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), diario(), letivo(), conjunto('horarios')]);
+    const [logado, professores, escolas, turmas, alocacoes, matrizes, dia, lv, horarios] = await Promise.all([carregar('professor'), carregar('professores'), carregar('escolas'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), diarioParaLeitura({ soAtivos: true }), letivo(), conjunto('horarios')]);
     const prof = professores.find((p) => p.id === logado.professorId);
     const ctx = { alocacoes, turmas, matriz: matrizes.versoes[0].componentes };
     const minhas = turmasDoProfessor(prof.id, ctx);

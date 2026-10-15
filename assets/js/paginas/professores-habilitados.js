@@ -2,17 +2,17 @@
 // Na rede mostra todas as escolas e o resumo por município; na secretaria, só a escola da pessoa.
 import { iniciar, falhaDados } from '../app.js';
 import { sessao } from '../auth.js';
-import { esc, etiqueta, icone, baixarCSV, vazio, avisar, comEspera, plural, combina, confirmar } from '../ui.js';
-import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia, professoresComInativos } from '../dados.js';
+import { esc, etiqueta, icone, baixarCSV, vazio, avisar, comEspera, plural, combina, confirmar, dataBR } from '../ui.js';
+import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia, professoresComInativos, turmasDaRede } from '../dados.js';
 import { mapaDeFalta } from '../dominio/habilitacao.js';
-import { VINCULOS, validarProfessor, montarProfessor, mascararCpf, validarEdicaoDeProfessor, aplicarEdicaoDeProfessor, podeDesligar } from '../dominio/cadastros.js';
+import { VINCULOS, validarProfessor, montarProfessor, mascararCpf, validarEdicaoDeProfessor, aplicarEdicaoDeProfessor, podeDesligar, turmasQueDeixa, semAlocacoesDe } from '../dominio/cadastros.js';
 import { campo, marcas, lerFormulario, mostrarErros } from '../componentes/formulario.js';
 
 const perfil = document.body.dataset.perfil === 'escola' ? 'escola' : 'rede';
 const main = await iniciar({ perfil, pagina: `${perfil}/professores.html`, assistente: true });
 const ETAPA_EM = 'Ensino Médio';
 let aberto = false;
-let escolasDoAcesso = [], todosProfessores = [], componentesDaRede = [], hoje = '', busca = '', alocacoes = [];
+let escolasDoAcesso = [], todosProfessores = [], componentesDaRede = [], hoje = '', busca = '', alocacoes = [], turmasRede = [];
 
 async function mostrar() {
   try {
@@ -21,7 +21,7 @@ async function mostrar() {
     // A matriz do Ensino Médio vem da versão vigente de data/matrizes.json; a do Fundamental, de data/componentes-etapa.json.
     const componentesPorEtapa = { [ETAPA_EM]: matrizes.versoes[0].componentes.map((c) => c[0]), ...extra };
     const proprias = perfil === 'escola' ? escolas.filter((e) => e.id === sessao()?.escolaId) : escolas;
-    escolasDoAcesso = proprias; todosProfessores = await professoresComInativos(); alocacoes = await conjunto('alocacoes'); componentesDaRede = [...new Set(Object.values(componentesPorEtapa).flat())];
+    escolasDoAcesso = proprias; todosProfessores = await professoresComInativos(); alocacoes = await conjunto('alocacoes'); turmasRede = await turmasDaRede(); componentesDaRede = [...new Set(Object.values(componentesPorEtapa).flat())];
     const { componentes, linhas } = mapaDeFalta({ escolas: proprias, atos, professores, componentesPorEtapa });
     const total = linhas.reduce((t, l) => t + l.faltam.length, 0);
     const porMunicipio = [...new Set(linhas.map((l) => l.escola.municipio))].map((m) => {
@@ -79,6 +79,12 @@ function formularioProfessor() {
     </fieldset>
     <div class="form-acoes"><button type="submit" class="botao">${icone('ok', 20)}Cadastrar professor</button><button type="button" class="botao botao-secundario" id="cancelar-professor">Cancelar</button></div></form>`;
 }
+const nomeEscola = (id) => escolasDoAcesso.find((e) => e.id === id)?.nome || id;
+/** Lotação atual e anteriores, da mais recente para a mais antiga. */
+function historicoDeLotacao(p) {
+  const antes = [...(p.historicoLotacao || [])].reverse();
+  return `<section class="historico-lotacao" aria-labelledby="hl-titulo"><h3 id="hl-titulo">Histórico de lotação</h3><ul class="lista-simples"><li><strong>${esc(nomeEscola(p.escolaId))}</strong> ${etiqueta('atual', 'ok')} <span class="texto-suave texto-pequeno">${p.lotadoDesde ? `desde ${dataBR(p.lotadoDesde)}` : 'início não registrado'}</span></li>${antes.map((h) => `<li>${esc(nomeEscola(h.escolaId))} <span class="texto-suave texto-pequeno">${h.de ? `de ${dataBR(h.de)} ` : ''}até ${dataBR(h.ate)}${h.motivo ? ` · ${esc(h.motivo)}` : ''}</span></li>`).join('')}</ul></section>`;
+}
 function formularioEdicao(p) {
   const lotacao = escolasDoAcesso.length === 1 ? '' : campo({ prefixo: 'pe', nome: 'escolaId', rotulo: 'Escola de lotação', valor: p.escolaId, obrigatorio: true, opcoes: escolasDoAcesso.map((e) => [e.id, `${e.nome} (${e.municipio})`]) });
   return `<form id="form-prof-editar" class="form-cadastro" novalidate data-id="${p.id}" aria-labelledby="pe-titulo">
@@ -88,11 +94,13 @@ function formularioEdicao(p) {
       ${campo({ prefixo: 'pe', nome: 'vinculo', rotulo: 'Vínculo', valor: p.vinculo || 'Efetivo', obrigatorio: true, opcoes: VINCULOS.map((v) => [v, v]) })}
       ${campo({ prefixo: 'pe', nome: 'cargaHorariaSemanal', rotulo: 'Carga horária semanal', valor: String(p.cargaHorariaSemanal), obrigatorio: true, opcoes: [['10', '10 horas'], ['20', '20 horas'], ['30', '30 horas'], ['40', '40 horas']] })}
       ${lotacao}
+      ${lotacao ? `<div class="largo" id="pe-area-mudanca" hidden><p class="alerta-info" id="pe-aviso-turmas" role="status" hidden></p>${campo({ prefixo: 'pe', nome: 'motivoLotacao', rotulo: 'Motivo da mudança de escola', obrigatorio: true, dica: 'Fica no histórico de lotação.', atributos: 'maxlength="160" autocomplete="off"' })}</div>` : ''}
       <div class="largo">${campo({ prefixo: 'pe', nome: 'formacao', rotulo: 'Formação', valor: p.formacao, obrigatorio: true })}</div>
       <div class="largo">${marcas({ prefixo: 'pe', nome: 'habilitacao', rotulo: 'Componentes em que é habilitado', obrigatorio: true, itens: componentesDaRede.map((c) => [c, c]), marcados: p.habilitacao })}</div>
       ${campo({ prefixo: 'pe', nome: 'email', rotulo: 'E-mail', valor: p.email || '', tipo: 'email', dica: 'Opcional' })}
       ${campo({ prefixo: 'pe', nome: 'telefone', rotulo: 'Telefone', valor: p.telefone || '', tipo: 'tel', dica: 'Com DDD. Opcional' })}
     </fieldset>
+    ${historicoDeLotacao(p)}
     <div class="form-acoes"><button type="submit" class="botao">${icone('ok', 20)}Salvar alterações</button><button type="button" class="botao botao-secundario" id="cancelar-edicao">Cancelar</button></div></form>`;
 }
 function tabelaProfessores() {
@@ -134,16 +142,32 @@ async function desligarOuReativar(p) {
     await mostrar(); avisar(reativar ? 'Professor reativado.' : 'Professor desligado.');
   } catch { avisar('Não foi possível salvar a mudança. Confira a conexão e tente de novo.'); }
 }
+main.addEventListener('change', (e) => {
+  if (e.target.id !== 'pe-escolaId') return;
+  const form = e.target.closest('form'), p = todosProfessores.find((x) => x.id === form.dataset.id);
+  const muda = e.target.value !== p.escolaId;
+  form.querySelector('#pe-area-mudanca').hidden = !muda;
+  const saidas = muda ? turmasQueDeixa(p, e.target.value, alocacoes, turmasRede) : [];
+  const aviso = form.querySelector('#pe-aviso-turmas');
+  aviso.hidden = !saidas.length;
+  aviso.textContent = saidas.length ? `Ao mudar de escola, ${p.nome.split(' ')[0]} sai de ${saidas.length} ${plural(saidas.length, 'turma', 'turmas')}: ${saidas.map((s) => `${s.turma} (${s.componente})`).join(', ')}. Essas turmas ficam sem professor nesse componente até a secretaria alocar outro.` : '';
+});
 main.addEventListener('submit', async (e) => {
   if (e.target.id === 'form-prof-editar') {
     e.preventDefault();
     const dados = lerFormulario(e.target);
     if (escolasDoAcesso.length === 1) dados.escolaId = escolasDoAcesso[0].id;
     dados.habilitacao ||= [];
-    if (!mostrarErros(e.target, validarEdicaoDeProfessor(dados, { escolas: escolasDoAcesso, componentes: componentesDaRede }).erros, 'pe-')) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
+    const atual = todosProfessores.find((x) => x.id === e.target.dataset.id);
+    if (!mostrarErros(e.target, validarEdicaoDeProfessor(dados, { escolas: escolasDoAcesso, componentes: componentesDaRede, escolaAtual: atual.escolaId }).erros, 'pe-')) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
+    const saidas = dados.escolaId !== atual.escolaId ? turmasQueDeixa(atual, dados.escolaId, alocacoes, turmasRede) : [];
+    if (saidas.length && !(await confirmar({ titulo: `Mudar ${atual.nome.split(' ')[0]} de escola?`, texto: `Sai de ${saidas.length} ${plural(saidas.length, 'turma', 'turmas')} da escola atual: ${saidas.map((s) => `${s.turma} (${s.componente})`).join(', ')}. Essas turmas ficam sem professor nesse componente. A mudança entra no histórico de lotação.`, botao: 'Mudar de escola', perigo: true }))) return;
     try {
-      await comEspera(e.submitter, async () => guardarProfessor(aplicarEdicaoDeProfessor(todosProfessores.find((x) => x.id === e.target.dataset.id), dados, hoje), 'Editou o cadastro do professor'));
-      await mostrar(); avisar('Alterações salvas.');
+      await comEspera(e.submitter, async () => {
+        await guardarProfessor(aplicarEdicaoDeProfessor(atual, dados, hoje), dados.escolaId !== atual.escolaId ? `Mudou a lotação para ${nomeEscola(dados.escolaId)}` : 'Editou o cadastro do professor');
+        if (saidas.length) await salvar('alocacoes', semAlocacoesDe(await conjunto('alocacoes'), atual.id, saidas));
+      });
+      await mostrar(); avisar(saidas.length ? 'Alterações salvas. As turmas de que saiu ficaram sem professor.' : 'Alterações salvas.');
     } catch { avisar('Não foi possível salvar as alterações. Confira a conexão e tente de novo.'); }
     return;
   }

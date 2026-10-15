@@ -142,10 +142,33 @@ export function validarRepasse(f, { escolas, categorias, hoje }) {
 }
 /** Soma os repasses lançados aos de data/profin.json. A prestação da categoria reinicia com o novo prazo. */
 export function aplicarRepasses(repasses, lancados) {
+  const ativos = lancados.filter((l) => !l.estornadoEm); // repasse estornado não conta em nada
   return repasses.map((r) => {
-    const ls = lancados.filter((l) => l.escolaId === r.escolaId && l.categoria === r.categoria);
+    const ls = ativos.filter((l) => l.escolaId === r.escolaId && l.categoria === r.categoria);
     if (!ls.length) return r;
     const ultimo = [...ls].sort((a, b) => (a.data + a.id).localeCompare(b.data + b.id)).at(-1);
     return { ...r, recebido: Math.round((r.recebido + ls.reduce((t, l) => t + Number(l.valor), 0)) * 100) / 100, prestacao: { prazo: ultimo.prazo, entregue: false }, ultimoRepasseEm: ultimo.data, lancados: ls };
   });
 }
+
+/**
+ * Estorno de um repasse lançado por engano. Só dá para estornar se o valor ainda estiver livre na conta da escola:
+ * o que ela já executou ou declarou (em análise ou aprovado) não pode passar do que sobraria.
+ * @param {{valor: number, estornadoEm?: string}} lancamento
+ * @param {{recebido: number, executado: number, emAnalise?: number}} situacaoDaCategoria linha do painel (já com declarações)
+ */
+export function podeEstornar(lancamento, situacaoDaCategoria) {
+  if (lancamento.estornadoEm) return { ok: false, motivo: 'Este repasse já foi estornado.' };
+  const comprometido = (situacaoDaCategoria.executado || 0) + (situacaoDaCategoria.emAnalise || 0);
+  const sobra = Math.round((situacaoDaCategoria.recebido - lancamento.valor) * 100) / 100;
+  if (sobra < comprometido) return { ok: false, motivo: `A escola já executou ou declarou R$ ${comprometido.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} desta categoria. Estornar este repasse deixaria o saldo negativo.` };
+  return { ok: true, motivo: '' };
+}
+export function validarEstorno(f) {
+  const m = String(f.motivo ?? '').trim();
+  const e = {};
+  if (m.length < 5) e.motivo = 'Explique o motivo do estorno (pelo menos 5 letras).';
+  else if (m.length > 300) e.motivo = 'Resuma o motivo em até 300 letras.';
+  return { ok: !Object.keys(e).length, erros: e };
+}
+export const aplicarEstorno = (lancamento, { motivo, por, hoje }) => ({ ...lancamento, estornadoEm: hoje, estornadoPor: por, estornoMotivo: String(motivo).trim() });
