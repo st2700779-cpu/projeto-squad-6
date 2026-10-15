@@ -81,9 +81,9 @@ main.addEventListener('click', async (e) => {
     const escola = escolas.find((x) => x.id === a.escolaId);
     if (!(await confirmar({ titulo: 'Iniciar a renovação?', texto: `Abre o pedido de renovação do ${a.numero} (${a.etapa}) do(a) ${escola.nome} junto ao Conselho Estadual de Educação.`, botao: 'Iniciar renovação' }))) return;
     try {
-      renovacoes.push({ ato: b.dataset.renovar, quando: new Date().toISOString(), quem: 'Técnico da SEDUC' });
+      renovacoes.push({ ato: b.dataset.renovar, quando: new Date().toISOString(), quem: 'Técnico da SEED' });
       await salvar('renovacoes', renovacoes);
-      await registrarAcao('Técnico da SEDUC', `Iniciou renovação do ${a.numero}`, escola.nome);
+      await registrarAcao('Técnico da SEED', `Iniciou renovação do ${a.numero}`, escola.nome);
       desenhar(); avisar('Pedido de renovação iniciado.');
     } catch {
       avisar('O pedido de renovação não foi registrado. Confira a conexão e clique em Iniciar renovação de novo.');

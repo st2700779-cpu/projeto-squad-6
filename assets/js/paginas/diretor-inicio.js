@@ -1,6 +1,7 @@
 // Visão da escola para a direção: números da escola, frequência e desempenho por turma, prestação de contas do PROFIN,
 // atos autorizativos e comunicados. É a "central de comando"; a tela de reunião resume tudo para projetar ou imprimir.
 import { iniciar, link, falhaDados } from '../app.js';
+import { profinComDeclaracoes } from '../prestacao-dados.js';
 import { sessao } from '../auth.js';
 import { esc, etiqueta, dataBR, plural, numeroBR, icone } from '../ui.js';
 import { carregar } from '../dados.js';
@@ -12,12 +13,15 @@ const main = await iniciar({ perfil: 'diretor', pagina: 'diretor/index.html', as
 async function mostrar() {
   try {
     const escolaId = sessao().escolaId;
-    const [escolas, professores, atos, profin, painel] = await Promise.all([carregar('escolas'), carregar('professores'), carregar('atos'), carregar('profin'), desempenhoDaEscola(escolaId)]);
+    const [escolas, professores, atos, profin, painel] = await Promise.all([carregar('escolas'), carregar('professores'), carregar('atos'), profinComDeclaracoes(), desempenhoDaEscola(escolaId)]);
     const avisos = (await avisosVisiveis({ perfil: 'diretor', est: { escolaId, turma: '' } })).slice(0, 3);
     const escola = escolas.find((e) => e.id === escolaId);
     const { lista, totais, hoje } = painel;
     const repasses = profin.repasses.filter((r) => r.escolaId === escolaId);
     const adim = adimplenciaDaEscola(repasses, hoje);
+    const minhasDecs = profin.declaracoes.filter((d) => d.escolaId === escolaId);
+    const devolvidas = minhasDecs.filter((d) => d.situacao === 'Devolvida').length;
+    const emAnalise = minhasDecs.filter((d) => d.situacao === 'Enviada' || d.situacao === 'Em análise').length;
     const meusAtos = atos.filter((a) => a.escolaId === escolaId);
     const nProf = professores.filter((p) => p.escolaId === escolaId).length;
     const semFreq = totais.frequencia === null ? null : semaforoFrequencia(totais.frequencia);
@@ -43,10 +47,9 @@ async function mostrar() {
       <p class="contagem">Média das matérias com nota lançada. A marca preta é a média ${MEDIA_APROVACAO}. <a href="${link('diretor/mapa.html')}">Ver por matéria</a></p>
       <h2>Prestação de contas (PROFIN)</h2>
       <p class="esp-t-0">${semaforo(adim, { grande: true })}</p>
-      <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Prestação de contas por categoria de recurso</caption>
-        <thead><tr><th scope="col">Categoria</th><th scope="col" class="num">Recebido</th><th scope="col" class="num">Executado</th><th scope="col">Prestação</th></tr></thead>
-        <tbody>${repasses.map((r) => `<tr><td class="titulo-linha"><strong>${esc(r.categoria)}</strong></td><td class="num valor-reais" data-rotulo="Recebido"><div>${reais(r.recebido)}</div></td><td class="num valor-reais" data-rotulo="Executado"><div>${reais(r.executado)}<small>${numeroBR(percentualExecutado(r))}% do recebido</small></div></td><td data-rotulo="Prestação"><div>${semaforo(situacaoDaPrestacao(r, hoje))}<small>prazo ${dataBR(r.prestacao.prazo)}</small></div></td></tr>`).join('')}</tbody></table></div>
-      <p class="contagem">A prestação em atraso pode suspender o próximo repasse da escola.</p>
+      <p>${devolvidas ? `${etiqueta(`${devolvidas} ${plural(devolvidas, 'declaração devolvida', 'declarações devolvidas')}`, 'erro')} ` : ''}${emAnalise ? `${etiqueta(`${emAnalise} ${plural(emAnalise, 'em análise no PROFIN', 'em análise no PROFIN')}`, 'info')} ` : ''}${!devolvidas && !emAnalise ? '<span class="texto-suave">Nenhuma declaração de gastos em andamento.</span>' : ''}</p>
+      <p><a class="botao botao-secundario" href="${link('diretor/prestacao.html')}">${icone('moeda', 20)}Declarar gastos e ver o retorno do PROFIN</a></p>
+      <p class="contagem">A prestação em atraso pode suspender o próximo repasse da escola. Os valores por categoria ficam na tela de prestação de contas.</p>
       <h2>Atos autorizativos</h2>
       <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Atos autorizativos da escola</caption>
         <thead><tr><th scope="col">Etapa</th><th scope="col">Ato</th><th scope="col" class="num">Validade</th><th scope="col">Situação</th></tr></thead>

@@ -1,7 +1,9 @@
 // PROFIN: painel por escola e por categoria de recurso (Custeio, Capital, Merenda, Emenda Parlamentar).
 // Cada célula mostra quanto foi executado e a situação da prestação de contas (cor, símbolo e palavra).
 // Cada escola tem anotações de contexto: o que os documentos não dizem (atraso por reforma, troca de gestor).
-import { iniciar, falhaDados } from '../app.js';
+import { iniciar, falhaDados, link } from '../app.js';
+import { profinComDeclaracoes } from '../prestacao-dados.js';
+import { etiquetaDaDeclaracao, mesAno } from '../componentes/declaracao.js';
 import { sessao } from '../auth.js';
 import { esc, numeroBR, dataBR, plural, vazio, avisar, comEspera, icone } from '../ui.js';
 import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia } from '../dados.js';
@@ -19,6 +21,11 @@ function linhas() {
     .filter(({ adim }) => !filtro || (filtro === 'atraso' ? adim.chave === 'vermelho' : filtro === 'vencendo' ? adim.chave === 'amarelo' : adim.chave === 'verde'))
     .sort((a, b) => GRAVE[a.adim.chave] - GRAVE[b.adim.chave] || a.e.nome.localeCompare(b.e.nome, 'pt-BR'));
 }
+function decsDe(id) {
+  const ds = dados.declaracoes.filter((d) => d.escolaId === id && d.situacao !== 'Rascunho');
+  if (!ds.length) return '<h3>Declarações de gastos</h3><p class="texto-suave">A escola ainda não enviou declaração de gastos.</p>';
+  return `<h3>Declarações de gastos</h3><ul class="lista-simples">${ds.map((d) => `<li>${esc(d.categoria)} · ${esc(mesAno(d.competencia))} · ${reais(d.total)} ${etiquetaDaDeclaracao(d)}</li>`).join('')}</ul><p class="esp-t-1"><a href="${link('profin/analise.html')}">Abrir a análise das declarações</a></p>`;
+}
 function detalhe(e) {
   const reps = doEscola(e.id);
   const adim = adimplenciaDaEscola(reps, hoje);
@@ -28,6 +35,7 @@ function detalhe(e) {
     <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Recursos de ${esc(e.nome)} por categoria</caption>
       <thead><tr><th scope="col">Categoria</th><th scope="col" class="num">Recebido</th><th scope="col" class="num">Executado</th><th scope="col" class="num">Saldo</th><th scope="col">Prestação de contas</th></tr></thead>
       <tbody>${reps.map((r) => `<tr><td class="titulo-linha"><strong>${esc(r.categoria)}</strong><small>${esc(dados.descricoes[r.categoria])}</small>${lista(`${e.id}|${r.categoria}`)}</td><td class="num valor-reais" data-rotulo="Recebido"><div>${reais(r.recebido)}</div></td><td class="num valor-reais" data-rotulo="Executado"><div>${reais(r.executado)}<small>${numeroBR(percentualExecutado(r))}%</small></div></td><td class="num valor-reais" data-rotulo="Saldo"><div>${reais(saldo(r))}</div></td><td data-rotulo="Prestação"><div>${semaforo(situacaoDaPrestacao(r, hoje))}<small>prazo ${dataBR(r.prestacao.prazo)}</small></div></td></tr>`).join('')}</tbody></table></div>
+    ${decsDe(e.id)}
     ${lista(`${e.id}|Geral`) ? `<h3>Anotações gerais da escola</h3>${lista(`${e.id}|Geral`)}` : ''}
     <form id="form-nota" class="painel-inline esp-t-4" novalidate><h3 class="esp-t-0">Anotação de contexto</h3>
       <p class="texto-suave esp-t-0">Registre o que os documentos não mostram. A anotação fica com a data e o seu nome.</p>
@@ -40,6 +48,7 @@ function desenhar() {
   const todas = escolas.map((e) => adimplenciaDaEscola(doEscola(e.id), hoje));
   const recebido = dados.repasses.reduce((n, r) => n + r.recebido, 0), executado = dados.repasses.reduce((n, r) => n + r.executado, 0);
   const conta = (c) => todas.filter((a) => a.chave === c).length;
+  const fila = dados.declaracoes.filter((d) => d.situacao === 'Enviada' || d.situacao === 'Em análise').length;
   if (!sel || !escolas.some((e) => e.id === sel)) sel = lista[0]?.e.id ?? escolas[0].id;
   const municipios = [...new Set(escolas.map((e) => e.municipio))];
   main.innerHTML = `
@@ -48,6 +57,7 @@ function desenhar() {
       <h1>PROFIN · painel por escola</h1>
       <p class="heroi-linha">Prestação de contas de cada escola por categoria de recurso. A prestação em atraso pode suspender o próximo repasse. Dados de ${dataBR(hoje)}.</p>
     </header>
+    ${fila ? `<div class="alerta-atencao" role="status">${icone('alerta', 20)}<span>${fila} ${plural(fila, 'declaração de gastos aguarda análise', 'declarações de gastos aguardam análise')}. <a href="${link('profin/analise.html')}">Abrir a fila</a></span></div>` : ''}
     <dl class="resumo-linha">
       <div><dd>${escolas.length}</dd><dt>escolas</dt></div>
       <div><dd>${conta('verde')}</dd><dt>em dia</dt></div>
@@ -66,7 +76,7 @@ function desenhar() {
 }
 async function mostrar() {
   try {
-    [dados, escolas, notas, hoje] = await Promise.all([carregar('profin'), carregar('escolas'), conjunto('profin-notas'), dataDeReferencia()]);
+    [dados, escolas, notas, hoje] = await Promise.all([profinComDeclaracoes(), carregar('escolas'), conjunto('profin-notas'), dataDeReferencia()]);
     desenhar();
   } catch { falhaDados(main, mostrar); }
 }

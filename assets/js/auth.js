@@ -16,7 +16,7 @@ export const PERFIS = {
   escola: { rotulo: 'Secretaria', campo: 'Usuário institucional', dica: 'Usuário da secretaria da escola', inicio: 'escola/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
   diretor: { rotulo: 'Direção', campo: 'Usuário institucional', dica: 'Usuário da direção da escola', inicio: 'diretor/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
   coordenador: { rotulo: 'Coordenação pedagógica', campo: 'Usuário institucional', dica: 'Usuário da coordenação da escola', inicio: 'coordenador/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
-  rede: { rotulo: 'Rede (SEDUC e DRE)', campo: 'Usuário institucional', dica: 'Usuário da equipe técnica da SEDUC', inicio: 'rede/atos.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
+  rede: { rotulo: 'Rede (SEED e DRE)', campo: 'Usuário institucional', dica: 'Usuário da equipe técnica da SEED', inicio: 'rede/atos.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' },
   profin: { rotulo: 'PROFIN (financeiro)', campo: 'Usuário institucional', dica: 'Usuário da equipe de gestão financeira', inicio: 'profin/index.html', informe: 'o usuário institucional', naoEncontrado: 'esse usuário' }
 };
 

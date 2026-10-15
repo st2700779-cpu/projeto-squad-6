@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
-<title>Sistema Acadêmico · SEDUC/SE</title>
+<title>Sistema Acadêmico · SEED/SE</title>
 <!-- Protótipo em arquivo único: abre com duplo clique, sem servidor.
      Usa o mesmo tema, os mesmos componentes, os MESMOS DADOS e as MESMAS REGRAS do portal:
      os blocos "dados-demo" e "regras" abaixo são gerados por "node tools/gerar-prototipo.mjs"
@@ -718,7 +718,7 @@ function desempenho(est, diario, aulasDadas) {
   if (lugarTema && window.botaoTema) lugarTema.outerHTML = window.botaoTema();
 
   // ---------- Estado: dados de demonstração, guardados no navegador ----------
-  var CHAVE = 'prototipo-seduc-estado-v2';
+  var CHAVE = 'prototipo-seed-estado-v2';
   var BASE = JSON.parse(document.getElementById('dados-demo').textContent);
   var copia = function (o) { return JSON.parse(JSON.stringify(o)); };
   function carregarEstado() {
@@ -987,7 +987,7 @@ function desempenho(est, diario, aulasDadas) {
     if (perfil !== perfilAtual) { filtro = 'Aguardando confirmação'; recusando = null; erroRecusa = ''; erroNotas = null; ausentes = {}; }
     perfilAtual = perfil;
     document.getElementById('btn-sair').hidden = !perfil;
-    document.title = (perfil ? PERFIS[perfil].nome + ' · ' : '') + 'Sistema Acadêmico · SEDUC/SE';
+    document.title = (perfil ? PERFIS[perfil].nome + ' · ' : '') + 'Sistema Acadêmico · SEED/SE';
     var u = perfil && USUARIOS[perfil];
     document.body.dataset.visao = u ? u.visao : 'geral';
     document.getElementById('usuario').hidden = !u;

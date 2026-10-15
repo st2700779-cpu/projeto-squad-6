@@ -11,9 +11,9 @@ Pontos em que o pedido e o projeto não se encaixam de primeira, com o que eu fa
 | # | Ponto | Padrão que vou seguir se você não disser o contrário |
 | --- | --- | --- |
 | Q1 | **IA no sistema.** O projeto já tem um assistente com IA opcional (`servicoIA.js`, pasta `worker/`, `prompts/`). Sua restrição 4 diz "nenhuma IA dentro do sistema". Hoje ele roda em "modo sem IA" (só perguntas frequentes), porque `config.js` está sem endereço. | **Não mexer** no assistente e não usá-lo nas telas novas; toda lógica nova é por regras e modelos de texto. Se a decisão do projeto vale também para o assistente existente, diga e eu removo o proxy e deixo só o modo de perguntas frequentes (mudança pequena, mas apaga código). |
-| Q2 | **Perfis.** O pedido fala em Aluno, Professor, Secretaria e Matrícula (família, sem login). O portal tem Família, Professor, Escola (= Secretaria) e Rede (SEDUC/DRE). | **Secretaria = visão Escola.** **Rede continua existindo**, com login próprio ("usuário institucional"), e recebe o painel de atos, o mapa de demanda e a falta de professores (4.1 e 4.2 pedem "Secretaria/SEDUC"). **Aluno é uma visão nova** (login por matrícula) com notas, carteirinha, linha do tempo e boletim falado; a visão Família hoje vira o acesso público "Matrícula" (sem login) e ganha o que já existe de acompanhamento só com o login do Aluno. São cinco acessos na entrada, não quatro. |
+| Q2 | **Perfis.** O pedido fala em Aluno, Professor, Secretaria e Matrícula (família, sem login). O portal tem Família, Professor, Escola (= Secretaria) e Rede (SEED/DRE). | **Secretaria = visão Escola.** **Rede continua existindo**, com login próprio ("usuário institucional"), e recebe o painel de atos, o mapa de demanda e a falta de professores (4.1 e 4.2 pedem "Secretaria/SEED"). **Aluno é uma visão nova** (login por matrícula) com notas, carteirinha, linha do tempo e boletim falado; a visão Família hoje vira o acesso público "Matrícula" (sem login) e ganha o que já existe de acompanhamento só com o login do Aluno. São cinco acessos na entrada, não quatro. |
 | Q3 | **Skill `humanizar-frontend`.** Não está instalada nesta sessão. | Aplico o que já está em `SINAIS-DE-IA.md` (tabelas onde o dado é tabular, texto funcional, sem decoração, dados críveis) nas telas novas. |
-| Q4 | **Protótipo em arquivo único** (`sistema-academico-seduc-prototipo.html`). Recursos como service worker, `crypto.subtle` e Leaflet não funcionam de forma confiável por `file://`. | **Não estender o protótipo em arquivo único.** Ele fica como está e o README passa a dizer que as funções novas existem só no portal. |
+| Q4 | **Protótipo em arquivo único** (`sistema-academico-seed-prototipo.html`). Recursos como service worker, `crypto.subtle` e Leaflet não funcionam de forma confiável por `file://`. | **Não estender o protótipo em arquivo único.** Ele fica como está e o README passa a dizer que as funções novas existem só no portal. |
 | Q5 | **Hospedagem.** O README fala de GitLab Pages (`.gitlab-ci.yml`); o pedido fala de GitHub Pages. O repositório está no GitHub. | Documentar GitHub Pages (com `.github/workflows/pages.yml` simples que publica a raiz) e manter a seção do GitLab. Todas as URLs do código são relativas (`RAIZ`), então funcionam em subpasta (`/projeto-squad-6/`). |
 | Q6 | **Segurança da autenticação.** Login de protótipo: credenciais em `data/usuarios.json`, comparadas no navegador, sessão em `sessionStorage`. Não protege nada. | Comentário claro em `auth.js`, aviso visível na tela de login ("acesso de demonstração") e uma linha no README. Senhas em texto simples, todas fictícias. |
 | Q7 | **Contexto seguro.** `crypto.subtle`, service worker e instalação de PWA exigem `https` ou `localhost`. Com `file://` ou pelo IP da rede local sem https, falham. | Detectar e mostrar aviso ("abra pelo endereço publicado ou por localhost"); a declaração cai para um código sem verificação e diz isso. |
@@ -39,7 +39,7 @@ Testes: os scripts de Playwright que uso ficam fora do repositório (já é assi
 
 | Arquivo | Conteúdo | Usado em |
 | --- | --- | --- |
-| `usuarios.json` (novo) | Contas de demonstração: aluno (matrícula `a3` → Iasmim), professor (matrícula funcional → `p1`), secretaria (usuário institucional da escola `e1`), rede (usuário da SEDUC). Campos: `perfil`, `login`, `senha`, `refId`, `nome`, `escolaId`. | 1.1 |
+| `usuarios.json` (novo) | Contas de demonstração: aluno (matrícula `a3` → Iasmim), professor (matrícula funcional → `p1`), secretaria (usuário institucional da escola `e1`), rede (usuário da SEED). Campos: `perfil`, `login`, `senha`, `refId`, `nome`, `escolaId`. | 1.1 |
 | `estudantes.json` (alterar) | Acrescentar `matricula` (número de matrícula de 9 dígitos), `validade` da carteirinha, `bairro`/`municipio`; a chave `id` atual não muda. | 1.1, 3.2 |
 | `professores.json` (alterar) | Acrescentar `matriculaFuncional` e `escolaId` de lotação (se `alocacoes.json` já não bastar; vou conferir antes de criar). | 1.1, 4.2 |
 | `escolas.json` (alterar) | Acrescentar `bairro`, `lat`, `lng` (coordenadas plausíveis, não exatas). | 2.4 |
@@ -61,7 +61,7 @@ Notação: **Visão** onde entra · **Arquivos** criados (+) ou alterados (~) ·
 ### Fase 1 — Acesso e base
 
 **1.1 Entrada e logins por perfil**
-- Visão: todas. `index.html` vira a entrada institucional com cinco acessos (Aluno, Professor, Secretaria, Rede/SEDUC, Matrícula sem login).
+- Visão: todas. `index.html` vira a entrada institucional com cinco acessos (Aluno, Professor, Secretaria, Rede/SEED, Matrícula sem login).
 - Arquivos: ~`index.html`, ~`assets/js/paginas/inicio.js`; + `login.html` (uma página, parâmetro `?perfil=aluno|professor|secretaria|rede`, com o rótulo do campo trocando por perfil: matrícula, matrícula funcional, usuário institucional) e + `assets/js/paginas/login.js`; + `assets/js/auth.js`; + `assets/css/acesso.css`; ~`app.js` (guarda de rota, nome do usuário e "Sair"); ~`estado.js` (sair limpa só a sessão, não os dados da demonstração).
 - Comportamento: mostrar/ocultar senha (botão com `aria-pressed`), aviso de Caps Lock, validação por campo com `aria-describedby` e mensagens diferentes para campo vazio, usuário inexistente e senha errada (em demonstração vale dizer qual; comentário no código explica que em produção a mensagem seria única), botão com estado de carregamento (`comEspera`), bloco "Acesso de demonstração" recolhido por padrão com as credenciais, sessão em `sessionStorage`, redirecionamento ao login correto quando falta sessão ou o perfil não confere, comentário de protótipo em `auth.js`.
 - Alteração de comportamento a confirmar: hoje qualquer pessoa abre `escola/`, `professor/` etc. direto; depois só com sessão. Os meus testes automáticos passam a entrar por login.
@@ -129,7 +129,7 @@ O fluxo em etapas **já existe** (`familia-matricula.js`, com etapas, rascunho e
 ### Fase 4 — Gestão
 
 **4.1 Painel de impacto de atos**
-- Visão: Rede (SEDUC) e Escola (Secretaria, filtrada pela escola). Substitui/estende `rede-atos.js`.
+- Visão: Rede (SEED) e Escola (Secretaria, filtrada pela escola). Substitui/estende `rede-atos.js`.
 - Arquivos: ~`rede-atos.js`, + `assets/js/dominio/impacto-atos.js`, `data/atos.json` (campos `tipo`, `curso`).
 - Cálculo: dias restantes até `validade`; turmas afetadas = turmas da escola naquela etapa; alunos afetados = soma dos matriculados dessas turmas (de `turmas.json`/`enturmacao.json`), com um teste que confere a soma.
 - Faixas (cor + texto): vencido, até 30 dias, até 90 dias, mais de 90. Filtros por município e por escola, ordenação por urgência. O painel atual (120 dias) muda para as faixas do pedido; renovação continua.

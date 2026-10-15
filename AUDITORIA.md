@@ -11,7 +11,7 @@ O pedido descreve um protótipo com três visões (Aluno, Professor, Secretaria)
 | # | O que é | Arquivos | Situação |
 | --- | --- | --- | --- |
 | A | **Portal Acadêmico** (produto principal): 4 visões (Família e estudante, Professor, Escola, Rede), 20 páginas, JS em módulos ES, dados em JSON, persistência via API local ou `localStorage`, assistente de IA, modo escuro e alto contraste | `index.html`, `familia/`, `professor/`, `escola/`, `rede/`, `assets/`, `data/`, `config.js`, `worker/`, `tools/` | Maduro. Boa parte das Fases 1, 3 e 5 do pedido **já existe** |
-| B | **Protótipo mobile em arquivo único** (Aluno, Professor, Escola) | `sistema-academico-seduc-prototipo.html` | Funciona sem servidor, mas com **dados próprios e desligados do portal** |
+| B | **Protótipo mobile em arquivo único** (Aluno, Professor, Escola) | `sistema-academico-seed-prototipo.html` | Funciona sem servidor, mas com **dados próprios e desligados do portal** |
 | C | **Protótipo antigo** (Secretaria, Diretor, Professor, Aluno, Responsável) | `script.js`, `style.css` | **Código morto**: nenhuma página os carrega desde que o portal substituiu o `index.html` |
 
 O texto do pedido descreve, na prática, o item C. As melhorias mais valiosas, porém, estão na relação entre A e B e nas lacunas de integração dentro de A.
@@ -52,7 +52,7 @@ O texto do pedido descreve, na prática, o item C. As melhorias mais valiosas, p
 | | Alocação de professores (bloqueio por habilitação e carga) | `escola-alocacao.js` | Grava `alocacoes` |
 | | Equivalências de histórico | `escola-equivalencias.js` | Grava `equivalencias` |
 | | Avisos | `avisos.js` | Leitura |
-| **Rede (SEDUC/DRE)** | Atos autorizativos (alerta de 120 dias, renovação) | `rede-atos.js` | Grava `renovacoes` |
+| **Rede (SEED/DRE)** | Atos autorizativos (alerta de 120 dias, renovação) | `rede-atos.js` | Grava `renovacoes` |
 | | Vagas por escola | `rede-vagas.js` | Lê `vagas` |
 | | Matrizes curriculares | `rede-matrizes.js` | Leitura |
 
@@ -60,7 +60,7 @@ O que **já é compartilhado** entre visões hoje (verificado no código): matr�
 
 ### 1.3 Protótipos B e C
 
-- **B** (`sistema-academico-seduc-prototipo.html`, 24 KB, JS embutido em IIFE): perfis `#aluno`, `#professor`, `#secretaria`. Reaproveita `tema.css`/`componentes.css`. Dados em variáveis internas, reiniciados a cada recarga.
+- **B** (`sistema-academico-seed-prototipo.html`, 24 KB, JS embutido em IIFE): perfis `#aluno`, `#professor`, `#secretaria`. Reaproveita `tema.css`/`componentes.css`. Dados em variáveis internas, reiniciados a cada recarga.
 - **C** (`script.js` 365 linhas + `style.css` 179 linhas): perfis Secretaria, Diretor, Professor, Aluno, Responsável. Variáveis globais (`var`), `onclick` inline, `alert()`, boletim **inventado por fórmula** (`aluno.nota + (i % 3 === 0 ? 0.3 : -0.2)`), sem acessibilidade.
 
 ## 2. Problemas encontrados
@@ -71,7 +71,7 @@ Severidade: **C** crítico · **A** alto · **M** médio · **B** baixo. Cada it
 
 | ID | Sev. | Cat. | Problema | Evidência |
 | --- | --- | --- | --- | --- |
-| D1 | **A** | consistência | O protótipo B (arquivo único) é um segundo produto com **dados e regras próprios**: aluna "Ana Beatriz Costa", escola "E. E. Prof. Ivo do Prado", "1.284 estudantes / 87 professores / 42 turmas" escritos no HTML, média da turma com valor de reserva fixo `'7,4'`. O portal usa "Carla Vitória Santos", "Colégio Estadual Rio Sergipe" etc. Um avaliador que abrir os dois vê dois sistemas diferentes | `sistema-academico-seduc-prototipo.html` linhas ~122–150, `mediaTurma()`, `telaSecretaria()` |
+| D1 | **A** | consistência | O protótipo B (arquivo único) é um segundo produto com **dados e regras próprios**: aluna "Ana Beatriz Costa", escola "E. E. Prof. Ivo do Prado", "1.284 estudantes / 87 professores / 42 turmas" escritos no HTML, média da turma com valor de reserva fixo `'7,4'`. O portal usa "Carla Vitória Santos", "Colégio Estadual Rio Sergipe" etc. Um avaliador que abrir os dois vê dois sistemas diferentes | `sistema-academico-seed-prototipo.html` linhas ~122–150, `mediaTurma()`, `telaSecretaria()` |
 | D2 | **A** | consistência | Regra de frequência diferente entre B e A. B calcula frequência como **média de percentuais por matéria**; A calcula por faltas ÷ aulas dadas (`regras.js: presenca`). B também usa "trimestre"; A usa "unidade" | B `telaAluno()`; `regras.js` |
 | D3 | **A** | bug/integração | **Dois sistemas de identificadores de turma sem ligação**: `professor.json` (t1…t6, com alunos próprios no diário) e `turmas.json` (tt1…tt5, da escola). A turma criada/aprovada pela Escola **não aparece para o Professor**; a alocação de professor na Escola não atualiza "Minhas turmas"; a enturmação de um estudante não o coloca no diário. Turma "1ª série A" tem 38 matriculados na escola e 8 estudantes no diário do professor | `data/professor.json` × `data/turmas.json`; `escola-alocacao.js` grava só `alocacoes`; `escola-enturmacao.js` grava só `enturmacao` |
 | D4 | **A** | integração | Só a Matemática do estudante vem do diário do professor; as demais matérias são fixas em `estudantes.json`. O segundo estudante (Lucas, `turmaId: null`) não recebe nada do diário. A quantidade de faltas de **uma disciplina** vira a frequência **geral** do estudante | `regras.js: desempenho()` |

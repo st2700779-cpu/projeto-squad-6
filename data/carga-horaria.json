@@ -1,0 +1,74 @@
+[
+  {
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "serie": "1º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "serie": "2º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "serie": "3º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "serie": "4º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "serie": "5º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "serie": "6º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "serie": "7º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "serie": "8º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "serie": "9º ano",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Médio",
+    "serie": "1ª série EM",
+    "aulasSemana": 30,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Médio",
+    "serie": "2ª série EM",
+    "aulasSemana": 30,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Ensino Médio",
+    "serie": "3ª série EM",
+    "aulasSemana": 30,
+    "minutosAula": 50
+  }
+]

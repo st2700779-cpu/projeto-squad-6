@@ -7,7 +7,7 @@ Data: 29/09/2026 · Base: branch `claude/friendly-goodall-9bwbbq` (estado após 
 - As **20 páginas do portal** e as **3 telas do protótipo em arquivo único** foram capturadas em **360 px e 1280 px** (Chromium). Vi de perto: início, família (início, notas, matrícula), professor (diário), escola (início, turmas, matrículas), rede (atos) e o protótipo (secretaria). As demais telas usam os mesmos componentes e foram avaliadas pelas capturas gerais, pela estrutura do código e por medições automáticas (alvos de toque, rolagem horizontal, contraste).
 - **768 e 1024 px ainda não foram capturados**; entram na verificação de cada fase, junto com 360 e 1440.
 - No ambiente de teste a fonte do Google Fonts não carrega; as capturas usam a fonte de reserva do sistema. Tipografia é avaliada pelo CSS, não pela captura.
-- **Correspondência com o pedido:** "Aluno" = **Família e estudante**; "Secretaria" = **Escola** (secretaria, coordenação e direção). O portal tem ainda a visão **Rede (SEDUC e DRE)**, que entra no mesmo tratamento.
+- **Correspondência com o pedido:** "Aluno" = **Família e estudante**; "Secretaria" = **Escola** (secretaria, coordenação e direção). O portal tem ainda a visão **Rede (SEED e DRE)**, que entra no mesmo tratamento.
 - Escala de impacto: **A** alto, **M** médio, **B** baixo.
 
 ## 1. Problemas que se repetem em todas as telas
@@ -17,7 +17,7 @@ Data: 29/09/2026 · Base: branch `claude/friendly-goodall-9bwbbq` (estado após 
 | ID | Imp. | Problema |
 | --- | --- | --- |
 | G1 | **A** | **Visual monocromático de "wireframe"**: preto, cinza e branco, com bordas grossas (2 px) e cantos muito arredondados (18 a 22 px). A única cor de marca é o azul do botão do assistente. Passa a impressão de esboço, não de sistema oficial |
-| G2 | **A** | **Cabeçalho sem identidade**: só o texto "Portal Acadêmico". Não há nome do órgão (SEDUC/SE, Governo de Sergipe), nenhum símbolo/logotipo, nem o **usuário logado** (nome, perfil, escola). O perfil só aparece como texto ao lado ("· Escola") em telas largas |
+| G2 | **A** | **Cabeçalho sem identidade**: só o texto "Portal Acadêmico". Não há nome do órgão (SEED/SE, Governo de Sergipe), nenhum símbolo/logotipo, nem o **usuário logado** (nome, perfil, escola). O perfil só aparece como texto ao lado ("· Escola") em telas largas |
 | G3 | **A** | **Sem diferenciação entre as visões**: Família, Professor, Escola e Rede têm exatamente a mesma aparência; o usuário não sabe "onde está" além do texto do cabeçalho |
 | G4 | **M** | Tom de tela inicial e telas de família muito "aplicativo infantil" (blocos gigantes com ícone preto); as visões de gestão (Escola, Rede) herdam isso e ficam pouco densas e pouco profissionais |
 | G5 | **B** | Faixa amarela "Protótipo de demonstração" solta no fim da página de família, com estilo diferente do resto |
@@ -31,7 +31,7 @@ Data: 29/09/2026 · Base: branch `claude/friendly-goodall-9bwbbq` (estado após 
 | N3 | **M** | O traço vertical do menu lateral **termina no meio da página** (altura fixa `100vh − 66 px`), o que parece defeito de layout em telas altas |
 | N4 | **M** | **Painéis iniciais sem hierarquia**: Escola tem 4 números, mas sem ícone, sem comparação nem link visível; "1 autorizações vencidas" (plural incorreto); Rede e Professor não têm painel, começam direto em tabela/lista |
 | N5 | **M** | Início do portal ("Quem está usando?"): metade da tela vazia; os 4 perfis parecem botões iguais, sem descrição do que cada perfil faz além de uma linha |
-| N6 | **B** | Nomes de perfil incoerentes entre telas ("Família e estudante" / "Família"; "Rede (SEDUC e DRE)" / "Rede (SEDUC)") |
+| N6 | **B** | Nomes de perfil incoerentes entre telas ("Família e estudante" / "Família"; "Rede (SEED e DRE)" / "Rede (SEED)") |
 
 ### 1.3 Componentes
 
@@ -121,14 +121,14 @@ Legenda: **A/M/B** = impacto. "Comum" = vale o que está na seção 1.
 | Equivalências | **M** Tabela com resultados só em selo; sem legenda das cores |
 | Avisos | Comum |
 
-### Visão Rede (SEDUC e DRE)
+### Visão Rede (SEED e DRE)
 | Tela | Problemas |
 | --- | --- |
 | Atos autorizativos | **A** Coluna "Escola" estreita (quebra em 4 a 5 linhas); botão "Iniciar renovação" grande; alerta vermelho ocupa 4 linhas em 360 px. **M** Números do topo sem ícone |
 | Vagas por escola | **M** Tabela larga; sem destaque para escolas sem vaga |
 | Matrizes curriculares | **M** Duas tabelas grandes sem cabeçalho fixo; sem indicação da versão em vigor |
 
-### Protótipo em arquivo único (`sistema-academico-seduc-prototipo.html`)
+### Protótipo em arquivo único (`sistema-academico-seed-prototipo.html`)
 - **A** Cabeçalho e conteúdo limitados a 620 px em qualquer tela: no desktop parece um celular no meio da tela.
 - **M** Painel da escola com 4 cartões em 3+1; relatórios com botões que só avisam "disponível na versão completa".
 - **M** Mesmos problemas de identidade (G1 a G3) e de componentes do portal.
@@ -147,14 +147,14 @@ Tudo em CSS e nas classes dos templates, sem telas, funções ou regras novas.
 
 1. **Fase 1, design system:** tokens novos em `tema.css` (paleta institucional em azul de governo com verde de apoio; neutros; sucesso, alerta, erro e informação como conjuntos fundo/borda/texto; escala tipográfica; escala de 4 px; raios menores; sombras; transições). Cor de destaque por visão: **Família** teal, **Professor** índigo, **Escola** verde, **Rede** âmbar escuro. Tema escuro redefinindo só os tokens (o botão manual de modo escuro e o alto contraste continuam, porque já são fluxos existentes).
 2. **Fase 2, componentes:** botões (primário, secundário, perigo, texto), cartões com cabeçalho/corpo/ações, tabelas (zebra, hover, cabeçalho fixo, números à direita, cartões no celular), selos com ícone, formulários com erro junto do campo, toast com ícone e fechar.
-3. **Fase 3, layout:** cabeçalho com marca da SEDUC/SE e usuário simulado; menu lateral recolhível no desktop e gaveta no celular; título de página com breadcrumb; painéis de indicadores no topo de cada visão; larguras consistentes.
+3. **Fase 3, layout:** cabeçalho com marca da SEED/SE e usuário simulado; menu lateral recolhível no desktop e gaveta no celular; título de página com breadcrumb; painéis de indicadores no topo de cada visão; larguras consistentes.
 4. **Fase 4, experiência:** skeleton no carregamento; estado "salvando" nos botões; microinterações de 150 a 250 ms; botão do assistente que não cobre conteúdo (recuado e recolhível); atalhos onde já existe a tarefa (chamada e notas no diário; resumo do boletim).
 5. **Fases 5 e 6:** verificação em 360, 768, 1024 e 1440 px; alvos de toque de 44 px; foco com anel duplo que funciona sobre fundos claros e escuros; contraste medido por script.
 
 ## 5. Decisões de que preciso
 
 1. **Fonte:** manter **Atkinson Hyperlegible** (feita para legibilidade e boa para baixa visão, coerente com o requisito de acessibilidade do projeto) ou trocar por **Inter** (mais neutra e comum em sistemas públicos)? Recomendo **Inter para títulos e texto e manter opção de alto contraste**; se preferir priorizar acessibilidade, ficar com Atkinson.
-2. **Identidade:** posso usar apenas **texto e um monograma simples** ("SEDUC/SE") como marca, sem brasão nem logotipo oficial (não tenho o arquivo e não devo reproduzi-lo). Se você tiver o logotipo autorizado, coloque em `assets/` e uso.
+2. **Identidade:** posso usar apenas **texto e um monograma simples** ("SEED/SE") como marca, sem brasão nem logotipo oficial (não tenho o arquivo e não devo reproduzi-lo). Se você tiver o logotipo autorizado, coloque em `assets/` e uso.
 3. **Cores por visão:** aprova a proposta (Família teal, Professor índigo, Escola verde, Rede âmbar) ou prefere outra combinação?
 4. **Usuário no cabeçalho:** o sistema não tem login; vou mostrar **usuário simulado** por visão (ex.: "Ana Lúcia Menezes · Professora", "Rosa Maria Santos · Responsável", "Secretaria · C. E. Rio Sergipe"), usando nomes que já existem nos dados. Está de acordo?
 5. **Onde commitar:** o PR #1 (melhorias de código) ainda está aberto. Posso continuar **na mesma branch** (o PR passa a incluir também o redesenho) ou prefere que eu **espere o merge do PR #1** e faça o redesenho em outro PR? Recomendo esperar o merge, para revisão em partes; se não puder esperar, uso a mesma branch.

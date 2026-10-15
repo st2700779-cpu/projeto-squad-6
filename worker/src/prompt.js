@@ -7,7 +7,7 @@ const PERFIS = {
   familia: 'família e estudantes',
   professor: 'professores',
   escola: 'equipe da escola',
-  rede: 'técnicos da SEDUC e das DREs'
+  rede: 'técnicos da SEED e das DREs'
 };
 
 const itens = BASE.itens.map((i) => `- [${i.tema}] ${i.pergunta} → ${i.resposta}`).join('\n');

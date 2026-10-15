@@ -1,6 +1,7 @@
 // Rascunho de relatório consolidado do PROFIN: monta o texto com os números do painel e as anotações de contexto,
 // por modelo fixo (sem inteligência artificial). A pessoa revisa, escreve as conclusões e copia, baixa ou imprime.
 import { iniciar, falhaDados } from '../app.js';
+import { profinComDeclaracoes } from '../prestacao-dados.js';
 import { esc, avisar, confirmar, baixarTexto, icone } from '../ui.js';
 import { carregar, conjunto, dataDeReferencia } from '../dados.js';
 import { rascunhoDoRelatorio } from '../regras.js';
@@ -11,13 +12,13 @@ let dados, escolas, notas, hoje, gerado = '';
 const montar = () => {
   const id = main.querySelector('#escopo').value;
   const categorias = [...main.querySelectorAll('[data-categoria]:checked')].map((c) => c.dataset.categoria);
-  return rascunhoDoRelatorio({ escolas: id ? escolas.filter((e) => e.id === id) : escolas, repasses: dados.repasses.filter((r) => !id || r.escolaId === id), notas, hoje, categorias });
+  return rascunhoDoRelatorio({ escolas: id ? escolas.filter((e) => e.id === id) : escolas, repasses: dados.repasses.filter((r) => !id || r.escolaId === id), notas, hoje, categorias, declaracoes: dados.declaracoes });
 };
 const atualizarImpressao = () => { main.querySelector('#impressao').textContent = main.querySelector('#rascunho').value; };
 
 async function mostrar() {
   try {
-    [dados, escolas, notas, hoje] = await Promise.all([carregar('profin'), carregar('escolas'), conjunto('profin-notas'), dataDeReferencia()]);
+    [dados, escolas, notas, hoje] = await Promise.all([profinComDeclaracoes(), carregar('escolas'), conjunto('profin-notas'), dataDeReferencia()]);
     main.innerHTML = `
       <h1>Relatório consolidado</h1>
       <p class="pagina-descricao">O rascunho junta os números do painel e as anotações de contexto num texto pronto para revisar. Montado por modelo fixo, sem inteligência artificial.</p>

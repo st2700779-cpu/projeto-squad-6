@@ -16,7 +16,7 @@ echo   Contas de demonstracao
 echo     Aluno       202610317          senha aluno2026
 echo     Professor   PF-30412           senha prof2026
 echo     Secretaria  secretaria.osvaldo senha secretaria2026
-echo     Rede        seduc.tecnico      senha rede2026
+echo     Rede        seed.tecnico      senha rede2026
 echo     Matricula (familia): sem login
 echo  ---------------------------------------------
 echo   Para parar o servidor, feche esta janela.

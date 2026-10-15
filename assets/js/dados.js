@@ -32,9 +32,18 @@ export async function carregar(nome) {
   const promessa = usarApi()
     .then((api) => fetch(api ? new URL(nome, API) : new URL(`data/${nome}.json`, RAIZ), { cache: 'no-store' }))
     .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+    .then((base) => (ACRESCIMOS[nome] ? acrescentar(base, ACRESCIMOS[nome]) : base))
     .catch((e) => { cache.delete(nome); const erro = new Error('DADOS_INDISPONIVEIS'); erro.causa = e; throw erro; });
   cache.set(nome, promessa);
   return promessa;
+}
+
+// Cadastros feitos durante a demonstração (nova escola, novo ato, novo professor) ficam em conjuntos próprios e são somados
+// ao arquivo-base quando alguém lê 'escolas', 'atos' ou 'professores'. Assim todas as telas já enxergam o que foi cadastrado.
+const ACRESCIMOS = { escolas: 'escolas-novas', atos: 'atos-novos', professores: 'professores-novos' };
+async function acrescentar(base, nomeExtra) {
+  const extra = await alteravel(nomeExtra, () => carregar(nomeExtra));
+  return [...base, ...extra];
 }
 
 // Dados que o usuário altera durante a demonstração.
@@ -71,6 +80,8 @@ export async function ultimaAcao(alvo) {
 
 /** Salva um conjunto alterável (API ou localStorage). Lança FALHA_AO_SALVAR se a API recusar. */
 export async function salvar(nome, valor) {
+  // Quem soma este conjunto ao arquivo-base precisa reler: o resultado em memória ficou velho.
+  for (const [base, extra] of Object.entries(ACRESCIMOS)) if (extra === nome) cache.delete(base);
   if (!(await usarApi())) { definir(nome, valor); return; }
   const r = await fetch(new URL(nome, API), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(valor) });
   if (!r.ok) throw new Error('FALHA_AO_SALVAR');

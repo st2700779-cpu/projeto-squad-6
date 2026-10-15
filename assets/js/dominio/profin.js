@@ -23,6 +23,7 @@ export function situacaoDaPrestacao(repasse, hoje) {
 
 /** Pior situação entre as prestações da escola: é ela que decide se o repasse seguinte está seguro. */
 export function adimplenciaDaEscola(repasses, hoje) {
+  if (!repasses.length) return { ...NIVEL.neutro, texto: 'Sem repasse cadastrado', atrasadas: [], aVencer: [] };
   const itens = repasses.map((r) => ({ r, s: situacaoDaPrestacao(r, hoje) }));
   const pior = itens.reduce((a, b) => (GRAVIDADE[b.s.chave] > GRAVIDADE[a.s.chave] ? b : a), itens[0]);
   const atrasadas = itens.filter((i) => i.s.chave === 'vermelho');
@@ -42,7 +43,7 @@ export const reais = (v) => Number(v).toLocaleString('pt-BR', { style: 'currency
  * Não usa inteligência artificial: quem revisa e conclui é a pessoa.
  * @param {{escolas: Array<{id: string, nome: string, municipio: string}>, repasses: Array<object>, notas?: Record<string, Array<{quando: string, por: string, texto: string}>>, hoje: string, categorias?: string[]}} d
  */
-export function rascunhoDoRelatorio({ escolas, repasses, notas = {}, hoje, categorias }) {
+export function rascunhoDoRelatorio({ escolas, repasses, notas = {}, hoje, categorias, declaracoes = [] }) {
   const br = (iso) => iso.split('-').reverse().join('/');
   const filtro = (r) => !categorias || categorias.includes(r.categoria);
   const doEscopo = repasses.filter(filtro);
@@ -72,6 +73,14 @@ export function rascunhoDoRelatorio({ escolas, repasses, notas = {}, hoje, categ
   if (!atrasadas.length && !aVencer.length) L.push('Nenhuma prestação atrasada ou perto do vencimento.');
   atrasadas.forEach(({ r, s }) => L.push(`- ATRASADA: ${nomeDe(r.escolaId)}, ${r.categoria} (${s.texto.toLowerCase()}, prazo ${br(r.prestacao.prazo)}). O próximo repasse pode ser suspenso.`));
   aVencer.forEach(({ r, s }) => L.push(`- A vencer: ${nomeDe(r.escolaId)}, ${r.categoria} (${s.texto.toLowerCase()}, prazo ${br(r.prestacao.prazo)}).`));
-  L.push('', '4. CONCLUSÕES E ENCAMINHAMENTOS', '[Escreva aqui as conclusões e os encaminhamentos.]');
+  const decs = declaracoes.filter((d) => d.situacao !== 'Rascunho' && ids.includes(d.escolaId) && (!categorias || categorias.includes(d.categoria)));
+  if (decs.length) {
+    L.push('', '4. DECLARAÇÕES DE GASTOS E RETORNO DO PROFIN');
+    decs.forEach((d) => {
+      L.push(`- ${nomeDe(d.escolaId)}, ${d.categoria} (${d.competencia.split('-').reverse().join('/')}): declarado ${reais(d.total)}; situação: ${d.situacao}.`);
+      if (d.retorno) L.push(`    Retorno (${d.retorno.por}, ${br(d.retorno.quando.slice(0, 10))}): ${d.retorno.parecer}${d.retorno.glosas?.length ? ` Itens glosados: ${d.retorno.glosas.length}.` : ''}`);
+    });
+  }
+  L.push('', `${decs.length ? '5' : '4'}. CONCLUSÕES E ENCAMINHAMENTOS`, '[Escreva aqui as conclusões e os encaminhamentos.]');
   return L.join('\n');
 }

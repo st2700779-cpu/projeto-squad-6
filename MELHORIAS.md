@@ -85,7 +85,7 @@ Fluxo verificado em navegador: professor lança nota e chamada → boletim da fa
 | Portal completo, com API e dados salvos em disco (Windows) | Dois cliques em `iniciar.bat` |
 | Portal em qualquer sistema | `python3 -m http.server 5500` na pasta e abrir `http://localhost:5500` (dados no navegador) |
 | Portal no VS Code | Extensão Live Server, botão direito em `index.html` |
-| Protótipo sem servidor | Duplo clique em `sistema-academico-seduc-prototipo.html` |
+| Protótipo sem servidor | Duplo clique em `sistema-academico-seed-prototipo.html` |
 | Restaurar os dados de demonstração | Botão "Reiniciar demonstração" na tela inicial (portal e protótipo) |
 | Atualizar o protótipo depois de mudar `data/` ou `notas.js` | `node tools/gerar-prototipo.mjs` |
 

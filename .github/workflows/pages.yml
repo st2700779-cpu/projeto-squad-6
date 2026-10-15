@@ -24,7 +24,7 @@ jobs:
       - name: Montar a pasta publicada
         run: |
           mkdir public
-          cp -r index.html login.html verificar.html 404.html config.js manifest.json sw.js sistema-academico-seduc-prototipo.html aluno familia professor escola rede assets data public/
+          cp -r index.html login.html verificar.html 404.html config.js manifest.json sw.js sistema-academico-seed-prototipo.html aluno familia professor escola rede assets data public/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

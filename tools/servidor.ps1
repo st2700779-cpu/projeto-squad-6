@@ -18,7 +18,7 @@ $pastaSalvos = Join-Path $raiz 'dados-salvos'
 $prefixo = "http://localhost:$Porta/"
 $destino = $prefixo + $Pagina.TrimStart('/')
 $utf8 = New-Object System.Text.UTF8Encoding $false
-$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias', 'diario-meta', 'solicitacoes', 'comunicados', 'materiais', 'horarios', 'atencao-turmas', 'profin-notas')
+$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias', 'diario-meta', 'solicitacoes', 'comunicados', 'materiais', 'horarios', 'atencao-turmas', 'profin-notas', 'escolas-novas', 'atos-novos', 'professores-novos', 'equipe-profin', 'declaracoes-gastos', 'carga-horaria')
 $LIMITE_CORPO = 1MB
 
 # Abre o portal. Com -Celular, usa uma janela de app do Edge/Chrome com perfil proprio,

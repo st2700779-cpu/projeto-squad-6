@@ -1,4 +1,4 @@
-// Atualiza o protótipo em arquivo único (sistema-academico-seduc-prototipo.html) com os mesmos dados e
+// Atualiza o protótipo em arquivo único (sistema-academico-seed-prototipo.html) com os mesmos dados e
 // as mesmas regras do portal, para as duas versões nunca divergirem.
 //   - dados: copia o recorte da escola e1 de data/*.json para o bloco "dados-demo";
 //   - regras: copia assets/js/dominio/notas.js (sem "export") para o bloco de regras.
@@ -30,7 +30,7 @@ const dados = {
 };
 const regras = ler('assets/js/dominio/notas.js').replace(/^export /gm, '');
 
-const arquivo = fileURLToPath(new URL('sistema-academico-seduc-prototipo.html', raiz));
+const arquivo = fileURLToPath(new URL('sistema-academico-seed-prototipo.html', raiz));
 let html = readFileSync(arquivo, 'utf8');
 const trocar = (nome, gerar) => {
   const re = new RegExp(`(<!-- BEGIN:${nome} -->)[\\s\\S]*?(<!-- END:${nome} -->)`);

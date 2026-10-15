@@ -29,7 +29,7 @@ Documento para a equipe. Resume o redesenho visual, as decisões de design e tra
 | Ícones | 30 ícones de traço | Mesmo estilo, agora também nos selos, avisos e indicadores |
 
 ### Fase 3 · Layout e navegação (`assets/css/layout.css`, `assets/js/app.js`)
-- **Cabeçalho institucional:** monograma "SE", "Portal Acadêmico · SEDUC/SE · Governo de Sergipe", **usuário simulado** da visão, controles de letra e exibição, faixa superior na cor da visão.
+- **Cabeçalho institucional:** monograma "SE", "Portal Acadêmico · SEED/SE · Governo de Sergipe", **usuário simulado** da visão, controles de letra e exibição, faixa superior na cor da visão.
 - **Menu lateral em todas as visões** (a Família ganhou o dela): item ativo destacado; **recolhe para só ícones** no desktop (preferência guardada); **vira gaveta no celular**, com foco preso, Esc e fundo que fecha.
 - **Breadcrumb e título de página** padronizados; largura de conteúdo consistente (formulários e documentos em coluna mais estreita).
 - **Painéis com indicadores no topo:** Família (presença, matérias que precisam de atenção, próxima data, pedidos), Professor (turmas, estudantes, carga horária, frequência abaixo de 75 %), Escola e Rede (números com ícone e plural correto).

@@ -20,8 +20,8 @@ Contas de demonstração (também aparecem na tela de login):
 | Coordenação pedagógica | `coord.osvaldo` | `coord2026` |
 | Direção | `dir.osvaldo` | `diretor2026` |
 | Secretaria | `secretaria.osvaldo` | `secretaria2026` |
-| Rede (SEDUC e DRE) | `seduc.tecnico` | `rede2026` |
-| PROFIN | `profin.seduc` | `profin2026` |
+| Rede (SEED e DRE) | `seed.tecnico` | `rede2026` |
+| PROFIN | `profin.seed` | `profin2026` |
 
 ## Aluno
 
@@ -129,6 +129,23 @@ Contas de demonstração (também aparecem na tela de login):
 | Painel por escola e por categoria (Custeio, Capital, Merenda, Emenda Parlamentar) | **Acrescentado** | `profin/index.html` |
 | Anotação de contexto, não só de documento | **Acrescentado**: por escola ou por categoria, com autor e data | `profin/index.html` |
 | Rascunho de relatório consolidado | **Acrescentado**: texto por modelo fixo (sem IA), editável, com copiar, baixar e imprimir | `profin/relatorio.html` |
+
+## Nota da SEED (cadastros e prestação de contas)
+
+A SEED enviou uma lista curta de pendências. A sigla correta é **SEED**, não SEDUC: foi trocada em todas as telas, nos dados, no assistente e nos documentos. Cada item abaixo foi pensado do ponto de vista de quem usa a tela (equipe da rede, secretaria, direção e PROFIN).
+
+| Item da nota | O que foi feito | Onde |
+| --- | --- | --- |
+| Criar o GitHub | Já existia | repositório |
+| Dividir telas (principalmente a parte financeira) | O financeiro saiu da "Visão da escola" e virou a tela **Prestação de contas** da direção. O PROFIN ficou com 4 telas: Painel por escola, Análise das declarações, Relatório consolidado e Equipe. A rede ganhou Escolas e Equipe do PROFIN | `diretor/prestacao.html`, `profin/analise.html`, `profin/equipe.html`, `rede/escolas.html`, `rede/equipe-profin.html` |
+| Cadastro de escola: ato autorizativo (inclusive divisão de escola), município, endereço, botão de inserir escola, data de vencimento, nível que libera as séries | Botão **Cadastrar escola**: nome, INEP, município, DRE, endereço com CEP, telefone e e-mail; tipo do ato (criação, **divisão de escola** com escola de origem, autorização, reconhecimento, renovação), número, publicação e **vencimento**; **nível de ensino** (Anos Iniciais, Anos Finais, Médio) com a prévia das séries liberadas. Gera um ato por nível e abre as vagas em zero para a rede abrir depois (botão Vagas) | `rede/escolas.html` |
+| Carga horária de cada nível (série) | Tabela editável por série: aulas por semana × minutos da aula × 40 semanas = horas por ano, com o mínimo de 800 h (Fundamental) e 1.000 h (Médio) e aviso se ficar abaixo | `rede/matrizes.html` |
+| Botão para cadastrar professor | Botão **Cadastrar professor** na secretaria (a escola dela) e na rede (qualquer escola): nome, CPF validado, matrícula funcional, vínculo, formação, habilitações, carga semanal. Entra na lista e no mapa de professores habilitados | `escola/professores.html`, `rede/professores.html` |
+| Cadastro de coordenação do PROFIN | Equipe do PROFIN (coordenação, analistas e apoio): cadastro, e-mail institucional, escolas ou DREs que atende, desativar e reativar. A equipe nunca fica sem coordenação | `profin/equipe.html`, `rede/equipe-profin.html` |
+| Declaração dos gastos | A direção declara os gastos de cada categoria de recurso: mês, vários gastos com data, fornecedor, nota fiscal, natureza e comprovante (PDF, JPG ou PNG até 5 MB). Recusa valor acima do saldo, data futura e nota repetida. Salva rascunho e envia ao PROFIN | `diretor/prestacao.html` |
+| Retorno do PROFIN da análise dos gastos | Fila por antiguidade, conferência item a item (glosa com motivo) e retorno assinado por alguém da equipe: **aprovada**, **aprovada com ressalvas** ou **devolvida para correção**, com parecer. A escola vê o retorno, corrige e reenvia. O valor aprovado entra no executado e a prestação devolvida volta a contar como pendente | `profin/analise.html`, `diretor/prestacao.html` |
+
+Pontos que a nota não dizia e foram acrescentados por serem o básico de cada área: abrir e editar as **vagas** por série (antes ninguém podia), histórico de cada declaração, cadastro de escola recém-criada sem quebrar os painéis (sem repasse até o PROFIN lançar) e a seção de declarações no relatório consolidado do PROFIN.
 
 ## Regras visuais transversais
 

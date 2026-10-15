@@ -1,8 +1,8 @@
 # Portal Acadêmico — Squad 6
 
-Protótipo front-end do Sistema Acadêmico para a Rede Estadual de Ensino de Sergipe (SEDUC/SE), desenvolvido na Residência RiseUp. Tem cinco acessos (aluno, professor, secretaria, rede e matrícula pela família, sem login), carteirinha e declarações verificáveis por QR Code, mapa de vagas, matrícula inclusiva (balcão, outro aparelho, guia por voz), diário que funciona sem internet e um **Assistente de Matrícula e Dúvidas** com IA opcional, por texto e voz.
+Protótipo front-end do Sistema Acadêmico para a Rede Estadual de Ensino de Sergipe (SEED/SE), desenvolvido na Residência RiseUp. Tem cinco acessos (aluno, professor, secretaria, rede e matrícula pela família, sem login), carteirinha e declarações verificáveis por QR Code, mapa de vagas, matrícula inclusiva (balcão, outro aparelho, guia por voz), diário que funciona sem internet e um **Assistente de Matrícula e Dúvidas** com IA opcional, por texto e voz.
 
-Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC.
+Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEED.
 
 ## O que tem aqui
 
@@ -15,13 +15,13 @@ Todos os dados são **simulados**. O projeto não se conecta a sistemas da SEDUC
 | `assets/js/dominio/` | Regras de negócio por domínio: `matricula`, `notas`, `turmas`, `equivalencias` (`regras.js` reexporta todas), mais `painel` (semáforo, margem de faltas, nota necessária, agenda, prioridades), `horario`, `profin`, `codigos`, `verificacao`, `impacto-atos`, `habilitacao`, `boletim-semanal`, `trajetoria` e `sincronizacao` |
 | `assets/js/matricula/`, `assets/js/mapa/`, `assets/js/componentes/` | Formulário de matrícula único (online e balcão) e rascunho por link; mapa (Leaflet, Haversine); linha do tempo |
 | `assets/js/auth.js`, `tour.js`, `qr.js`, `idb.js`, `offline.js` | Login de protótipo, guia de primeiro acesso, QR Code, IndexedDB e estado de conexão |
-| `sistema-academico-seduc-prototipo.html` | Protótipo em arquivo único, abre com duplo clique. Usa os mesmos dados e regras do portal (ver `tools/gerar-prototipo.mjs`) |
+| `sistema-academico-seed-prototipo.html` | Protótipo em arquivo único, abre com duplo clique. Usa os mesmos dados e regras do portal (ver `tools/gerar-prototipo.mjs`) |
 | `assets/js/assistente/` | Assistente: interface, chamada à IA, erros, perguntas frequentes, voz |
 | `data/` | Dados simulados em JSON e a base de conhecimento do assistente |
 | `prompts/` | Prompt de sistema versionado, registro de alterações e bateria de testes |
 | `worker/` | Proxy do assistente (Cloudflare Workers), que guarda a chave da IA |
 | `tools/` | Servidor local, bateria de perguntas do assistente, `gerar-prototipo.mjs` (sincroniza o protótipo em arquivo único), `verificar-contraste.mjs` (confere o contraste dos tokens, inclusive os do `painel.css`) e `testar-painel.mjs` (testes das regras dos painéis) |
-| `wireframes/` | Wireframes e fluxos de todas as telas (81 quadros, inclusive mobile, login centralizado, Configurações e fluxos de configurações, tema e sair no celular), em HTML comum: abra `wireframes/index.html` com duplo clique, sem servidor e sem internet |
+| `wireframes/` | Wireframes e fluxos de todas as telas (91 quadros, inclusive mobile, login centralizado, Configurações, cadastros da rede, prestação de contas e fluxos), em HTML comum: abra `wireframes/index.html` com duplo clique, sem servidor e sem internet |
 | `CHECKLIST-PROTOTIPACAO.md` | Conferência item a item do checklist de prototipação por perfil: o que já existia, o que foi acrescentado e o que ficou para a fase 2 |
 | `AUDITORIA.md`, `MELHORIAS.md`, `SUGESTOES.md` | Auditoria inicial, resumo das melhorias e ideias que exigiriam funcionalidade nova |
 | `DIAGNOSTICO-UI.md`, `MELHORIAS-UI.md` | Diagnóstico visual e redesenho de interface, com o **guia do design system** (tokens e componentes) |
@@ -74,7 +74,7 @@ Sem a API (Live Server, `python -m http.server`, GitLab Pages), o portal continu
 
 Alternativa sem VS Code: `python3 -m http.server 5500` na pasta do projeto.
 
-**Abrir com duplo clique:** só o protótipo `sistema-academico-seduc-prototipo.html` funciona assim. Depois de mudar `data/` ou `assets/js/dominio/notas.js`, rode `node tools/gerar-prototipo.mjs` para atualizá-lo.
+**Abrir com duplo clique:** só o protótipo `sistema-academico-seed-prototipo.html` funciona assim. Depois de mudar `data/` ou `assets/js/dominio/notas.js`, rode `node tools/gerar-prototipo.mjs` para atualizá-lo.
 
 ## Acesso e contas de demonstração
 
@@ -88,8 +88,8 @@ O login é **só de protótipo**: as contas ficam em `data/usuarios.json` (senha
 | Coordenação pedagógica | `coord.osvaldo` | `coord2026` |
 | Direção | `dir.osvaldo` | `diretor2026` |
 | Secretaria | `secretaria.osvaldo` (C. E. Prof. Osvaldo Tavares Rezende) | `secretaria2026` |
-| Rede (SEDUC e DRE) | `seduc.tecnico` | `rede2026` |
-| PROFIN | `profin.seduc` | `profin2026` |
+| Rede (SEED e DRE) | `seed.tecnico` | `rede2026` |
+| PROFIN | `profin.seed` | `profin2026` |
 | Matrícula (família) | não pede login | |
 
 A tela de login tem um bloco "Acesso de demonstração" com essas contas e um botão que preenche os campos.
@@ -131,11 +131,11 @@ A tela de login tem um bloco "Acesso de demonstração" com essas contas e um bo
 4. **Vida escolar e boletim falado (1 min).** Veja a linha do tempo (a matriz mudou em 2024) e ouça o boletim falado da semana.
 5. **Matrícula inclusiva (2 min).** Saia e entre em Matrícula, sem login. Comece o pedido, use Continuar em outro aparelho e abra o link em outra aba: volta ao mesmo passo. Depois abra Ouvir instruções e Escolas com vaga (escolha um bairro).
 6. **Secretaria (1 min).** Entre como Secretaria (`secretaria.osvaldo` / `secretaria2026`), abra Atendimento presencial, faça um pedido e veja a origem "Presencial" na lista; abra a ficha de um estudante.
-7. **Rede (1 min).** Entre como Rede (`seduc.tecnico` / `rede2026`): Atos autorizativos (impacto em turmas e estudantes), Mapa de vagas e Professores habilitados.
+7. **Rede (1 min).** Entre como Rede (`seed.tecnico` / `rede2026`): Atos autorizativos (impacto em turmas e estudantes), Mapa de vagas e Professores habilitados. Depois, **Escolas** (cadastre uma escola com o ato e os níveis liberados e abra as vagas), **Matrizes e carga horária** e **Equipe do PROFIN**.
 8. **Visual por idade (2 min).** Entre com `202610955` (3º ano), `202610842` (7º ano) e `202610317` (1ª série) e compare o início de cada um. No de 1ª série, abra Frequência e use **Simular falta hoje**; em Provas e rotina, abra o modo **Dia de Prova**.
 9. **Responsável (1 min).** Entre como Responsável (`RESP-20417` / `resp2026`), troque de filho no alto e ligue o **Modo simplificado**.
 10. **Direção e coordenação (2 min).** Entre como Coordenação (`coord.osvaldo` / `coord2026`), marque a atenção de uma turma e abra Comparar turmas; depois, como Direção (`dir.osvaldo` / `diretor2026`), abra a Tela de reunião.
-11. **PROFIN (1 min).** Entre como PROFIN (`profin.seduc` / `profin2026`), anote o contexto de uma escola e gere o rascunho do relatório.
+11. **PROFIN (1 min).** Entre como PROFIN (`profin.seed` / `profin2026`), anote o contexto de uma escola e gere o rascunho do relatório. Abra a **Análise das declarações**, confira os gastos de uma escola e devolva o retorno; a direção (`dir.osvaldo` / `diretor2026`) vê o retorno em **Prestação de contas**, onde também declara os gastos.
 12. **Professor sem internet (1 min).** Entre como Professor (`PF-30412` / `prof2026`), abra o Diário, clique em Ficar offline, lance uma nota e registre a chamada, depois Voltar online: os registros pendentes são sincronizados.
 
 Antes de repetir a demonstração, use **Restaurar dados de demonstração** na entrada (apaga também a fila offline).
@@ -220,6 +220,7 @@ Sem instalar nada (Node 22 ou mais novo):
 
 ```bash
 node tools/testar-painel.mjs        # semáforo, margem de faltas, calculadora, agenda, horários, prioridades e PROFIN
+node tools/testar-cadastros.mjs     # cadastro de escola e ato, professor, equipe do PROFIN, carga horária, declaração dos gastos e retorno
 node tools/verificar-contraste.mjs  # contraste dos tokens nos quatro temas, inclusive as cores do painel.css
 ```
 

@@ -66,7 +66,7 @@ function desenhar() {
           <button type="button" class="botao botao-secundario" data-acao="padrao">Restaurar configurações padrão</button>
           <button type="button" class="botao botao-secundario" data-acao="dados">Restaurar dados de demonstração</button>
         </div>
-        <p class="cfg-dica">Portal Acadêmico v1.0 · SEDUC/SE · escolas, pessoas e dados fictícios.</p>
+        <p class="cfg-dica">Portal Acadêmico v1.0 · SEED/SE · escolas, pessoas e dados fictícios.</p>
       </section>
     </div>`;
 }

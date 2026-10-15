@@ -1,11 +1,11 @@
 @echo off
-rem Abre a versao mobile do prototipo (sistema-academico-seduc-prototipo.html)
+rem Abre a versao mobile do prototipo (sistema-academico-seed-prototipo.html)
 rem numa janela do tamanho de um celular, sem abas nem barra de endereco.
 rem Basta dar dois cliques. Para fechar, feche a janela.
 title Portal Academico - versao mobile
 cd /d "%~dp0"
 
-set "PAGINA=%~dp0sistema-academico-seduc-prototipo.html"
+set "PAGINA=%~dp0sistema-academico-seed-prototipo.html"
 set "URL=file:///%PAGINA:\=/%"
 rem Perfil separado do navegador: garante que a janela abra no tamanho de celular.
 set "PERFIL=%LOCALAPPDATA%\PortalAcademicoMobile"

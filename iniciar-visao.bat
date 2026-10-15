@@ -10,7 +10,7 @@ echo  ---------------------------------------------
 echo   1  Familia e estudante
 echo   2  Professor
 echo   3  Escola: secretaria, coordenacao e direcao
-echo   4  Rede: SEDUC e DRE
+echo   4  Rede: SEED e DRE
 echo  ---------------------------------------------
 echo.
 choice /c 1234 /n /m " Digite 1, 2, 3 ou 4: "

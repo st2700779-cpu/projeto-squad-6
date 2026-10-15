@@ -1,5 +1,5 @@
 // Atos autorizativos da escola, vistos pela direção: validade, situação e quantas turmas e estudantes dependem de cada ato.
-// A renovação é pedida pela rede (SEDUC/DRE); aqui a direção acompanha.
+// A renovação é pedida pela rede (SEED/DRE); aqui a direção acompanha.
 import { iniciar, falhaDados } from '../app.js';
 import { sessao } from '../auth.js';
 import { esc, etiqueta, dataBR, dataHoraBR, vazio, plural } from '../ui.js';

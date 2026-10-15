@@ -11,10 +11,10 @@ const acessos = [
   ['login.html?perfil=responsavel', 'Responsável', 'Boletim e frequência dos filhos, o que precisa de atenção e a situação da matrícula'],
   ['login.html?perfil=professor', 'Professor', 'Turmas, horário e diário de classe: chamada, notas e mapa de calor'],
   ['login.html?perfil=coordenador', 'Coordenação pedagógica', 'Turmas lado a lado, horários e reunião pedagógica'],
-  ['login.html?perfil=diretor', 'Direção', 'Visão da escola, mapa de calor, prestação de contas e tela de reunião'],
+  ['login.html?perfil=diretor', 'Direção', 'Visão da escola, mapa de calor, declaração dos gastos (prestação de contas) e tela de reunião'],
   ['login.html?perfil=escola', 'Secretaria', 'Matrículas, solicitações, enturmação, turmas e alocação de professores'],
-  ['login.html?perfil=rede', 'Rede (SEDUC e DRE)', 'Atos autorizativos, vagas por escola e matrizes curriculares'],
-  ['login.html?perfil=profin', 'PROFIN (financeiro)', 'Prestação de contas por escola e categoria de recurso'],
+  ['login.html?perfil=rede', 'Rede (SEED e DRE)', 'Cadastro de escolas e atos, vagas, professores, carga horária por série e equipe do PROFIN'],
+  ['login.html?perfil=profin', 'PROFIN (financeiro)', 'Painel por escola, análise das declarações de gastos, retorno às escolas e equipe do PROFIN'],
   ['familia/matricula.html', 'Matrícula', 'Pedido de matrícula pela família, sem login']
 ];
 const s = sessao();

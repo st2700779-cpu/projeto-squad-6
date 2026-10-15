@@ -27,7 +27,7 @@ Método: leitura de todo o CSS (5 arquivos), das 20 páginas JS, dos 21 arquivos
 | V15 | **B** | `componentes.css` (`.aviso-rapido` com faixa lateral colorida + ícone), `.numero` com faixa lateral | Faixa colorida na lateral esquerda de aviso e de indicador (tropo de painel) | Aviso: borda inteira neutra + ícone de estado; indicador: sem faixa |
 | V16 | **M** | `escola-matriculas.js`, `escola-enturmacao.js`, `escola-turmas.js`, `escola-alocacao.js` | **Cartões onde o dado é tabular:** pedido de matrícula, estudante aguardando turma, turma, componente × professor; cada um vira cartão com 3 a 5 atributos | Trocar por **tabelas** (colunas: protocolo, estudante, série, situação, ação), com contagem de registros; cartão só para o que é único (formulário de recusa) |
 | V17 | **B** | `professor-diario.js` · chamada | Grade de azulejos com o nome de cada estudante para marcar falta | Tabela com uma linha por estudante e caixa "Faltou", pensada para 30 a 40 nomes; manter o registro em um clique |
-| V18 | **B** | `sistema-academico-seduc-prototipo.html` | Mesmos sinais V1, V4, V8, V12 no protótipo em arquivo único | Acompanhar as correções do portal (herda os estilos; ajustar marcação onde tiver) |
+| V18 | **B** | `sistema-academico-seed-prototipo.html` | Mesmos sinais V1, V4, V8, V12 no protótipo em arquivo único | Acompanhar as correções do portal (herda os estilos; ajustar marcação onde tiver) |
 
 Não foram encontrados: gradientes de cor, texto com gradiente, blobs, fundos animados, glassmorphism, `backdrop-filter`, emojis (o único gradiente é o brilho do esqueleto de carregamento, que é funcional).
 
@@ -45,7 +45,7 @@ Não foram encontrados: gradientes de cor, texto com gradiente, blobs, fundos an
 | T8 | **M** | `familia-notas.js` | Parágrafo longo de explicação sob a lista de matérias ("Toque em uma matéria… A situação é parcial…") | Frase curta de legenda: "Situação parcial: 2 de 4 bimestres lançados. Aprovação: média 6,0 e frequência de 75%." |
 | T9 | **B** | `rede-atos.js` (alerta) | "3 atos vencidos ou a 120 dias do vencimento sem pedido de renovação. Inicie a renovação para a escola não ficar impedida…" (comprido) | "3 atos vencidos ou a vencer em até 120 dias, sem pedido de renovação." |
 | T10 | **B** | `ui.js`, `escola-*.js` (toasts) | "Diário salvo.", "Chamada registrada." (ok), mas também "Estudante voltou para a lista de espera.", "Componente sem professor." (vago) | Frases com objeto e efeito: "Diário salvo: 8 estudantes, 1ª série A." |
-| T11 | **B** | `sistema-academico-seduc-prototipo.html` | "Disponível na versão completa" em relatórios; "Painel da escola" | "Relatório ainda não implementado no protótipo." |
+| T11 | **B** | `sistema-academico-seed-prototipo.html` | "Disponível na versão completa" em relatórios; "Painel da escola" | "Relatório ainda não implementado no protótipo." |
 
 Não foram encontrados: "Bem-vindo ao futuro…", "Transforme…", "Potencialize…", "Tudo em um só lugar", "incrível/poderoso/intuitivo", "Algo deu errado", "Clique aqui", "Saiba mais". As mensagens do assistente e a base de conhecimento (escritas pela equipe) são funcionais e diretas; a única alteração possível é de nomes, ver D1.
 
@@ -55,7 +55,7 @@ Não foram encontrados: "Bem-vindo ao futuro…", "Transforme…", "Potencialize
 | --- | --- | --- | --- | --- |
 | D1 | **A** | `data/professor.json` (diário), `estudantes.json`, `matriculas.json` | **Nomes de lista de exemplo:** o diário tem nomes em ordem alfabética perfeita pela inicial (Ana, Bruno, Carla, Davi, Emanuelly, Felipe, Gabriela, Heitor, Igor, Júlia, Kauã); sobrenomes repetidos e de "top 10" (Souza, Lima, Santos, Oliveira, Rocha, Andrade, Nunes); "Santos" três vezes na mesma família | Nomes brasileiros variados, inclusive compostos e com sobrenomes menos comuns (ex.: Ítalo Vasconcelos Dantas, Maiara Nascimento de Jesus, Wesley Cardoso Menezes, Thaís Aragão Fontes), em ordem alfabética real de diário, sem sequência de iniciais |
 | D2 | **A** | `data/escolas.json` e usos (`app.js`, `familia-documentos.js`, `matricula.js`, protótipo, `professores.json`) | Escolas com nomes de natureza inventados (Rio Sergipe, Maré Alta, Coqueiral, Cajueiro dos Ventos, Serra Azul); escolas estaduais reais costumam levar nome de pessoa | "Colégio Estadual Professor …" e "Escola Estadual …" com **nomes de pessoas fictícias** (sem usar nomes de escolas reais), municípios reais do estado |
-| D3 | **M** | `escolas.json` (municípios e DRE) | Só 3 municípios (Aracaju, Nossa Senhora do Socorro, Itabaiana); nomenclatura das diretorias ("DEA — Aracaju", "DRE — Agreste Central") não conferida com a SEDUC | Incluir mais municípios reais de Sergipe (ex.: Lagarto, São Cristóvão, Estância, Propriá, Nossa Senhora da Glória) e marcar a nomenclatura de DRE para **confirmação com a SEDUC** |
+| D3 | **M** | `escolas.json` (municípios e DRE) | Só 3 municípios (Aracaju, Nossa Senhora do Socorro, Itabaiana); nomenclatura das diretorias ("DEA — Aracaju", "DRE — Agreste Central") não conferida com a SEED | Incluir mais municípios reais de Sergipe (ex.: Lagarto, São Cristóvão, Estância, Propriá, Nossa Senhora da Glória) e marcar a nomenclatura de DRE para **confirmação com a SEED** |
 | D4 | **A** | `professor.json`, `estudantes.json`, `letivo.json` | **Números redondos e "arrumados":** 80 aulas dadas para todos; notas em múltiplos de 0,5 (8,5; 8,0; 7,5; 7,0; 6,0); faltas 4, 22, 9, 14, 2, 11, 16, 5 (sem estrutura) | Aulas dadas irregulares (ex.: 83 na turma da manhã, 79 na da tarde); notas com casas variadas (7,3; 6,8; 4,6; 9,1), alguns estudantes com muitas faltas e notas baixas, outros sem nota lançada |
 | D5 | **M** | `turmas.json` | Capacidades e matrículas redondas: 40/35/30 lugares; 38, 24, 35 matriculados; "Sala 04 (40 lugares)" | Capacidades reais de sala (36, 38, 42), ocupações irregulares (37, 29, 41), salas com identificação de bloco |
 | D6 | **M** | `vagas.json`, `atos.json` | Vagas em blocos (8, 5, 4, 2, 6, 3, 0; 15, 11, 7, 9) e validades em 31/12 ou 31/03; resolução com números sequenciais | Vagas irregulares por série e escola; datas de validade variadas (14/08/2028, 06/03/2027…), números de resolução sem padrão |
@@ -99,14 +99,14 @@ Não foram encontrados: gráficos com curvas bonitas demais ou sempre crescentes
 
 1. **Cor por visão:** no redesenho anterior eu propus (e você deixou a meu critério) uma cor de destaque por visão. Agora o pedido é uma cor primária e uma de apoio. Confirmo **remover as cores por visão** e diferenciar só pelo nome no cabeçalho?
 2. **Nomes das escolas:** uso nomes de pessoas **fictícias** ("Colégio Estadual Professor …"), sem reproduzir escolas reais. Existe risco de coincidir com alguma escola real; prefere que eu acrescente "(fictícia)" no nome ou aviso no rodapé (recomendo o aviso no rodapé, "todas as escolas e pessoas são fictícias")?
-3. **Nomenclatura das diretorias** ("DEA", "DRE — …"): mantenho como está e sinalizo para confirmar com a SEDUC, ou troco por um rótulo neutro ("Diretoria Regional 03")?
+3. **Nomenclatura das diretorias** ("DEA", "DRE — …"): mantenho como está e sinalizo para confirmar com a SEED, ou troco por um rótulo neutro ("Diretoria Regional 03")?
 4. **Código de turma (E4):** cria um campo derivado (ano-série-letra-turno). É só exibição e não muda regra de negócio nem dados. Pode?
 5. **Filtros e selos sem pílula:** troco para abas e texto com ponto de cor. Isso muda a aparência de todas as telas de gestão. Confirma?
 6. **Tela inicial:** remover o hero e a grade de perfis e ficar com uma lista simples de entrada, alinhada à esquerda. Confirma?
 
 ## 8. Situação depois das correções (etapa 7)
 
-Decisões da seção 7 aplicadas com o padrão recomendado: cores por visão removidas; aviso de dados fictícios no rodapé; nomenclatura de DRE mantida e **a confirmar com a SEDUC**; código de turma só de exibição; filtros como abas; início como lista.
+Decisões da seção 7 aplicadas com o padrão recomendado: cores por visão removidas; aviso de dados fictícios no rodapé; nomenclatura de DRE mantida e **a confirmar com a SEED**; código de turma só de exibição; filtros como abas; início como lista.
 
 Verificação: 20 páginas do portal a 360, 768 e 1440 px sem rolagem horizontal e sem erro no console; fluxos de matrícula, diário, rematrícula, declaração e equivalência; menu, busca, diálogos e teclado; protótipo em arquivo único a 390 e 360 px; script de contraste (todas as combinações passam). Falta olhar as telas com uma pessoa: os testes automáticos não julgam se "parece de gente".
 
@@ -134,5 +134,5 @@ Nomes de pessoas e escolas trocados (5 escolas em 4 municípios, uma turma com 3
 
 - **E6 (última atualização por tela):** não implementado; o rodapé mostra só a data de referência dos dados.
 - **Cartões restantes:** `escola-equivalencias`, `familia-matricula` e `escola-turmas` ainda têm cartões para blocos únicos (resumo do estudante, plano de adaptação, formulário); não são dados tabulares.
-- **Nomenclatura de DRE:** os nomes ("DRE — Grande Aracaju", "Centro-Sul", "Agreste Central") são inventados e precisam ser conferidos com a SEDUC.
+- **Nomenclatura de DRE:** os nomes ("DRE — Grande Aracaju", "Centro-Sul", "Agreste Central") são inventados e precisam ser conferidos com a SEED.
 - **Teste de percepção:** só uma pessoa da equipe pode responder se ainda parece gerado por IA; recomendo mostrar as telas de diário, matrículas e atos sem o nome do sistema.

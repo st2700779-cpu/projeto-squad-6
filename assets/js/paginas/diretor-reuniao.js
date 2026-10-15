@@ -1,5 +1,6 @@
 // Tela de reunião da direção: resumo grande e limpo da escola, para projetar (modo projetor) ou imprimir.
 // Tudo vem dos mesmos dados da visão da escola; nada é digitado aqui.
+import { profinComDeclaracoes } from '../prestacao-dados.js';
 import { iniciar, falhaDados } from '../app.js';
 import { sessao } from '../auth.js';
 import { esc, dataBR, plural, numeroBR, etiqueta } from '../ui.js';
@@ -13,7 +14,7 @@ const main = await iniciar({ perfil: 'diretor', pagina: 'diretor/reuniao.html', 
 async function mostrar() {
   try {
     const escolaId = sessao().escolaId;
-    const [escolas, professores, atos, profin, painel] = await Promise.all([carregar('escolas'), carregar('professores'), carregar('atos'), carregar('profin'), desempenhoDaEscola(escolaId)]);
+    const [escolas, professores, atos, profin, painel] = await Promise.all([carregar('escolas'), carregar('professores'), carregar('atos'), profinComDeclaracoes(), desempenhoDaEscola(escolaId)]);
     const escola = escolas.find((e) => e.id === escolaId);
     const { lista, totais, hoje } = painel;
     const repasses = profin.repasses.filter((r) => r.escolaId === escolaId);

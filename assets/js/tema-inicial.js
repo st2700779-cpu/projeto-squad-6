@@ -1,5 +1,5 @@
 // Exibição: modo escuro e alto contraste, compartilhados pelo portal e pelo protótipo
-// (sistema-academico-seduc-prototipo.html). Script comum (não módulo) carregado no <head>:
+// (sistema-academico-seed-prototipo.html). Script comum (não módulo) carregado no <head>:
 // aplica as escolhas antes da página aparecer, sem piscar. As escolhas ficam no navegador;
 // sem escolha, o modo escuro segue o sistema (Windows, celular).
 (function () {
