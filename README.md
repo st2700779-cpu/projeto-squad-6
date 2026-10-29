@@ -262,6 +262,7 @@ O **QR Code que abre em outro aparelho, o PWA (service worker) e a verificação
 
 1. No repositório, abra **Settings → Pages → Build and deployment** e escolha **Source: GitHub Actions**.
 2. Faça merge na branch `main` (ou rode **Actions → Publicar no GitHub Pages → Run workflow**). O arquivo `.github/workflows/pages.yml` monta a pasta do site e publica.
+   Se o Pages não estiver ativado, o workflow não falha: ele mostra um aviso e pula a publicação (o site continua no Netlify). Repositório **privado** só publica no Pages em plano pago; em conta gratuita, deixe o repositório público para ativar.
 3. O endereço é `https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/`. Todos os caminhos do código são relativos, então funciona dentro de uma subpasta.
 4. Depois de acrescentar arquivos às telas que abrem sem internet, rode `node tools/gerar-sw.mjs` antes do commit.
 

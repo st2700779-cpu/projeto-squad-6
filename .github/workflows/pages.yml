@@ -1,5 +1,8 @@
 # Publica o portal estático no GitHub Pages a cada push na branch principal (ou pelo botão "Run workflow").
 # Antes do primeiro uso: Settings > Pages > Build and deployment > Source: GitHub Actions.
+# Repositório privado só publica no Pages em plano pago; em conta gratuita o repositório precisa ser público.
+# Se o Pages ainda não estiver ativado, o passo de configuração avisa e a publicação é pulada: o push NÃO fica com "check falhou".
+# Quando o Pages for ativado, a próxima execução já publica, sem mudar este arquivo.
 # O QR Code, o PWA (service worker) e a verificação de documentos só funcionam em https, que o GitHub Pages oferece.
 name: Publicar no GitHub Pages
 on:
@@ -24,10 +27,20 @@ jobs:
       - name: Montar a pasta publicada
         run: |
           mkdir public
-          cp -r index.html login.html verificar.html 404.html config.js manifest.json sw.js sistema-academico-seed-prototipo.html aluno familia professor escola rede assets data public/
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+          cp -r index.html login.html configuracoes.html verificar.html 404.html config.js manifest.json sw.js sistema-academico-seed-prototipo.html \
+            aluno familia responsavel professor coordenador diretor escola rede profin assets data wireframes public/
+      - id: pages
+        uses: actions/configure-pages@v5
+        continue-on-error: true
+      - name: Aviso - GitHub Pages não está ativado
+        if: steps.pages.outcome == 'failure'
+        run: |
+          echo "::warning title=GitHub Pages desativado::Ative em Settings > Pages > Source: GitHub Actions (repositório privado exige plano pago). A publicação foi pulada."
+          echo "O site continua publicado pelo Netlify; este passo só publica no GitHub Pages quando ele estiver ativado." >> "$GITHUB_STEP_SUMMARY"
+      - if: steps.pages.outcome == 'success'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: public
       - id: deploy
+        if: steps.pages.outcome == 'success'
         uses: actions/deploy-pages@v4
