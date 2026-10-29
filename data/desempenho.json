@@ -1,0 +1,94 @@
+{
+  "tt1": {
+    "alunos": 37,
+    "componentes": {
+      "Língua Portuguesa": 5.8,
+      "Física": 6.5,
+      "Química": 6.5,
+      "Biologia": 6.2,
+      "História": 6.3,
+      "Geografia": 6.3,
+      "Inglês": 5.9
+    }
+  },
+  "tt5": {
+    "alunos": 29,
+    "componentes": {
+      "Língua Portuguesa": 6.8,
+      "Física": 6.1,
+      "Química": 5.9,
+      "Biologia": 5.8,
+      "História": 5.4,
+      "Geografia": 6.4,
+      "Inglês": 6.6
+    }
+  },
+  "tt4": {
+    "alunos": 34,
+    "componentes": {
+      "Língua Portuguesa": 5.9,
+      "Física": 6.6,
+      "Química": 6.6,
+      "Biologia": 5.8,
+      "História": 4.9,
+      "Geografia": 5.8,
+      "Inglês": 5.1
+    }
+  },
+  "r1": {
+    "alunos": 31,
+    "componentes": {
+      "Matemática": 6,
+      "Língua Portuguesa": 7.9,
+      "Ciências": 5.9,
+      "História": 6.7,
+      "Geografia": 6.2,
+      "Inglês": 7.8
+    },
+    "frequencia": 91.2,
+    "abaixo75": 1,
+    "emRisco": 4
+  },
+  "r2": {
+    "alunos": 28,
+    "componentes": {
+      "Matemática": 6.8,
+      "Língua Portuguesa": 6.1,
+      "Ciências": 6.1,
+      "História": 7,
+      "Geografia": 6.6,
+      "Inglês": 6.3
+    },
+    "frequencia": 88.4,
+    "abaixo75": 2,
+    "emRisco": 5
+  },
+  "r3": {
+    "alunos": 30,
+    "componentes": {
+      "Matemática": 6.1,
+      "Língua Portuguesa": 5.8,
+      "Ciências": 6.2,
+      "História": 5.7,
+      "Geografia": 6.1,
+      "Inglês": 5.6
+    },
+    "frequencia": 82.7,
+    "abaixo75": 4,
+    "emRisco": 8
+  },
+  "r4": {
+    "alunos": 26,
+    "componentes": {
+      "Matemática": 5.9,
+      "Língua Portuguesa": 6.5,
+      "Ciências": 6.5,
+      "História": 6.4,
+      "Geografia": 4.9,
+      "Inglês": 6.2
+    },
+    "frequencia": 86.1,
+    "abaixo75": 3,
+    "emRisco": 7
+  }
+}

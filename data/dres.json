@@ -1,0 +1,157 @@
+[
+  {
+    "dre": "DEA — Aracaju",
+    "numero": null,
+    "sede": "Aracaju",
+    "territorio": "Grande Aracaju (capital)",
+    "municipios": [
+      "Aracaju"
+    ]
+  },
+  {
+    "dre": "DRE 1 — Estância",
+    "numero": 1,
+    "sede": "Estância",
+    "territorio": "Sul Sergipano",
+    "municipios": [
+      "Arauá",
+      "Cristinápolis",
+      "Estância",
+      "Indiaroba",
+      "Itabaianinha",
+      "Pedrinhas",
+      "Santa Luzia do Itanhy",
+      "Tomar do Geru",
+      "Umbaúba"
+    ]
+  },
+  {
+    "dre": "DRE 2 — Lagarto",
+    "numero": 2,
+    "sede": "Lagarto",
+    "territorio": "Centro-Sul Sergipano",
+    "municipios": [
+      "Boquim",
+      "Lagarto",
+      "Poço Verde",
+      "Riachão do Dantas",
+      "Salgado",
+      "Simão Dias",
+      "Tobias Barreto"
+    ]
+  },
+  {
+    "dre": "DRE 3 — Itabaiana",
+    "numero": 3,
+    "sede": "Itabaiana",
+    "territorio": "Agreste Central Sergipano",
+    "municipios": [
+      "Areia Branca",
+      "Campo do Brito",
+      "Carira",
+      "Frei Paulo",
+      "Itabaiana",
+      "Macambira",
+      "Malhador",
+      "Moita Bonita",
+      "Nossa Senhora Aparecida",
+      "Pedra Mole",
+      "Pinhão",
+      "Ribeirópolis",
+      "São Domingos",
+      "São Miguel do Aleixo"
+    ]
+  },
+  {
+    "dre": "DRE 4 — Japaratuba",
+    "numero": 4,
+    "sede": "Japaratuba",
+    "territorio": "Leste Sergipano",
+    "municipios": [
+      "Capela",
+      "Carmópolis",
+      "Divina Pastora",
+      "General Maynard",
+      "Japaratuba",
+      "Pirambu",
+      "Rosário do Catete",
+      "Santa Rosa de Lima",
+      "Siriri"
+    ]
+  },
+  {
+    "dre": "DRE 5 — Nossa Senhora das Dores",
+    "numero": 5,
+    "sede": "Nossa Senhora das Dores",
+    "territorio": "Médio Sertão Sergipano",
+    "municipios": [
+      "Aquidabã",
+      "Cumbe",
+      "Feira Nova",
+      "Graccho Cardoso",
+      "Itabi",
+      "Nossa Senhora das Dores"
+    ]
+  },
+  {
+    "dre": "DRE 6 — Propriá",
+    "numero": 6,
+    "sede": "Propriá",
+    "territorio": "Baixo São Francisco",
+    "municipios": [
+      "Amparo de São Francisco",
+      "Brejo Grande",
+      "Canhoba",
+      "Cedro de São João",
+      "Ilha das Flores",
+      "Japoatã",
+      "Malhada dos Bois",
+      "Muribeca",
+      "Neópolis",
+      "Pacatuba",
+      "Propriá",
+      "Santana do São Francisco",
+      "São Francisco",
+      "Telha"
+    ]
+  },
+  {
+    "dre": "DRE 7 — Gararu",
+    "numero": 7,
+    "sede": "Gararu",
+    "territorio": "Alto Sertão Sergipano",
+    "municipios": [
+      "Gararu",
+      "Nossa Senhora de Lourdes",
+      "Porto da Folha"
+    ]
+  },
+  {
+    "dre": "DRE 8 — Nossa Senhora do Socorro",
+    "numero": 8,
+    "sede": "Nossa Senhora do Socorro",
+    "territorio": "Grande Aracaju",
+    "municipios": [
+      "Barra dos Coqueiros",
+      "Itaporanga d'Ajuda",
+      "Laranjeiras",
+      "Maruim",
+      "Nossa Senhora do Socorro",
+      "Riachuelo",
+      "Santo Amaro das Brotas",
+      "São Cristóvão"
+    ]
+  },
+  {
+    "dre": "DRE 9 — Nossa Senhora da Glória",
+    "numero": 9,
+    "sede": "Nossa Senhora da Glória",
+    "territorio": "Alto Sertão Sergipano",
+    "municipios": [
+      "Canindé de São Francisco",
+      "Monte Alegre de Sergipe",
+      "Nossa Senhora da Glória",
+      "Poço Redondo"
+    ]
+  }
+]

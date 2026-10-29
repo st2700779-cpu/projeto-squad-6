@@ -1,0 +1,51 @@
+{
+  "fonte": "Sistema de RH do estado, base SIMULADA para o protótipo: pessoas e CPFs fictícios",
+  "servidores": [
+    {
+      "cpf": "31415926590",
+      "nome": "Marta Regina Oliveira Santos",
+      "matriculaFuncional": "PF-35118",
+      "vinculo": "Efetivo",
+      "formacao": "Licenciatura em Química",
+      "habilitacao": [
+        "Química",
+        "Ciências"
+      ],
+      "cargaHorariaSemanal": 40
+    },
+    {
+      "cpf": "27182818205",
+      "nome": "José Carlos Menezes Filho",
+      "matriculaFuncional": "PF-35274",
+      "vinculo": "Efetivo",
+      "formacao": "Licenciatura em Geografia",
+      "habilitacao": [
+        "Geografia"
+      ],
+      "cargaHorariaSemanal": 20
+    },
+    {
+      "cpf": "16180339805",
+      "nome": "Ana Beatriz Costa Lima",
+      "matriculaFuncional": "PF-35390",
+      "vinculo": "Contratado (REDA)",
+      "formacao": "Licenciatura em Letras — Inglês",
+      "habilitacao": [
+        "Inglês",
+        "Língua Portuguesa"
+      ],
+      "cargaHorariaSemanal": 30
+    },
+    {
+      "cpf": "14142135651",
+      "nome": "Paulo Henrique Souza Nunes",
+      "matriculaFuncional": "PF-35463",
+      "vinculo": "Efetivo",
+      "formacao": "Licenciatura em Educação Física",
+      "habilitacao": [
+        "Educação Física"
+      ],
+      "cargaHorariaSemanal": 40
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mobile · professor, diário em cartões</title>
+<style>body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#202124;font-size:14px;line-height:1.35}
+*{box-sizing:border-box}
+h1,h2,h3,p,ul,ol,dl,dd{margin:0}
+.root{background:#fff;border:1px solid #80868b;display:flex;flex-direction:column;overflow:hidden}
+.top{height:56px;flex:none;display:flex;align-items:center;gap:10px;padding:0 20px;background:#f1f3f4;border-bottom:1px solid #80868b}
+.brand small{display:block;font-size:11px;color:#5f6368}.brand b{font-size:15px}
+.sp{flex:1}
+.body{flex:1;display:flex;min-height:0}
+.side{width:210px;flex:none;padding:16px 12px;border-right:1px solid #80868b;display:flex;flex-direction:column;gap:4px}
+.side .t{font-size:12px;color:#5f6368;padding:0 10px 8px;font-weight:700}
+.nav{padding:10px;border:1px solid transparent;font-size:14px}
+.nav.on{border-color:#202124;background:#e8eaed;font-weight:700}
+.main{flex:1;padding:22px 28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.m{padding:20px 16px;display:flex;flex-direction:column;gap:12px;flex:1;min-height:0}
+h1{font-size:24px;line-height:1.2}h2{font-size:17px}h3{font-size:15px}
+.mut{color:#5f6368}.sm{font-size:12px}.b{font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 14px;border:1.5px solid #202124;background:#fff;color:#202124;font:inherit;font-weight:600;text-decoration:none}
+.btn.pri{background:#202124;color:#fff}
+.btn.mini{min-height:30px;padding:0 10px;font-size:13px}
+.btn.big{min-height:48px;font-size:16px;width:100%}
+.btn.txt{border-color:transparent;text-decoration:underline}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld label{font-weight:700;font-size:13px}
+.inp{height:40px;border:1.5px solid #5f6368;background:#fff;padding:0 10px;font:inherit;font-size:13px;color:#202124;width:100%}
+.inp::placeholder{color:#5f6368;opacity:1}
+.ph{background:#e8eaed;border:1px dashed #80868b;display:flex;align-items:center;justify-content:center;color:#5f6368;font-size:12px;text-align:center;flex:none}
+.row{display:flex;gap:12px;align-items:center}
+.col{display:flex;flex-direction:column;gap:10px}
+.box{border:1px solid #80868b;padding:12px}
+.alert{border:1px solid #80868b;background:#f1f3f4;padding:10px 12px}
+.tag{display:inline-block;border:1px solid #5f6368;padding:1px 8px;font-size:12px;font-weight:700;white-space:nowrap}
+.tag.er{border-color:#202124;background:#202124;color:#fff}
+table{border-collapse:collapse;width:100%}
+th{text-align:left;background:#e8eaed;font-size:12px;padding:8px 10px;border:1px solid #80868b}
+td{padding:9px 10px;border:1px solid #bdc1c6;font-size:13px;vertical-align:top}
+.kpi{display:flex;gap:28px;border-top:1px solid #bdc1c6;border-bottom:1px solid #bdc1c6;padding:10px 0;flex-wrap:wrap}
+.kpi b{font-size:20px;margin-right:6px}
+.tabs{display:flex;border-bottom:2px solid #80868b}
+.tabs span{padding:8px 14px;font-weight:700;color:#5f6368}.tabs .on{color:#202124;border-bottom:3px solid #202124;margin-bottom:-2px}
+.strip{height:38px;flex:none;display:flex;align-items:center;gap:14px;padding:0 20px;font-size:13px;border-bottom:1px solid #80868b;background:#e8eaed}
+.num{width:26px;height:26px;border-radius:50%;border:1.5px solid #202124;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex:none}
+.bar{height:8px;background:#dadce0}.bar i{display:block;height:8px;background:#202124}
+.foot{border-top:1px solid #80868b;padding:9px 20px;font-size:11px;color:#5f6368;display:flex;justify-content:space-between;flex:none}
+.opt{border:1.5px solid #5f6368;padding:12px;display:flex;gap:12px;align-items:center}
+.grow{flex:1;min-width:0}
+.ln{height:9px;background:#dadce0}
+.hm0{background:#fff}.hm1{background:#e8eaed}.hm2{background:#bdc1c6;font-weight:700}
+.nd{border:1.5px solid #202124;padding:8px 12px;background:#fff;min-width:110px;max-width:190px;text-align:center;font-weight:600;font-size:13px}
+.nd small{display:block;font-weight:400;color:#5f6368;font-size:11px}
+.nd.s{border-style:dashed;background:#f1f3f4}.nd.d{background:#e8eaed}
+.ar{font-size:20px;color:#5f6368;flex:none}
+.lane{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px;border:1px dashed #80868b}
+.lane>b{width:100%;font-size:12px;color:#5f6368}
+.cardg{border:2px solid #202124;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-weight:700;flex:1;min-height:110px}
+.cardg .ph{width:44px;height:44px;border-radius:50%}
+.sel2{border:1px solid #5f6368;padding:6px 10px;background:#fff;font-size:13px}
+.m .tag,.box .tag,.col .tag{align-self:flex-start}
+html{background:#dadce0}body{padding:16px}.root{margin:0 auto}.voltar{display:block;max-width:390px;margin:0 auto 10px;font-size:13px}</style></head>
+<body><a class="voltar" href="../index.html">← Voltar ao índice</a><div class="root" style="width:390px;height:860px"><div class="top" style="padding:0 12px"><button class="btn mini" type="button">Menu</button><div class="brand"><b>Portal Acadêmico</b></div><span class="sp"></span><button class="btn mini" type="button">⚙ Configurações</button></div><div class="m"><div class="fld"><label for="mt">Turma e componente</label><select class="inp" id="mt"><option>1ª série A — Matemática</option></select></div><h2>Diário de classe</h2><div class="box col" style="gap:6px"><b>Ágata Ferreira Alves</b><span class="sm mut">Presença 96%</span><div class="row"><span>Faltou hoje</span><span class="grow"></span><input type="checkbox" style="width:24px;height:24px"></div><div class="row"><div class="fld"><label for="dm1">Nota 1º</label><input class="inp" id="dm1" type="text" placeholder="7,7"></div><div class="fld"><label for="dm2">Nota 2º</label><input class="inp" id="dm2" type="text" placeholder="7,5"></div><div class="fld"><label for="dm3">Faltas</label><input class="inp" id="dm3" type="text" placeholder="3"></div></div><span class="tag">✓ Aprovado</span><div class="fld"><label for="dm4">Observação</label><input class="inp" id="dm4" type="text" placeholder="Participou bem"></div></div><button class="btn pri big" type="button">Salvar notas e faltas</button></div></div></body></html>

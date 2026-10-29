@@ -1,0 +1,212 @@
+[
+  {
+    "id": "a3",
+    "nome": "Iasmim Cardoso de Jesus",
+    "nascimento": "2010-05-14",
+    "responsavel": "Edilene Cardoso de Jesus",
+    "serie": "1ª série EM",
+    "turma": "1ª série A",
+    "turmaId": "tt1",
+    "turno": "Manhã",
+    "escolaId": "e1",
+    "notas": {
+      "Língua Portuguesa": [
+        7.3,
+        6.8
+      ],
+      "Biologia": [
+        6.4,
+        6.9
+      ],
+      "História": [
+        7.9,
+        7.4
+      ],
+      "Física": [
+        5.2,
+        5.9
+      ],
+      "Química": [
+        6.8,
+        7.2
+      ],
+      "Geografia": [
+        7.1,
+        6.6
+      ],
+      "Filosofia": [
+        8,
+        7.5
+      ],
+      "Sociologia": [
+        7.6,
+        8.1
+      ],
+      "Inglês": [
+        6.2,
+        6.9
+      ],
+      "Educação Física": [
+        9,
+        9.5
+      ],
+      "Arte": [
+        8.4,
+        8.8
+      ]
+    },
+    "matricula": "202610317",
+    "validade": "2026-12-18",
+    "codigoAluno": "ALU-31742",
+    "responsavelId": "resp1",
+    "endereco": "Rua das Palmeiras, 128 — Grageru, Aracaju/SE",
+    "telefone": "(79) 9 ****-1024",
+    "email": "e*****@exemplo.edu.br",
+    "documentos": [
+      {
+        "nome": "Certidão de nascimento ou RG",
+        "situacao": "entregue"
+      },
+      {
+        "nome": "Comprovante de residência atualizado",
+        "situacao": "pendente",
+        "prazo": "2026-10-16"
+      },
+      {
+        "nome": "Documento com foto do responsável",
+        "situacao": "entregue"
+      }
+    ]
+  },
+  {
+    "id": "b7",
+    "nome": "Ravi Cardoso de Jesus",
+    "nascimento": "2014-08-02",
+    "responsavel": "Edilene Cardoso de Jesus",
+    "serie": "7º ano",
+    "turma": "7º ano B",
+    "turmaId": null,
+    "turno": "Tarde",
+    "escolaId": "e2",
+    "faltas": 7,
+    "notas": {
+      "Matemática": [
+        7.1,
+        7.9
+      ],
+      "Língua Portuguesa": [
+        6.3,
+        5.6
+      ],
+      "Ciências": [
+        8.2,
+        8.6
+      ],
+      "História": [
+        6.8,
+        7.4
+      ],
+      "Geografia": [
+        4.9,
+        5.6
+      ],
+      "Inglês": [
+        7.4,
+        7
+      ],
+      "Arte": [
+        9.1,
+        8.7
+      ],
+      "Educação Física": [
+        9.5,
+        9
+      ]
+    },
+    "matricula": "202610842",
+    "validade": "2026-12-18",
+    "codigoAluno": "ALU-84215",
+    "responsavelId": "resp1",
+    "endereco": "Rua das Palmeiras, 128 — Grageru, Aracaju/SE",
+    "telefone": "(79) 9 ****-1024",
+    "email": "e*****@exemplo.edu.br",
+    "documentos": [
+      {
+        "nome": "Certidão de nascimento ou RG",
+        "situacao": "entregue"
+      },
+      {
+        "nome": "Comprovante de residência atualizado",
+        "situacao": "entregue"
+      },
+      {
+        "nome": "Documento com foto do responsável",
+        "situacao": "entregue"
+      }
+    ]
+  },
+  {
+    "id": "c5",
+    "nome": "Heitor Cardoso de Jesus",
+    "nascimento": "2017-03-21",
+    "responsavel": "Edilene Cardoso de Jesus",
+    "responsavelId": "resp1",
+    "serie": "3º ano",
+    "turma": "3º ano A",
+    "turmaId": null,
+    "turno": "Manhã",
+    "escolaId": "e2",
+    "faltas": 4,
+    "notas": {
+      "Língua Portuguesa": [
+        7.8,
+        8.2
+      ],
+      "Matemática": [
+        8.5,
+        7.9
+      ],
+      "Ciências": [
+        9,
+        8.6
+      ],
+      "História": [
+        8,
+        8.4
+      ],
+      "Geografia": [
+        7.5,
+        8
+      ],
+      "Arte": [
+        9.5,
+        9.5
+      ],
+      "Educação Física": [
+        10,
+        9.5
+      ]
+    },
+    "matricula": "202610955",
+    "validade": "2026-12-18",
+    "codigoAluno": "ALU-95530",
+    "endereco": "Rua das Palmeiras, 128 — Grageru, Aracaju/SE",
+    "telefone": "(79) 9 ****-1024",
+    "email": "e*****@exemplo.edu.br",
+    "documentos": [
+      {
+        "nome": "Certidão de nascimento ou RG",
+        "situacao": "entregue"
+      },
+      {
+        "nome": "Foto 3x4 atualizada",
+        "situacao": "pendente",
+        "prazo": "2026-10-09"
+      },
+      {
+        "nome": "Cartão de vacinação",
+        "situacao": "entregue"
+      }
+    ]
+  }
+]

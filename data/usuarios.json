@@ -1,0 +1,176 @@
+[
+  {
+    "perfil": "aluno",
+    "login": "202610317",
+    "senha": "aluno2026",
+    "refId": "a3",
+    "nome": "Iasmim Cardoso de Jesus",
+    "papel": "Estudante · 1ª série A"
+  },
+  {
+    "perfil": "aluno",
+    "login": "202610842",
+    "senha": "aluno2026",
+    "refId": "b7",
+    "nome": "Ravi Cardoso de Jesus",
+    "papel": "Estudante · 7º ano B"
+  },
+  {
+    "perfil": "professor",
+    "login": "PF-30412",
+    "senha": "prof2026",
+    "refId": "p1",
+    "nome": "Profa. Rosângela Tavares Góis",
+    "papel": "Professora de Matemática"
+  },
+  {
+    "perfil": "escola",
+    "login": "secretaria.osvaldo",
+    "senha": "secretaria2026",
+    "refId": "e1",
+    "escolaId": "e1",
+    "nome": "Secretaria escolar",
+    "papel": "C. E. Prof. Osvaldo Tavares Rezende"
+  },
+  {
+    "perfil": "rede",
+    "login": "seed.tecnico",
+    "senha": "rede2026",
+    "refId": null,
+    "nome": "Equipe técnica",
+    "papel": "SEED/SE · todas as DREs",
+    "dre": null
+  },
+  {
+    "perfil": "rede",
+    "login": "dea.aracaju",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DEA — Aracaju",
+    "nome": "Técnico da DEA — Aracaju",
+    "papel": "Diretoria de Educação de Aracaju"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre1.estancia",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 1 — Estância",
+    "nome": "Técnico da DRE 1 — Estância",
+    "papel": "Diretoria regional · Sul Sergipano"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre2.lagarto",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 2 — Lagarto",
+    "nome": "Técnico da DRE 2 — Lagarto",
+    "papel": "Diretoria regional · Centro-Sul Sergipano"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre3.itabaiana",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 3 — Itabaiana",
+    "nome": "Técnico da DRE 3 — Itabaiana",
+    "papel": "Diretoria regional · Agreste Central Sergipano"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre4.japaratuba",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 4 — Japaratuba",
+    "nome": "Técnico da DRE 4 — Japaratuba",
+    "papel": "Diretoria regional · Leste Sergipano"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre5.dores",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 5 — Nossa Senhora das Dores",
+    "nome": "Técnico da DRE 5 — Nossa Senhora das Dores",
+    "papel": "Diretoria regional · Médio Sertão Sergipano"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre6.propria",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 6 — Propriá",
+    "nome": "Técnico da DRE 6 — Propriá",
+    "papel": "Diretoria regional · Baixo São Francisco"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre7.gararu",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 7 — Gararu",
+    "nome": "Técnico da DRE 7 — Gararu",
+    "papel": "Diretoria regional · Alto Sertão Sergipano"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre8.socorro",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 8 — Nossa Senhora do Socorro",
+    "nome": "Técnico da DRE 8 — Nossa Senhora do Socorro",
+    "papel": "Diretoria regional · Grande Aracaju"
+  },
+  {
+    "perfil": "rede",
+    "login": "dre9.gloria",
+    "senha": "rede2026",
+    "refId": null,
+    "dre": "DRE 9 — Nossa Senhora da Glória",
+    "nome": "Técnico da DRE 9 — Nossa Senhora da Glória",
+    "papel": "Diretoria regional · Alto Sertão Sergipano"
+  },
+  {
+    "perfil": "aluno",
+    "login": "202610955",
+    "senha": "aluno2026",
+    "refId": "c5",
+    "nome": "Heitor Cardoso de Jesus",
+    "papel": "Estudante · 3º ano A"
+  },
+  {
+    "perfil": "responsavel",
+    "login": "RESP-20417",
+    "senha": "resp2026",
+    "refId": "resp1",
+    "nome": "Edilene Cardoso de Jesus",
+    "papel": "Responsável por 3 estudantes"
+  },
+  {
+    "perfil": "diretor",
+    "login": "dir.osvaldo",
+    "senha": "diretor2026",
+    "refId": "e1",
+    "escolaId": "e1",
+    "nome": "Direção escolar",
+    "papel": "C. E. Prof. Osvaldo Tavares Rezende"
+  },
+  {
+    "perfil": "coordenador",
+    "login": "coord.osvaldo",
+    "senha": "coord2026",
+    "refId": "e1",
+    "escolaId": "e1",
+    "nome": "Coordenação pedagógica",
+    "papel": "C. E. Prof. Osvaldo Tavares Rezende"
+  },
+  {
+    "perfil": "profin",
+    "login": "profin.seed",
+    "senha": "profin2026",
+    "refId": null,
+    "nome": "Equipe PROFIN",
+    "papel": "SEED/SE · Gestão financeira"
+  }
+]

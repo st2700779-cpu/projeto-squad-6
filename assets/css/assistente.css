@@ -1,0 +1,62 @@
+/* Assistente de IA (W6–W12): botão flutuante, painel, mensagens e estados. Usa os tokens de tema.css.
+   Celular: painel em tela cheia. Desktop (≥ 700px): coluna de 440px à direita. */
+.assistente-botao { position: fixed; right: var(--sp-4); bottom: calc(var(--sp-4) + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; align-items: center; justify-content: center; gap: var(--sp-2); min-height: 48px; padding: 0 var(--sp-4) 0 var(--sp-3); border: 0; border-radius: var(--raio-lg); background: var(--cor-primaria); color: var(--sobre-primaria); font: inherit; font-weight: var(--peso-forte); cursor: pointer; box-shadow: var(--sombra-2); transition: background var(--transicao-rapida); }
+.assistente-botao:hover { background: var(--cor-primaria-hover); }
+.assistente-botao[hidden] { display: none; }
+.assistente-rotulo { white-space: nowrap; font-size: var(--texto-sm); }
+/* Telas com barra de ações fixa no rodapé (matrícula, diário): o botão sobe para não cobrir os botões da barra. */
+body:has(.barra-acoes) .assistente-botao { bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
+.assistente-painel { position: fixed; z-index: 50; inset: 0; background: var(--superficie); display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.assistente-painel[hidden] { display: none; }
+@media (min-width: 700px) {
+  .assistente-painel { left: auto; width: 440px; border-left: 1px solid var(--borda); box-shadow: var(--sombra-3); }
+}
+/* No celular, o painel cobre a página: impede a rolagem por trás. */
+@media (max-width: 699px) { html.assistente-aberto body { overflow: hidden; } }
+
+.assistente-topo { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--borda); min-height: 68px; }
+.assistente-topo strong { flex: 1; font-size: var(--texto-xl); }
+.assistente-logo { width: 36px; height: 36px; border-radius: var(--raio); background: var(--cor-primaria); color: var(--sobre-primaria); display: grid; place-items: center; flex: none; }
+.assistente-mensagens { flex: 1; overflow-y: auto; padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-4); background: var(--fundo-app); }
+.msg { max-width: 94%; padding: var(--sp-3) var(--sp-4); border-radius: var(--raio-lg); line-height: 1.5; display: flex; flex-direction: column; gap: var(--sp-3); }
+.msg-usuario { align-self: flex-end; background: var(--cor-primaria); color: var(--sobre-primaria); border-bottom-right-radius: var(--raio-sm); }
+.msg-assistente { align-self: flex-start; background: var(--superficie); border: 1px solid var(--borda); border-bottom-left-radius: var(--raio-sm); box-shadow: var(--sombra-1); }
+.msg-falha { align-self: stretch; background: var(--erro-fundo); border: 1px solid var(--erro-borda); border-left: 4px solid var(--erro); }
+.falha-titulo { display: flex; gap: var(--sp-2); align-items: flex-start; color: var(--erro); }
+.msg .fonte { font-size: var(--texto-xs); color: var(--texto-suave); }
+.msg .rotulo-sem-ia { font-size: var(--texto-sm); font-weight: var(--peso-forte); color: var(--texto-suave); }
+.dica-espera { color: var(--texto-suave); font-size: var(--texto-sm); margin: calc(var(--sp-1) * -1) 0 0; }
+.pontos { display: inline-flex; gap: 5px; margin-right: var(--sp-2); vertical-align: middle; }
+.pontos i { width: 10px; height: 10px; border-radius: 50%; background: var(--cor-primaria); animation: pulsar 1s infinite; }
+.pontos i:nth-child(2) { animation-delay: .15s; opacity: .7; } .pontos i:nth-child(3) { animation-delay: .3s; opacity: .45; }
+@keyframes pulsar { 50% { opacity: .25; } }
+
+/* Perguntas comuns e de continuação */
+.boas-vindas { display: flex; flex-direction: column; gap: var(--sp-3); }
+.boas-vindas > strong { font-size: var(--texto-base); }
+.sugestoes { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.sugestoes.coluna { flex-direction: column; align-items: flex-start; }
+.sugestoes button { min-height: var(--toque); border: 1.5px solid var(--borda-forte); background: var(--superficie); border-radius: var(--raio); padding: var(--sp-2) var(--sp-3); font: inherit; font-size: var(--texto-sm); cursor: pointer; color: var(--texto); text-align: left; transition: background var(--transicao-rapida), border-color var(--transicao-rapida); }
+.sugestoes button:hover { background: var(--cor-primaria-suave); border-color: var(--cor-primaria); }
+.sugestoes button:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Campo de pergunta */
+#assistente-erro { margin: 0 var(--sp-4) var(--sp-2); }
+.assistente-rodape { display: flex; gap: var(--sp-2); padding: var(--sp-3); border-top: 1px solid var(--borda); background: var(--superficie); }
+.assistente-rodape input { flex: 1; min-width: 0; min-height: 48px; }
+.icone-botao { width: 48px; height: 48px; border-radius: var(--raio); border: 1.5px solid var(--borda-forte); background: var(--superficie); color: var(--texto); display: grid; place-items: center; cursor: pointer; flex: none; transition: background var(--transicao-rapida); }
+.icone-botao:hover { background: var(--superficie-2); }
+.icone-botao.fechar { border-color: var(--borda); }
+.icone-botao.enviar, .icone-botao.ouvindo { background: var(--cor-primaria); border-color: var(--cor-primaria); color: var(--sobre-primaria); }
+.icone-botao.enviar:hover { background: var(--cor-primaria-hover); }
+.icone-botao.enviar:disabled { background: var(--azul-desativado); border-color: var(--azul-desativado); opacity: 1; }
+.icone-botao:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Voz (W12) */
+.escuta { align-self: stretch; display: flex; flex-direction: column; align-items: center; gap: var(--sp-3); text-align: center; padding: var(--sp-6) 0; }
+.escuta-mic { width: 128px; height: 128px; border-radius: 50%; background: var(--cor-primaria); color: var(--sobre-primaria); display: grid; place-items: center; box-shadow: 0 0 0 18px var(--cor-primaria-suave); margin: var(--sp-4) 0 var(--sp-5); animation: pulsar-mic 1.6s infinite; }
+@keyframes pulsar-mic { 50% { box-shadow: 0 0 0 26px var(--cor-primaria-suave); } }
+.escuta-titulo { font-size: var(--texto-2xl); }
+.confirmacao-voz { align-self: stretch; max-width: none; border: 1.5px solid var(--cor-primaria); background: var(--superficie); }
+.confirmacao-voz .linha-botoes .botao { flex: 1; min-height: 52px; }
+.modo-aviso { margin: var(--sp-3) var(--sp-4) 0; background: var(--alerta-fundo); color: var(--alerta); border: 1px solid var(--alerta-borda); border-radius: var(--raio); padding: var(--sp-2) var(--sp-3); font-size: var(--texto-sm); }

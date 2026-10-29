@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Sistema Acadêmico · SEED/SE</title>
+<!-- Protótipo em arquivo único: abre com duplo clique, sem servidor.
+     Usa o mesmo tema, os mesmos componentes, os MESMOS DADOS e as MESMAS REGRAS do portal:
+     os blocos "dados-demo" e "regras" abaixo são gerados por "node tools/gerar-prototipo.mjs"
+     a partir de data/*.json e assets/js/dominio/notas.js. Não edite esses blocos à mão. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/tema.css">
+<link rel="stylesheet" href="assets/css/componentes.css">
+<link rel="stylesheet" href="assets/css/layout.css">
+<script src="assets/js/tema-inicial.js"></script>
+<style>
+  /* Complementos deste protótipo (o resto vem de componentes.css). O portal recebe estas duas
+     regras do Bootstrap; aqui, sem Bootstrap, elas vêm declaradas. */
+  .conteudo-prototipo { max-width: 800px; padding-top: var(--sp-4); }
+  main:focus { outline: none; }
+  [hidden] { display: none !important; }
+  .linha-entre { display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; }
+  .nota-entrada { max-width: 96px; text-align: right; }
+</style>
+</head>
+<body>
+<a class="sr-only" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="topo">
+  <div class="topo-interno">
+    <a class="marca" href="#" data-ir="" aria-label="Portal Acadêmico, página inicial">
+      <span class="marca-texto"><small>Secretaria de Estado da Educação · Sergipe</small><strong>Portal Acadêmico</strong></span>
+    </a>
+    <div class="topo-direita">
+      <button type="button" class="ferramenta ferramenta-opcional" data-escala="-0.1" aria-label="Diminuir letra" id="btn-menos">A−</button>
+      <button type="button" class="ferramenta" data-escala="0.1" aria-label="Aumentar letra">A+</button>
+      <span id="lugar-tema"></span>
+      <div class="usuario" id="usuario" hidden><span class="avatar" id="usuario-avatar" aria-hidden="true"></span><span class="usuario-texto"><strong id="usuario-nome"></strong><small id="usuario-papel"></small></span></div>
+      <a class="ferramenta" href="#" data-ir="" id="btn-sair" hidden>Sair</a>
+    </div>
+  </div>
+</header>
+
+<main id="conteudo" class="conteudo conteudo-prototipo" tabindex="-1"></main>
+<div id="aviso-rapido" class="aviso-rapido"><span class="aviso-icone" aria-hidden="true"></span><span class="aviso-texto" id="aviso-texto" role="status"></span><button type="button" class="aviso-fechar" id="aviso-fechar" aria-label="Fechar aviso"></button></div>
+<dialog id="dialogo" class="janela" aria-labelledby="dialogo-titulo" aria-describedby="dialogo-texto">
+  <h2 id="dialogo-titulo" class="sem-margem-topo"></h2>
+  <p id="dialogo-texto"></p>
+  <div class="linha-botoes fim">
+    <button type="button" class="botao botao-secundario" data-dialogo="nao">Cancelar</button>
+    <button type="button" class="botao" data-dialogo="sim" id="dialogo-sim">Confirmar</button>
+  </div>
+</dialog>
+
+<!-- BEGIN:dados -->
+<script type="application/json" id="dados-demo">{
+ "letivo": {
+  "ano": 2026,
+  "aulasDadas": 83,
+  "bimestresLancados": 2,
+  "totalBimestres": 4,
+  "dataReferencia": "2026-10-07",
+  "prazosLancamento": [
+   {
+    "bimestre": 3,
+    "ate": "2026-10-30",
+    "rotulo": "Lançamento das notas do 3º bimestre"
+   }
+  ]
+ },
+ "escola": {
+  "id": "e1",
+  "nome": "Colégio Estadual Professor Osvaldo Tavares Rezende",
+  "inep": "28003104",
+  "municipio": "Aracaju",
+  "dre": "DEA — Aracaju",
+  "bairro": "Grageru",
+  "lat": -10.9445,
+  "lng": -37.0577
+ },
+ "turmas": [
+  {
+   "id": "tt1",
+   "nome": "1ª série A",
+   "serie": "1ª série EM",
+   "turno": "Manhã",
+   "sala": "Bloco B, sala 04 (38 lugares)",
+   "capacidade": 38,
+   "matriculados": 37,
+   "situacao": "Aprovada",
+   "escolaId": "e1",
+   "historico": [
+    [
+     "Coordenação",
+     "Criou a turma",
+     ""
+    ],
+    [
+     "Direção",
+     "Aprovou",
+     ""
+    ]
+   ]
+  },
+  {
+   "id": "tt5",
+   "nome": "1ª série B",
+   "serie": "1ª série EM",
+   "turno": "Tarde",
+   "sala": "Bloco A, sala 01 (36 lugares)",
+   "capacidade": 36,
+   "matriculados": 29,
+   "situacao": "Aprovada",
+   "escolaId": "e1",
+   "historico": [
+    [
+     "Coordenação",
+     "Criou a turma",
+     ""
+    ],
+    [
+     "Direção",
+     "Aprovou",
+     ""
+    ]
+   ]
+  },
+  {
+   "id": "tt4",
+   "nome": "2ª série A",
+   "serie": "2ª série EM",
+   "turno": "Manhã",
+   "sala": "Bloco B, sala 05 (34 lugares)",
+   "capacidade": 34,
+   "matriculados": 34,
+   "situacao": "Aprovada",
+   "escolaId": "e1",
+   "historico": [
+    [
+     "Coordenação",
+     "Criou a turma",
+     ""
+    ],
+    [
+     "Direção",
+     "Aprovou",
+     ""
+    ]
+   ]
+  },
+  {
+   "id": "tt2",
+   "nome": "1ª série C",
+   "serie": "1ª série EM",
+   "turno": "Tarde",
+   "sala": "Bloco C, sala 07 (32 lugares)",
+   "capacidade": 32,
+   "matriculados": 0,
+   "situacao": "Pendente de aprovação",
+   "escolaId": "e1",
+   "historico": [
+    [
+     "Coordenação",
+     "Criou a turma",
+     ""
+    ],
+    [
+     "Coordenação",
+     "Enviou para aprovação",
+     ""
+    ]
+   ]
+  },
+  {
+   "id": "tt3",
+   "nome": "2ª série B",
+   "serie": "2ª série EM",
+   "turno": "Noite",
+   "sala": "Bloco A, sala 02 (30 lugares)",
+   "capacidade": 30,
+   "matriculados": 0,
+   "situacao": "Devolvida",
+   "escolaId": "e1",
+   "historico": [
+    [
+     "Coordenação",
+     "Criou a turma",
+     ""
+    ],
+    [
+     "Coordenação",
+     "Enviou para aprovação",
+     ""
+    ],
+    [
+     "Direção",
+     "Devolveu",
+     "A sala do bloco A está em reforma até dezembro. Escolher outra sala."
+    ]
+   ]
+  }
+ ],
+ "turmaId": "tt1",
+ "professor": {
+  "id": "p1",
+  "nome": "Profa. Rosângela Tavares Góis",
+  "concurso": "Professor de Matemática",
+  "formacao": "Licenciatura em Matemática",
+  "habilitacao": [
+   "Matemática"
+  ],
+  "cargaHorariaSemanal": 30,
+  "aulasEmOutrasTurmas": 12,
+  "matriculaFuncional": "PF-30412",
+  "escolaId": "e1"
+ },
+ "professoresDaEscola": 25,
+ "estudante": {
+  "id": "a3",
+  "nome": "Iasmim Cardoso de Jesus",
+  "nascimento": "2010-05-14",
+  "responsavel": "Edilene Cardoso de Jesus",
+  "serie": "1ª série EM",
+  "turma": "1ª série A",
+  "turmaId": "tt1",
+  "turno": "Manhã",
+  "escolaId": "e1",
+  "notas": {
+   "Língua Portuguesa": [
+    7.3,
+    6.8
+   ],
+   "Biologia": [
+    6.4,
+    6.9
+   ],
+   "História": [
+    7.9,
+    7.4
+   ],
+   "Física": [
+    5.2,
+    5.9
+   ],
+   "Química": [
+    6.8,
+    7.2
+   ],
+   "Geografia": [
+    7.1,
+    6.6
+   ],
+   "Filosofia": [
+    8,
+    7.5
+   ],
+   "Sociologia": [
+    7.6,
+    8.1
+   ],
+   "Inglês": [
+    6.2,
+    6.9
+   ],
+   "Educação Física": [
+    9,
+    9.5
+   ],
+   "Arte": [
+    8.4,
+    8.8
+   ]
+  },
+  "matricula": "202610317",
+  "validade": "2026-12-18",
+  "codigoAluno": "ALU-31742",
+  "responsavelId": "resp1",
+  "endereco": "Rua das Palmeiras, 128 — Grageru, Aracaju/SE",
+  "telefone": "(79) 9 ****-1024",
+  "email": "e*****@exemplo.edu.br",
+  "documentos": [
+   {
+    "nome": "Certidão de nascimento ou RG",
+    "situacao": "entregue"
+   },
+   {
+    "nome": "Comprovante de residência atualizado",
+    "situacao": "pendente",
+    "prazo": "2026-10-16"
+   },
+   {
+    "nome": "Documento com foto do responsável",
+    "situacao": "entregue"
+   }
+  ]
+ },
+ "diario": {
+  "tt1": [
+   {
+    "id": "a1",
+    "nome": "Ágata Ferreira Alves",
+    "n1": 7.7,
+    "n2": 7.5,
+    "faltas": 3
+   },
+   {
+    "id": "a2",
+    "nome": "Ana Beatriz Aragão Franco",
+    "n1": 6.5,
+    "n2": 5,
+    "faltas": 6
+   },
+   {
+    "id": "a16",
+    "nome": "Arthur Góis Ferro",
+    "n1": 3.6,
+    "n2": null,
+    "faltas": 0
+   },
+   {
+    "id": "a4",
+    "nome": "Breno Lisboa Rezende",
+    "n1": 3.7,
+    "n2": 4.7,
+    "faltas": 4
+   },
+   {
+    "id": "a5",
+    "nome": "Bruno Damasceno",
+    "n1": 6.1,
+    "n2": 6.7,
+    "faltas": 12
+   },
+   {
+    "id": "a6",
+    "nome": "Bruno Menezes Filho",
+    "n1": 6.8,
+    "n2": 6.9,
+    "faltas": 7
+   },
+   {
+    "id": "a7",
+    "nome": "Cauã Aragão",
+    "n1": 8.3,
+    "n2": 7.5,
+    "faltas": 10
+   },
+   {
+    "id": "a8",
+    "nome": "Cauã Bezerra Peixoto",
+    "n1": 5.2,
+    "n2": 4.7,
+    "faltas": 2
+   },
+   {
+    "id": "a9",
+    "nome": "Cauã Mota Lisboa",
+    "n1": 4.8,
+    "n2": 4.2,
+    "faltas": 8
+   },
+   {
+    "id": "a10",
+    "nome": "Clara Lúcia Monteiro Carvalho",
+    "n1": 7.8,
+    "n2": 7.3,
+    "faltas": 1
+   },
+   {
+    "id": "a11",
+    "nome": "Davi Lucca Rocha",
+    "n1": 6.7,
+    "n2": 6.7,
+    "faltas": 17
+   },
+   {
+    "id": "a12",
+    "nome": "Débora Prado Carvalho",
+    "n1": 6.6,
+    "n2": 5.1,
+    "faltas": 8
+   },
+   {
+    "id": "a13",
+    "nome": "Elias Bispo Rocha",
+    "n1": 5.7,
+    "n2": 8,
+    "faltas": 7
+   },
+   {
+    "id": "a14",
+    "nome": "Emanuel Trindade Santos",
+    "n1": 5.8,
+    "n2": 6.1,
+    "faltas": 0
+   },
+   {
+    "id": "a15",
+    "nome": "Fabrício de Jesus Trindade",
+    "n1": 5.1,
+    "n2": 5.5,
+    "faltas": 16
+   },
+   {
+    "id": "a3",
+    "nome": "Iasmim Cardoso de Jesus",
+    "n1": 6.7,
+    "n2": 7.1,
+    "faltas": 13
+   },
+   {
+    "id": "a17",
+    "nome": "Igor Amorim Machado",
+    "n1": 4.4,
+    "n2": 2.4,
+    "faltas": 7
+   },
+   {
+    "id": "a18",
+    "nome": "Jamile Lins Azevedo",
+    "n1": 7.6,
+    "n2": 7,
+    "faltas": 11
+   },
+   {
+    "id": "a19",
+    "nome": "Jaqueline Costa Brito",
+    "n1": 6.6,
+    "n2": 6.8,
+    "faltas": 1
+   },
+   {
+    "id": "a20",
+    "nome": "Kamila Rocha",
+    "n1": 3.9,
+    "n2": 3.1,
+    "faltas": 3
+   },
+   {
+    "id": "a21",
+    "nome": "Kauê Falcão Brito",
+    "n1": 7.1,
+    "n2": 6.4,
+    "faltas": 15
+   },
+   {
+    "id": "a22",
+    "nome": "Larissa Damasceno",
+    "n1": 4.9,
+    "n2": 5.1,
+    "faltas": 3
+   },
+   {
+    "id": "a23",
+    "nome": "Lívia Amorim Carvalho",
+    "n1": 4.9,
+    "n2": 5.6,
+    "faltas": 21
+   },
+   {
+    "id": "a24",
+    "nome": "Lívia Barreto Siqueira",
+    "n1": 5.3,
+    "n2": 3.2,
+    "faltas": 28
+   },
+   {
+    "id": "a25",
+    "nome": "Manuela Fontes",
+    "n1": 6.3,
+    "n2": 8.4,
+    "faltas": 10
+   },
+   {
+    "id": "a26",
+    "nome": "Matheus Machado de Jesus",
+    "n1": 7.9,
+    "n2": 8.4,
+    "faltas": 1
+   },
+   {
+    "id": "a27",
+    "nome": "Otávio Teles Franco",
+    "n1": 8.2,
+    "n2": null,
+    "faltas": 7
+   },
+   {
+    "id": "a28",
+    "nome": "Otávio Vasconcelos Araújo",
+    "n1": null,
+    "n2": 7.2,
+    "faltas": 10
+   },
+   {
+    "id": "a29",
+    "nome": "Rayssa Duarte Peixoto",
+    "n1": 4,
+    "n2": 3.5,
+    "faltas": 11
+   },
+   {
+    "id": "a30",
+    "nome": "Sabrina Azevedo Tavares",
+    "n1": 8.3,
+    "n2": 5.7,
+    "faltas": 6
+   },
+   {
+    "id": "a31",
+    "nome": "Samuel Lins Oliveira",
+    "n1": 7.2,
+    "n2": 6.7,
+    "faltas": 17
+   },
+   {
+    "id": "a32",
+    "nome": "Stefany Bispo Rezende",
+    "n1": 4.5,
+    "n2": 5.7,
+    "faltas": 9
+   },
+   {
+    "id": "a33",
+    "nome": "Tainá Paixão Guimarães",
+    "n1": 6.8,
+    "n2": 6.5,
+    "faltas": 11
+   },
+   {
+    "id": "a34",
+    "nome": "Tainá Tavares Cunha",
+    "n1": 6,
+    "n2": 6,
+    "faltas": 3
+   },
+   {
+    "id": "a35",
+    "nome": "Thaís Silva Cavalcante",
+    "n1": 7.5,
+    "n2": 6.9,
+    "faltas": 20
+   },
+   {
+    "id": "a36",
+    "nome": "Wallace Cruz de Jesus",
+    "n1": 5.1,
+    "n2": 6.2,
+    "faltas": 1
+   },
+   {
+    "id": "a37",
+    "nome": "Wallace Cunha Souza",
+    "n1": 8,
+    "n2": 7.7,
+    "faltas": 7
+   }
+  ]
+ },
+ "pedidos": [
+  {
+   "protocolo": "MAT-2026-0004",
+   "estudante": "Thaís Aragão Fontes",
+   "responsavel": "Eliane Aragão",
+   "serie": "1ª série EM",
+   "tipo": "Matrícula nova",
+   "escolaId": "e1",
+   "situacao": "Aguardando confirmação",
+   "data": "22/09/2026",
+   "origem": "online"
+  },
+  {
+   "protocolo": "MAT-2026-0005",
+   "estudante": "Josué Menezes Batista",
+   "responsavel": "Gilvan Batista",
+   "serie": "2ª série EM",
+   "tipo": "Transferência",
+   "escolaId": "e1",
+   "situacao": "Aguardando confirmação",
+   "data": "25/09/2026",
+   "origem": "presencial"
+  },
+  {
+   "protocolo": "MAT-2026-0001",
+   "estudante": "Ítalo Vasconcelos Dantas",
+   "responsavel": "Cleide Vasconcelos",
+   "serie": "1ª série EM",
+   "tipo": "Matrícula nova",
+   "escolaId": "e1",
+   "situacao": "Confirmada",
+   "data": "02/09/2026",
+   "origem": "online"
+  },
+  {
+   "protocolo": "MAT-2026-0002",
+   "estudante": "Rayssa Bispo Amorim",
+   "responsavel": "Ednaldo Amorim",
+   "serie": "1ª série EM",
+   "tipo": "Transferência",
+   "escolaId": "e1",
+   "situacao": "Confirmada",
+   "data": "08/09/2026",
+   "origem": "online"
+  },
+  {
+   "protocolo": "MAT-2026-0003",
+   "estudante": "Wesley Nascimento de Jesus",
+   "responsavel": "Marlene Nascimento",
+   "serie": "2ª série EM",
+   "tipo": "Matrícula nova",
+   "escolaId": "e1",
+   "situacao": "Confirmada",
+   "data": "15/09/2026",
+   "origem": "presencial"
+  }
+ ],
+ "calendario": [
+  {
+   "data": "12/10/2026",
+   "inicio": "2026-10-12",
+   "titulo": "Feriado — Nossa Senhora Aparecida",
+   "tipo": "feriado"
+  },
+  {
+   "data": "13 a 16/10/2026",
+   "inicio": "2026-10-13",
+   "fim": "2026-10-16",
+   "titulo": "Provas do 3º bimestre",
+   "tipo": "prova"
+  }
+ ]
+}</script>
+<!-- END:dados -->
+
+<!-- BEGIN:regras -->
+<script>
+// Domínio: notas, frequência e situação do estudante. Todas as regras de aprovação ficam aqui.
+//
+// Regras (Lei de Diretrizes e Bases: frequência mínima de 75% das aulas dadas):
+//  - Média do estudante na matéria = média das notas dos bimestres já lançados, com 1 casa decimal.
+//  - Frequência (%) = 100 − faltas ÷ aulas dadas × 100.
+//  - Frequência abaixo de 75%          → Reprovado por frequência.
+//  - Média de 6,0 ou mais              → Aprovado.
+//  - Média de 4,0 a 5,9                → Em recuperação.
+//  - Média abaixo de 4,0               → Reprovado.
+//  - Sem nenhuma nota lançada          → Sem notas (situação ainda não definida).
+
+const MEDIA_APROVACAO = 6;
+const MEDIA_RECUPERACAO = 4;
+const PRESENCA_MINIMA = 75;
+
+const lancada = (n) => n !== null && n !== undefined && n !== '' && !Number.isNaN(Number(n));
+
+/**
+ * Média das notas dos bimestres já lançados, com 1 casa decimal.
+ * @param {...(number|null)} notas Notas dos bimestres; vazias (null) são ignoradas.
+ * @returns {number|null} Null quando nenhuma nota foi lançada.
+ */
+function media(...notas) {
+  const valores = notas.filter(lancada).map(Number);
+  if (!valores.length) return null;
+  return Math.round((valores.reduce((s, n) => s + n, 0) / valores.length) * 10) / 10;
+}
+
+/**
+ * Frequência em porcentagem.
+ * @param {number} faltas
+ * @param {number} aulasDadas Aulas dadas até hoje no ano letivo.
+ * @returns {number} De 0 a 100.
+ */
+const presenca = (faltas, aulasDadas) => (aulasDadas > 0 ? Math.min(100, Math.max(0, 100 - (faltas / aulasDadas) * 100)) : 100);
+
+/**
+ * Situação do estudante numa matéria, aplicando as regras do topo deste arquivo.
+ * @param {number|null} mediaMateria
+ * @param {number} [frequencia] Frequência geral em %.
+ * @returns {{chave: 'aprovado'|'recuperacao'|'reprovado'|'sem-notas', texto: string, tipo: 'ok'|'atencao'|'erro'|'neutra', motivo: string}}
+ */
+function situacao(mediaMateria, frequencia = 100) {
+  if (frequencia < PRESENCA_MINIMA) return { chave: 'reprovado', texto: 'Reprovado por frequência', tipo: 'erro', motivo: `Frequência abaixo de ${PRESENCA_MINIMA}%` };
+  if (mediaMateria === null) return { chave: 'sem-notas', texto: 'Sem notas', tipo: 'neutra', motivo: 'Nenhuma nota lançada' };
+  if (mediaMateria >= MEDIA_APROVACAO) return { chave: 'aprovado', texto: 'Aprovado', tipo: 'ok', motivo: `Média ${MEDIA_APROVACAO} ou mais` };
+  if (mediaMateria >= MEDIA_RECUPERACAO) return { chave: 'recuperacao', texto: 'Em recuperação', tipo: 'atencao', motivo: `Média entre ${MEDIA_RECUPERACAO} e ${MEDIA_APROVACAO}` };
+  return { chave: 'reprovado', texto: 'Reprovado', tipo: 'erro', motivo: `Média abaixo de ${MEDIA_RECUPERACAO}` };
+}
+
+/**
+ * Notas, faltas e situação de um estudante. Se a turma tem diário do professor, Matemática e faltas vêm dele.
+ * @param {object} est Estudante de estudantes.json.
+ * @param {object} diario Diário por turma: { [turmaId]: [{id, n1, n2, faltas}] }.
+ * @param {number} aulasDadas Aulas dadas no ano (data/letivo.json).
+ * @returns {{linhas: Array, faltas: number, abonadas: number, presenca: number, matematicaDoDiario: boolean}} faltas já sem as abonadas (quando o diário vem de diarioParaLeitura)
+ */
+function desempenho(est, diario, aulasDadas) {
+  const doDiario = est.turmaId && diario?.[est.turmaId]?.find((a) => a.id === est.id);
+  const notas = { ...est.notas };
+  if (doDiario) notas['Matemática'] = [doDiario.n1, doDiario.n2];
+  const faltas = doDiario ? doDiario.faltas : (est.faltas ?? 0);
+  const freq = presenca(faltas, aulasDadas);
+  const linhas = Object.entries(notas).map(([materia, [n1, n2]]) => {
+    const m = media(n1, n2);
+    return { materia, n1, n2, media: m, situacao: situacao(m, freq) };
+  });
+  linhas.sort((a, b) => (a.materia === 'Matemática' ? -1 : b.materia === 'Matemática' ? 1 : 0));
+  return { linhas, faltas, abonadas: doDiario?.abonadas ?? 0, presenca: freq, matematicaDoDiario: Boolean(doDiario) };
+}
+</script>
+<!-- END:regras -->
+
+<script>
+(function () {
+  'use strict';
+
+  // Botão de exibição (modo escuro e alto contraste), o mesmo do portal (assets/js/tema-inicial.js).
+  var lugarTema = document.getElementById('lugar-tema');
+  if (lugarTema && window.botaoTema) lugarTema.outerHTML = window.botaoTema();
+
+  // ---------- Estado: dados de demonstração, guardados no navegador ----------
+  var CHAVE = 'prototipo-seed-estado-v2';
+  var BASE = JSON.parse(document.getElementById('dados-demo').textContent);
+  var copia = function (o) { return JSON.parse(JSON.stringify(o)); };
+  function carregarEstado() {
+    try { var s = localStorage.getItem(CHAVE); if (s) return JSON.parse(s); } catch (e) { /* segue sem o que estava guardado */ }
+    return copia(BASE);
+  }
+  function guardar() { try { localStorage.setItem(CHAVE, JSON.stringify(dados)); } catch (e) { /* segue só em memória */ } }
+  var dados = carregarEstado();
+  dados.chamadaFeita = dados.chamadaFeita || null; // { data, ausentes: [ids] } da última chamada registrada
+
+  // ---------- Utilitários ----------
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var num = function (n) { return n === null ? '—' : Number(n).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); };
+  var nomeCurto = function (nome) { return nome.replace(/^Colégio Estadual /, 'C. E. ').replace(/^Escola Estadual /, 'E. E. '); };
+  var PATHS = {
+    usuario: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0',
+    livro: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5M9 7h6',
+    escola: 'M2 10l10-5 10 5-10 5zM6 12v5c3.5 2.5 8.5 2.5 12 0v-5',
+    calendario: 'M4 6h16v15H4zM4 10h16M8 3v4M16 3v4',
+    formulario: 'M9 3h6v3H9zM7 5H5v16h14V5h-2M8 11h8M8 15h5',
+    documento: 'M6 3h9l4 4v14H6zM14 3v5h5M9 13h6M9 17h6',
+    alto: 'M4 9v6h4l5 4V5L8 9zM16 9a3 3 0 0 1 0 6M18.5 6.5a7 7 0 0 1 0 11',
+    alerta: 'M12 3l10 18H2zM12 10v4M12 17.5v.5',
+    ok: 'M5 12l5 5 9-10',
+    grade: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+    fechar: 'M6 6l12 12M18 6L6 18'
+  };
+  var icone = function (nome, tam) {
+    tam = tam || 22;
+    return '<svg width="' + tam + '" height="' + tam + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="' + PATHS[nome] + '"/></svg>';
+  };
+  var ICONE_SELO = { ok: 'ok', atencao: 'alerta', erro: 'fechar', info: 'alerta', neutra: '' };
+  var etiqueta = function (texto, tipo) { return '<span class="etiqueta etiqueta-' + tipo + '">' + (ICONE_SELO[tipo] ? icone(ICONE_SELO[tipo], 14) : '') + esc(texto) + '</span>'; };
+
+  // Preferência de tamanho de letra (só conveniência; funciona sem armazenamento).
+  function lerEscala() { try { return Number(localStorage.getItem('prototipo-escala')) || 1; } catch (e) { return 1; } }
+  function aplicarEscala(v) {
+    document.documentElement.style.setProperty('--escala', v);
+    try { localStorage.setItem('prototipo-escala', v); } catch (e) { /* segue sem guardar */ }
+  }
+  var escala = lerEscala();
+  aplicarEscala(escala);
+
+  // Leitura em voz alta (botão Ouvir dos wireframes).
+  var podeLer = 'speechSynthesis' in window;
+  function botaoOuvir(texto, rotulo) {
+    if (!podeLer) return '';
+    var so = !rotulo;
+    return '<button type="button" class="botao-ouvir' + (so ? ' so-icone' : '') + '" data-ouvir="' + esc(texto) + '" aria-label="Ouvir em voz alta">' + icone('alto', 20) + (so ? '' : '<span>' + esc(rotulo) + '</span>') + '</button>';
+  }
+  function ler(texto) {
+    speechSynthesis.cancel();
+    var fala = new SpeechSynthesisUtterance(texto);
+    fala.lang = 'pt-BR';
+    fala.rate = 0.95;
+    speechSynthesis.speak(fala);
+  }
+
+  // Aviso rápido com ícone e botão de fechar: a região "status" existe desde o carregamento, para o leitor de tela anunciar.
+  var timerAviso;
+  var ERRO_NO_TEXTO = /n[ãa]o foi poss[ií]vel|inv[áa]lid|falha|erro/i;
+  function esconderAviso() {
+    var el = document.getElementById('aviso-rapido');
+    el.classList.remove('visivel');
+    document.getElementById('aviso-texto').textContent = '';
+  }
+  function avisar(texto, tipo) {
+    tipo = tipo || (ERRO_NO_TEXTO.test(texto) ? 'erro' : 'ok');
+    var el = document.getElementById('aviso-rapido');
+    el.className = 'aviso-rapido visivel ' + tipo;
+    el.querySelector('.aviso-icone').innerHTML = icone(tipo === 'ok' ? 'ok' : 'alerta', 20);
+    document.getElementById('aviso-texto').textContent = texto;
+    clearTimeout(timerAviso);
+    timerAviso = setTimeout(esconderAviso, 6000);
+  }
+  document.getElementById('aviso-fechar').innerHTML = icone('fechar', 18);
+  document.getElementById('aviso-fechar').addEventListener('click', esconderAviso);
+
+  // Confirmação antes de ações que não dá para desfazer. <dialog> nativo: prende o foco e fecha com Esc.
+  var dialogo = document.getElementById('dialogo');
+  var resolverDialogo = null;
+  function confirmar(titulo, texto, botao, perigo) {
+    return new Promise(function (resolve) {
+      document.getElementById('dialogo-titulo').textContent = titulo;
+      document.getElementById('dialogo-texto').textContent = texto;
+      var sim = document.getElementById('dialogo-sim');
+      sim.textContent = botao || 'Confirmar';
+      sim.className = 'botao' + (perigo ? ' botao-perigo' : '');
+      resolverDialogo = resolve;
+      dialogo.showModal();
+      dialogo.querySelector('[data-dialogo="nao"]').focus();
+    });
+  }
+  dialogo.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-dialogo]');
+    if (b) dialogo.close(b.dataset.dialogo);
+  });
+  dialogo.addEventListener('close', function () {
+    if (resolverDialogo) { resolverDialogo(dialogo.returnValue === 'sim'); resolverDialogo = null; }
+    dialogo.returnValue = '';
+  });
+
+  // ---------- Perfis ----------
+  var main = document.getElementById('conteudo');
+  var PERFIS = {
+    aluno: { nome: 'Família e estudante', desc: 'Boletim, matrícula, documentos e avisos da escola', icone: 'usuario', rotulo: 'Família' },
+    professor: { nome: 'Professor', desc: 'Turmas, chamada e lançamento de notas no diário de classe', icone: 'livro', rotulo: 'Professor' },
+    secretaria: { nome: 'Escola', desc: 'Secretaria, coordenação e direção: matrículas e turmas', icone: 'escola', rotulo: 'Escola' }
+  };
+  // Usuário simulado de cada visão, tirado dos mesmos dados do portal.
+  var USUARIOS = {
+    aluno: { visao: 'familia', nome: BASE.estudante.responsavel, papel: 'Responsável' },
+    professor: { visao: 'professor', nome: BASE.professor.nome, papel: 'Professora de Matemática' },
+    secretaria: { visao: 'escola', nome: 'Secretaria escolar', papel: nomeCurto(BASE.escola.nome) }
+  };
+  var turma = function () { return dados.turmas.filter(function (t) { return t.id === dados.turmaId; })[0]; };
+  var alunosTurma = function () { return dados.diario[dados.turmaId]; };
+  var hojeISO = function () { return new Date().toISOString().slice(0, 10); };
+
+  // Estado das telas (não guardado)
+  var filtro = 'Aguardando confirmação';
+  var recusando = null;
+  var erroRecusa = '';
+  var erroNotas = null; // { id, texto }
+  var ausentes = {};    // chamada em andamento: { idDoEstudante: true }
+
+  // ---------- W1 · Seleção de perfil ----------
+  function telaPerfis() {
+    return '<h1>Entrar no sistema</h1>' +
+      '<p class="pagina-descricao">Acesso simulado. Escolha o perfil para continuar.</p>' +
+      '<ul class="lista-perfis">' +
+      Object.keys(PERFIS).map(function (k) {
+        var p = PERFIS[k];
+        return '<li><a href="#' + k + '"><strong>' + p.nome + '</strong><span>' + p.desc + '</span></a>' + botaoOuvir(p.nome + '. ' + p.desc + '.') + '</li>';
+      }).join('') +
+      '</ul>' +
+      '<p class="aviso-prototipo">Protótipo em arquivo único · escolas, pessoas e dados fictícios · ' +
+      '<button type="button" class="botao botao-texto botao-mini" data-reiniciar>Restaurar dados de demonstração</button></p>';
+  }
+
+  // ---------- W2 + W5 · Família: notas e faltas (mesmas regras do portal) ----------
+  function telaAluno() {
+    var est = dados.estudante;
+    var d = desempenho(est, dados.diario, dados.letivo.aulasDadas);
+    var freq = Math.round(d.presenca);
+    var atencao = d.linhas.filter(function (l) { return l.situacao.chave === 'recuperacao' || l.situacao.chave === 'reprovado'; }).map(function (l) { return l.materia; });
+    var nome = est.nome.split(' ')[0];
+    var resumo = 'A presença de ' + nome + ' está em ' + freq + ' por cento. O mínimo é ' + PRESENCA_MINIMA + ' por cento. ' +
+      (atencao.length ? 'Precisa de atenção em: ' + atencao.join(', ') + '.' : 'A média está boa em todas as matérias.');
+    var nf = function (v) { return v === null ? '—' : num(v); };
+    return '<h1>Boletim de ' + esc(est.nome) + '</h1>' +
+      '<p class="pagina-descricao">' + esc(est.turma) + ' · ' + esc(dados.escola.nome) + ' · ' + dados.letivo.bimestresLancados + ' de ' + dados.letivo.totalBimestres + ' bimestres lançados · situação parcial</p>' +
+      '<dl class="resumo-linha">' +
+        '<div class="' + (d.presenca < PRESENCA_MINIMA ? 'alerta' : '') + '"><dd>' + d.presenca.toFixed(1).replace('.', ',') + '%</dd><dt>de frequência (mínimo ' + PRESENCA_MINIMA + '%)</dt></div>' +
+        '<div class="' + (atencao.length ? 'atencao' : '') + '"><dd>' + atencao.length + '</dd><dt>' + (atencao.length === 1 ? 'matéria em atenção' : 'matérias em atenção') + '</dt></div>' +
+      '</dl>' +
+      '<div class="barra esp-b-4" role="img" aria-label="Frequência de ' + freq + ' por cento; mínimo de ' + PRESENCA_MINIMA + '"><span style="width:' + freq + '%"></span><i class="marca-minimo" style="left:' + PRESENCA_MINIMA + '%"></i></div>' +
+      '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Notas por matéria e bimestre</caption>' +
+        '<thead><tr><th scope="col">Matéria</th><th scope="col" class="num">1º bimestre</th><th scope="col" class="num">2º bimestre</th><th scope="col" class="num">Média</th><th scope="col">Situação</th></tr></thead><tbody>' +
+        d.linhas.map(function (l) {
+          return '<tr><td class="titulo-linha"><strong>' + esc(l.materia) + '</strong></td><td class="num" data-rotulo="1º bimestre">' + nf(l.n1) + '</td><td class="num" data-rotulo="2º bimestre">' + nf(l.n2) + '</td><td class="num negrito" data-rotulo="Média">' + nf(l.media) + '</td><td data-rotulo="Situação">' + etiqueta(l.situacao.texto, l.situacao.tipo) + '</td></tr>';
+        }).join('') +
+      '</tbody></table></div>' +
+      '<p class="contagem">' + d.linhas.length + ' matérias · aprovação: média ' + MEDIA_APROVACAO + ' e frequência de ' + PRESENCA_MINIMA + '%; recuperação: média de ' + MEDIA_RECUPERACAO + ' a menos de ' + MEDIA_APROVACAO + '.' + (d.matematicaDoDiario ? ' A nota de Matemática vem do diário do professor.' : '') + '</p>' +
+      '<div class="linha-botoes esp-t-3">' + botaoOuvir(resumo, 'Ouvir resumo') + '</div>' +
+      '<h2>Próximas datas</h2>' +
+      '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Próximas datas do calendário letivo</caption>' +
+        '<thead><tr><th scope="col">Data</th><th scope="col">Evento</th></tr></thead><tbody>' +
+        dados.calendario.map(function (a) { return '<tr><td class="sem-quebra-texto" data-rotulo="Data">' + esc(a.data) + '</td><td class="titulo-linha">' + esc(a.titulo) + '</td></tr>'; }).join('') +
+      '</tbody></table></div>' +
+      '<h2>Documentos</h2>' +
+      '<p>Documentos escolares são emitidos pela secretaria da escola.</p>' +
+      '<button type="button" class="botao botao-secundario" id="btn-historico">Solicitar histórico escolar</button>';
+  }
+
+  // ---------- W13 · Professor: diário de classe ----------
+  function mediaTurma() {
+    var medias = alunosTurma().map(function (a) { return media(a.n1, a.n2); }).filter(function (m) { return m !== null; });
+    return medias.length ? num(medias.reduce(function (s, n) { return s + n; }, 0) / medias.length) : '—';
+  }
+  function telaProfessor() {
+    var t = turma();
+    var alunos = alunosTurma();
+    var feita = dados.chamadaFeita && dados.chamadaFeita.data === hojeISO() ? dados.chamadaFeita : null;
+    var nAusentes = feita ? feita.ausentes.length : alunos.filter(function (a) { return ausentes[a.id]; }).length;
+    var presentes = alunos.length - nAusentes;
+    var hoje = new Date().toLocaleDateString('pt-BR');
+    var bim = dados.letivo.bimestresLancados;
+    var celulaHoje = function (a) {
+      if (feita) return '<td data-rotulo="Chamada de hoje">' + (feita.ausentes.indexOf(a.id) >= 0 ? etiqueta('Faltou', 'erro') : '<span class="texto-suave">Presente</span>') + '</td>';
+      return '<td data-rotulo="Faltou hoje"><input type="checkbox" class="caixa-grande" data-faltou="' + a.id + '" aria-label="Faltou hoje: ' + esc(a.nome) + '"' + (ausentes[a.id] ? ' checked' : '') + '></td>';
+    };
+    return '<h1>Diário de classe · ' + esc(t.nome) + ' · Matemática</h1>' +
+      '<p class="texto-suave esp-t-0">' + esc(nomeCurto(dados.escola.nome)) + ' · ' + bim + 'º bimestre lançado · ' + dados.letivo.aulasDadas + ' aulas dadas · média da turma ' + mediaTurma() + '</p>' +
+      (feita
+        ? '<p class="esp-b-3"><strong>Chamada de ' + hoje + ' registrada</strong> ' + etiqueta('Registrada', 'ok') + ' ' + (feita.ausentes.length ? feita.ausentes.length + (feita.ausentes.length === 1 ? ' falta lançada' : ' faltas lançadas') + ' no diário.' : 'Todos presentes.') + '</p>'
+        : '<div class="linha-botoes entre esp-b-3"><p class="esp-t-0 esp-b-0"><strong>Chamada de ' + hoje + '</strong> · marque só quem faltou. <span id="chamada-resumo">' + presentes + (presentes === 1 ? ' presente' : ' presentes') + ' · ' + nAusentes + (nAusentes === 1 ? ' falta' : ' faltas') + '</span></p>' +
+          '<button type="button" class="botao" id="btn-frequencia">' + (nAusentes ? 'Registrar chamada com ' + nAusentes + (nAusentes === 1 ? ' falta' : ' faltas') : 'Registrar chamada: todos presentes') + '</button></div>') +
+      '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Chamada e notas do ' + bim + 'º bimestre</caption>' +
+        '<thead><tr><th scope="col">Estudante</th><th scope="col">Faltou hoje</th><th scope="col" class="num">Nota do ' + bim + 'º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th></tr></thead><tbody>' +
+        alunos.map(function (a) {
+          var invalido = erroNotas && erroNotas.id === a.id;
+          var valor = a.n2 === null ? '' : String(a.n2).replace('.', ',');
+          var freq = presenca(a.faltas, dados.letivo.aulasDadas);
+          var sit = situacao(media(a.n1, a.n2), freq);
+          return '<tr><td class="titulo-linha"><label for="nota-' + a.id + '">' + esc(a.nome) + '</label></td>' + celulaHoje(a) +
+            '<td class="num" data-rotulo="Nota do ' + bim + 'º bimestre"><input id="nota-' + a.id + '" class="entrada nota-entrada" inputmode="decimal" placeholder="0,0" data-nota="' + a.id + '" data-vazio="' + (a.n2 === null) + '" value="' + esc(valor) + '"' + (invalido ? ' aria-invalid="true" aria-describedby="erro-notas"' : '') + '></td>' +
+            '<td class="num" data-rotulo="Faltas">' + a.faltas + '</td><td class="num" data-rotulo="Presença">' + Math.round(freq) + '%</td><td data-rotulo="Situação">' + etiqueta(sit.texto, sit.tipo) + '</td></tr>';
+        }).join('') +
+      '</tbody></table></div>' +
+      '<p class="contagem">' + alunos.length + (alunos.length === 1 ? ' estudante' : ' estudantes') + ' · turma ' + esc(t.nome) + '</p>' +
+      '<div id="erro-notas" role="alert">' + (erroNotas ? '<p class="alerta-erro">' + icone('alerta', 20) + '<span>' + esc(erroNotas.texto) + '</span></p>' : '') + '</div>' +
+      '<div class="linha-botoes"><button type="button" class="botao" id="btn-notas">Salvar notas do ' + bim + 'º bimestre</button><span class="texto-suave">As notas salvas aparecem para a família.</span></div>';
+  }
+
+  // ---------- W14 · Escola: pedidos de matrícula ----------
+  function painelRecusa(p) {
+    return '<div class="painel-inline" role="group" aria-labelledby="recusa-titulo">' +
+      '<h2 id="recusa-titulo">Recusar matrícula de ' + esc(p.estudante) + '</h2>' +
+      '<div class="campo sem-margem"><label for="motivo">Motivo <span class="dica">(obrigatório; a família verá este texto)</span></label>' +
+      '<textarea id="motivo" class="entrada" aria-describedby="motivo-erro"' + (erroRecusa ? ' aria-invalid="true"' : '') + '></textarea>' +
+      '<p id="motivo-erro" class="erro">' + esc(erroRecusa) + '</p></div>' +
+      '<div class="linha-botoes fim"><button type="button" class="botao botao-secundario" data-cancelar-recusa>Cancelar</button><button type="button" class="botao" data-confirmar-recusa="' + esc(p.protocolo) + '">Confirmar recusa</button></div></div>';
+  }
+  function telaSecretaria() {
+    var abas = ['Aguardando confirmação', 'Confirmada', 'Recusada'];
+    var nomes = { 'Aguardando confirmação': 'Aguardando', Confirmada: 'Confirmadas', Recusada: 'Recusadas' };
+    var vazios = { 'Aguardando confirmação': 'Nenhum pedido aguardando.', Confirmada: 'Nenhuma matrícula confirmada ainda.', Recusada: 'Nenhum pedido recusado.' };
+    var lista = dados.pedidos.filter(function (p) { return p.situacao === filtro; });
+    var aprovadas = dados.turmas.filter(function (t) { return t.situacao === 'Aprovada'; });
+    var estudantes = aprovadas.reduce(function (s, t) { return s + t.matriculados; }, 0);
+    var aguardando = dados.pedidos.filter(function (p) { return p.situacao === 'Aguardando confirmação'; }).length;
+    var alvo = recusando ? dados.pedidos.filter(function (p) { return p.protocolo === recusando; })[0] : null;
+    return '<h1>Pedidos de matrícula · 2026</h1>' +
+      '<p class="pagina-descricao">' + esc(dados.escola.nome) + ' · ' + esc(dados.escola.municipio) + ' · ' + estudantes + ' estudantes enturmados em ' + aprovadas.length + ' turmas aprovadas</p>' +
+      '<div class="filtros" role="group" aria-label="Filtrar por situação">' +
+        abas.map(function (a) { var n = dados.pedidos.filter(function (p) { return p.situacao === a; }).length; return '<button type="button" data-filtro="' + a + '" aria-pressed="' + (a === filtro) + '">' + nomes[a] + (n ? ' (' + n + ')' : '') + '</button>'; }).join('') +
+      '</div>' +
+      (alvo ? painelRecusa(alvo) : '') +
+      (lista.length ?
+        '<div class="tabela-rolagem"><table class="tabela tabela-cartoes"><caption class="sr-only">Pedidos de matrícula: ' + nomes[filtro].toLowerCase() + '</caption>' +
+        '<thead><tr><th scope="col">Estudante</th><th scope="col">Tipo</th><th scope="col">Série</th><th scope="col" class="num">Pedido em</th><th scope="col">Situação</th><th scope="col">Decisão</th></tr></thead><tbody>' +
+        lista.map(function (p) {
+          var tipo = p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao';
+          var acoes = p.situacao === 'Aguardando confirmação'
+            ? '<div class="linha-botoes coluna-botoes"><button type="button" class="botao botao-mini" data-confirmar="' + esc(p.protocolo) + '" aria-label="Confirmar matrícula de ' + esc(p.estudante) + '">Confirmar matrícula</button><button type="button" class="botao botao-secundario botao-mini" data-recusar="' + esc(p.protocolo) + '" aria-expanded="' + (recusando === p.protocolo) + '" aria-label="Recusar matrícula de ' + esc(p.estudante) + '">Recusar matrícula</button></div>' : '';
+          return '<tr><td class="titulo-linha"><strong>' + esc(p.estudante) + '</strong><small>' + esc(p.protocolo) + ' · resp. ' + esc(p.responsavel) + '</small></td><td data-rotulo="Tipo">' + esc(p.tipo) + '</td><td class="sem-quebra-texto" data-rotulo="Série">' + esc(p.serie) + '</td><td class="num" data-rotulo="Pedido em">' + esc(p.data) + '</td>' +
+            '<td data-rotulo="Situação">' + etiqueta(p.situacao, tipo) + (p.motivo ? '<small>Motivo: ' + esc(p.motivo) + '</small>' : '') + '</td><td class="acoes">' + acoes + '</td></tr>';
+        }).join('') +
+        '</tbody></table></div><p class="contagem">' + lista.length + (lista.length === 1 ? ' pedido' : ' pedidos') + ' · ' + nomes[filtro].toLowerCase() + '</p>'
+        : '<div class="estado-vazio"><strong>' + vazios[filtro] + '</strong></div>') +
+      '<h2>Relatórios</h2>' +
+      '<ul class="lista-texto">' +
+        ['Boletim consolidado', 'Histórico escolar', 'Censo Escolar (Educacenso)'].map(function (r) {
+          return '<li><button type="button" class="botao botao-texto botao-mini" data-relatorio="' + esc(r) + '">' + esc(r) + '</button> <span class="texto-suave">ainda não disponível no protótipo</span></li>';
+        }).join('') +
+      '</ul>' +
+      '<p class="texto-suave nota">Pendências: ' + aguardando + (aguardando === 1 ? ' pedido aguardando confirmação' : ' pedidos aguardando confirmação') + ' · ' + dados.professoresDaEscola + ' professores cadastrados na rede simulada.</p>';
+  }
+
+  // ---------- Roteamento por endereço (#aluno, #professor, #secretaria) ----------
+  var perfilAtual = '';
+  function desenhar(focar) {
+    var perfil = location.hash.slice(1);
+    if (!PERFIS[perfil]) perfil = '';
+    if (perfil !== perfilAtual) { filtro = 'Aguardando confirmação'; recusando = null; erroRecusa = ''; erroNotas = null; ausentes = {}; }
+    perfilAtual = perfil;
+    document.getElementById('btn-sair').hidden = !perfil;
+    document.title = (perfil ? PERFIS[perfil].nome + ' · ' : '') + 'Sistema Acadêmico · SEED/SE';
+    var u = perfil && USUARIOS[perfil];
+    document.body.dataset.visao = u ? u.visao : 'geral';
+    document.getElementById('usuario').hidden = !u;
+    if (u) {
+      document.getElementById('usuario-avatar').textContent = u.nome.replace(/^Profa?\.\s+/, '').split(' ').slice(0, 2).map(function (p) { return p[0]; }).join('');
+      document.getElementById('usuario-nome').textContent = u.nome;
+      document.getElementById('usuario-papel').textContent = u.papel;
+    }
+    var trilha = perfil ? '<nav class="breadcrumb esp-b-4" aria-label="Você está em"><ol><li><a href="#" data-ir="">Início</a></li><li><span aria-current="page">' + PERFIS[perfil].nome + '</span></li></ol></nav>' : '';
+    main.innerHTML = trilha + (perfil === 'aluno' ? telaAluno() : perfil === 'professor' ? telaProfessor() : perfil === 'secretaria' ? telaSecretaria() : telaPerfis());
+    if (focar) { window.scrollTo(0, 0); main.focus(); }
+  }
+  window.addEventListener('hashchange', function () { desenhar(true); });
+
+  // Valida as notas digitadas. Devolve o primeiro erro ou null. Campo vazio só vale se a nota ainda não foi lançada.
+  function validarNotas() {
+    var campos = main.querySelectorAll('[data-nota]');
+    for (var i = 0; i < campos.length; i++) {
+      var c = campos[i];
+      var texto = c.value.trim();
+      if (texto === '' && c.dataset.vazio === 'true') continue;
+      var v = Number(texto.replace(',', '.'));
+      if (texto === '' || isNaN(v) || v < 0 || v > 10) {
+        var aluno = alunosTurma().filter(function (a) { return a.id === c.dataset.nota; })[0];
+        return { id: c.dataset.nota, texto: 'Nota inválida em ' + aluno.nome + ': use um valor de 0 a 10.' };
+      }
+    }
+    return null;
+  }
+
+  // ---------- Ações ----------
+  document.addEventListener('click', function (e) {
+    var ir = e.target.closest('[data-ir]');
+    if (ir) { e.preventDefault(); if (location.hash) location.hash = ''; else desenhar(true); return; }
+    var esc2 = e.target.closest('[data-escala]');
+    if (esc2) { escala = Math.min(1.5, Math.max(0.9, Math.round((escala + Number(esc2.dataset.escala)) * 10) / 10)); aplicarEscala(escala); return; }
+    var ouvir = e.target.closest('[data-ouvir]');
+    if (ouvir) { ler(ouvir.dataset.ouvir); return; }
+
+    // Caixa "Faltou hoje": atualiza só o resumo da chamada, sem redesenhar a tabela (não perde notas já digitadas).
+    var caixa = e.target.closest('[data-faltou]');
+    if (caixa && main.contains(caixa)) {
+      if (caixa.checked) ausentes[caixa.dataset.faltou] = true; else delete ausentes[caixa.dataset.faltou];
+      var nAus = alunosTurma().filter(function (a) { return ausentes[a.id]; }).length;
+      var resumo = document.getElementById('chamada-resumo');
+      if (resumo) resumo.textContent = (alunosTurma().length - nAus) + (alunosTurma().length - nAus === 1 ? ' presente' : ' presentes') + ' · ' + nAus + (nAus === 1 ? ' falta' : ' faltas');
+      var registrar = document.getElementById('btn-frequencia');
+      if (registrar) registrar.textContent = nAus ? 'Registrar chamada com ' + nAus + (nAus === 1 ? ' falta' : ' faltas') : 'Registrar chamada: todos presentes';
+      return;
+    }
+
+    var b = e.target.closest('button');
+    if (!b || !main.contains(b)) return;
+
+    if (b.dataset.reiniciar !== undefined) {
+      confirmar('Restaurar os dados de demonstração?', 'Apaga as notas, a chamada e as confirmações feitas neste protótipo. Os dados voltam ao início.', 'Restaurar dados', true).then(function (sim) {
+        if (!sim) return;
+        dados = copia(BASE); dados.chamadaFeita = null; guardar(); desenhar(); avisar('Dados de demonstração restaurados.');
+      });
+      return;
+    }
+    if (b.id === 'btn-historico') avisar('Pedido de histórico escolar enviado. A secretaria vai emitir o documento.');
+
+    if (b.id === 'btn-frequencia') {
+      var faltosos = alunosTurma().filter(function (a) { return ausentes[a.id]; });
+      var texto = faltosos.length ? 'Vai somar 1 falta para: ' + faltosos.map(function (a) { return a.nome; }).join(', ') + '. Depois de registrada, a chamada de hoje não pode ser refeita.' : 'Todos presentes. Depois de registrada, a chamada de hoje não pode ser refeita.';
+      confirmar('Registrar a chamada de hoje?', texto, 'Registrar chamada').then(function (sim) {
+        if (!sim) return;
+        faltosos.forEach(function (a) { a.faltas += 1; });
+        dados.chamadaFeita = { data: hojeISO(), ausentes: faltosos.map(function (a) { return a.id; }) };
+        ausentes = {};
+        guardar(); desenhar(); avisar('Chamada registrada em ' + turma().nome + ': ' + (faltosos.length === 0 ? 'todos presentes' : faltosos.length + (faltosos.length === 1 ? ' falta lançada' : ' faltas lançadas')) + '.');
+      });
+    }
+    if (b.id === 'btn-notas') {
+      erroNotas = validarNotas();
+      if (erroNotas) {
+        desenhar();
+        main.querySelector('#nota-' + erroNotas.id).focus();
+        return;
+      }
+      main.querySelectorAll('[data-nota]').forEach(function (c) {
+        if (c.value.trim() === '') return;
+        alunosTurma().forEach(function (a) { if (a.id === c.dataset.nota) a.n2 = Math.round(Number(c.value.replace(',', '.')) * 10) / 10; });
+      });
+      guardar(); desenhar();
+      avisar('Notas do ' + dados.letivo.bimestresLancados + 'º bimestre salvas: ' + alunosTurma().length + ' estudantes. Já aparecem no boletim da família.');
+    }
+
+    if (b.dataset.filtro) { filtro = b.dataset.filtro; recusando = null; desenhar(); }
+    if (b.dataset.confirmar) {
+      var alvoPedido = dados.pedidos.filter(function (p) { return p.protocolo === b.dataset.confirmar; })[0];
+      confirmar('Confirmar a matrícula?', alvoPedido.estudante + ' passa a ser aluno(a) da escola na ' + alvoPedido.serie + ', e a família é avisada. A confirmação não pode ser desfeita por aqui.', 'Confirmar matrícula').then(function (sim) {
+        if (!sim) return;
+        alvoPedido.situacao = 'Confirmada'; guardar(); desenhar(); avisar('Matrícula confirmada.');
+      });
+    }
+    if (b.dataset.recusar) {
+      recusando = b.dataset.recusar; erroRecusa = ''; desenhar();
+      main.querySelector('#motivo').focus();
+    }
+    if ('cancelarRecusa' in b.dataset) {
+      var anterior = recusando; recusando = null; desenhar();
+      var volta = main.querySelector('[data-recusar="' + anterior + '"]');
+      if (volta) volta.focus();
+    }
+    if (b.dataset.confirmarRecusa) {
+      var motivo = main.querySelector('#motivo').value.trim();
+      if (motivo.length < 5) {
+        erroRecusa = 'Escreva o motivo com pelo menos 5 caracteres. A família verá este texto.';
+        desenhar(); main.querySelector('#motivo').focus(); return;
+      }
+      dados.pedidos.forEach(function (p) { if (p.protocolo === b.dataset.confirmarRecusa) { p.situacao = 'Recusada'; p.motivo = motivo; } });
+      recusando = null; erroRecusa = '';
+      guardar(); desenhar(); avisar('Matrícula recusada. A família será avisada.');
+    }
+    if (b.dataset.relatorio) avisar('O relatório “' + b.dataset.relatorio + '” ainda não existe no protótipo.', 'info');
+  });
+
+  // Limpa o aviso de erro assim que a pessoa corrige o campo.
+  main.addEventListener('input', function (e) {
+    if (!e.target.dataset || !e.target.dataset.nota) return;
+    if (erroNotas && erroNotas.id === e.target.dataset.nota) { e.target.removeAttribute('aria-invalid'); }
+  });
+
+  desenhar(false);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+{
+  "fonte": "Censo Escolar (INEP), base SIMULADA para o protótipo: escolas, nomes e endereços fictícios",
+  "escolas": [
+    {
+      "inep": "28003104",
+      "nome": "Colégio Estadual Professor Osvaldo Tavares Rezende",
+      "municipio": "Aracaju",
+      "bairro": "Grageru"
+    },
+    {
+      "inep": "28003201",
+      "nome": "Escola Estadual Jornalista Adelaide Cunha Bispo",
+      "municipio": "Aracaju",
+      "bairro": "Bugio"
+    },
+    {
+      "inep": "28015206",
+      "nome": "Escola Estadual Doutor Heraldo Menezes Sobral",
+      "municipio": "São Cristóvão",
+      "bairro": "Rosa Elze"
+    },
+    {
+      "inep": "28022407",
+      "nome": "Colégio Estadual Padre Ezequiel Fontes Matos",
+      "municipio": "Lagarto",
+      "bairro": "Centro"
+    },
+    {
+      "inep": "28026305",
+      "nome": "Escola Estadual Professora Zilda Aragão Prado",
+      "municipio": "Itabaiana",
+      "bairro": "Centro"
+    },
+    {
+      "inep": "28031512",
+      "nome": "Escola Estadual Professora Celina Aragão Melo",
+      "municipio": "Nossa Senhora do Socorro",
+      "bairro": "Centro Histórico",
+      "logradouro": "Rua Projetada A",
+      "numero": "120",
+      "cep": "49160000",
+      "telefone": "7932541100",
+      "email": "celina.melo@escola.se.gov.br"
+    },
+    {
+      "inep": "28031620",
+      "nome": "Colégio Estadual Joaquim Bispo Fontes",
+      "municipio": "Aracaju",
+      "bairro": "Santos Dumont",
+      "logradouro": "Avenida Central do Santos Dumont",
+      "numero": "845",
+      "cep": "49087000",
+      "telefone": "7932595230",
+      "email": ""
+    },
+    {
+      "inep": "28032011",
+      "nome": "Escola Estadual Doutora Helena Prado Matos",
+      "municipio": "Simão Dias",
+      "bairro": "Centro",
+      "logradouro": "Praça da Matriz",
+      "numero": "60",
+      "cep": "49480000",
+      "telefone": "7936111420",
+      "email": ""
+    },
+    {
+      "inep": "28032305",
+      "nome": "Escola Estadual Professor Gilberto Andrade Lima",
+      "municipio": "Campo do Brito",
+      "bairro": "Centro",
+      "logradouro": "Rua Gentil Tavares",
+      "numero": "",
+      "cep": "49520000",
+      "telefone": "",
+      "email": ""
+    }
+  ]
+}

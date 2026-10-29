@@ -1,0 +1,129 @@
+{
+  "MAT-2026-0005": {
+    "escolaOrigem": "Colégio Santa Luzia (Salvador/BA), rede privada",
+    "serieCursada": "1ª série EM",
+    "componentes": [
+      [
+        "Língua Portuguesa e Literatura",
+        4,
+        7.6
+      ],
+      [
+        "Matemática",
+        4,
+        6.9
+      ],
+      [
+        "Física",
+        2,
+        6.3
+      ],
+      [
+        "Química",
+        2,
+        5.4
+      ],
+      [
+        "Biologia",
+        2,
+        8.1
+      ],
+      [
+        "História",
+        2,
+        7.4
+      ],
+      [
+        "Geografia",
+        1,
+        7.8
+      ],
+      [
+        "Filosofia",
+        1,
+        8.7
+      ],
+      [
+        "Língua Inglesa",
+        2,
+        8.3
+      ],
+      [
+        "Educação Física",
+        2,
+        9.4
+      ],
+      [
+        "Espanhol",
+        1,
+        7.7
+      ]
+    ]
+  },
+  "MAT-2026-0002": {
+    "escolaOrigem": "Escola Estadual Jacinta Barros Lins (Maceió/AL)",
+    "serieCursada": "1ª série EM (1º semestre)",
+    "componentes": [
+      [
+        "Português",
+        4,
+        6.8
+      ],
+      [
+        "Matemática",
+        3,
+        6.4
+      ],
+      [
+        "Física",
+        2,
+        7.2
+      ],
+      [
+        "Química",
+        2,
+        7.6
+      ],
+      [
+        "Biologia",
+        2,
+        5.9
+      ],
+      [
+        "História",
+        2,
+        8.1
+      ],
+      [
+        "Geografia",
+        2,
+        6.9
+      ],
+      [
+        "Sociologia",
+        1,
+        8.3
+      ],
+      [
+        "Filosofia",
+        1,
+        7.4
+      ],
+      [
+        "Inglês",
+        2,
+        6.6
+      ],
+      [
+        "Educação Física",
+        2,
+        8.8
+      ],
+      [
+        "Artes",
+        1,
+        8.4
+      ]
+    ]
+  }
+}

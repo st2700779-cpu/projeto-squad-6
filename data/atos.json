@@ -1,0 +1,2433 @@
+[
+  {
+    "escolaId": "e1",
+    "etapa": "Ensino Médio",
+    "numero": "Resolução CEE nº 118/2022",
+    "validade": "2027-11-19",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "historico": [
+      {
+        "numero": "Resolução CEE nº 061/2017",
+        "tipo": "Autorização de funcionamento",
+        "publicacao": "2017-03-10",
+        "validade": "2022-11-19"
+      }
+    ]
+  },
+  {
+    "escolaId": "e1",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Resolução CEE nº 045/2019",
+    "validade": "2026-06-14",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
+  },
+  {
+    "escolaId": "e2",
+    "etapa": "Ensino Médio",
+    "numero": "Resolução CEE nº 207/2021",
+    "validade": "2026-12-11",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "historico": [
+      {
+        "numero": "Resolução CEE nº 090/2016",
+        "tipo": "Autorização de funcionamento",
+        "publicacao": "2016-05-02",
+        "validade": "2021-12-11"
+      }
+    ]
+  },
+  {
+    "escolaId": "e2",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Resolução CEE nº 088/2023",
+    "validade": "2030-04-26",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
+  },
+  {
+    "escolaId": "e3",
+    "etapa": "Ensino Médio",
+    "numero": "Resolução CEE nº 150/2024",
+    "validade": "2029-08-03",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica"
+  },
+  {
+    "escolaId": "e3",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Resolução CEE nº 151/2024",
+    "validade": "2029-08-03",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
+  },
+  {
+    "escolaId": "e4",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Resolução CEE nº 061/2024",
+    "validade": "2031-02-17",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
+  },
+  {
+    "escolaId": "e5",
+    "etapa": "Ensino Médio",
+    "numero": "Resolução CEE nº 033/2018",
+    "validade": "2026-04-08",
+    "tipo": "Reconhecimento de curso",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "historico": [
+      {
+        "numero": "Resolução CEE nº 012/2013",
+        "tipo": "Autorização de funcionamento",
+        "publicacao": "2013-02-18",
+        "validade": "2018-04-08"
+      }
+    ]
+  },
+  {
+    "escolaId": "e5",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Resolução CEE nº 152/2022",
+    "validade": "2029-10-22",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Finais"
+  },
+  {
+    "escolaId": "ee001",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 001/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee001",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 001/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee002",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 002/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee002",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 002/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee003",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 003/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee004",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 004/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee005",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 005/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee005",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 005/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee006",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 006/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee007",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 007/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee007",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 007/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee008",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 008/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee008",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 008/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee009",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 009/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee010",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 010/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee011",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 011/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee011",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 011/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee012",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 012/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee012",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 012/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee013",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 013/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee013",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 013/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee014",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 014/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee015",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 015/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee015",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 015/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee016",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 016/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee017",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 017/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee017",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 017/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee018",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 018/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee018",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 018/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee019",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 019/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee020",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 020/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee021",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 021/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee022",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 022/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee023",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 023/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee024",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 024/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee025",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 025/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee026",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 026/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee027",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 027/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee027",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 027/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee028",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 028/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee029",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 029/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee029",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 029/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee030",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 030/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee030",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 030/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee031",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 031/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee031",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 031/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee032",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 032/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee033",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 033/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee033",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 033/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee034",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 034/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee035",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 035/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee035",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 035/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee036",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 036/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee037",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 037/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee037",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 037/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee038",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 038/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee038",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 038/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee039",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 039/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee039",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 039/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee040",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 040/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee041",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 041/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee042",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 042/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee043",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 043/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee043",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 043/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee044",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 044/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee045",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 045/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee046",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 046/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee046",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 046/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee047",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 047/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee047",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 047/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee048",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 048/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee048",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 048/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee049",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 049/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee049",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 049/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee050",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 050/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee050",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 050/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee051",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 051/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee052",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 052/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee052",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 052/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee053",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 053/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee053",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 053/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee054",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 054/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee054",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 054/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee055",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 055/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee055",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 055/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee056",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 056/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee056",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 056/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee057",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 057/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee058",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 058/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee058",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 058/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee059",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 059/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee060",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 060/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee060",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 060/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee061",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 061/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee062",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 062/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee062",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 062/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee063",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 063/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee063",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 063/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee064",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 064/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee064",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 064/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee065",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 065/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee065",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 065/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee066",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 066/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee066",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 066/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee067",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 067/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee067",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 067/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee068",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 068/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee068",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 068/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee069",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 069/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee069",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 069/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee070",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 070/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee070",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 070/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee071",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 071/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee072",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 072/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee072",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 072/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee073",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 073/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee073",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 073/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee074",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 074/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee074",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 074/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee075",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 075/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee075",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 075/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee076",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 076/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee076",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 076/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee077",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 077/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee078",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 078/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee078",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 078/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee079",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 079/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee080",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 080/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee080",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 080/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee081",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 081/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee081",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 081/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee082",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 082/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee083",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 083/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee083",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 083/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee084",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 084/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee084",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 084/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee085",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 085/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee086",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 086/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee086",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 086/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee087",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 087/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee087",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 087/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee088",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 088/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee089",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 089/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee089",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 089/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee090",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 090/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee090",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 090/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee091",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 091/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee092",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 092/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee092",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 092/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee093",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 093/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee094",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 094/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee094",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 094/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee095",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 095/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee095",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 095/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee096",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 096/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee097",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 097/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee097",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 097/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee098",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 098/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee098",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 098/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee099",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 099/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio em Tempo Integral",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee100",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "numero": "Ato de exemplo nº 100/2024",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Fundamental — Anos Finais",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee100",
+    "etapa": "Ensino Médio",
+    "numero": "Ato de exemplo nº 100/2025",
+    "validade": "2029-12-31",
+    "tipo": "Reconhecimento (exemplo)",
+    "curso": "Ensino Médio — Formação Geral Básica",
+    "series": [
+      "1ª série EM",
+      "2ª série EM",
+      "3ª série EM"
+    ],
+    "exemplo": true
+  }
+]

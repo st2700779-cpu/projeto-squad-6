@@ -1,0 +1,21 @@
+/* Entrada e login. Só usa tokens de tema.css. */
+.campo-senha { display: flex; gap: var(--sp-2); }
+.campo-senha .entrada { flex: 1; min-width: 0; }
+.campo-senha .botao { flex: none; min-width: 6.5rem; }
+.campo .erro { margin: var(--sp-1) 0 0; min-height: 0; }
+.campo .erro:empty { display: none; }
+.aviso-caps { display: flex; align-items: center; gap: var(--sp-2); margin: var(--sp-1) 0 0; font-size: var(--texto-sm); color: var(--texto); }
+.aviso-caps[hidden] { display: none; }
+.form-login { max-width: 420px; }
+.form-login .botao-grande { width: 100%; }
+.demo { max-width: 420px; margin: var(--sp-6) 0 var(--sp-4); border: 1px solid var(--borda); border-radius: var(--raio-lg); background: var(--superficie); }
+.demo summary { cursor: pointer; padding: var(--sp-3) var(--sp-4); min-height: var(--toque); display: flex; align-items: center; font-weight: var(--peso-forte); font-size: var(--texto-sm); }
+.demo[open] summary { border-bottom: 1px solid var(--borda); }
+.demo-conta { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); flex-wrap: wrap; }
+.demo-conta + .demo-conta { border-top: 1px solid var(--borda); }
+.demo-conta dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px var(--sp-3); font-size: var(--texto-sm); }
+.demo-conta dt { color: var(--texto-suave); }
+.demo-conta dd { margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+.demo-nota { margin: 0; padding: var(--sp-3) var(--sp-4); border-top: 1px solid var(--borda); font-size: var(--texto-sm); color: var(--texto-suave); }
+.sessao-atual { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin: 0 0 var(--sp-4); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--borda); border-radius: var(--raio-lg); background: var(--superficie); max-width: 720px; }
+.sessao-atual span { flex: 1 1 200px; }

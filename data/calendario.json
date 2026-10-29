@@ -1,0 +1,60 @@
+[
+  {
+    "data": "12/10/2026",
+    "inicio": "2026-10-12",
+    "titulo": "Feriado — Nossa Senhora Aparecida",
+    "tipo": "feriado"
+  },
+  {
+    "data": "13 a 16/10/2026",
+    "inicio": "2026-10-13",
+    "fim": "2026-10-16",
+    "titulo": "Provas do 3º bimestre",
+    "tipo": "prova"
+  },
+  {
+    "data": "22/10/2026",
+    "inicio": "2026-10-22",
+    "titulo": "Reunião de pais e mestres do 3º bimestre, às 18h30",
+    "tipo": "reuniao"
+  },
+  {
+    "data": "30/10/2026",
+    "inicio": "2026-10-30",
+    "titulo": "Prazo de lançamento das notas do 3º bimestre (professores)",
+    "tipo": "prazo",
+    "para": "professores"
+  },
+  {
+    "data": "02/11/2026",
+    "inicio": "2026-11-02",
+    "titulo": "Feriado — Finados",
+    "tipo": "feriado"
+  },
+  {
+    "data": "03 a 28/11/2026",
+    "inicio": "2026-11-03",
+    "fim": "2026-11-28",
+    "titulo": "Rematrícula para 2027",
+    "tipo": "prazo"
+  },
+  {
+    "data": "20/11/2026",
+    "inicio": "2026-11-20",
+    "titulo": "Feriado — Dia da Consciência Negra",
+    "tipo": "feriado"
+  },
+  {
+    "data": "01 a 15/12/2026",
+    "inicio": "2026-12-01",
+    "fim": "2026-12-15",
+    "titulo": "Matrícula nova para 2027",
+    "tipo": "prazo"
+  },
+  {
+    "data": "18/12/2026",
+    "inicio": "2026-12-18",
+    "titulo": "Fim do ano letivo",
+    "tipo": "evento"
+  }
+]

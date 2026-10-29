@@ -1,0 +1,348 @@
+[
+  {
+    "id": "p1",
+    "nome": "Profa. Rosângela Tavares Góis",
+    "concurso": "Professor de Matemática",
+    "formacao": "Licenciatura em Matemática",
+    "habilitacao": [
+      "Matemática"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 12,
+    "matriculaFuncional": "PF-30412",
+    "escolaId": "e1"
+  },
+  {
+    "id": "p2",
+    "nome": "Prof. Ednaldo Pinheiro Lisboa",
+    "concurso": "Professor de Física",
+    "formacao": "Licenciatura em Física",
+    "habilitacao": [
+      "Física",
+      "Ciências"
+    ],
+    "cargaHorariaSemanal": 20,
+    "aulasEmOutrasTurmas": 13,
+    "matriculaFuncional": "PF-28175",
+    "escolaId": "e1"
+  },
+  {
+    "id": "p3",
+    "nome": "Profa. Cláudia Regina Amorim",
+    "concurso": "Professor de Língua Portuguesa",
+    "formacao": "Letras — Português e Inglês",
+    "habilitacao": [
+      "Língua Portuguesa",
+      "Inglês"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 17,
+    "matriculaFuncional": "PF-33096",
+    "escolaId": "e1"
+  },
+  {
+    "id": "p4",
+    "nome": "Prof. Ivanildo Bispo Santana",
+    "concurso": "Professor de Biologia",
+    "formacao": "Ciências Biológicas",
+    "habilitacao": [
+      "Biologia",
+      "Ciências"
+    ],
+    "cargaHorariaSemanal": 20,
+    "aulasEmOutrasTurmas": 16,
+    "matriculaFuncional": "PF-27740",
+    "escolaId": "e1"
+  },
+  {
+    "id": "p5",
+    "nome": "Profa. Sueli Maria Guimarães",
+    "concurso": "Professor de História",
+    "formacao": "Licenciatura em História",
+    "habilitacao": [
+      "História"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 21,
+    "matriculaFuncional": "PF-31258",
+    "escolaId": "e1"
+  },
+  {
+    "id": "p6",
+    "nome": "Profa. Marlene Batista Cruz",
+    "concurso": "Professor de Língua Portuguesa",
+    "formacao": "Letras — Português e Inglês",
+    "habilitacao": [
+      "Língua Portuguesa",
+      "Inglês"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 10,
+    "matriculaFuncional": "PF-29014",
+    "escolaId": "e2"
+  },
+  {
+    "id": "p7",
+    "nome": "Prof. Wellington Sá Andrade",
+    "concurso": "Professor de Matemática",
+    "formacao": "Licenciatura em Matemática",
+    "habilitacao": [
+      "Matemática"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 14,
+    "matriculaFuncional": "PF-31877",
+    "escolaId": "e2"
+  },
+  {
+    "id": "p8",
+    "nome": "Profa. Cleonice Prado Nery",
+    "concurso": "Professor de Química",
+    "formacao": "Licenciatura em Química",
+    "habilitacao": [
+      "Química",
+      "Ciências"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 8,
+    "matriculaFuncional": "PF-28650",
+    "escolaId": "e2"
+  },
+  {
+    "id": "p9",
+    "nome": "Prof. Genivaldo Lima Torres",
+    "concurso": "Professor de Biologia",
+    "formacao": "Licenciatura em Ciências Biológicas",
+    "habilitacao": [
+      "Biologia",
+      "Ciências"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 16,
+    "matriculaFuncional": "PF-27113",
+    "escolaId": "e2"
+  },
+  {
+    "id": "p10",
+    "nome": "Profa. Eliane Vieira Cardoso",
+    "concurso": "Professor de História",
+    "formacao": "Licenciatura em História",
+    "habilitacao": [
+      "História",
+      "Geografia",
+      "Projeto de Vida"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 12,
+    "matriculaFuncional": "PF-32491",
+    "escolaId": "e2"
+  },
+  {
+    "id": "p11",
+    "nome": "Prof. Josenilton Reis Barreto",
+    "concurso": "Professor de Educação Física",
+    "formacao": "Licenciatura em Educação Física",
+    "habilitacao": [
+      "Educação Física"
+    ],
+    "cargaHorariaSemanal": 20,
+    "aulasEmOutrasTurmas": 4,
+    "matriculaFuncional": "PF-26302",
+    "escolaId": "e2"
+  },
+  {
+    "id": "p12",
+    "nome": "Profa. Rita de Cássia Meneses",
+    "concurso": "Professor de Arte",
+    "formacao": "Licenciatura em Artes Visuais",
+    "habilitacao": [
+      "Arte"
+    ],
+    "cargaHorariaSemanal": 20,
+    "aulasEmOutrasTurmas": 6,
+    "matriculaFuncional": "PF-30589",
+    "escolaId": "e2"
+  },
+  {
+    "id": "p13",
+    "nome": "Prof. Adailton Souza Reis",
+    "concurso": "Professor de Língua Portuguesa",
+    "formacao": "Letras — Português",
+    "habilitacao": [
+      "Língua Portuguesa"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 9,
+    "matriculaFuncional": "PF-29988",
+    "escolaId": "e3"
+  },
+  {
+    "id": "p14",
+    "nome": "Profa. Ivonete Gomes Santos",
+    "concurso": "Professor de Matemática",
+    "formacao": "Licenciatura em Matemática",
+    "habilitacao": [
+      "Matemática"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 11,
+    "matriculaFuncional": "PF-31026",
+    "escolaId": "e3"
+  },
+  {
+    "id": "p15",
+    "nome": "Prof. Reinaldo Franco Melo",
+    "concurso": "Professor de História",
+    "formacao": "Licenciatura em História",
+    "habilitacao": [
+      "História",
+      "Geografia"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 7,
+    "matriculaFuncional": "PF-28377",
+    "escolaId": "e3"
+  },
+  {
+    "id": "p16",
+    "nome": "Profa. Solange Araújo Pinto",
+    "concurso": "Professor de Ciências Biológicas",
+    "formacao": "Licenciatura em Ciências Biológicas",
+    "habilitacao": [
+      "Biologia",
+      "Ciências"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 5,
+    "matriculaFuncional": "PF-30144",
+    "escolaId": "e3"
+  },
+  {
+    "id": "p17",
+    "nome": "Prof. Emanuel Dória Nunes",
+    "concurso": "Professor de Língua Portuguesa",
+    "formacao": "Letras — Português e Inglês",
+    "habilitacao": [
+      "Língua Portuguesa",
+      "Inglês"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 13,
+    "matriculaFuncional": "PF-27795",
+    "escolaId": "e4"
+  },
+  {
+    "id": "p18",
+    "nome": "Profa. Zuleide Ramos Ferro",
+    "concurso": "Professor de Matemática",
+    "formacao": "Licenciatura em Matemática",
+    "habilitacao": [
+      "Matemática"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 10,
+    "matriculaFuncional": "PF-32708",
+    "escolaId": "e4"
+  },
+  {
+    "id": "p19",
+    "nome": "Prof. Hélio Cabral Teles",
+    "concurso": "Professor de Geografia",
+    "formacao": "Licenciatura em Geografia",
+    "habilitacao": [
+      "Geografia",
+      "História"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 8,
+    "matriculaFuncional": "PF-26841",
+    "escolaId": "e4"
+  },
+  {
+    "id": "p20",
+    "nome": "Profa. Vanusa Lopes Carvalho",
+    "concurso": "Professor de Ciências Biológicas",
+    "formacao": "Licenciatura em Ciências Biológicas",
+    "habilitacao": [
+      "Ciências",
+      "Biologia"
+    ],
+    "cargaHorariaSemanal": 20,
+    "aulasEmOutrasTurmas": 6,
+    "matriculaFuncional": "PF-29451",
+    "escolaId": "e4"
+  },
+  {
+    "id": "p21",
+    "nome": "Profa. Neuza Maria Andrade",
+    "concurso": "Professor de Educação Física",
+    "formacao": "Licenciatura em Educação Física",
+    "habilitacao": [
+      "Educação Física",
+      "Arte"
+    ],
+    "cargaHorariaSemanal": 20,
+    "aulasEmOutrasTurmas": 3,
+    "matriculaFuncional": "PF-28092",
+    "escolaId": "e4"
+  },
+  {
+    "id": "p22",
+    "nome": "Prof. Tiago Menezes Farias",
+    "concurso": "Professor de Língua Portuguesa",
+    "formacao": "Letras — Português e Inglês",
+    "habilitacao": [
+      "Língua Portuguesa",
+      "Inglês"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 12,
+    "matriculaFuncional": "PF-32310",
+    "escolaId": "e5"
+  },
+  {
+    "id": "p23",
+    "nome": "Profa. Débora Silva Aragão",
+    "concurso": "Professor de Matemática",
+    "formacao": "Licenciatura em Matemática",
+    "habilitacao": [
+      "Matemática",
+      "Física"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 15,
+    "matriculaFuncional": "PF-30975",
+    "escolaId": "e5"
+  },
+  {
+    "id": "p24",
+    "nome": "Prof. Romildo Fontes Alves",
+    "concurso": "Professor de História",
+    "formacao": "Licenciatura em História",
+    "habilitacao": [
+      "História",
+      "Geografia",
+      "Filosofia",
+      "Sociologia"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 9,
+    "matriculaFuncional": "PF-27466",
+    "escolaId": "e5"
+  },
+  {
+    "id": "p25",
+    "nome": "Profa. Adriana Bispo Correia",
+    "concurso": "Professor de Biologia",
+    "formacao": "Licenciatura em Ciências Biológicas",
+    "habilitacao": [
+      "Biologia",
+      "Ciências",
+      "Química"
+    ],
+    "cargaHorariaSemanal": 30,
+    "aulasEmOutrasTurmas": 10,
+    "matriculaFuncional": "PF-31593",
+    "escolaId": "e5"
+  }
+]

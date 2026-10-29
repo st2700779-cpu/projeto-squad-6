@@ -1,0 +1,30 @@
+{
+  "matrizes": {
+    "EF-2019": { "curso": "Ensino Fundamental — Anos Finais", "versao": "2019", "resumo": "Currículo de Sergipe de 2019, com 25 aulas semanais." },
+    "EF-2024": { "curso": "Ensino Fundamental — Anos Finais", "versao": "2024", "resumo": "Currículo revisado em 2024.", "mudou": "Entram Projeto de Vida e Educação Financeira; Língua Portuguesa passa de 4 para 5 aulas semanais; Ensino Religioso vira optativo." },
+    "EM-2025": { "curso": "Ensino Médio — Formação Geral Básica", "versao": "2025", "resumo": "Matriz de 2025 para quem entra na 1ª série." }
+  },
+  "estudantes": {
+    "a3": [
+      { "ano": 2017, "serie": "1º ano", "escolaNome": "Escola Municipal Maria Auxiliadora Santos (Aracaju)", "evento": "Matrícula inicial", "matriz": null },
+      { "ano": 2018, "serie": "2º ano", "escolaNome": "Escola Municipal Maria Auxiliadora Santos (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2019, "serie": "3º ano", "escolaNome": "Escola Municipal Maria Auxiliadora Santos (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2020, "serie": "4º ano", "escolaNome": "Escola Municipal Maria Auxiliadora Santos (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2021, "serie": "5º ano", "escolaNome": "Escola Municipal Maria Auxiliadora Santos (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2022, "serie": "6º ano", "escolaId": "e3", "evento": "Ingresso na rede estadual", "matriz": "EF-2019" },
+      { "ano": 2023, "serie": "7º ano", "escolaId": "e3", "evento": "Rematrícula", "matriz": "EF-2019" },
+      { "ano": 2024, "serie": "8º ano", "escolaId": "e3", "evento": "Rematrícula", "matriz": "EF-2024" },
+      { "ano": 2025, "serie": "9º ano", "escolaId": "e2", "evento": "Transferência entre escolas da rede", "matriz": "EF-2024" },
+      { "ano": 2026, "serie": "1ª série EM", "escolaId": "e1", "evento": "Transferência entre escolas da rede", "matriz": "EM-2025" }
+    ],
+    "b7": [
+      { "ano": 2020, "serie": "1º ano", "escolaNome": "Escola Municipal Josefa Santana Lima (Aracaju)", "evento": "Matrícula inicial", "matriz": null },
+      { "ano": 2021, "serie": "2º ano", "escolaNome": "Escola Municipal Josefa Santana Lima (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2022, "serie": "3º ano", "escolaNome": "Escola Municipal Josefa Santana Lima (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2023, "serie": "4º ano", "escolaNome": "Escola Municipal Josefa Santana Lima (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2024, "serie": "5º ano", "escolaNome": "Escola Municipal Josefa Santana Lima (Aracaju)", "evento": "Rematrícula", "matriz": null },
+      { "ano": 2025, "serie": "6º ano", "escolaId": "e2", "evento": "Ingresso na rede estadual", "matriz": "EF-2024" },
+      { "ano": 2026, "serie": "7º ano", "escolaId": "e2", "evento": "Rematrícula", "matriz": "EF-2024" }
+    ]
+  }
+}

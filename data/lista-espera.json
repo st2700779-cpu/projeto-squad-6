@@ -1,0 +1,308 @@
+[
+  {
+    "id": "LE-001",
+    "municipio": "Aracaju",
+    "bairro": "Santos Dumont",
+    "serie": "6º ano",
+    "quantidade": 9,
+    "desde": "2026-08-14",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-002",
+    "municipio": "Aracaju",
+    "bairro": "Santos Dumont",
+    "serie": "7º ano",
+    "quantidade": 5,
+    "desde": "2026-08-14",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-003",
+    "municipio": "Aracaju",
+    "bairro": "Santos Dumont",
+    "serie": "1ª série EM",
+    "quantidade": 8,
+    "desde": "2026-08-14",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-004",
+    "municipio": "Aracaju",
+    "bairro": "Farolândia",
+    "serie": "6º ano",
+    "quantidade": 3,
+    "desde": "2026-08-20",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-005",
+    "municipio": "Aracaju",
+    "bairro": "Farolândia",
+    "serie": "9º ano",
+    "quantidade": 2,
+    "desde": "2026-08-20",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-006",
+    "municipio": "Aracaju",
+    "bairro": "Farolândia",
+    "serie": "1ª série EM",
+    "quantidade": 2,
+    "desde": "2026-08-20",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-007",
+    "municipio": "Aracaju",
+    "bairro": "Bugio",
+    "serie": "6º ano",
+    "quantidade": 4,
+    "desde": "2026-09-02",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-008",
+    "municipio": "Aracaju",
+    "bairro": "Bugio",
+    "serie": "1ª série EM",
+    "quantidade": 3,
+    "desde": "2026-09-02",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-009",
+    "municipio": "Aracaju",
+    "bairro": "Grageru",
+    "serie": "1ª série EM",
+    "quantidade": 4,
+    "desde": "2026-09-10",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-010",
+    "municipio": "Aracaju",
+    "bairro": "Grageru",
+    "serie": "2ª série EM",
+    "quantidade": 3,
+    "desde": "2026-09-10",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-011",
+    "municipio": "Nossa Senhora do Socorro",
+    "bairro": "Centro Histórico",
+    "serie": "6º ano",
+    "quantidade": 7,
+    "desde": "2026-08-05",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-012",
+    "municipio": "Nossa Senhora do Socorro",
+    "bairro": "Centro Histórico",
+    "serie": "7º ano",
+    "quantidade": 4,
+    "desde": "2026-08-05",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-013",
+    "municipio": "Nossa Senhora do Socorro",
+    "bairro": "Centro Histórico",
+    "serie": "1ª série EM",
+    "quantidade": 6,
+    "desde": "2026-08-05",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-014",
+    "municipio": "Nossa Senhora do Socorro",
+    "bairro": "Centro Histórico",
+    "serie": "2ª série EM",
+    "quantidade": 3,
+    "desde": "2026-08-05",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-015",
+    "municipio": "São Cristóvão",
+    "bairro": "Rosa Elze",
+    "serie": "6º ano",
+    "quantidade": 2,
+    "desde": "2026-09-15",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-016",
+    "municipio": "São Cristóvão",
+    "bairro": "Rosa Elze",
+    "serie": "2ª série EM",
+    "quantidade": 2,
+    "desde": "2026-09-15",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-017",
+    "municipio": "Lagarto",
+    "bairro": "Centro",
+    "serie": "6º ano",
+    "quantidade": 10,
+    "desde": "2026-08-28",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-018",
+    "municipio": "Lagarto",
+    "bairro": "Centro",
+    "serie": "7º ano",
+    "quantidade": 5,
+    "desde": "2026-08-28",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-019",
+    "municipio": "Lagarto",
+    "bairro": "Centro",
+    "serie": "9º ano",
+    "quantidade": 4,
+    "desde": "2026-08-28",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-020",
+    "municipio": "Itabaiana",
+    "bairro": "Centro",
+    "serie": "1ª série EM",
+    "quantidade": 12,
+    "desde": "2026-07-30",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-021",
+    "municipio": "Itabaiana",
+    "bairro": "Centro",
+    "serie": "2ª série EM",
+    "quantidade": 6,
+    "desde": "2026-07-30",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-022",
+    "municipio": "Itabaiana",
+    "bairro": "Centro",
+    "serie": "6º ano",
+    "quantidade": 3,
+    "desde": "2026-07-30",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-023",
+    "municipio": "Nossa Senhora do Socorro",
+    "bairro": "Taiçoca de Fora",
+    "serie": "6º ano",
+    "quantidade": 7,
+    "desde": "2026-08-20",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-024",
+    "municipio": "Nossa Senhora do Socorro",
+    "bairro": "Marcos Freire II",
+    "serie": "1ª série EM",
+    "quantidade": 5,
+    "desde": "2026-08-20",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-025",
+    "municipio": "Aracaju",
+    "bairro": "Santa Maria",
+    "serie": "6º ano",
+    "quantidade": 11,
+    "desde": "2026-08-18",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-026",
+    "municipio": "Aracaju",
+    "bairro": "17 de Março",
+    "serie": "1ª série EM",
+    "quantidade": 6,
+    "desde": "2026-08-18",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-027",
+    "municipio": "São Cristóvão",
+    "bairro": "Eduardo Gomes",
+    "serie": "6º ano",
+    "quantidade": 4,
+    "desde": "2026-08-22",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-028",
+    "municipio": "Itabaiana",
+    "bairro": "Marianga",
+    "serie": "7º ano",
+    "quantidade": 3,
+    "desde": "2026-08-25",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-029",
+    "municipio": "Lagarto",
+    "bairro": "Exposição",
+    "serie": "1ª série EM",
+    "quantidade": 5,
+    "desde": "2026-08-26",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-030",
+    "municipio": "Barra dos Coqueiros",
+    "bairro": "Atalaia Nova",
+    "serie": "6º ano",
+    "quantidade": 4,
+    "desde": "2026-09-02",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-031",
+    "municipio": "Estância",
+    "bairro": "Cidade Nova",
+    "serie": "1ª série EM",
+    "quantidade": 6,
+    "desde": "2026-09-03",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-032",
+    "municipio": "Propriá",
+    "bairro": "Centro",
+    "serie": "6º ano",
+    "quantidade": 3,
+    "desde": "2026-09-04",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-033",
+    "municipio": "Nossa Senhora da Glória",
+    "bairro": "Centro",
+    "serie": "1ª série EM",
+    "quantidade": 4,
+    "desde": "2026-09-08",
+    "origem": "Registro da DRE"
+  },
+  {
+    "id": "LE-034",
+    "municipio": "Tobias Barreto",
+    "bairro": "Centro",
+    "serie": "6º ano",
+    "quantidade": 3,
+    "desde": "2026-09-09",
+    "origem": "Registro da DRE"
+  }
+]

@@ -1,0 +1,16 @@
+/* Atendimento presencial: mesmo formulário da matrícula, com letra e botões maiores para a
+   secretária preencher junto com a família. Só usa tokens de tema.css. */
+.area.estreita:has(.modo-balcao) #pagina { max-width: 960px; }
+.modo-balcao { font-size: 1.2rem; }
+.modo-balcao h1 { font-size: var(--texto-4xl); }
+.modo-balcao .entrada { min-height: 3.5rem; font-size: 1.2rem; }
+.modo-balcao .campo label, .modo-balcao fieldset.campo legend { font-size: 1.05rem; }
+.modo-balcao .botao { min-height: 3.5rem; font-size: 1.15rem; }
+.modo-balcao .opcao { min-height: 4.5rem; font-size: 1.2rem; }
+.modo-balcao .opcao small { font-size: 1rem; }
+.modo-balcao .passo { font-size: 1.1rem; }
+
+/* Continuar em outro aparelho (janela com link e QR Code) */
+.qr-rascunho { display: flex; justify-content: center; padding: var(--sp-3); margin: 0 0 var(--sp-3); background: #fff; border: 1px solid var(--borda); border-radius: var(--raio-lg); min-height: 60px; }
+.qr-rascunho:empty { display: none; }
+.qr-rascunho canvas, .qr-rascunho img { max-width: 100%; height: auto; }

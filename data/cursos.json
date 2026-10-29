@@ -1,0 +1,44 @@
+[
+  {
+    "id": "c1",
+    "nome": "Ensino Fundamental — Anos Iniciais",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "modalidade": "Regular",
+    "ativo": true
+  },
+  {
+    "id": "c2",
+    "nome": "Ensino Fundamental — Anos Finais",
+    "etapa": "Ensino Fundamental — Anos Finais",
+    "modalidade": "Regular",
+    "ativo": true
+  },
+  {
+    "id": "c3",
+    "nome": "Ensino Médio — Formação Geral Básica",
+    "etapa": "Ensino Médio",
+    "modalidade": "Regular",
+    "ativo": true
+  },
+  {
+    "id": "c4",
+    "nome": "Ensino Médio em Tempo Integral",
+    "etapa": "Ensino Médio",
+    "modalidade": "Tempo integral",
+    "ativo": true
+  },
+  {
+    "id": "c5",
+    "nome": "Ensino Médio Integrado — Técnico em Informática",
+    "etapa": "Ensino Médio",
+    "modalidade": "Educação profissional (técnico integrado)",
+    "ativo": true
+  },
+  {
+    "id": "c6",
+    "nome": "EJA — Ensino Médio",
+    "etapa": "Ensino Médio",
+    "modalidade": "Educação de Jovens e Adultos (EJA)",
+    "ativo": true
+  }
+]

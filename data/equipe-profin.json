@@ -1,0 +1,35 @@
+[
+  {
+    "id": "m1",
+    "nome": "Marta Helena Souza Prado",
+    "funcao": "Coordenação do PROFIN",
+    "matricula": "PF-41001",
+    "email": "marta.prado@seed.se.gov.br",
+    "telefone": "79999010001",
+    "atende": "Todas as escolas da rede",
+    "ativo": true,
+    "cadastradoEm": "2026-02-02"
+  },
+  {
+    "id": "m2",
+    "nome": "Rogério Alves de Menezes",
+    "funcao": "Analista financeiro",
+    "matricula": "PF-41002",
+    "email": "rogerio.menezes@seed.se.gov.br",
+    "telefone": "79999010002",
+    "atende": "DEA — Aracaju e DRE 2 — Lagarto",
+    "ativo": true,
+    "cadastradoEm": "2026-02-02"
+  },
+  {
+    "id": "m3",
+    "nome": "Cláudia Regina Batista Lima",
+    "funcao": "Analista financeiro",
+    "matricula": "PF-41003",
+    "email": "claudia.lima@seed.se.gov.br",
+    "telefone": "79999010003",
+    "atende": "Demais DREs",
+    "ativo": true,
+    "cadastradoEm": "2026-03-10"
+  }
+]

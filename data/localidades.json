@@ -1,0 +1,1949 @@
+{
+  "bairros": [
+    {
+      "nome": "Aracaju — 17 de Março",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.989,
+      "lng": -37.101
+    },
+    {
+      "nome": "Aracaju — Aeroporto",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.987,
+      "lng": -37.072
+    },
+    {
+      "nome": "Aracaju — América",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.925,
+      "lng": -37.08
+    },
+    {
+      "nome": "Aracaju — Areia Branca",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.057,
+      "lng": -37.118
+    },
+    {
+      "nome": "Aracaju — Aruana",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.013,
+      "lng": -37.078
+    },
+    {
+      "nome": "Aracaju — Atalaia",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.01,
+      "lng": -37.051
+    },
+    {
+      "nome": "Aracaju — Bugio",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.9058,
+      "lng": -37.0645
+    },
+    {
+      "nome": "Aracaju — Capucho",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.944,
+      "lng": -37.088
+    },
+    {
+      "nome": "Aracaju — Centro",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.9111,
+      "lng": -37.0717
+    },
+    {
+      "nome": "Aracaju — Cidade Nova",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.892,
+      "lng": -37.078
+    },
+    {
+      "nome": "Aracaju — Cirurgia",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.916,
+      "lng": -37.058
+    },
+    {
+      "nome": "Aracaju — Coroa do Meio",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.96,
+      "lng": -37.047
+    },
+    {
+      "nome": "Aracaju — Dezoito do Forte",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.896,
+      "lng": -37.064
+    },
+    {
+      "nome": "Aracaju — Dom Luciano",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.87,
+      "lng": -37.095
+    },
+    {
+      "nome": "Aracaju — Farolândia",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.966,
+      "lng": -37.067
+    },
+    {
+      "nome": "Aracaju — Gameleira",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.048,
+      "lng": -37.11
+    },
+    {
+      "nome": "Aracaju — Getúlio Vargas",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.91,
+      "lng": -37.064
+    },
+    {
+      "nome": "Aracaju — Grageru",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.9445,
+      "lng": -37.0577
+    },
+    {
+      "nome": "Aracaju — Inácio Barbosa",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.956,
+      "lng": -37.061
+    },
+    {
+      "nome": "Aracaju — Industrial",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.896,
+      "lng": -37.054
+    },
+    {
+      "nome": "Aracaju — Jabotiana",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.942,
+      "lng": -37.102
+    },
+    {
+      "nome": "Aracaju — Japãozinho",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.885,
+      "lng": -37.065
+    },
+    {
+      "nome": "Aracaju — Jardim Centenário",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.879,
+      "lng": -37.097
+    },
+    {
+      "nome": "Aracaju — Jardins",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.935,
+      "lng": -37.056
+    },
+    {
+      "nome": "Aracaju — José Conrado de Araújo",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.906,
+      "lng": -37.096
+    },
+    {
+      "nome": "Aracaju — Lamarão",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.862,
+      "lng": -37.09
+    },
+    {
+      "nome": "Aracaju — Luzia",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.942,
+      "lng": -37.072
+    },
+    {
+      "nome": "Aracaju — Marivan",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.992,
+      "lng": -37.088
+    },
+    {
+      "nome": "Aracaju — Matapoã",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.03,
+      "lng": -37.095
+    },
+    {
+      "nome": "Aracaju — Mosqueiro",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.07,
+      "lng": -37.13
+    },
+    {
+      "nome": "Aracaju — Novo Paraíso",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.914,
+      "lng": -37.088
+    },
+    {
+      "nome": "Aracaju — Olaria",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.893,
+      "lng": -37.088
+    },
+    {
+      "nome": "Aracaju — Palestina",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.9,
+      "lng": -37.086
+    },
+    {
+      "nome": "Aracaju — Pereira Lobo",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.93,
+      "lng": -37.065
+    },
+    {
+      "nome": "Aracaju — Ponto Novo",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.933,
+      "lng": -37.078
+    },
+    {
+      "nome": "Aracaju — Porto D'Antas",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.87,
+      "lng": -37.078
+    },
+    {
+      "nome": "Aracaju — Robalo",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.035,
+      "lng": -37.105
+    },
+    {
+      "nome": "Aracaju — Salgado Filho",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.928,
+      "lng": -37.056
+    },
+    {
+      "nome": "Aracaju — Santa Maria",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.985,
+      "lng": -37.105
+    },
+    {
+      "nome": "Aracaju — Santo Antônio",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.898,
+      "lng": -37.055
+    },
+    {
+      "nome": "Aracaju — Santos Dumont",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.88,
+      "lng": -37.08
+    },
+    {
+      "nome": "Aracaju — São Conrado",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.963,
+      "lng": -37.085
+    },
+    {
+      "nome": "Aracaju — São José",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.921,
+      "lng": -37.047
+    },
+    {
+      "nome": "Aracaju — São José dos Náufragos",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -11.083,
+      "lng": -37.14
+    },
+    {
+      "nome": "Aracaju — Siqueira Campos",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.92,
+      "lng": -37.07
+    },
+    {
+      "nome": "Aracaju — Soledade",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.872,
+      "lng": -37.1
+    },
+    {
+      "nome": "Aracaju — Suíça",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.925,
+      "lng": -37.065
+    },
+    {
+      "nome": "Aracaju — Treze de Julho",
+      "municipio": "Aracaju",
+      "tipo": "bairro",
+      "lat": -10.933,
+      "lng": -37.048
+    },
+    {
+      "nome": "Amparo de São Francisco — Centro",
+      "municipio": "Amparo de São Francisco",
+      "tipo": "bairro",
+      "lat": -10.1347,
+      "lng": -36.935
+    },
+    {
+      "nome": "Aquidabã — Centro",
+      "municipio": "Aquidabã",
+      "tipo": "bairro",
+      "lat": -10.28,
+      "lng": -37.0208
+    },
+    {
+      "nome": "Arauá — Centro",
+      "municipio": "Arauá",
+      "tipo": "bairro",
+      "lat": -11.2631,
+      "lng": -37.6197
+    },
+    {
+      "nome": "Areia Branca — Centro",
+      "municipio": "Areia Branca",
+      "tipo": "bairro",
+      "lat": -10.7578,
+      "lng": -37.3153
+    },
+    {
+      "nome": "Barra dos Coqueiros — Alphaville",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9111,
+      "lng": -37.0325
+    },
+    {
+      "nome": "Barra dos Coqueiros — Antônio Pedro",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9017,
+      "lng": -37.0314
+    },
+    {
+      "nome": "Barra dos Coqueiros — Atalaia Nova",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.92,
+      "lng": -37.0325
+    },
+    {
+      "nome": "Barra dos Coqueiros — Baixo",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9076,
+      "lng": -37.0233
+    },
+    {
+      "nome": "Barra dos Coqueiros — Beira Rio",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.8931,
+      "lng": -37.0334
+    },
+    {
+      "nome": "Barra dos Coqueiros — Brisas de Atalaia",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.92,
+      "lng": -37.0234
+    },
+    {
+      "nome": "Barra dos Coqueiros — Caminho da Praia",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.8987,
+      "lng": -37.0209
+    },
+    {
+      "nome": "Barra dos Coqueiros — Centro",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9089,
+      "lng": -37.0381
+    },
+    {
+      "nome": "Barra dos Coqueiros — Costa Paradiso",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9298,
+      "lng": -37.0343
+    },
+    {
+      "nome": "Barra dos Coqueiros — Espaço Tropical",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9133,
+      "lng": -37.0156
+    },
+    {
+      "nome": "Barra dos Coqueiros — Governador Marcelo Déda",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.8888,
+      "lng": -37.0251
+    },
+    {
+      "nome": "Barra dos Coqueiros — Luar da Barra",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9291,
+      "lng": -37.023
+    },
+    {
+      "nome": "Barra dos Coqueiros — Marivan",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9021,
+      "lng": -37.0124
+    },
+    {
+      "nome": "Barra dos Coqueiros — Moisés Gomes",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.8818,
+      "lng": -37.0351
+    },
+    {
+      "nome": "Barra dos Coqueiros — Olimar",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.922,
+      "lng": -37.0125
+    },
+    {
+      "nome": "Barra dos Coqueiros — Paraíso da Barra",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.8895,
+      "lng": -37.0156
+    },
+    {
+      "nome": "Barra dos Coqueiros — Prisco Viana",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9374,
+      "lng": -37.0275
+    },
+    {
+      "nome": "Barra dos Coqueiros — Quintas da Barra",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9095,
+      "lng": -37.0062
+    },
+    {
+      "nome": "Barra dos Coqueiros — Rio das Canas",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.8791,
+      "lng": -37.0256
+    },
+    {
+      "nome": "Barra dos Coqueiros — Serigy",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9318,
+      "lng": -37.0137
+    },
+    {
+      "nome": "Barra dos Coqueiros — Zona de Expansão (Capuã)",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.8945,
+      "lng": -37.0067
+    },
+    {
+      "nome": "Barra dos Coqueiros — Zona de Expansão (Jatobá)",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9437,
+      "lng": -37.0357
+    },
+    {
+      "nome": "Barra dos Coqueiros — Zona de Expansão (Olhos D'Água)",
+      "municipio": "Barra dos Coqueiros",
+      "tipo": "bairro",
+      "lat": -10.9196,
+      "lng": -37.0034
+    },
+    {
+      "nome": "Boquim — Centro",
+      "municipio": "Boquim",
+      "tipo": "bairro",
+      "lat": -11.1475,
+      "lng": -37.6203
+    },
+    {
+      "nome": "Brejo Grande — Centro",
+      "municipio": "Brejo Grande",
+      "tipo": "bairro",
+      "lat": -10.4247,
+      "lng": -36.4611
+    },
+    {
+      "nome": "Campo do Brito — Centro",
+      "municipio": "Campo do Brito",
+      "tipo": "bairro",
+      "lat": -10.7331,
+      "lng": -37.4933
+    },
+    {
+      "nome": "Canhoba — Centro",
+      "municipio": "Canhoba",
+      "tipo": "bairro",
+      "lat": -10.1364,
+      "lng": -36.9806
+    },
+    {
+      "nome": "Canindé de São Francisco — Centro",
+      "municipio": "Canindé de São Francisco",
+      "tipo": "bairro",
+      "lat": -9.6419,
+      "lng": -37.7878
+    },
+    {
+      "nome": "Capela — Barracas",
+      "municipio": "Capela",
+      "tipo": "bairro",
+      "lat": -10.5061,
+      "lng": -37.0556
+    },
+    {
+      "nome": "Capela — Centro",
+      "municipio": "Capela",
+      "tipo": "bairro",
+      "lat": -10.5031,
+      "lng": -37.0528
+    },
+    {
+      "nome": "Capela — Miranda",
+      "municipio": "Capela",
+      "tipo": "bairro",
+      "lat": -10.5025,
+      "lng": -37.0461
+    },
+    {
+      "nome": "Capela — Pedras",
+      "municipio": "Capela",
+      "tipo": "bairro",
+      "lat": -10.498,
+      "lng": -37.0596
+    },
+    {
+      "nome": "Carira — Centro",
+      "municipio": "Carira",
+      "tipo": "bairro",
+      "lat": -10.3575,
+      "lng": -37.7011
+    },
+    {
+      "nome": "Carmópolis — Centro",
+      "municipio": "Carmópolis",
+      "tipo": "bairro",
+      "lat": -10.6481,
+      "lng": -36.9886
+    },
+    {
+      "nome": "Cedro de São João — Centro",
+      "municipio": "Cedro de São João",
+      "tipo": "bairro",
+      "lat": -10.2536,
+      "lng": -36.8856
+    },
+    {
+      "nome": "Cristinápolis — Centro",
+      "municipio": "Cristinápolis",
+      "tipo": "bairro",
+      "lat": -11.4756,
+      "lng": -37.7553
+    },
+    {
+      "nome": "Cumbe — Centro",
+      "municipio": "Cumbe",
+      "tipo": "bairro",
+      "lat": -10.3522,
+      "lng": -37.1856
+    },
+    {
+      "nome": "Divina Pastora — Centro",
+      "municipio": "Divina Pastora",
+      "tipo": "bairro",
+      "lat": -10.6783,
+      "lng": -37.1508
+    },
+    {
+      "nome": "Estância — Alagoas",
+      "municipio": "Estância",
+      "tipo": "bairro",
+      "lat": -11.2738,
+      "lng": -37.4429
+    },
+    {
+      "nome": "Estância — Centro",
+      "municipio": "Estância",
+      "tipo": "bairro",
+      "lat": -11.2683,
+      "lng": -37.4378
+    },
+    {
+      "nome": "Estância — Cidade Nova",
+      "municipio": "Estância",
+      "tipo": "bairro",
+      "lat": -11.2672,
+      "lng": -37.4255
+    },
+    {
+      "nome": "Feira Nova — Centro",
+      "municipio": "Feira Nova",
+      "tipo": "bairro",
+      "lat": -10.2617,
+      "lng": -37.3139
+    },
+    {
+      "nome": "Frei Paulo — Centro",
+      "municipio": "Frei Paulo",
+      "tipo": "bairro",
+      "lat": -10.5486,
+      "lng": -37.5339
+    },
+    {
+      "nome": "Gararu — Centro",
+      "municipio": "Gararu",
+      "tipo": "bairro",
+      "lat": -9.9678,
+      "lng": -37.0828
+    },
+    {
+      "nome": "General Maynard — Centro",
+      "municipio": "General Maynard",
+      "tipo": "bairro",
+      "lat": -10.6836,
+      "lng": -36.9839
+    },
+    {
+      "nome": "Graccho Cardoso — Centro",
+      "municipio": "Graccho Cardoso",
+      "tipo": "bairro",
+      "lat": -10.2253,
+      "lng": -37.2006
+    },
+    {
+      "nome": "Ilha das Flores — Centro",
+      "municipio": "Ilha das Flores",
+      "tipo": "bairro",
+      "lat": -10.4425,
+      "lng": -36.5478
+    },
+    {
+      "nome": "Indiaroba — Centro",
+      "municipio": "Indiaroba",
+      "tipo": "bairro",
+      "lat": -11.5194,
+      "lng": -37.5117
+    },
+    {
+      "nome": "Itabaiana — Anízio Amancio de Oliveira",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6885,
+      "lng": -37.4295
+    },
+    {
+      "nome": "Itabaiana — Bananeiras",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6852,
+      "lng": -37.4207
+    },
+    {
+      "nome": "Itabaiana — Centro",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6857,
+      "lng": -37.4269
+    },
+    {
+      "nome": "Itabaiana — Doutor José Milton Machado",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.681,
+      "lng": -37.4332
+    },
+    {
+      "nome": "Itabaiana — Mamede Paes Mendonça",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6947,
+      "lng": -37.4253
+    },
+    {
+      "nome": "Itabaiana — Marcela",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.677,
+      "lng": -37.4213
+    },
+    {
+      "nome": "Itabaiana — Marianga",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6887,
+      "lng": -37.4381
+    },
+    {
+      "nome": "Itabaiana — Miguel Teles de Mendonça",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6914,
+      "lng": -37.4157
+    },
+    {
+      "nome": "Itabaiana — Oviedo Teixeira",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6732,
+      "lng": -37.4315
+    },
+    {
+      "nome": "Itabaiana — Porto",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6988,
+      "lng": -37.4324
+    },
+    {
+      "nome": "Itabaiana — Queimadas",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6794,
+      "lng": -37.4131
+    },
+    {
+      "nome": "Itabaiana — Riacho Doce",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.681,
+      "lng": -37.4421
+    },
+    {
+      "nome": "Itabaiana — Rotary Club de Itabaiana",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6999,
+      "lng": -37.4185
+    },
+    {
+      "nome": "Itabaiana — São Cristóvão",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.669,
+      "lng": -37.4232
+    },
+    {
+      "nome": "Itabaiana — Serrano",
+      "municipio": "Itabaiana",
+      "tipo": "bairro",
+      "lat": -10.6959,
+      "lng": -37.4417
+    },
+    {
+      "nome": "Itabaianinha — Centro",
+      "municipio": "Itabaianinha",
+      "tipo": "bairro",
+      "lat": -11.2739,
+      "lng": -37.79
+    },
+    {
+      "nome": "Itabi — Centro",
+      "municipio": "Itabi",
+      "tipo": "bairro",
+      "lat": -10.1247,
+      "lng": -37.1056
+    },
+    {
+      "nome": "Itaporanga d'Ajuda — Centro",
+      "municipio": "Itaporanga d'Ajuda",
+      "tipo": "bairro",
+      "lat": -10.9978,
+      "lng": -37.3106
+    },
+    {
+      "nome": "Japaratuba — Centro",
+      "municipio": "Japaratuba",
+      "tipo": "bairro",
+      "lat": -10.5928,
+      "lng": -36.9417
+    },
+    {
+      "nome": "Japoatã — Centro",
+      "municipio": "Japoatã",
+      "tipo": "bairro",
+      "lat": -10.3464,
+      "lng": -36.8006
+    },
+    {
+      "nome": "Lagarto — Aldemar de Carvalho",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9199,
+      "lng": -37.6535
+    },
+    {
+      "nome": "Lagarto — Alto da Boa Vista",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9169,
+      "lng": -37.6456
+    },
+    {
+      "nome": "Lagarto — Artur Reis",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9131,
+      "lng": -37.6569
+    },
+    {
+      "nome": "Lagarto — Centro",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9174,
+      "lng": -37.6512
+    },
+    {
+      "nome": "Lagarto — Cidade Nova",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9256,
+      "lng": -37.6497
+    },
+    {
+      "nome": "Lagarto — Exposição",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9095,
+      "lng": -37.6461
+    },
+    {
+      "nome": "Lagarto — Horta",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9201,
+      "lng": -37.6614
+    },
+    {
+      "nome": "Lagarto — Jardim Campo Novo",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9226,
+      "lng": -37.6411
+    },
+    {
+      "nome": "Lagarto — Laudelino Freire",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9061,
+      "lng": -37.6554
+    },
+    {
+      "nome": "Lagarto — Libórios",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9292,
+      "lng": -37.6562
+    },
+    {
+      "nome": "Lagarto — Novo Horizonte",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9117,
+      "lng": -37.6387
+    },
+    {
+      "nome": "Lagarto — Povoado Brasília",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9131,
+      "lng": -37.665
+    },
+    {
+      "nome": "Lagarto — Povoado Colônia Treze",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9303,
+      "lng": -37.6436
+    },
+    {
+      "nome": "Lagarto — Povoado Jenipapo",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9022,
+      "lng": -37.6478
+    },
+    {
+      "nome": "Lagarto — Pratas",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9267,
+      "lng": -37.6646
+    },
+    {
+      "nome": "Lagarto — Rosendo Ribeiro Filho",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9195,
+      "lng": -37.6343
+    },
+    {
+      "nome": "Lagarto — São José",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9042,
+      "lng": -37.6625
+    },
+    {
+      "nome": "Lagarto — Sílvio Romero",
+      "municipio": "Lagarto",
+      "tipo": "bairro",
+      "lat": -10.9352,
+      "lng": -37.6519
+    },
+    {
+      "nome": "Laranjeiras — Centro",
+      "municipio": "Laranjeiras",
+      "tipo": "bairro",
+      "lat": -10.8063,
+      "lng": -37.1697
+    },
+    {
+      "nome": "Macambira — Centro",
+      "municipio": "Macambira",
+      "tipo": "bairro",
+      "lat": -10.6619,
+      "lng": -37.5414
+    },
+    {
+      "nome": "Malhada dos Bois — Centro",
+      "municipio": "Malhada dos Bois",
+      "tipo": "bairro",
+      "lat": -10.3419,
+      "lng": -36.925
+    },
+    {
+      "nome": "Malhador — Centro",
+      "municipio": "Malhador",
+      "tipo": "bairro",
+      "lat": -10.6578,
+      "lng": -37.3044
+    },
+    {
+      "nome": "Maruim — Centro",
+      "municipio": "Maruim",
+      "tipo": "bairro",
+      "lat": -10.7375,
+      "lng": -37.0817
+    },
+    {
+      "nome": "Moita Bonita — Centro",
+      "municipio": "Moita Bonita",
+      "tipo": "bairro",
+      "lat": -10.5772,
+      "lng": -37.3511
+    },
+    {
+      "nome": "Monte Alegre de Sergipe — Centro",
+      "municipio": "Monte Alegre de Sergipe",
+      "tipo": "bairro",
+      "lat": -10.0269,
+      "lng": -37.5619
+    },
+    {
+      "nome": "Muribeca — Centro",
+      "municipio": "Muribeca",
+      "tipo": "bairro",
+      "lat": -10.4269,
+      "lng": -36.9589
+    },
+    {
+      "nome": "Neópolis — Centro",
+      "municipio": "Neópolis",
+      "tipo": "bairro",
+      "lat": -10.315,
+      "lng": -36.5794
+    },
+    {
+      "nome": "Nossa Senhora Aparecida — Centro",
+      "municipio": "Nossa Senhora Aparecida",
+      "tipo": "bairro",
+      "lat": -10.3944,
+      "lng": -37.4517
+    },
+    {
+      "nome": "Nossa Senhora da Glória — Centro",
+      "municipio": "Nossa Senhora da Glória",
+      "tipo": "bairro",
+      "lat": -10.2158,
+      "lng": -37.4206
+    },
+    {
+      "nome": "Nossa Senhora das Dores — Centro",
+      "municipio": "Nossa Senhora das Dores",
+      "tipo": "bairro",
+      "lat": -10.4919,
+      "lng": -37.1928
+    },
+    {
+      "nome": "Nossa Senhora de Lourdes — Centro",
+      "municipio": "Nossa Senhora de Lourdes",
+      "tipo": "bairro",
+      "lat": -10.0772,
+      "lng": -37.0611
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Albano Franco",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.858,
+      "lng": -37.1283
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Boa Viagem",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8545,
+      "lng": -37.119
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Castelo",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8501,
+      "lng": -37.1323
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Centro Histórico",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8646,
+      "lng": -37.1239
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Fernando Collor",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8459,
+      "lng": -37.1196
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Guajará",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8582,
+      "lng": -37.1375
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Itacanema",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8611,
+      "lng": -37.1137
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Jardim",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8419,
+      "lng": -37.1305
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — João Alves",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8689,
+      "lng": -37.1314
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Mangabeira",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8484,
+      "lng": -37.111
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Marcos Freire I",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8501,
+      "lng": -37.1418
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Marcos Freire II",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8702,
+      "lng": -37.1167
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Marcos Freire III",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8374,
+      "lng": -37.1216
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Novo Horizonte",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8659,
+      "lng": -37.1413
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Pai André",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8576,
+      "lng": -37.1059
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Palestina de Dentro",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8397,
+      "lng": -37.1388
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Palestina de Fora",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8759,
+      "lng": -37.1265
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Parque dos Faróis",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8399,
+      "lng": -37.1102
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Piabeta",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8561,
+      "lng": -37.148
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Porto Grande",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8696,
+      "lng": -37.1079
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Santa Cecília",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8321,
+      "lng": -37.1287
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Santa Inês",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8746,
+      "lng": -37.1394
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Santo Inácio",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8498,
+      "lng": -37.1015
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — São Brás",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8428,
+      "lng": -37.1475
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Sobrado",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8792,
+      "lng": -37.1178
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Taboca",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8316,
+      "lng": -37.1146
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Taiçoca de Dentro",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8653,
+      "lng": -37.1503
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Taiçoca de Fora",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8642,
+      "lng": -37.0999
+    },
+    {
+      "nome": "Pacatuba — Centro",
+      "municipio": "Pacatuba",
+      "tipo": "bairro",
+      "lat": -10.4533,
+      "lng": -36.6531
+    },
+    {
+      "nome": "Pedra Mole — Centro",
+      "municipio": "Pedra Mole",
+      "tipo": "bairro",
+      "lat": -10.6167,
+      "lng": -37.6922
+    },
+    {
+      "nome": "Pedrinhas — Centro",
+      "municipio": "Pedrinhas",
+      "tipo": "bairro",
+      "lat": -11.1925,
+      "lng": -37.6747
+    },
+    {
+      "nome": "Pinhão — Centro",
+      "municipio": "Pinhão",
+      "tipo": "bairro",
+      "lat": -10.5678,
+      "lng": -37.7247
+    },
+    {
+      "nome": "Pirambu — Centro",
+      "municipio": "Pirambu",
+      "tipo": "bairro",
+      "lat": -10.7375,
+      "lng": -36.8564
+    },
+    {
+      "nome": "Poço Redondo — Centro",
+      "municipio": "Poço Redondo",
+      "tipo": "bairro",
+      "lat": -9.8058,
+      "lng": -37.6833
+    },
+    {
+      "nome": "Poço Verde — Centro",
+      "municipio": "Poço Verde",
+      "tipo": "bairro",
+      "lat": -10.7081,
+      "lng": -38.1811
+    },
+    {
+      "nome": "Porto da Folha — Centro",
+      "municipio": "Porto da Folha",
+      "tipo": "bairro",
+      "lat": -9.9172,
+      "lng": -37.2783
+    },
+    {
+      "nome": "Propriá — Centro",
+      "municipio": "Propriá",
+      "tipo": "bairro",
+      "lat": -10.2111,
+      "lng": -36.84
+    },
+    {
+      "nome": "Riachão do Dantas — Centro",
+      "municipio": "Riachão do Dantas",
+      "tipo": "bairro",
+      "lat": -11.0694,
+      "lng": -37.7253
+    },
+    {
+      "nome": "Riachuelo — Centro",
+      "municipio": "Riachuelo",
+      "tipo": "bairro",
+      "lat": -10.7347,
+      "lng": -37.1872
+    },
+    {
+      "nome": "Ribeirópolis — Centro",
+      "municipio": "Ribeirópolis",
+      "tipo": "bairro",
+      "lat": -10.5353,
+      "lng": -37.4378
+    },
+    {
+      "nome": "Rosário do Catete — Centro",
+      "municipio": "Rosário do Catete",
+      "tipo": "bairro",
+      "lat": -10.6961,
+      "lng": -37.0306
+    },
+    {
+      "nome": "Salgado — Centro",
+      "municipio": "Salgado",
+      "tipo": "bairro",
+      "lat": -11.0319,
+      "lng": -37.475
+    },
+    {
+      "nome": "Santa Luzia do Itanhy — Centro",
+      "municipio": "Santa Luzia do Itanhy",
+      "tipo": "bairro",
+      "lat": -11.3517,
+      "lng": -37.4486
+    },
+    {
+      "nome": "Santa Rosa de Lima — Centro",
+      "municipio": "Santa Rosa de Lima",
+      "tipo": "bairro",
+      "lat": -10.6431,
+      "lng": -37.1931
+    },
+    {
+      "nome": "Santana do São Francisco — Centro",
+      "municipio": "Santana do São Francisco",
+      "tipo": "bairro",
+      "lat": -10.2922,
+      "lng": -36.6106
+    },
+    {
+      "nome": "Santo Amaro das Brotas — Centro",
+      "municipio": "Santo Amaro das Brotas",
+      "tipo": "bairro",
+      "lat": -10.7886,
+      "lng": -37.0544
+    },
+    {
+      "nome": "São Cristóvão — Centro",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0136,
+      "lng": -37.2061
+    },
+    {
+      "nome": "São Cristóvão — Divineia",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0163,
+      "lng": -37.2086
+    },
+    {
+      "nome": "São Cristóvão — Eduardo Gomes",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -10.9995,
+      "lng": -37.1962
+    },
+    {
+      "nome": "São Cristóvão — Irineu Neri",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0131,
+      "lng": -37.2
+    },
+    {
+      "nome": "São Cristóvão — Lourival Batista",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0089,
+      "lng": -37.2123
+    },
+    {
+      "nome": "São Cristóvão — Luiz Alves",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -10.9953,
+      "lng": -37.1852
+    },
+    {
+      "nome": "São Cristóvão — Madre Paulina",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -10.9901,
+      "lng": -37.2009
+    },
+    {
+      "nome": "São Cristóvão — Marcelo Deda",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0073,
+      "lng": -37.191
+    },
+    {
+      "nome": "São Cristóvão — Romualdo Prado",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0225,
+      "lng": -37.2045
+    },
+    {
+      "nome": "São Cristóvão — Rosa Elze",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -10.996,
+      "lng": -37.193
+    },
+    {
+      "nome": "São Cristóvão — Rosa Maria",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.005,
+      "lng": -37.2005
+    },
+    {
+      "nome": "São Cristóvão — São Gonçalo",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0165,
+      "lng": -37.2172
+    },
+    {
+      "nome": "São Cristóvão — Tijuquinha",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0193,
+      "lng": -37.195
+    },
+    {
+      "nome": "São Cristóvão — Várzea Grande",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -10.9851,
+      "lng": -37.1859
+    },
+    {
+      "nome": "São Cristóvão — Zona de Expansão Country Club",
+      "municipio": "São Cristóvão",
+      "tipo": "bairro",
+      "lat": -11.0012,
+      "lng": -37.2107
+    },
+    {
+      "nome": "São Domingos — Centro",
+      "municipio": "São Domingos",
+      "tipo": "bairro",
+      "lat": -10.7914,
+      "lng": -37.5686
+    },
+    {
+      "nome": "São Francisco — Centro",
+      "municipio": "São Francisco",
+      "tipo": "bairro",
+      "lat": -10.3442,
+      "lng": -36.8869
+    },
+    {
+      "nome": "São Miguel do Aleixo — Centro",
+      "municipio": "São Miguel do Aleixo",
+      "tipo": "bairro",
+      "lat": -10.3847,
+      "lng": -37.3836
+    },
+    {
+      "nome": "Simão Dias — Centro",
+      "municipio": "Simão Dias",
+      "tipo": "bairro",
+      "lat": -10.7386,
+      "lng": -37.8111
+    },
+    {
+      "nome": "Siriri — Centro",
+      "municipio": "Siriri",
+      "tipo": "bairro",
+      "lat": -10.5967,
+      "lng": -37.1131
+    },
+    {
+      "nome": "Telha — Centro",
+      "municipio": "Telha",
+      "tipo": "bairro",
+      "lat": -10.2064,
+      "lng": -36.8817
+    },
+    {
+      "nome": "Tobias Barreto — Centro",
+      "municipio": "Tobias Barreto",
+      "tipo": "bairro",
+      "lat": -11.1833,
+      "lng": -37.9989
+    },
+    {
+      "nome": "Tobias Barreto — Samambaia",
+      "municipio": "Tobias Barreto",
+      "tipo": "bairro",
+      "lat": -11.1884,
+      "lng": -38.0037
+    },
+    {
+      "nome": "Tomar do Geru — Centro",
+      "municipio": "Tomar do Geru",
+      "tipo": "bairro",
+      "lat": -11.3694,
+      "lng": -37.8408
+    },
+    {
+      "nome": "Umbaúba — Centro",
+      "municipio": "Umbaúba",
+      "tipo": "bairro",
+      "lat": -11.3828,
+      "lng": -37.6578
+    },
+    {
+      "nome": "Estância — Bonfim",
+      "municipio": "Estância",
+      "tipo": "bairro",
+      "lat": -11.2617,
+      "lng": -37.4291
+    },
+    {
+      "nome": "Nossa Senhora do Socorro — Siri",
+      "municipio": "Nossa Senhora do Socorro",
+      "tipo": "bairro",
+      "lat": -10.8588,
+      "lng": -37.1359
+    }
+  ],
+  "municipios": [
+    {
+      "municipio": "Aracaju",
+      "lat": -10.9361,
+      "lng": -37.064
+    },
+    {
+      "municipio": "Nossa Senhora do Socorro",
+      "lat": -10.8551,
+      "lng": -37.1256
+    },
+    {
+      "municipio": "São Cristóvão",
+      "lat": -11.0048,
+      "lng": -37.1996
+    },
+    {
+      "municipio": "Lagarto",
+      "lat": -10.9174,
+      "lng": -37.6512
+    },
+    {
+      "municipio": "Itabaiana",
+      "lat": -10.6857,
+      "lng": -37.4269
+    },
+    {
+      "municipio": "Barra dos Coqueiros",
+      "lat": -10.9089,
+      "lng": -37.0381
+    },
+    {
+      "municipio": "Laranjeiras",
+      "lat": -10.8063,
+      "lng": -37.1697
+    },
+    {
+      "municipio": "Poço Verde",
+      "lat": -10.7081,
+      "lng": -38.1811
+    },
+    {
+      "municipio": "Riachão do Dantas",
+      "lat": -11.0694,
+      "lng": -37.7253
+    },
+    {
+      "municipio": "Simão Dias",
+      "lat": -10.7386,
+      "lng": -37.8111
+    },
+    {
+      "municipio": "Campo do Brito",
+      "lat": -10.7331,
+      "lng": -37.4933
+    },
+    {
+      "municipio": "Moita Bonita",
+      "lat": -10.5772,
+      "lng": -37.3511
+    },
+    {
+      "municipio": "Ribeirópolis",
+      "lat": -10.5353,
+      "lng": -37.4378
+    },
+    {
+      "municipio": "Arauá",
+      "lat": -11.2631,
+      "lng": -37.6197
+    },
+    {
+      "municipio": "Cristinápolis",
+      "lat": -11.4756,
+      "lng": -37.7553
+    },
+    {
+      "municipio": "Estância",
+      "lat": -11.2683,
+      "lng": -37.4378
+    },
+    {
+      "municipio": "Indiaroba",
+      "lat": -11.5194,
+      "lng": -37.5117
+    },
+    {
+      "municipio": "Itabaianinha",
+      "lat": -11.2739,
+      "lng": -37.79
+    },
+    {
+      "municipio": "Pedrinhas",
+      "lat": -11.1925,
+      "lng": -37.6747
+    },
+    {
+      "municipio": "Santa Luzia do Itanhy",
+      "lat": -11.3517,
+      "lng": -37.4486
+    },
+    {
+      "municipio": "Tomar do Geru",
+      "lat": -11.3694,
+      "lng": -37.8408
+    },
+    {
+      "municipio": "Umbaúba",
+      "lat": -11.3828,
+      "lng": -37.6578
+    },
+    {
+      "municipio": "Boquim",
+      "lat": -11.1475,
+      "lng": -37.6203
+    },
+    {
+      "municipio": "Salgado",
+      "lat": -11.0319,
+      "lng": -37.475
+    },
+    {
+      "municipio": "Tobias Barreto",
+      "lat": -11.1833,
+      "lng": -37.9989
+    },
+    {
+      "municipio": "Areia Branca",
+      "lat": -10.7578,
+      "lng": -37.3153
+    },
+    {
+      "municipio": "Carira",
+      "lat": -10.3575,
+      "lng": -37.7011
+    },
+    {
+      "municipio": "Frei Paulo",
+      "lat": -10.5486,
+      "lng": -37.5339
+    },
+    {
+      "municipio": "Macambira",
+      "lat": -10.6619,
+      "lng": -37.5414
+    },
+    {
+      "municipio": "Malhador",
+      "lat": -10.6578,
+      "lng": -37.3044
+    },
+    {
+      "municipio": "Nossa Senhora Aparecida",
+      "lat": -10.3944,
+      "lng": -37.4517
+    },
+    {
+      "municipio": "Pedra Mole",
+      "lat": -10.6167,
+      "lng": -37.6922
+    },
+    {
+      "municipio": "Pinhão",
+      "lat": -10.5678,
+      "lng": -37.7247
+    },
+    {
+      "municipio": "São Domingos",
+      "lat": -10.7914,
+      "lng": -37.5686
+    },
+    {
+      "municipio": "São Miguel do Aleixo",
+      "lat": -10.3847,
+      "lng": -37.3836
+    },
+    {
+      "municipio": "Capela",
+      "lat": -10.5031,
+      "lng": -37.0528
+    },
+    {
+      "municipio": "Carmópolis",
+      "lat": -10.6481,
+      "lng": -36.9886
+    },
+    {
+      "municipio": "Divina Pastora",
+      "lat": -10.6783,
+      "lng": -37.1508
+    },
+    {
+      "municipio": "General Maynard",
+      "lat": -10.6836,
+      "lng": -36.9839
+    },
+    {
+      "municipio": "Japaratuba",
+      "lat": -10.5928,
+      "lng": -36.9417
+    },
+    {
+      "municipio": "Pirambu",
+      "lat": -10.7375,
+      "lng": -36.8564
+    },
+    {
+      "municipio": "Rosário do Catete",
+      "lat": -10.6961,
+      "lng": -37.0306
+    },
+    {
+      "municipio": "Santa Rosa de Lima",
+      "lat": -10.6431,
+      "lng": -37.1931
+    },
+    {
+      "municipio": "Siriri",
+      "lat": -10.5967,
+      "lng": -37.1131
+    },
+    {
+      "municipio": "Aquidabã",
+      "lat": -10.28,
+      "lng": -37.0208
+    },
+    {
+      "municipio": "Cumbe",
+      "lat": -10.3522,
+      "lng": -37.1856
+    },
+    {
+      "municipio": "Feira Nova",
+      "lat": -10.2617,
+      "lng": -37.3139
+    },
+    {
+      "municipio": "Graccho Cardoso",
+      "lat": -10.2253,
+      "lng": -37.2006
+    },
+    {
+      "municipio": "Itabi",
+      "lat": -10.1247,
+      "lng": -37.1056
+    },
+    {
+      "municipio": "Nossa Senhora das Dores",
+      "lat": -10.4919,
+      "lng": -37.1928
+    },
+    {
+      "municipio": "Amparo de São Francisco",
+      "lat": -10.1347,
+      "lng": -36.935
+    },
+    {
+      "municipio": "Brejo Grande",
+      "lat": -10.4247,
+      "lng": -36.4611
+    },
+    {
+      "municipio": "Canhoba",
+      "lat": -10.1364,
+      "lng": -36.9806
+    },
+    {
+      "municipio": "Cedro de São João",
+      "lat": -10.2536,
+      "lng": -36.8856
+    },
+    {
+      "municipio": "Ilha das Flores",
+      "lat": -10.4425,
+      "lng": -36.5478
+    },
+    {
+      "municipio": "Japoatã",
+      "lat": -10.3464,
+      "lng": -36.8006
+    },
+    {
+      "municipio": "Malhada dos Bois",
+      "lat": -10.3419,
+      "lng": -36.925
+    },
+    {
+      "municipio": "Muribeca",
+      "lat": -10.4269,
+      "lng": -36.9589
+    },
+    {
+      "municipio": "Neópolis",
+      "lat": -10.315,
+      "lng": -36.5794
+    },
+    {
+      "municipio": "Pacatuba",
+      "lat": -10.4533,
+      "lng": -36.6531
+    },
+    {
+      "municipio": "Propriá",
+      "lat": -10.2111,
+      "lng": -36.84
+    },
+    {
+      "municipio": "Santana do São Francisco",
+      "lat": -10.2922,
+      "lng": -36.6106
+    },
+    {
+      "municipio": "São Francisco",
+      "lat": -10.3442,
+      "lng": -36.8869
+    },
+    {
+      "municipio": "Telha",
+      "lat": -10.2064,
+      "lng": -36.8817
+    },
+    {
+      "municipio": "Gararu",
+      "lat": -9.9678,
+      "lng": -37.0828
+    },
+    {
+      "municipio": "Nossa Senhora de Lourdes",
+      "lat": -10.0772,
+      "lng": -37.0611
+    },
+    {
+      "municipio": "Porto da Folha",
+      "lat": -9.9172,
+      "lng": -37.2783
+    },
+    {
+      "municipio": "Itaporanga d'Ajuda",
+      "lat": -10.9978,
+      "lng": -37.3106
+    },
+    {
+      "municipio": "Maruim",
+      "lat": -10.7375,
+      "lng": -37.0817
+    },
+    {
+      "municipio": "Riachuelo",
+      "lat": -10.7347,
+      "lng": -37.1872
+    },
+    {
+      "municipio": "Santo Amaro das Brotas",
+      "lat": -10.7886,
+      "lng": -37.0544
+    },
+    {
+      "municipio": "Canindé de São Francisco",
+      "lat": -9.6419,
+      "lng": -37.7878
+    },
+    {
+      "municipio": "Monte Alegre de Sergipe",
+      "lat": -10.0269,
+      "lng": -37.5619
+    },
+    {
+      "municipio": "Nossa Senhora da Glória",
+      "lat": -10.2158,
+      "lng": -37.4206
+    },
+    {
+      "municipio": "Poço Redondo",
+      "lat": -9.8058,
+      "lng": -37.6833
+    }
+  ]
+}

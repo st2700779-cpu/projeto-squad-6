@@ -1,0 +1,19 @@
+name = "assistente-squad6"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Importa o prompt versionado (prompts/assistente/v1.md) como texto.
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
+[vars]
+PROVEDOR = "gemini"                      # gemini ou groq
+MODELO = "gemini-flash-lite-latest"       # conferir o nome exato no Google AI Studio
+MODELO_GROQ = "llama-3.3-70b-versatile"   # conferir no painel do Groq
+ORIGEM_PERMITIDA = "https://SEU-GRUPO.gitlab.io, http://127.0.0.1:5500, http://localhost:5500"
+
+# Segredos (nunca no repositório):
+#   npx wrangler secret put GEMINI_API_KEY
+#   npx wrangler secret put GROQ_API_KEY   (opcional, reserva)

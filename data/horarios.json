@@ -1,0 +1,1062 @@
+[
+  {
+    "id": "h-tt1",
+    "turmaId": "tt1",
+    "escolaId": "e1",
+    "turma": "1ª série A",
+    "turno": "Manhã",
+    "sala": "Bloco B, sala 04",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Inglês",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Física",
+          "professorId": "p2"
+        },
+        {
+          "componente": "Química",
+          "professorId": null
+        },
+        {
+          "componente": "Biologia",
+          "professorId": "p4"
+        }
+      ],
+      "ter": [
+        {
+          "componente": "História",
+          "professorId": "p5"
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Filosofia",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Inglês",
+          "professorId": "p3"
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Física",
+          "professorId": "p2"
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Química",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "História",
+          "professorId": "p5"
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Sociologia",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Biologia",
+          "professorId": "p4"
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-tt4",
+    "turmaId": "tt4",
+    "escolaId": "e1",
+    "turma": "2ª série A",
+    "turno": "Manhã",
+    "sala": "Bloco B, sala 05",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Biologia",
+          "professorId": "p4"
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Química",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": "p3"
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Projeto de Vida",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Sociologia",
+          "professorId": null
+        },
+        {
+          "componente": "Filosofia",
+          "professorId": null
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Física",
+          "professorId": "p2"
+        },
+        {
+          "componente": "Educação Digital e Computação",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": "p5"
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Física",
+          "professorId": "p2"
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Biologia",
+          "professorId": "p4"
+        },
+        {
+          "componente": "História",
+          "professorId": "p5"
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Projeto de Vida",
+          "professorId": null
+        },
+        {
+          "componente": "Química",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-tt5",
+    "turmaId": "tt5",
+    "escolaId": "e1",
+    "turma": "1ª série B",
+    "turno": "Tarde",
+    "sala": "Bloco A, sala 01",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Física",
+          "professorId": "p2"
+        },
+        {
+          "componente": "Química",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Filosofia",
+          "professorId": null
+        },
+        {
+          "componente": "Sociologia",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": "p3"
+        }
+      ],
+      "qua": [
+        {
+          "componente": "História",
+          "professorId": "p5"
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Física",
+          "professorId": "p2"
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Química",
+          "professorId": null
+        },
+        {
+          "componente": "Biologia",
+          "professorId": "p4"
+        },
+        {
+          "componente": "História",
+          "professorId": "p5"
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Biologia",
+          "professorId": "p4"
+        },
+        {
+          "componente": "Matemática",
+          "professorId": "p1"
+        },
+        {
+          "componente": "Inglês",
+          "professorId": "p3"
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-r1",
+    "turmaId": "r1",
+    "escolaId": "e1",
+    "turma": "6º ano A",
+    "turno": "Tarde",
+    "sala": "Bloco C, sala 02",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Inglês",
+          "professorId": null
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-r2",
+    "turmaId": "r2",
+    "escolaId": "e1",
+    "turma": "7º ano A",
+    "turno": "Tarde",
+    "sala": "Bloco C, sala 03",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-r3",
+    "turmaId": "r3",
+    "escolaId": "e1",
+    "turma": "8º ano A",
+    "turno": "Tarde",
+    "sala": "Bloco C, sala 04",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-r4",
+    "turmaId": "r4",
+    "escolaId": "e1",
+    "turma": "9º ano A",
+    "turno": "Tarde",
+    "sala": "Bloco C, sala 05",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Inglês",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-r8",
+    "turmaId": "r8",
+    "escolaId": "e2",
+    "turma": "7º ano B",
+    "turno": "Tarde",
+    "sala": "Sala 12",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        }
+      ],
+      "sex": [
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        },
+        {
+          "componente": "Inglês",
+          "professorId": null
+        }
+      ]
+    }
+  },
+  {
+    "id": "h-r20",
+    "turmaId": "r20",
+    "escolaId": "e2",
+    "turma": "3º ano A",
+    "turno": "Manhã",
+    "sala": "Sala 03",
+    "aulas": {
+      "seg": [
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "Arte",
+          "professorId": null
+        }
+      ],
+      "ter": [
+        {
+          "componente": "Geografia",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        }
+      ],
+      "qua": [
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Ciências",
+          "professorId": null
+        },
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Geografia",
+          "professorId": null
+        }
+      ],
+      "qui": [
+        {
+          "componente": "Educação Física",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        }
+      ],
+      "sex": [
+        {
+          "componente": "História",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        },
+        {
+          "componente": "Matemática",
+          "professorId": null
+        },
+        {
+          "componente": "Língua Portuguesa",
+          "professorId": null
+        }
+      ]
+    }
+  }
+]

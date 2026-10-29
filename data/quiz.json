@@ -1,0 +1,111 @@
+{
+  "bancos": [
+    {
+      "id": "mat-1em-b2", "serie": "1ª série EM", "componente": "Matemática", "unidade": "2º bimestre", "topico": "Conjuntos numéricos",
+      "perguntas": [
+        { "enunciado": "Qual das alternativas tem apenas números racionais?", "opcoes": ["√2, π e 0,5", "1/3, 0,25 e −4", "√3, 2 e 5", "π, 1/2 e 7"], "correta": 1, "explicacao": "Número racional é o que pode ser escrito como fração de inteiros. √2, √3 e π não podem." },
+        { "enunciado": "Se A = {1, 2, 3, 4} e B = {3, 4, 5}, quanto é A ∩ B?", "opcoes": ["{1, 2}", "{5}", "{3, 4}", "{1, 2, 3, 4, 5}"], "correta": 2, "explicacao": "A interseção reúne só os elementos que estão nos dois conjuntos: 3 e 4." },
+        { "enunciado": "Quantos elementos tem A ∪ B, com A = {1, 2, 3, 4} e B = {3, 4, 5}?", "opcoes": ["3", "4", "7", "5"], "correta": 3, "explicacao": "A união junta os elementos sem repetir: {1, 2, 3, 4, 5}, que são 5." },
+        { "enunciado": "Qual é o resultado de (−3) · (−4) + 2?", "opcoes": ["14", "−10", "10", "−14"], "correta": 0, "explicacao": "Menos vezes menos dá mais: (−3) · (−4) = 12, e 12 + 2 = 14." },
+        { "enunciado": "Qual destes números é o maior?", "opcoes": ["−0,5", "−5", "−0,55", "−0,05"], "correta": 3, "explicacao": "Entre números negativos, o maior é o que está mais perto de zero: −0,05." }
+      ]
+    },
+    {
+      "id": "mat-1em-b3", "serie": "1ª série EM", "componente": "Matemática", "unidade": "3º bimestre", "topico": "Funções afim e quadrática",
+      "perguntas": [
+        { "enunciado": "Na função f(x) = 2x + 3, qual é o valor de f(4)?", "opcoes": ["8", "11", "14", "5"], "correta": 1, "explicacao": "Troque x por 4: 2 · 4 + 3 = 11." },
+        { "enunciado": "O gráfico de uma função afim é:", "opcoes": ["Uma parábola", "Uma circunferência", "Uma reta", "Uma hipérbole"], "correta": 2, "explicacao": "A função afim, f(x) = ax + b, sempre desenha uma reta." },
+        { "enunciado": "Quais são as raízes de f(x) = x² − 5x + 6?", "opcoes": ["1 e 6", "−2 e −3", "−1 e 6", "2 e 3"], "correta": 3, "explicacao": "x² − 5x + 6 = (x − 2)(x − 3). Os valores que zeram a função são 2 e 3." },
+        { "enunciado": "A parábola y = x² + 2x + 1 tem a concavidade voltada para:", "opcoes": ["Baixo", "Cima", "A direita", "Nenhum lado"], "correta": 1, "explicacao": "Quando o número que multiplica x² é positivo (aqui, 1), a parábola abre para cima." },
+        { "enunciado": "Em que ponto a reta f(x) = −3x + 9 corta o eixo x?", "opcoes": ["x = −3", "x = 9", "x = 3", "x = 0"], "correta": 2, "explicacao": "No eixo x, f(x) = 0. Então −3x + 9 = 0, e x = 3." }
+      ]
+    },
+    {
+      "id": "port-1em-b3", "serie": "1ª série EM", "componente": "Língua Portuguesa", "unidade": "3º bimestre", "topico": "Gêneros textuais e figuras de linguagem",
+      "perguntas": [
+        { "enunciado": "Qual gênero tem como objetivo principal convencer o leitor a comprar um produto?", "opcoes": ["Notícia", "Receita", "Anúncio publicitário", "Verbete de dicionário"], "correta": 2, "explicacao": "O anúncio publicitário usa texto e imagem para persuadir o público a consumir algo." },
+        { "enunciado": "Em “O tempo é um rio que corre”, que figura de linguagem aparece?", "opcoes": ["Metáfora", "Hipérbole", "Ironia", "Onomatopeia"], "correta": 0, "explicacao": "Metáfora compara dois elementos sem usar “como”: o tempo é tratado como se fosse um rio." },
+        { "enunciado": "Qual é a função principal de uma notícia?", "opcoes": ["Expressar os sentimentos do autor", "Ensinar a fazer algo", "Contar uma história inventada", "Informar sobre fatos recentes"], "correta": 3, "explicacao": "A notícia relata fatos recentes e de interesse público, de forma objetiva." },
+        { "enunciado": "“Choveu tanto que a rua virou um rio.” O exagero nessa frase é uma:", "opcoes": ["Eufemismo", "Hipérbole", "Antítese", "Pleonasmo"], "correta": 1, "explicacao": "Hipérbole é o exagero usado para dar mais força à ideia." },
+        { "enunciado": "Qual frase está de acordo com a norma-padrão?", "opcoes": ["Fazem dois anos que moro aqui.", "Houveram muitos problemas.", "Faz dois anos que moro aqui.", "Aluga-se casas."], "correta": 2, "explicacao": "Com tempo decorrido, o verbo fazer fica no singular: “Faz dois anos”." }
+      ]
+    },
+    {
+      "id": "bio-1em-b3", "serie": "1ª série EM", "componente": "Biologia", "unidade": "3º bimestre", "topico": "Citologia",
+      "perguntas": [
+        { "enunciado": "Qual organela produz energia (ATP) na respiração celular?", "opcoes": ["Ribossomo", "Lisossomo", "Complexo golgiense", "Mitocôndria"], "correta": 3, "explicacao": "A mitocôndria é a “usina” da célula: ali a glicose é aproveitada para produzir ATP." },
+        { "enunciado": "Que estrutura controla a entrada e a saída de substâncias da célula?", "opcoes": ["Membrana plasmática", "Núcleo", "Citoesqueleto", "Parede celular"], "correta": 0, "explicacao": "A membrana plasmática é seletiva: deixa passar umas substâncias e barra outras." },
+        { "enunciado": "Qual organela existe só em células vegetais e faz a fotossíntese?", "opcoes": ["Mitocôndria", "Centríolo", "Cloroplasto", "Retículo endoplasmático"], "correta": 2, "explicacao": "O cloroplasto tem clorofila e transforma luz em alimento." },
+        { "enunciado": "Onde fica o DNA em uma célula eucarionte?", "opcoes": ["Nos lisossomos", "No núcleo", "Na membrana", "Nos ribossomos"], "correta": 1, "explicacao": "Nas células eucariontes o material genético fica protegido dentro do núcleo." },
+        { "enunciado": "Qual é a principal função dos ribossomos?", "opcoes": ["Digerir substâncias", "Armazenar água", "Produzir lipídios", "Fabricar proteínas"], "correta": 3, "explicacao": "Os ribossomos leem as instruções do RNA e montam as proteínas." }
+      ]
+    },
+    {
+      "id": "fis-1em-b3", "serie": "1ª série EM", "componente": "Física", "unidade": "3º bimestre", "topico": "Cinemática",
+      "perguntas": [
+        { "enunciado": "Um carro percorre 120 km em 2 h. Qual é a velocidade média?", "opcoes": ["40 km/h", "60 km/h", "80 km/h", "240 km/h"], "correta": 1, "explicacao": "Velocidade média = distância ÷ tempo = 120 ÷ 2 = 60 km/h." },
+        { "enunciado": "No movimento retilíneo uniforme (MRU), a velocidade é:", "opcoes": ["Constante", "Crescente", "Nula", "Variável"], "correta": 0, "explicacao": "“Uniforme” quer dizer que a velocidade não muda." },
+        { "enunciado": "Um corpo parte do repouso com aceleração de 3 m/s². Qual é a velocidade após 4 s?", "opcoes": ["7 m/s", "0,75 m/s", "12 m/s", "15 m/s"], "correta": 2, "explicacao": "v = a · t = 3 · 4 = 12 m/s." },
+        { "enunciado": "Qual é a unidade de aceleração no Sistema Internacional?", "opcoes": ["m/s", "km/h", "m²/s", "m/s²"], "correta": 3, "explicacao": "Aceleração mede quanto a velocidade (m/s) muda a cada segundo: m/s²." },
+        { "enunciado": "72 km/h equivalem a quantos m/s?", "opcoes": ["10 m/s", "20 m/s", "36 m/s", "72 m/s"], "correta": 1, "explicacao": "Divida por 3,6: 72 ÷ 3,6 = 20 m/s." }
+      ]
+    },
+    {
+      "id": "mat-7-b3", "serie": "7º ano", "componente": "Matemática", "unidade": "3º bimestre", "topico": "Equações do 1º grau",
+      "perguntas": [
+        { "enunciado": "Qual é o valor de x em x + 7 = 15?", "opcoes": ["6", "7", "8", "22"], "correta": 2, "explicacao": "Tire 7 dos dois lados: x = 15 − 7 = 8." },
+        { "enunciado": "Resolva 3x = 21.", "opcoes": ["x = 7", "x = 18", "x = 24", "x = 63"], "correta": 0, "explicacao": "Divida os dois lados por 3: x = 21 ÷ 3 = 7." },
+        { "enunciado": "O dobro de um número, mais 4, é 20. Que número é esse?", "opcoes": ["6", "10", "12", "8"], "correta": 3, "explicacao": "2x + 4 = 20, então 2x = 16 e x = 8." },
+        { "enunciado": "Se 2x − 5 = 9, quanto vale x?", "opcoes": ["2", "7", "4", "14"], "correta": 1, "explicacao": "2x = 9 + 5 = 14, então x = 7." },
+        { "enunciado": "Quanto é (−6) + 10?", "opcoes": ["−16", "−4", "4", "16"], "correta": 2, "explicacao": "Comece em −6 e ande 10 para a direita: chega em 4." }
+      ]
+    },
+    {
+      "id": "cie-7-b3", "serie": "7º ano", "componente": "Ciências", "unidade": "3º bimestre", "topico": "Ecossistemas e cadeia alimentar",
+      "perguntas": [
+        { "enunciado": "Em uma cadeia alimentar, os produtores são:", "opcoes": ["Animais carnívoros", "Seres que fazem fotossíntese, como as plantas", "Fungos decompositores", "Animais herbívoros"], "correta": 1, "explicacao": "Produtores fabricam o próprio alimento usando a luz do sol." },
+        { "enunciado": "Qual é o papel dos decompositores?", "opcoes": ["Transformar restos de seres vivos em nutrientes", "Produzir alimento com a luz", "Caçar outros animais", "Polinizar flores"], "correta": 0, "explicacao": "Fungos e bactérias devolvem os nutrientes ao solo." },
+        { "enunciado": "Um animal que se alimenta só de plantas é:", "opcoes": ["Carnívoro", "Onívoro", "Herbívoro", "Decompositor"], "correta": 2, "explicacao": "Herbívoros comem plantas, como a vaca e o coelho." },
+        { "enunciado": "O conjunto de seres vivos e do ambiente que interagem em um local se chama:", "opcoes": ["População", "Espécie", "Órgão", "Ecossistema"], "correta": 3, "explicacao": "Ecossistema inclui os seres vivos e também a água, o solo, o ar e a luz." },
+        { "enunciado": "Qual destes é um ecossistema aquático?", "opcoes": ["Caatinga", "Rio", "Cerrado", "Deserto"], "correta": 1, "explicacao": "Rios, lagos e mares são ecossistemas aquáticos." }
+      ]
+    },
+    {
+      "id": "geo-7-b3", "serie": "7º ano", "componente": "Geografia", "unidade": "3º bimestre", "topico": "Cartografia",
+      "perguntas": [
+        { "enunciado": "Em um mapa de escala 1:100.000, 1 cm representa quanto na realidade?", "opcoes": ["1 km", "10 km", "100 km", "0,1 km"], "correta": 0, "explicacao": "100.000 cm são 1.000 m, ou seja, 1 km." },
+        { "enunciado": "Que instrumento indica norte, sul, leste e oeste?", "opcoes": ["Termômetro", "Bússola", "Barômetro", "Relógio"], "correta": 1, "explicacao": "A agulha da bússola aponta para o norte magnético." },
+        { "enunciado": "As linhas imaginárias que dividem a Terra em leste e oeste, a partir de Greenwich, são os:", "opcoes": ["Paralelos", "Trópicos", "Meridianos", "Círculos polares"], "correta": 2, "explicacao": "Os meridianos vão de polo a polo; o de Greenwich é o de referência." },
+        { "enunciado": "A linha do Equador divide a Terra em dois hemisférios:", "opcoes": ["Norte e Sul", "Leste e Oeste", "Oriental e Ocidental", "Tropical e Polar"], "correta": 0, "explicacao": "O Equador separa o hemisfério norte do hemisfério sul." },
+        { "enunciado": "Para que serve a legenda de um mapa?", "opcoes": ["Mostrar o nome do autor", "Medir distâncias", "Explicar os símbolos e as cores usados", "Indicar o clima"], "correta": 2, "explicacao": "A legenda diz o que cada símbolo e cada cor significam." }
+      ]
+    },
+    {
+      "id": "mat-3-b3", "serie": "3º ano", "componente": "Matemática", "unidade": "3º bimestre", "topico": "Somar, subtrair e tabuada",
+      "perguntas": [
+        { "enunciado": "Quanto é 8 + 7?", "opcoes": ["14", "15", "16", "13"], "correta": 1, "explicacao": "8 + 7 = 15." },
+        { "enunciado": "Quanto é 15 − 6?", "opcoes": ["8", "10", "7", "9"], "correta": 3, "explicacao": "15 − 6 = 9." },
+        { "enunciado": "Quanto é 3 × 4?", "opcoes": ["12", "7", "10", "14"], "correta": 0, "explicacao": "3 × 4 é o mesmo que 3 + 3 + 3 + 3 = 12." },
+        { "enunciado": "Maria tinha 20 figurinhas e deu 5 para o irmão. Com quantas ela ficou?", "opcoes": ["25", "10", "15", "16"], "correta": 2, "explicacao": "20 − 5 = 15 figurinhas." }
+      ]
+    },
+    {
+      "id": "port-3-b3", "serie": "3º ano", "componente": "Língua Portuguesa", "unidade": "3º bimestre", "topico": "Sílabas, letras e plural",
+      "perguntas": [
+        { "enunciado": "Quantas sílabas tem a palavra BORBOLETA?", "opcoes": ["3", "4", "5", "2"], "correta": 1, "explicacao": "BOR-BO-LE-TA: quatro sílabas." },
+        { "enunciado": "Qual palavra começa com a mesma letra de CASA?", "opcoes": ["Gato", "Bola", "Dado", "Cavalo"], "correta": 3, "explicacao": "CAVALO começa com C, como CASA." },
+        { "enunciado": "Qual é o plural de FLOR?", "opcoes": ["Flores", "Flors", "Florzes", "Flor"], "correta": 0, "explicacao": "Quando a palavra termina em R, o plural leva ES: flores." },
+        { "enunciado": "Qual palavra está escrita certinha?", "opcoes": ["Chícara", "Xicára", "Xícara", "Chicara"], "correta": 2, "explicacao": "A escrita certa é XÍCARA, com X e acento no I." }
+      ]
+    },
+    {
+      "id": "cie-3-b3", "serie": "3º ano", "componente": "Ciências", "unidade": "3º bimestre", "topico": "Seres vivos",
+      "perguntas": [
+        { "enunciado": "Qual destes é um ser vivo?", "opcoes": ["Pedra", "Mesa", "Árvore", "Carro"], "correta": 2, "explicacao": "A árvore nasce, cresce e morre. Pedra, mesa e carro não." },
+        { "enunciado": "O que as plantas precisam para crescer?", "opcoes": ["Só barulho", "Água, luz do sol e ar", "Só areia", "Nada"], "correta": 1, "explicacao": "Sem água, luz e ar a planta não consegue fazer o próprio alimento." },
+        { "enunciado": "Qual animal vive na água?", "opcoes": ["Peixe", "Cachorro", "Galinha", "Vaca"], "correta": 0, "explicacao": "O peixe respira na água com as brânquias." },
+        { "enunciado": "Que parte da planta fica embaixo da terra?", "opcoes": ["Folha", "Flor", "Fruto", "Raiz"], "correta": 3, "explicacao": "A raiz prende a planta no solo e absorve água." }
+      ]
+    }
+  ]
+}

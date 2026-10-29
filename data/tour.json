@@ -1,0 +1,248 @@
+{
+  "aluno": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Resumo do aluno",
+      "texto": "Turma, frequência e matérias em atenção. Com presença abaixo de 75%, o número aparece em destaque."
+    },
+    {
+      "alvo": "#visual-faixa",
+      "alternativa": "#pagina h1",
+      "titulo": "Visual por idade",
+      "texto": "A tela muda conforme a etapa: mais ilustrada nos anos iniciais, mais organizada nos anos finais e mais densa no Ensino Médio."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Notas e faltas por matéria, declarações e o calendário com os avisos da escola."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste. As escolhas ficam guardadas neste aparelho."
+    },
+    {
+      "alvo": ".assistente-botao",
+      "titulo": "Assistente",
+      "texto": "Responde dúvidas sobre documentos da matrícula e datas, e abre a tela certa."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Para ver este guia de novo, use Como usar."
+    }
+  ],
+  "professor": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Suas turmas",
+      "texto": "Turmas, componente, carga horária e número de estudantes matriculados."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Diário de classe",
+      "texto": "O Diário abre a chamada e o lançamento de notas por bimestre. Os avisos da escola ficam logo abaixo."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra, útil nas tabelas longas do diário. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Em computador compartilhado, saia ao terminar."
+    }
+  ],
+  "escola": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Pendências da secretaria",
+      "texto": "Matrículas a confirmar, estudantes sem turma e turmas devolvidas, cada uma com o botão que abre a tela certa."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Matrículas, enturmação, turmas, alocação de professores e equivalências, na ordem em que o trabalho costuma acontecer."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": ".assistente-botao",
+      "titulo": "Assistente",
+      "texto": "Tira dúvidas sobre o fluxo de matrícula e as regras de vaga e de ato autorizativo."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador."
+    }
+  ],
+  "rede": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Atos autorizativos",
+      "texto": "Lista ordenada pelo vencimento. Com o ato vencido, a escola não pode abrir turma nem receber matrícula na etapa."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Além dos atos: escolas, cursos, vagas calculadas das turmas e o mapa da procura por bairro. Contas de DRE veem só as escolas da sua regional."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador."
+    }
+  ],
+  "familia": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Matrícula em cinco passos",
+      "texto": "Dados do estudante, responsável, endereço, escolha da escola e revisão. Uma decisão por tela."
+    },
+    {
+      "alvo": ".botao-ouvir",
+      "titulo": "Ouvir",
+      "texto": "Lê a tela em voz alta. Se o aparelho não tiver voz em português, o texto continua na tela."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão ao lado liga o modo escuro e o alto contraste."
+    },
+    {
+      "alvo": ".assistente-botao",
+      "titulo": "Assistente",
+      "texto": "Responde dúvidas sobre documentos e prazos da matrícula."
+    }
+  ],
+  "responsavel": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Início do responsável",
+      "texto": "Escolha o estudante no alto da tela. Aqui você vê o que precisa da sua atenção, com cor, símbolo e palavra."
+    },
+    {
+      "alvo": "#modo-simples",
+      "alternativa": "#pagina h1",
+      "titulo": "Modo simplificado",
+      "texto": "Deixa só a nota, as faltas e a próxima data. Fica ligado nas próximas visitas."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Notas e faltas, calendário com os avisos de reunião e a situação da matrícula e dos documentos."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão Exibição liga o modo escuro e o alto contraste. As escolhas ficam guardadas neste aparelho."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Para ver este guia de novo, use Como usar."
+    }
+  ],
+  "diretor": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Visão da escola",
+      "texto": "Estudantes, turmas e professores, frequência média, desempenho por turma e a situação da prestação de contas."
+    },
+    {
+      "alvo": "#abrir-reuniao",
+      "alternativa": "#pagina h1",
+      "titulo": "Tela de reunião",
+      "texto": "Resumo grande e limpo para projetar ou imprimir na reunião com o conselho escolar."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Mapa de calor da escola, tela de reunião, comunicados e atos autorizativos."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão Exibição liga o modo escuro e o alto contraste. As escolhas ficam guardadas neste aparelho."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Para ver este guia de novo, use Como usar."
+    }
+  ],
+  "coordenador": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Turmas e desempenho",
+      "texto": "Cada turma com frequência, média e estudantes em risco. O ícone de atenção só aparece nas turmas que você sinalizar."
+    },
+    {
+      "alvo": "[data-atencao]",
+      "alternativa": "#pagina h1",
+      "titulo": "Marcar atenção",
+      "texto": "O sistema não calcula nada por você: o ícone de alerta aparece quando você decide marcar a turma, com a sua anotação."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Comparativo lado a lado, reunião pedagógica para imprimir e a grade de horários."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão Exibição liga o modo escuro e o alto contraste. As escolhas ficam guardadas neste aparelho."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Para ver este guia de novo, use Como usar."
+    }
+  ],
+  "profin": [
+    {
+      "alvo": "#pagina h1",
+      "titulo": "Painel do PROFIN",
+      "texto": "Cada escola por categoria de recurso, com a situação da prestação de contas em cor, símbolo e texto."
+    },
+    {
+      "alvo": "[data-nota]",
+      "alternativa": "#pagina h1",
+      "titulo": "Anotação de contexto",
+      "texto": "Registre o que os números não mostram, como atraso por reforma ou troca de gestor. A anotação fica com data e autor."
+    },
+    {
+      "alvo": "#menu-lateral",
+      "alternativa": ".topo-menu-botao",
+      "titulo": "Menu",
+      "texto": "Painel por escola e rascunho do relatório consolidado."
+    },
+    {
+      "alvo": "[data-escala='0.1']",
+      "titulo": "Letra e exibição",
+      "texto": "A− e A+ mudam o tamanho da letra. O botão Exibição liga o modo escuro e o alto contraste. As escolhas ficam guardadas neste aparelho."
+    },
+    {
+      "alvo": "[data-sair]",
+      "titulo": "Sair",
+      "texto": "Encerra o acesso neste navegador. Para ver este guia de novo, use Como usar."
+    }
+  ]
+}
