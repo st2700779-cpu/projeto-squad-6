@@ -1,0 +1,66 @@
+{
+  "fonte": "SEDUC/SE, Matrícula Online da rede estadual (calendário de 2026)",
+  "horario": "das 8h às 22h, de segunda a sexta-feira",
+  "fases": [
+    {
+      "fase": 1,
+      "nome": "Renovação",
+      "publico": "Quem continua na mesma escola",
+      "inicio": "2026-01-05",
+      "fim": "2026-01-06",
+      "detalhe": "A renovação é automática para quem segue na mesma escola; a confirmação é feita na escola."
+    },
+    {
+      "fase": 2,
+      "nome": "Transferência interna",
+      "publico": "Quem já estuda na rede estadual e quer mudar de escola",
+      "inicio": "2026-01-09",
+      "fim": "2026-01-12",
+      "detalhe": "O pedido é feito pela Matrícula Online, escolhendo a nova escola."
+    },
+    {
+      "fase": 3,
+      "nome": "Novos alunos",
+      "publico": "Quem vai entrar na rede estadual",
+      "inicio": "2026-01-15",
+      "fim": "2026-01-19",
+      "detalhe": "Pedido pela Matrícula Online, com o CPF do estudante."
+    }
+  ],
+  "continua": "Depois das fases, a matrícula continua aberta durante o ano letivo, enquanto houver vaga na escola.",
+  "documentos": [
+    {
+      "texto": "Comprovante da matrícula on-line (impresso ou no celular)",
+      "quando": "sempre"
+    },
+    {
+      "texto": "Certidão de nascimento ou RG do estudante",
+      "quando": "sempre"
+    },
+    {
+      "texto": "CPF do estudante",
+      "quando": "sempre"
+    },
+    {
+      "texto": "Número do NIS, se a família tiver",
+      "quando": "sempre"
+    },
+    {
+      "texto": "Documento com foto do responsável",
+      "quando": "sempre"
+    },
+    {
+      "texto": "Comprovante de residência atual (conta de energia)",
+      "quando": "sempre"
+    },
+    {
+      "texto": "Guia de transferência ou declaração da escola anterior",
+      "quando": "transferencia"
+    },
+    {
+      "texto": "Cartão ou declaração de vacinação atualizada",
+      "quando": "ate12"
+    }
+  ],
+  "prazoDocumentosDiasUteis": 5
+}

@@ -30,7 +30,7 @@ async function mostrar() {
       [justPend.length, plural(justPend.length, 'justificativa de falta para analisar', 'justificativas de falta para analisar'), 'escola/justificativas.html', 'Analisar justificativas', prazoMin(justPend.map((j) => somar(String(j.enviadaEm).slice(0, 10), 5)))],
       [docsPendentes.length, plural(docsPendentes.length, 'documento de estudante pendente', 'documentos de estudantes pendentes'), 'escola/estudantes.html', 'Abrir estudantes', prazoMin(docsPendentes.map((d) => d.prazo))],
       [semTurma, plural(semTurma, 'estudante com matrícula confirmada sem turma', 'estudantes com matrícula confirmada sem turma'), 'escola/enturmacao.html', 'Enturmar estudantes', '<span class="texto-suave">—</span>'],
-      [pendentes, plural(pendentes, 'turma aguardando aprovação da direção', 'turmas aguardando aprovação da direção'), 'escola/turmas.html', 'Abrir turmas', '<span class="texto-suave">—</span>']
+      [pendentes, plural(pendentes, 'turma aguardando aprovação da direção', 'turmas aguardando aprovação da direção'), 'escola/turmas.html', 'Ver turmas', '<span class="texto-suave">a direção aprova</span>']
     ];
     main.innerHTML = `
       <header class="heroi">

@@ -78,14 +78,30 @@ async function alteravel(nome, semApi) {
   return obter(nome, null) ?? (await semApi());
 }
 export const matriculas = () => alteravel('matriculas', () => carregar('matriculas'));
-export const turmasEscola = () => alteravel('turmas', () => carregar('turmas'));
+// As turmas dos anos finais da escola do protótipo (r1 a r4) passaram de data/turmas-rede.json para data/turmas.json: a direção
+// gerencia todas as turmas da escola num lugar só. Quem salvou turmas antes dessa mudança recebe de volta as que faltam
+// (essas turmas têm estudantes, então nunca são apagadas pela direção).
+const TURMAS_MOVIDAS = ['r1', 'r2', 'r3', 'r4'];
+const arquivoDeDados = (nome) => fetch(new URL(`data/${nome}.json`, RAIZ), { cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); });
+/** Turmas da escola do protótipo (e1), gerenciadas pela direção (Direção › Turmas). Conjunto alterável 'turmas'. */
+export async function turmasEscola() {
+  const lista = await alteravel('turmas', () => carregar('turmas'));
+  if (TURMAS_MOVIDAS.every((id) => lista.some((t) => t.id === id))) return lista;
+  try {
+    const base = await arquivoDeDados('turmas');
+    lista.push(...base.filter((t) => TURMAS_MOVIDAS.includes(t.id) && !lista.some((x) => x.id === t.id)));
+  } catch { /* sem o arquivo-base, segue com o que está salvo */ }
+  return lista;
+}
 /**
- * Turmas da rede toda: as da secretaria (alteráveis), as das outras escolas e etapas que ela não gerencia (data/turmas-rede.json)
- * e as que a rede abriu para escolas sem secretaria no protótipo (conjunto turmas-rede-novas).
+ * Turmas da rede toda: as da escola do protótipo (alteráveis), as das outras escolas (data/turmas-rede.json)
+ * e as que a rede abriu em rodadas anteriores para escolas sem direção no protótipo (conjunto turmas-rede-novas).
+ * Um id repetido vale uma vez só (a versão alterável ganha).
  */
 export async function turmasDaRede() {
   const [minhas, outras, abertasPelaRede] = await Promise.all([turmasEscola(), carregar('turmas-rede'), conjunto('turmas-rede-novas')]);
-  return [...minhas, ...outras, ...abertasPelaRede];
+  const vistos = new Set();
+  return [...minhas, ...outras, ...abertasPelaRede].filter((t) => !vistos.has(t.id) && vistos.add(t.id));
 }
 /**
  * Vagas calculadas a partir das turmas (ninguém digita o número): lugares livres nas turmas aprovadas menos os pedidos de
@@ -114,7 +130,7 @@ export async function diarioParaLeitura({ soAtivos = false } = {}) {
 /** Dados do ano letivo (aulas dadas, bimestre atual). Fonte única para o cálculo de frequência. */
 export const letivo = () => carregar('letivo');
 // Demais conjuntos alteráveis, cada um com arquivo-base em data/:
-// chamadas, historico, enturmacao, alocacoes, renovacoes, equivalencias.
+// chamadas, historico, enturmacao, alocacoes, renovacoes, equivalencias, niveis, vinculos, salas (lista em tools/servidor.ps1).
 export const conjunto = (nome) => alteravel(nome, () => carregar(nome));
 
 /** Registra no histórico de ações quem fez o quê, em quê e quando (o mais recente fica no topo). */

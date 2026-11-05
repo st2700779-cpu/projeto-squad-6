@@ -18,7 +18,7 @@ $pastaSalvos = Join-Path $raiz 'dados-salvos'
 $prefixo = "http://localhost:$Porta/"
 $destino = $prefixo + $Pagina.TrimStart('/')
 $utf8 = New-Object System.Text.UTF8Encoding $false
-$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias', 'diario-meta', 'solicitacoes', 'comunicados', 'materiais', 'horarios', 'atencao-turmas', 'profin-notas', 'escolas-novas', 'atos-novos', 'professores-novos', 'equipe-profin', 'declaracoes-gastos', 'carga-horaria', 'repasses-lancados', 'registros-aula', 'justificativas', 'planos-aula', 'avisos-lidos', 'movimentacoes', 'cursos', 'lista-espera', 'turmas-rede-novas')
+$ALTERAVEIS = @('matriculas', 'vagas', 'turmas', 'diario', 'chamadas', 'historico', 'enturmacao', 'alocacoes', 'renovacoes', 'equivalencias', 'diario-meta', 'solicitacoes', 'comunicados', 'materiais', 'horarios', 'atencao-turmas', 'profin-notas', 'escolas-novas', 'atos-novos', 'professores-novos', 'equipe-profin', 'declaracoes-gastos', 'carga-horaria', 'repasses-lancados', 'registros-aula', 'justificativas', 'planos-aula', 'avisos-lidos', 'movimentacoes', 'cursos', 'lista-espera', 'turmas-rede-novas', 'niveis', 'vinculos', 'salas')
 $LIMITE_CORPO = 1MB
 
 # Abre o portal. Com -Celular, usa uma janela de app do Edge/Chrome com perfil proprio,

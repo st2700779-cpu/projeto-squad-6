@@ -18,6 +18,20 @@ import { atoDaEtapa, motivoBloqueio, SERIES } from '../assets/js/dominio/matricu
 import { validarCurso, montarCurso, podeDesativarCurso, municipioDaDre, seriesEscolhidas, validarSeriesDaEscola, aplicarSeriesAosAtos, atosDoNivel } from '../assets/js/dominio/cadastros.js';
 import { validarRegistroDeAula, montarRegistroDeAula, datasSemRegistro, validarJustificativa, montarJustificativa, validarDecisao, aplicarDecisao, ordenarJustificativas, diasDoPeriodo, abonosPorEstudante, aplicarAbonos, situacaoDosRegistros, turmasSemRegistro } from '../assets/js/dominio/vida-escolar.js';
 
+import { ETAPAS as NIVEIS, SERIES as SERIES_DOS_NIVEIS, NIVEIS_PADRAO, aplicarNiveis, nivelDaSerie, resumoDoNivel, validarNivel, montarNivel, sugerirSerie, validarSerieNova, usoDaSerie, podeRemoverSerie, usoDoNivel, podeApagarNivel, ordemDaSerie } from '../assets/js/dominio/niveis.js';
+import { VINCULOS_PADRAO, VINCULOS as VINCULOS_ATIVOS, aplicarVinculos, nomeAtualDoVinculo, validarVinculo, montarVinculo, usoDoVinculo, podeApagarVinculo, podeDesativarVinculo } from '../assets/js/dominio/vinculos.js';
+import { acrescentarSerie, tirarSerie, seriesDaEscola, validarSala, montarSala, podeRemoverSala, validarEdicaoDeSala, turnosDaEscola, podeTirarTurno, validarTurnoNovo, nomeSugerido, conflitoDeSala, validarTurma, montarTurma, aplicarEdicaoDeTurma, podeApagarTurma, ocupadosDaTurma } from '../assets/js/dominio/estrutura.js';
+import { turnosOcupados, turnosSeCruzam, TURNOS } from '../assets/js/dominio/vagas.js';
+import { conflitosDeHorario, horaDaAula, aulasPorDia } from '../assets/js/dominio/horario.js';
+import { proximaSerie as proxima, etapaDaSerie as etapaDe, serieCompleta as completa } from '../assets/js/dominio/matricula.js';
+import { AREAS, areaDoComponente, agruparPorArea, professorDaDisciplina, aplicarAlocacao, conflitosDaAlocacao, montarGrade, contarAulas, ESTUDO_ORIENTADO } from '../assets/js/dominio/alocacao.js';
+import { matrizDaSerie, aulasDoComponente as aulasDaMatriz, aulasAlocadas as aulasDoProf } from '../assets/js/dominio/turmas.js';
+import { totaisDaEscola, comprovacaoPorCategoria, pendenciasDaEscola, gastosDaEscola, linhaDoTempoFinanceira, resumoDePendencias } from '../assets/js/dominio/ficha-profin.js';
+import { aplicarDeclaracoes as somarDeclaracoes } from '../assets/js/dominio/prestacao.js';
+import { TIPOS_DE_NOTA, GERAL, normalizarNota, notasDaEscola, pendenciasAbertas, contextos, validarNota, acrescentarNota, alternarResolvida } from '../assets/js/dominio/notas-profin.js';
+import { rascunhoDoRelatorio } from '../assets/js/dominio/profin.js';
+import { periodoDaRematricula, faseDaMatricula, idadeEm, documentosDaMatricula, erroDoCpfDoEstudante, mascaraCpf, acompanharPedido } from '../assets/js/dominio/matricula-online.js';
+const DIAS_DA_GRADE = ['seg', 'ter', 'qua', 'qui', 'sex'];
 const dado = (n) => JSON.parse(readFileSync(new URL(`../data/${n}.json`, import.meta.url), 'utf8'));
 const HOJE = '2026-10-07';
 let n = 0;
@@ -95,7 +109,7 @@ t('professor: obrigatórios, CPF, matrícula e habilitação', () => {
 });
 
 const equipe = dado('equipe-profin');
-const membro = { nome: 'Patrícia Gomes Valadares', funcao: 'Analista financeiro', matricula: 'PF-41007', email: 'patricia.valadares@seed.se.gov.br', telefone: '79999990000', atende: 'DRE de Itabaiana' };
+const membro = { nome: 'Patrícia Gomes Valadares', funcao: 'Analista financeiro', vinculo: 'Efetivo', matricula: 'PF-41007', email: 'patricia.valadares@seed.se.gov.br', telefone: '79999990000', atende: 'DRE de Itabaiana' };
 t('equipe do PROFIN: cadastro, duplicidade e coordenação sempre presente', () => {
   assert.equal(validarMembroProfin(membro, { equipe }).ok, true);
   assert.equal(montarMembroProfin(membro, { equipe, hoje: HOJE }).id, `m${equipe.length + 1}`);
@@ -104,6 +118,10 @@ t('equipe do PROFIN: cadastro, duplicidade e coordenação sempre presente', () 
   assert.ok(validarMembroProfin({ ...membro, email: 'x' }, { equipe }).erros.email);
   assert.ok(validarMembroProfin({ ...membro, funcao: 'Chefe' }, { equipe }).erros.funcao);
   assert.ok(validarMembroProfin({ ...membro, atende: '' }, { equipe }).erros.atende);
+  assert.ok(validarMembroProfin({ ...membro, vinculo: '' }, { equipe }).erros.vinculo, 'o vínculo é obrigatório');
+  assert.ok(validarMembroProfin({ ...membro, vinculo: 'Contratado (REDA)' }, { equipe }).erros.vinculo, 'REDA não é vínculo de Sergipe');
+  assert.equal(montarMembroProfin(membro, { equipe, hoje: HOJE }).vinculo, 'Efetivo');
+  assert.ok(equipe.every((m) => m.vinculo), 'toda a equipe do PROFIN tem vínculo');
   const coord = equipe.find((m) => m.funcao === 'Coordenação do PROFIN');
   assert.equal(podeDesativar(equipe, coord.id).ok, false, 'a última coordenação não pode ser desativada');
   assert.equal(podeDesativar([...equipe, { ...coord, id: 'm9', matricula: 'PF-1', email: 'a@b.cc' }], coord.id).ok, true);
@@ -120,7 +138,7 @@ t('carga horária: 25 aulas de 50 min em 40 semanas dão 833 h; o mínimo do Fun
   assert.equal(validarCarga({ aulasSemana: 25, minutosAula: 50 }).ok, true);
   assert.ok(validarCarga({ aulasSemana: 5, minutosAula: 50 }).erros.aulasSemana); assert.ok(validarCarga({ aulasSemana: 25, minutosAula: 90 }).erros.minutosAula);
   const padrao = cargaPadrao();
-  assert.equal(padrao.length, 12); assert.ok(padrao.every((l) => situacaoDaCarga(l.etapa, l).ok), 'o padrão cumpre o mínimo');
+  assert.equal(padrao.length, ETAPAS.filter((t) => t.ativo !== false).reduce((n, t) => n + t.series.length, 0), 'uma linha por série dos níveis ativos'); assert.ok(padrao.every((l) => situacaoDaCarga(l.etapa, l).ok), 'o padrão cumpre o mínimo');
   assert.deepEqual(dado('carga-horaria'), padrao, 'data/carga-horaria.json segue o padrão');
 });
 
@@ -618,6 +636,282 @@ t('ato renovado: o atual vai para o histórico, com o PDF, e nada se perde', () 
   const todos = atosDoNivel(r);
   assert.deepEqual(todos.map((x) => x.vigente), [true, ...r.historico.map(() => false)]); assert.equal(todos[0].numero, 'Resolução CEE nº 400/2026');
   assert.equal(r.series, ato.series); assert.equal(r.curso, ato.curso, 'séries e curso continuam');
+});
+
+t('níveis de ensino: dados = padrão, séries únicas, matrícula só nos níveis marcados, EJA e técnico incluídos', () => {
+  assert.deepEqual(dado('niveis'), NIVEIS_PADRAO, 'data/niveis.json é igual ao padrão');
+  const todas = NIVEIS.flatMap((n) => n.series);
+  assert.equal(new Set(todas).size, todas.length, 'nenhuma série repetida entre níveis');
+  assert.deepEqual(SERIES_DOS_NIVEIS, ['6º ano', '7º ano', '8º ano', '9º ano', '1ª série EM', '2ª série EM', '3ª série EM']);
+  assert.ok(NIVEIS.some((n) => n.etapa === 'EJA — Ensino Médio') && NIVEIS.some((n) => n.nomenclatura === 'modulo'));
+  assert.equal(nivelDaSerie('EJA EM — Etapa II').etapa, 'EJA — Ensino Médio');
+  assert.equal(etapaDe('EJA EM — Etapa I'), 'EJA — Ensino Médio', 'EJA EM não é confundida com o Ensino Médio regular');
+  assert.equal(resumoDoNivel(NIVEIS.find((n) => n.id === 'n-af')), '6º ao 9º ano'); assert.equal(resumoDoNivel(NIVEIS.find((n) => n.id === 'n-em')), '1ª a 3ª série');
+  assert.equal(proxima('9º ano'), '1ª série EM'); assert.equal(proxima('EJA EF — Etapa IV'), 'EJA EM — Etapa I'); assert.equal(proxima('EJA EM — Etapa III'), null);
+  assert.equal(completa('1ª série EM'), '1ª série do Ensino Médio'); assert.equal(completa('6º ano'), '6º ano do Ensino Fundamental'); assert.equal(completa('EJA EF — Etapa I'), 'EJA EF — Etapa I');
+  assert.ok(ordemDaSerie('5º ano') < ordemDaSerie('6º ano') && ordemDaSerie('3ª série EM') < ordemDaSerie('EJA EF — Etapa I'));
+  for (const c of dado('cursos')) assert.ok(NIVEIS.some((n) => n.etapa === c.etapa), `o curso ${c.nome} é de um nível cadastrado`);
+  for (const t of [...dado('turmas'), ...dado('turmas-rede')]) assert.ok(nivelDaSerie(t.serie), `a série ${t.serie} da turma ${t.id} é de um nível`);
+});
+
+t('níveis: cadastro, nova série sem repetir nome, série e nível em uso não saem, lista aplicada no lugar', () => {
+  const lista = dado('niveis');
+  const f = { etapa: 'Educação Especial — Atendimento Educacional Especializado', curto: 'AEE', nomenclatura: 'etapa', horasMinimas: '800', aulasPadrao: '25', continuaEm: '' };
+  assert.equal(validarNivel(f, { niveis: lista }).ok, true);
+  assert.ok(validarNivel({ ...f, etapa: 'ensino medio' }, { niveis: lista }).erros.etapa, 'nome repetido, sem acento');
+  assert.ok(validarNivel({ ...f, curto: 'Anos Finais' }, { niveis: lista }).erros.curto);
+  assert.ok(validarNivel({ ...f, nomenclatura: 'semestre' }, { niveis: lista }).erros.nomenclatura);
+  assert.ok(validarNivel({ ...f, horasMinimas: '100' }, { niveis: lista }).erros.horasMinimas);
+  assert.ok(validarNivel({ ...f, continuaEm: 'n-xx' }, { niveis: lista }).erros.continuaEm);
+  assert.equal(validarNivel({ ...f, etapa: 'Ensino Médio', curto: 'Ensino Médio' }, { niveis: lista, id: 'n-em' }).ok, true, 'na edição o próprio nome não conta como repetido');
+  const novo = montarNivel(f, { niveis: lista });
+  assert.equal(novo.id, 'n1'); assert.deepEqual(novo.series, []); assert.equal(novo.matricula, false);
+  assert.equal(sugerirSerie({ ...novo, series: ['AEE — Etapa I'] }), 'AEE — Etapa II');
+  const todasS = lista.flatMap((n) => n.series);
+  assert.equal(sugerirSerie(lista.find((n) => n.id === 'n-em'), todasS), '4ª série EM', 'segue o número e o sufixo da última série');
+  assert.equal(sugerirSerie(lista.find((n) => n.id === 'n-af'), todasS), '', 'depois do 9º ano não sugere');
+  assert.equal(sugerirSerie(lista.find((n) => n.id === 'n-ai'), todasS), '', '6º ano já existe nos Anos Finais');
+  assert.ok(validarSerieNova('6º ANO', { niveis: lista }).erros.serie, 'nome de série já usado em outro nível');
+  assert.equal(validarSerieNova('AEE — Etapa I', { niveis: lista }).ok, true);
+  const uso = usoDaSerie('1ª série EM', { turmas: dado('turmas'), atos: dado('atos'), pedidos: dado('matriculas') });
+  assert.ok(uso.turmas > 0 && podeRemoverSerie('1ª série EM', uso).ok === false);
+  assert.equal(podeRemoverSerie('EJA EM — Etapa III', usoDaSerie('EJA EM — Etapa III', { turmas: dado('turmas'), atos: dado('atos'), pedidos: [] })).ok, true);
+  const em = lista.find((n) => n.id === 'n-em');
+  assert.equal(podeApagarNivel(em, usoDoNivel(em, { atos: dado('atos'), cursos: dado('cursos'), turmas: dado('turmas') })).ok, false);
+  assert.equal(podeApagarNivel(novo, usoDoNivel(novo, { atos: dado('atos'), cursos: dado('cursos'), turmas: [] })).ok, true);
+  // aplicar troca o conteúdo das listas no lugar (quem importou antes enxerga) e volta ao padrão no fim
+  const ref = SERIES_DOS_NIVEIS;
+  aplicarNiveis(lista.map((n) => (n.id === 'n-ai' ? { ...n, matricula: true } : n.id === 'n-em' ? { ...n, ativo: false } : n)));
+  assert.equal(ref, SERIES_DOS_NIVEIS); assert.deepEqual(ref, ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano', '6º ano', '7º ano', '8º ano', '9º ano']);
+  assert.equal(validarEscola({ ...base, etapas: ['Ensino Médio'] }, { escolas, hoje: HOJE }).erros.etapas !== undefined, true, 'nível desativado não entra em escola nova');
+  aplicarNiveis([]); assert.equal(SERIES_DOS_NIVEIS.length, 7, 'lista vazia volta ao padrão');
+  aplicarNiveis(NIVEIS_PADRAO);
+});
+
+t('tipos de vínculo: dados = padrão, PSS em vez de REDA, cadastro, uso e pelo menos um ativo', () => {
+  assert.deepEqual(dado('vinculos'), VINCULOS_PADRAO);
+  assert.ok(!VINCULOS_ATIVOS.includes('Contratado (REDA)') && VINCULOS_ATIVOS.includes('Contratado temporário (PSS)'));
+  assert.equal(nomeAtualDoVinculo('Contratado (REDA)'), 'Contratado temporário (PSS)'); assert.equal(nomeAtualDoVinculo('Efetivo'), 'Efetivo');
+  for (const p of dado('professores')) assert.ok(VINCULOS_ATIVOS.includes(p.vinculo), `${p.nome} tem vínculo da lista`);
+  for (const s of dado('rh-servidores').servidores) assert.ok(VINCULOS_ATIVOS.includes(s.vinculo), `RH: ${s.nome}`);
+  const lista = dado('vinculos');
+  assert.equal(validarVinculo({ nome: 'Contrato emergencial', descricao: '' }, { vinculos: lista }).ok, true);
+  assert.ok(validarVinculo({ nome: 'efetivo' }, { vinculos: lista }).erros.nome);
+  assert.equal(validarVinculo({ nome: 'Efetivo' }, { vinculos: lista, id: 'v1' }).ok, true);
+  assert.equal(montarVinculo({ nome: 'Contrato emergencial' }, { vinculos: lista }).id, `v${lista.length + 1}`);
+  const uso = usoDoVinculo('Efetivo', { professores: dado('professores'), equipe: dado('equipe-profin') });
+  assert.ok(uso.total > 0); assert.equal(podeApagarVinculo(lista[0], uso).ok, false);
+  assert.equal(podeApagarVinculo(lista[4], usoDoVinculo(lista[4].nome, { professores: dado('professores'), equipe: dado('equipe-profin') })).ok, true);
+  assert.equal(podeDesativarVinculo([{ id: 'v1', ativo: true }], 'v1').ok, false); assert.equal(podeDesativarVinculo(lista, 'v1').ok, true);
+  aplicarVinculos(lista.map((v) => (v.id === 'v6' ? { ...v, ativo: false } : v))); assert.ok(!VINCULOS_ATIVOS.includes('Terceirizado')); aplicarVinculos(VINCULOS_PADRAO);
+  const prof = { nome: 'Marcos Antônio Silva', formacao: 'Licenciatura em Matemática', habilitacao: ['Matemática'], cargaHorariaSemanal: 20, escolaId: 'e1' };
+  assert.ok(validarEdicaoDeProfessor({ ...prof, vinculo: 'Terceirizado (antigo)' }, { escolas, componentes: ['Matemática'] }).erros.vinculo);
+  assert.equal(validarEdicaoDeProfessor({ ...prof, vinculo: 'Vínculo desativado' }, { escolas, componentes: ['Matemática'], vinculoAtual: 'Vínculo desativado' }).erros.vinculo, undefined, 'quem já tem um vínculo desativado continua com ele');
+});
+
+const escolaE1 = escolas.find((e) => e.id === 'e1');
+const turmasE1 = dado('turmas');
+const salasE1 = dado('salas');
+const atosBase = dado('atos');
+t('estrutura da escola: séries dentro do ato, salas, turnos e as turmas da escola e1 sem conflito', () => {
+  assert.ok(turmasE1.every((t) => t.escolaId === 'e1' && salasE1.some((s) => s.id === t.salaId && s.nome === t.sala)), 'toda turma aponta para uma sala da escola');
+  assert.ok(turmasE1.every((t) => t.capacidade <= salasE1.find((s) => s.id === t.salaId).capacidade), 'nenhuma turma passa dos lugares da sala');
+  assert.ok(turmasE1.every((t) => !conflitoDeSala(t.salaId, t.turno, turmasE1, t.id)), 'nenhuma sala com duas turmas no mesmo turno');
+  assert.ok(['r1', 'r2', 'r3', 'r4'].every((id) => turmasE1.some((t) => t.id === id)) && !dado('turmas-rede').some((t) => t.escolaId === 'e1'), 'as turmas dos anos finais da e1 estão em data/turmas.json');
+  for (const h of dado('horarios').filter((x) => x.escolaId === 'e1')) { const t = turmasE1.find((x) => x.id === h.turmaId); assert.ok(t && h.sala === t.sala && h.turno === t.turno, `grade de ${h.turma} combina com a turma`); }
+  const atoEM = atosBase.find((a) => a.escolaId === 'e1' && a.etapa === 'Ensino Médio');
+  const tira = tirarSerie(atoEM, '1ª série EM', turmasE1); assert.equal(tira.ok, false); assert.match(tira.motivo, /turma/);
+  const semTurma = tirarSerie({ ...atoEM, series: ['1ª série EM', '2ª série EM', '3ª série EM'] }, '3ª série EM', turmasE1);
+  assert.equal(semTurma.ok, true); assert.deepEqual(semTurma.ato.series, ['1ª série EM', '2ª série EM']);
+  assert.equal(tirarSerie({ ...atoEM, series: ['3ª série EM'] }, '3ª série EM', []).ok, false, 'a última série do nível não sai');
+  const volta = acrescentarSerie(semTurma.ato, '3ª série EM'); assert.equal(volta.ok, true); assert.deepEqual(volta.ato.series, ['1ª série EM', '2ª série EM', '3ª série EM'], 'volta na ordem do nível');
+  assert.ok(acrescentarSerie(atoEM, '6º ano').erros.serie, 'série de outro nível'); assert.ok(acrescentarSerie(null, '6º ano').erros.serie);
+  assert.ok(seriesDaEscola(atosBase, 'e1').includes('6º ano'));
+  assert.equal(validarSala({ nome: 'Bloco D, sala 01', capacidade: '35' }, { salas: salasE1, escolaId: 'e1' }).ok, true);
+  assert.ok(validarSala({ nome: 'bloco a, sala 01', capacidade: '35' }, { salas: salasE1, escolaId: 'e1' }).erros.nome);
+  assert.ok(validarSala({ nome: 'Sala nova', capacidade: '200' }, { salas: salasE1, escolaId: 'e1' }).erros.capacidade);
+  assert.equal(montarSala({ nome: 'Sala nova', capacidade: '30' }, { salas: salasE1, escolaId: 'e1' }).id, `s${salasE1.length + 1}`);
+  const salaTt1 = salasE1.find((s) => s.id === turmasE1[0].salaId);
+  assert.equal(podeRemoverSala(salaTt1, turmasE1).ok, false); assert.equal(podeRemoverSala(salasE1.find((s) => s.id === 's12'), turmasE1).ok, true);
+  assert.ok(validarEdicaoDeSala({ nome: salaTt1.nome, capacidade: '20' }, salaTt1, { salas: salasE1, turmas: turmasE1 }).erros.capacidade, 'sala não fica menor que a turma');
+  assert.deepEqual(turnosDaEscola(escolaE1, turmasE1), ['Manhã', 'Tarde', 'Noite']);
+  assert.deepEqual(turnosDaEscola({ ...escolaE1, turnos: ['Integral', 'Manhã'] }, turmasE1), ['Manhã', 'Integral'], 'escolha da direção, na ordem dos turnos');
+  assert.equal(podeTirarTurno('Manhã', { turnos: ['Manhã', 'Tarde', 'Noite'], turmasDaEscola: turmasE1 }).ok, false);
+  assert.equal(podeTirarTurno('Integral', { turnos: ['Manhã', 'Integral'], turmasDaEscola: turmasE1 }).ok, true);
+  assert.equal(podeTirarTurno('Manhã', { turnos: ['Manhã'], turmasDaEscola: [] }).ok, false, 'pelo menos um turno');
+  assert.ok(validarTurnoNovo('Manhã', ['Manhã']).erros.turno); assert.equal(validarTurnoNovo('Integral', ['Manhã']).ok, true);
+  assert.deepEqual(TURNOS, ['Manhã', 'Tarde', 'Noite', 'Integral']); assert.deepEqual(turnosOcupados('Integral'), ['Manhã', 'Tarde']);
+  assert.equal(turnosSeCruzam('Integral', 'Tarde'), true); assert.equal(turnosSeCruzam('Integral', 'Noite'), false);
+});
+
+t('turma da direção: série com ato vigente, turno da escola, sala livre (integral ocupa manhã e tarde) e vagas até os lugares da sala', () => {
+  const comIntegral = { ...escolaE1, turnos: ['Manhã', 'Tarde', 'Noite', 'Integral'] };
+  const ctx = { escola: comIntegral, atos: atosBase, turmasDaEscola: turmasE1, salas: salasE1, hoje: HOJE };
+  const f = { serie: '3ª série EM', turno: 'Manhã', salaId: 's6', vagas: '35', nome: nomeSugerido('3ª série EM', 'Manhã', turmasE1) };
+  assert.equal(f.nome, '3ª série A');
+  assert.equal(nomeSugerido('1ª série EM', 'Integral', turmasE1), '1ª série D — integral');
+  assert.equal(validarTurma(f, ctx).ok, true, JSON.stringify(validarTurma(f, ctx).erros));
+  assert.ok(validarTurma({ ...f, vagas: '39' }, ctx).erros.vagas, 's6 tem 38 lugares');
+  assert.ok(validarTurma({ ...f, vagas: '3' }, ctx).erros.vagas);
+  assert.ok(validarTurma({ ...f, salaId: 's4' }, ctx).erros.salaId, 's4 é da 1ª série A de manhã');
+  assert.ok(validarTurma({ ...f, turno: 'Integral', salaId: 's1', nome: 'x integral' }, ctx).erros.salaId, 'integral bate com a turma da tarde da sala s1');
+  assert.equal(validarTurma({ ...f, turno: 'Integral', salaId: 's3', nome: '3ª série A — integral' }, ctx).ok, true);
+  assert.ok(validarTurma({ ...f, turno: 'Integral' }, { ...ctx, escola: escolaE1 }).erros.turno, 'a escola precisa ter o turno integral');
+  assert.ok(validarTurma({ ...f, serie: 'EJA EM — Etapa I' }, ctx).erros.serie, 'série que a escola não oferece');
+  assert.ok(validarTurma({ ...f, nome: '1ª série A' }, ctx).erros.nome, 'nome repetido no mesmo turno');
+  const vencido = atosBase.map((a) => (a.escolaId === 'e1' && a.etapa === 'Ensino Médio' ? { ...a, validade: '2026-01-01' } : a));
+  assert.match(validarTurma(f, { ...ctx, atos: vencido }).erros.serie, /vencida/);
+  const nova = montarTurma(f, { escolaId: 'e1', salas: salasE1, hoje: HOJE });
+  assert.equal(nova.situacao, 'Aprovada'); assert.equal(nova.capacidade, 35); assert.equal(nova.sala, 'Bloco B, sala 06'); assert.equal(nova.matriculados, 0);
+  const tt1 = turmasE1.find((t) => t.id === 'tt1');
+  assert.ok(validarTurma({ serie: tt1.serie, turno: tt1.turno, salaId: tt1.salaId, vagas: '30', nome: tt1.nome }, { ...ctx, id: tt1.id, ocupados: ocupadosDaTurma(tt1, {}) }).erros.vagas, 'não fica com menos vagas que estudantes');
+  assert.equal(validarTurma({ serie: tt1.serie, turno: tt1.turno, salaId: tt1.salaId, vagas: '38', nome: tt1.nome }, { ...ctx, id: tt1.id, ocupados: 37 }).ok, true, 'a própria turma não conta como conflito');
+  const editada = aplicarEdicaoDeTurma(tt1, { serie: tt1.serie, turno: tt1.turno, salaId: tt1.salaId, vagas: '38', nome: tt1.nome }, { salas: salasE1 });
+  assert.equal(editada.historico.length, tt1.historico.length + 1);
+  assert.equal(podeApagarTurma(tt1).ok, false); assert.equal(podeApagarTurma(nova).ok, true); assert.equal(podeApagarTurma(nova, { enturmacao: { 'MAT-1': nova.id } }).ok, false);
+});
+
+t('horário: turma integral tem 9 aulas e o conflito de professor compara a hora, inclusive entre integral e manhã', () => {
+  assert.equal(aulasPorDia('Integral'), 9); assert.equal(aulasPorDia('Manhã'), 5);
+  assert.equal(horaDaAula('Integral', 5).inicio, '13:30'); assert.equal(horaDaAula('Manhã', 9).inicio, '');
+  const vazio = (n) => Array.from({ length: n }, () => ({ componente: 'Matemática', professorId: null }));
+  const grade = (id, turno, n) => ({ turmaId: id, turma: id, turno, aulas: { seg: vazio(n), ter: vazio(n), qua: vazio(n), qui: vazio(n), sex: vazio(n) } });
+  const manha = grade('a', 'Manhã', 5); const tarde = grade('b', 'Tarde', 5); const integral = grade('c', 'Integral', 9);
+  manha.aulas.seg[0].professorId = 'p1'; tarde.aulas.seg[0].professorId = 'p2';
+  const hs = [manha, tarde, integral];
+  assert.equal(conflitosDeHorario(hs, { turmaId: 'c', dia: 'seg', indice: 0, professorId: 'p1' }).length, 1, 'integral às 7h30 bate com a manhã');
+  assert.equal(conflitosDeHorario(hs, { turmaId: 'c', dia: 'seg', indice: 5, professorId: 'p2' }).length, 1, 'integral às 13h30 bate com a tarde');
+  assert.equal(conflitosDeHorario(hs, { turmaId: 'c', dia: 'seg', indice: 1, professorId: 'p1' }).length, 0);
+  assert.equal(conflitosDeHorario(hs, { turmaId: 'b', dia: 'seg', indice: 0, professorId: 'p1' }).length, 0, 'manhã e tarde não se cruzam');
+});
+
+t('alocação e horário: matriz do Médio e dos Anos Finais, um professor por disciplina na turma, grade e alocação sempre iguais', () => {
+  const matrizes = dado('matrizes'); const aloc = dado('alocacoes'); const hs = dado('horarios'); const profs = dado('professores');
+  assert.equal(matrizDaSerie(matrizes, '6º ano').reduce((s, c) => s + c.aulas, 0), 25, 'anos finais: 25 aulas');
+  assert.equal(aulasDaMatriz(matrizes, 'Inglês', '3ª série EM'), 2, 'a 3ª série segue a versão 2023');
+  assert.equal(aulasDaMatriz(matrizes.versoes[0].componentes, 'Inglês', '3ª série EM'), 1, 'a lista de uma versão continua aceita');
+  assert.equal(aulasDaMatriz(matrizes, 'Matemática', 'EJA EM — Etapa I'), 0);
+  for (const h of hs.filter((x) => x.escolaId === 'e1')) for (const dia of Object.keys(h.aulas)) h.aulas[dia].forEach((a) => assert.equal(a.professorId ?? null, professorDaDisciplina(aloc, h.turmaId, a.componente), `${h.turma} ${dia} ${a.componente}: grade e alocação combinam`));
+  const turmas = dado('turmas');
+  for (const p of profs.filter((x) => x.escolaId === 'e1')) assert.ok(p.aulasEmOutrasTurmas + aulasDoProf(p.id, { alocacoes: aloc, turmas, matriz: matrizes }) <= p.cargaHorariaSemanal, `${p.nome} dentro da carga`);
+  assert.ok(aloc.every((a) => profs.find((p) => p.id === a.professorId)?.habilitacao.includes(a.componente)), 'toda alocação respeita a habilitação');
+  assert.equal(areaDoComponente('Física'), 'Ciências da Natureza'); assert.equal(areaDoComponente('Projeto de Vida'), 'Outras disciplinas');
+  assert.deepEqual(agruparPorArea(['Arte', 'Matemática', 'Projeto de Vida']).map((g) => g.area), ['Linguagens', 'Matemática', 'Outras disciplinas']);
+  assert.ok(AREAS.every((a) => a.componentes.length));
+  const r = aplicarAlocacao({ alocacoes: aloc, horarios: hs, turmaId: 'tt1', componente: 'Matemática', professorId: null });
+  assert.equal(professorDaDisciplina(r.alocacoes, 'tt1', 'Matemática'), null); assert.equal(aloc.length - 1, r.alocacoes.length, 'a original não muda');
+  assert.ok(r.horarios.find((h) => h.turmaId === 'tt1').aulas.seg.every((a) => a.componente !== 'Matemática' || a.professorId === null), 'a grade acompanha');
+  // p1 dá Matemática na 1ª série A (manhã): colocá-la na 2ª série A, também de manhã, bate em algum horário
+  const conf = conflitosDaAlocacao(hs, { turmaId: 'tt4', componente: 'Matemática', professorId: 'p3' });
+  assert.ok(Array.isArray(conf));
+  const t6 = turmas.find((t) => t.id === 'r1');
+  const g = montarGrade(t6, matrizDaSerie(matrizes, '6º ano'), aloc);
+  assert.equal(Object.values(contarAulas(g)).reduce((s, n) => s + n, 0), 25); assert.deepEqual(contarAulas(g), Object.fromEntries(matrizDaSerie(matrizes, '6º ano').map((c) => [c.componente, c.aulas])));
+  assert.ok(Object.values(g.aulas).every((d) => d.length === 5));
+  const integral = montarGrade({ ...t6, id: 'x', turno: 'Integral' }, matrizDaSerie(matrizes, '6º ano'), []);
+  assert.ok(Object.values(integral.aulas).every((d) => d.length === 9)); assert.equal(contarAulas(integral)[ESTUDO_ORIENTADO], 20, 'o que sobra no integral vira estudo orientado');
+  const mat = DIAS_DA_GRADE.map((d) => g.aulas[d].filter((a) => a.componente === 'Matemática').length);
+  assert.ok(mat.every((n) => n === 1), 'as 5 aulas de Matemática ficam uma por dia');
+});
+
+t('ficha do PROFIN: totais, comprovação, o que falta (com os documentos recusados) e como a escola gasta', () => {
+  const profin = dado('profin'); const decs = dado('declaracoes-gastos');
+  const reps = somarDeclaracoes(profin.repasses, decs);
+  const e1 = reps.filter((r) => r.escolaId === 'e1');
+  const tot = totaisDaEscola(e1);
+  assert.equal(tot.recebido, 48600 + 32000 + 27450 + 15000); assert.equal(tot.saldo, Math.round((tot.recebido - tot.executado) * 100) / 100); assert.equal(tot.emAnalise, 3420.5);
+  const comp = comprovacaoPorCategoria(e1, decs, HOJE);
+  assert.equal(comp.find((c) => c.categoria === 'Emenda Parlamentar').devolvido, 2180); assert.equal(comp.find((c) => c.categoria === 'Custeio').emAnalise, 3420.5);
+  const pend = pendenciasDaEscola({ repasses: e1, declaracoes: decs.filter((d) => d.escolaId === 'e1'), hoje: HOJE });
+  const atrasada = pend.find((p) => p.titulo.startsWith('Prestação de Emenda Parlamentar atrasada'));
+  assert.ok(atrasada && atrasada.gravidade === 'erro', 'prazo 02/10 passou e a declaração foi devolvida');
+  const devolvida = pend.find((p) => p.declaracaoId === 'DG-2026-0002');
+  assert.equal(devolvida.gravidade, 'erro'); assert.ok(devolvida.documentos.length === 1 && /CNPJ/.test(devolvida.documentos[0]), 'mostra o documento recusado e o motivo');
+  assert.deepEqual(pend.map((p) => p.gravidade), [...pend.map((p) => p.gravidade)].sort((a, b) => ['erro', 'atencao', 'info'].indexOf(a) - ['erro', 'atencao', 'info'].indexOf(b)), 'do mais grave ao menos grave');
+  const e5 = pendenciasDaEscola({ repasses: reps.filter((r) => r.escolaId === 'e5'), declaracoes: decs.filter((d) => d.escolaId === 'e5'), hoje: HOJE });
+  assert.ok(e5.some((p) => p.gravidade === 'info' && /glosados/.test(p.titulo)), 'valor glosado aparece para acompanhar');
+  const rasc = pendenciasDaEscola({ repasses: [], declaracoes: [{ id: 'X', escolaId: 'e1', categoria: 'Custeio', situacao: 'Rascunho', lancamentos: [{ comprovante: null }, { comprovante: { nome: 'a.pdf' } }] }], hoje: HOJE });
+  assert.match(rasc[0].detalhe, /1 gasto está sem comprovante/);
+  const parado = pendenciasDaEscola({ repasses: [{ escolaId: 'x', categoria: 'Capital', recebido: 10000, executado: 1000, prestacao: { prazo: '2026-11-20', entregue: false } }], declaracoes: [], hoje: HOJE });
+  assert.ok(parado.some((p) => /Saldo parado/.test(p.titulo)));
+  const g = gastosDaEscola(decs.filter((d) => d.escolaId === 'e5'));
+  assert.equal(g.total, 340); assert.equal(g.porNatureza.find((n) => n.natureza === 'Utensílios de cozinha').aprovado, 0, 'o item glosado não conta como aprovado');
+  assert.ok(g.ultimos.every((l, i, a) => i === 0 || String(a[i - 1].data) >= String(l.data)), 'mais recente primeiro');
+  const tl = linhaDoTempoFinanceira({ declaracoes: decs.filter((d) => d.escolaId === 'e1'), lancados: [{ data: '2026-10-01', valor: 100, categoria: 'Custeio' }] });
+  assert.ok(tl.length >= 4 && tl[0].quando >= tl[tl.length - 1].quando);
+  assert.deepEqual(resumoDePendencias([{ gravidade: 'erro' }, { gravidade: 'info' }]), { erro: 1, atencao: 0, info: 1 });
+});
+
+t('matrícula on-line como a oficial: fases, CPF obrigatório sem pedido repetido, documentos e acompanhamento pelo protocolo', () => {
+  const on = dado('matricula-online');
+  assert.deepEqual(periodoDaRematricula(dado('calendario')), { inicio: '2026-11-03', fim: '2026-11-28', texto: '3 a 28 de novembro', titulo: 'Rematrícula para 2027' });
+  assert.equal(faseDaMatricula(on.fases, '2026-01-10').nome, 'Transferência interna'); assert.equal(faseDaMatricula(on.fases, HOJE).continua, true);
+  assert.equal(idadeEm('2014-10-08', HOJE), 11); assert.equal(idadeEm('2014-10-07', HOJE), 12); assert.equal(idadeEm('x', HOJE), null);
+  const novo = documentosDaMatricula(on.documentos, { tipo: 'nova', nascimento: '2010-01-01', hoje: HOJE });
+  assert.ok(novo.includes('CPF do estudante') && !novo.some((x) => /transferência/.test(x)) && !novo.some((x) => /vacinação/.test(x)));
+  const transf = documentosDaMatricula(on.documentos, { tipo: 'transferencia', nascimento: '2014-05-01', hoje: HOJE });
+  assert.ok(transf.some((x) => /transferência/.test(x)) && transf.some((x) => /vacinação/.test(x)), '12 anos ainda leva a vacinação');
+  const pedidos = [{ protocolo: 'MAT-2026-0099', cpf: '52998224725', situacao: 'Aguardando confirmação' }, { protocolo: 'MAT-2026-0098', cpf: '11144477735', situacao: 'Recusada' }];
+  assert.match(erroDoCpfDoEstudante('', { pedidos }), /Informe o CPF/); assert.match(erroDoCpfDoEstudante('123.456.789-00', { pedidos }), /inválido/);
+  assert.match(erroDoCpfDoEstudante('529.982.247-25', { pedidos }), /MAT-2026-0099/); assert.equal(erroDoCpfDoEstudante('111.444.777-35', { pedidos }), '', 'pedido recusado não impede um novo');
+  assert.equal(mascaraCpf('52998224725'), '529.982.247-25'); assert.equal(mascaraCpf('5299'), '529.9');
+  const m = dado('matriculas'); const turmasT = dado('turmas');
+  assert.ok(m.every((p) => /^\d{4}-\d{2}-\d{2}$/.test(p.nascimento)), 'todo pedido tem a data de nascimento para o acompanhamento');
+  const ctx = { pedidos: m, enturmacao: dado('enturmacao'), turmas: turmasT, escolas };
+  assert.match(acompanharPedido({ protocolo: 'MAT-2026-0004', nascimento: '2000-01-01' }, ctx).erro, /Não encontramos/, 'data errada não mostra nada');
+  assert.equal(acompanharPedido({ protocolo: 'MAT-2026-9999', nascimento: '2011-03-14' }, ctx).erro, acompanharPedido({ protocolo: 'MAT-2026-0004', nascimento: '2000-01-01' }, ctx).erro, 'mesma resposta para protocolo que não existe');
+  assert.match(acompanharPedido({ protocolo: 'abc', nascimento: '2011-03-14' }, ctx).erro, /protocolo como/);
+  const r = acompanharPedido({ protocolo: 'mat-2026-0004', nascimento: '2011-03-14' }, ctx);
+  assert.equal(r.ok, true); assert.deepEqual(r.etapas.map((e) => e.estado), ['feito', 'atual', 'falta']);
+  const confirmado = m.find((p) => p.situacao === 'Confirmada');
+  const r2 = acompanharPedido({ protocolo: confirmado.protocolo, nascimento: confirmado.nascimento }, { ...ctx, enturmacao: { [confirmado.protocolo]: 'tt1' } });
+  assert.deepEqual(r2.etapas.map((e) => e.estado), ['feito', 'feito', 'feito']); assert.match(r2.etapas[2].detalhe, /1ª série A/);
+  const rec = acompanharPedido({ protocolo: 'MAT-2026-0004', nascimento: '2011-03-14' }, { ...ctx, pedidos: m.map((p) => (p.protocolo === 'MAT-2026-0004' ? { ...p, situacao: 'Recusada', motivo: 'Sem vaga no turno' } : p)) });
+  assert.equal(rec.etapas[1].estado, 'recusado'); assert.equal(rec.etapas[1].detalhe, 'Sem vaga no turno');
+});
+
+t('anotações do PROFIN: pendência ou contexto, interna ou compartilhada, resolvida e reaberta; as antigas viram contexto compartilhado', () => {
+  const base = dado('profin-notas'); const copia = JSON.stringify(base);
+  const cats = dado('profin').categorias;
+  assert.deepEqual(Object.keys(TIPOS_DE_NOTA), ['contexto', 'pendencia']);
+  // As anotações que já existiam não têm tipo: são contexto, compartilhado com a gestão, e o arquivo não muda.
+  const e1 = notasDaEscola(base, 'e1');
+  assert.equal(e1.length, 1); assert.equal(e1[0].tipo, 'contexto'); assert.equal(e1[0].compartilhada, true); assert.equal(e1[0].aberta, false);
+  assert.equal(e1[0].categoria, 'Emenda Parlamentar'); assert.equal(e1[0].chave, 'e1|Emenda Parlamentar'); assert.equal(e1[0].indice, 0);
+  assert.equal(notasDaEscola(base).length, 2); assert.equal(contextos(notasDaEscola(base)).length, 2); assert.equal(pendenciasAbertas(notasDaEscola(base)).length, 0);
+  assert.equal(normalizarNota({ texto: 'x', tipo: 'pendencia' }).aberta, true); assert.equal(normalizarNota({ texto: 'x', tipo: 'pendencia', compartilhada: false }).compartilhada, false);
+  // Validação
+  const ok = { tipo: 'pendencia', categoria: 'Custeio', nf: 'NF 101', texto: 'Nota fiscal sem carimbo de atesto.', compartilhada: true };
+  assert.equal(validarNota(ok, { categorias: cats }).ok, true);
+  assert.equal(validarNota({ ...ok, categoria: GERAL }, { categorias: cats }).ok, true);
+  assert.match(validarNota({ ...ok, texto: 'curto' }, { categorias: cats }).erros.texto, /10 letras/);
+  assert.match(validarNota({ ...ok, texto: 'x'.repeat(401) }, { categorias: cats }).erros.texto, /400/);
+  assert.ok(validarNota({ ...ok, tipo: 'outro' }, { categorias: cats }).erros.tipo);
+  assert.ok(validarNota({ ...ok, categoria: 'Inventada' }, { categorias: cats }).erros.categoria);
+  assert.ok(validarNota({ ...ok, nf: 'N'.repeat(41) }, { categorias: cats }).erros.nf);
+  // Acrescentar: pendência interna e contexto compartilhado; o objeto original não muda
+  let notas = acrescentarNota(base, { ...ok, compartilhada: false }, { escolaId: 'e2', por: 'Ana', hoje: HOJE });
+  notas = acrescentarNota(notas, { tipo: 'contexto', categoria: GERAL, nf: 'NF 9', texto: 'Escola em reforma até dezembro.', compartilhada: true }, { escolaId: 'e2', por: 'Ana', hoje: HOJE });
+  assert.equal(JSON.stringify(base), copia, 'acrescentar não altera as anotações que já existiam');
+  assert.deepEqual(notas['e1|Emenda Parlamentar'], base['e1|Emenda Parlamentar']);
+  const e2 = notasDaEscola(notas, 'e2');
+  assert.equal(e2.length, 2); assert.equal(pendenciasAbertas(e2).length, 1); assert.equal(pendenciasAbertas(e2)[0].nf, 'NF 101');
+  assert.equal(notas['e2|Geral'][0].nf, undefined, 'contexto não guarda documento');
+  const gestao = notasDaEscola(notas, 'e2', { soCompartilhadas: true });
+  assert.equal(gestao.length, 1); assert.equal(gestao[0].tipo, 'contexto', 'a gestão não vê a pendência interna');
+  // Resolver e reabrir
+  const resolvida = alternarResolvida(notas, 'e2|Custeio', 0, { por: 'Bia', hoje: '2026-10-08' });
+  assert.equal(resolvida['e2|Custeio'][0].aberta, false); assert.equal(resolvida['e2|Custeio'][0].resolvidaPor, 'Bia'); assert.equal(resolvida['e2|Custeio'][0].resolvidaEm, '2026-10-08');
+  assert.equal(pendenciasAbertas(notasDaEscola(resolvida, 'e2')).length, 0); assert.equal(notas['e2|Custeio'][0].aberta, true, 'o original não muda');
+  const reaberta = alternarResolvida(resolvida, 'e2|Custeio', 0, { por: 'Caio', hoje: '2026-10-09' });
+  assert.equal(reaberta['e2|Custeio'][0].aberta, true); assert.equal(reaberta['e2|Custeio'][0].resolvidaEm, undefined); assert.equal(reaberta['e2|Custeio'][0].reabertaPor, 'Caio');
+  assert.equal(alternarResolvida(notas, 'e2|Geral', 0, { por: 'x', hoje: HOJE }), notas, 'contexto não se resolve');
+  assert.equal(alternarResolvida(notas, 'e9|Custeio', 0, { por: 'x', hoje: HOJE }), notas);
+  // O rascunho do relatório marca o tipo de cada anotação
+  const p = dado('profin');
+  const texto = rascunhoDoRelatorio({ escolas: escolas.filter((e) => e.id === 'e2'), repasses: p.repasses.filter((r) => r.escolaId === 'e2'), notas: resolvida, hoje: HOJE });
+  assert.match(texto, /Pendência resolvida NF 101 \(Ana, 07\/10\/2026\): Nota fiscal sem carimbo/); assert.match(texto, /Contexto geral \(Ana, 07\/10\/2026\): Escola em reforma/);
+  assert.match(rascunhoDoRelatorio({ escolas: escolas.filter((e) => e.id === 'e2'), repasses: p.repasses.filter((r) => r.escolaId === 'e2'), notas, hoje: HOJE }), /Pendência NF 101 \(Ana/);
 });
 
 console.log(`\n${n} grupos de testes passaram.`);

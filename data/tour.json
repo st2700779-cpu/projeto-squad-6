@@ -60,13 +60,13 @@
     {
       "alvo": "#pagina h1",
       "titulo": "Pendências da secretaria",
-      "texto": "Matrículas a confirmar, estudantes sem turma e turmas devolvidas, cada uma com o botão que abre a tela certa."
+      "texto": "Matrículas a confirmar, estudantes sem turma e turmas esperando a direção, cada uma com o botão que abre a tela certa."
     },
     {
       "alvo": "#menu-lateral",
       "alternativa": ".topo-menu-botao",
       "titulo": "Menu",
-      "texto": "Matrículas, enturmação, turmas, alocação de professores e equivalências, na ordem em que o trabalho costuma acontecer."
+      "texto": "Matrículas, enturmação, alocação de professores (por turma ou por disciplina) e equivalências, na ordem em que o trabalho costuma acontecer. As turmas e as vagas são criadas pela direção."
     },
     {
       "alvo": "[data-escala='0.1']",
@@ -94,7 +94,7 @@
       "alvo": "#menu-lateral",
       "alternativa": ".topo-menu-botao",
       "titulo": "Menu",
-      "texto": "Além dos atos: escolas, cursos, vagas calculadas das turmas e o mapa da procura por bairro. Contas de DRE veem só as escolas da sua regional."
+      "texto": "Além dos atos: escolas, cadastros (níveis, séries e tipos de vínculo), cursos e o mapa de vagas e da procura por bairro. As turmas e as vagas são definidas pela direção de cada escola. Contas de DRE veem só as escolas da sua regional."
     },
     {
       "alvo": "[data-escala='0.1']",
@@ -111,7 +111,7 @@
     {
       "alvo": "#pagina h1",
       "titulo": "Matrícula em cinco passos",
-      "texto": "Dados do estudante, responsável, endereço, escolha da escola e revisão. Uma decisão por tela."
+      "texto": "Dados do estudante (com o CPF), série, escola com vaga, documentos e revisão. Uma decisão por tela. No fim sai o comprovante, e o pedido pode ser acompanhado pelo protocolo."
     },
     {
       "alvo": ".botao-ouvir",
@@ -174,7 +174,7 @@
       "alvo": "#menu-lateral",
       "alternativa": ".topo-menu-botao",
       "titulo": "Menu",
-      "texto": "Mapa de calor da escola, tela de reunião, comunicados e atos autorizativos."
+      "texto": "Estrutura da escola (séries, salas e turnos, só a direção mexe), turmas e vagas, financeiro do PROFIN, mapa de calor, tela de reunião, comunicados, prestação de contas e atos autorizativos."
     },
     {
       "alvo": "[data-escala='0.1']",
@@ -203,7 +203,7 @@
       "alvo": "#menu-lateral",
       "alternativa": ".topo-menu-botao",
       "titulo": "Menu",
-      "texto": "Comparativo lado a lado, reunião pedagógica para imprimir e a grade de horários."
+      "texto": "Comparativo lado a lado, reunião pedagógica para imprimir e os horários: em cada aula você escolhe a disciplina e depois o professor, entre os habilitados."
     },
     {
       "alvo": "[data-escala='0.1']",
@@ -223,16 +223,22 @@
       "texto": "Cada escola por categoria de recurso, com a situação da prestação de contas em cor, símbolo e texto."
     },
     {
-      "alvo": "[data-nota]",
+      "alvo": ".ver-como",
       "alternativa": "#pagina h1",
-      "titulo": "Anotação de contexto",
-      "texto": "Registre o que os números não mostram, como atraso por reforma ou troca de gestor. A anotação fica com data e autor."
+      "titulo": "Ver como",
+      "texto": "Técnico do PROFIN mostra todas as escolas e as anotações internas. Gestor da escola mostra só o que a direção vê: o que o PROFIN compartilhou."
+    },
+    {
+      "alvo": ".cartao-escola",
+      "alternativa": "#pagina h1",
+      "titulo": "Cartão da escola",
+      "texto": "Abra a escola para ver os valores, as pendências e o contexto, anotar e marcar pendência como resolvida. O botão Abrir a ficha da escola leva aos gastos, declarações e repasses."
     },
     {
       "alvo": "#menu-lateral",
       "alternativa": ".topo-menu-botao",
       "titulo": "Menu",
-      "texto": "Painel por escola e rascunho do relatório consolidado."
+      "texto": "Painel por escola, ficha da escola, análise das declarações, relatório consolidado e equipe."
     },
     {
       "alvo": "[data-escala='0.1']",

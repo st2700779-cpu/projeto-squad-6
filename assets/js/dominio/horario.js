@@ -9,11 +9,15 @@ export const DIA_CURTO = { seg: 'Seg', ter: 'Ter', qua: 'Qua', qui: 'Qui', sex: 
 export const PERIODOS = {
   'Manhã': ['07:30', '08:20', '09:30', '10:20', '11:10'],
   'Tarde': ['13:30', '14:20', '15:30', '16:20', '17:10'],
-  'Noite': ['18:30', '19:20', '20:20', '21:10', '22:00']
+  'Noite': ['18:30', '19:20', '20:20', '21:10', '22:00'],
+  // Turma integral: as aulas da manhã e as da tarde (9 aulas, almoço entre as duas partes).
+  'Integral': ['07:30', '08:20', '09:30', '10:20', '11:10', '13:30', '14:20', '15:30', '16:20']
 };
+/** Quantas aulas por dia o turno tem (5; 9 no integral). */
+export const aulasPorDia = (turno) => (PERIODOS[turno] || PERIODOS['Manhã']).length;
 const somar = (hora, minutos) => { const [h, m] = hora.split(':').map(Number); const t = h * 60 + m + minutos; return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`; };
-/** { inicio: '07:30', fim: '08:20' } da aula `i` (0 a 4) do turno. */
-export const horaDaAula = (turno, i) => { const inicio = (PERIODOS[turno] || PERIODOS['Manhã'])[i]; return { inicio, fim: somar(inicio, 50) }; };
+/** { inicio: '07:30', fim: '08:20' } da aula `i` do turno (0 a 4; 0 a 8 no integral). */
+export const horaDaAula = (turno, i) => { const inicio = (PERIODOS[turno] || PERIODOS['Manhã'])[i]; return inicio ? { inicio, fim: somar(inicio, 50) } : { inicio: '', fim: '' }; };
 
 /** Dia da semana ('seg'…'dom') de uma data ISO. */
 export const diaDaSemana = (iso) => ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'][new Date(`${iso}T12:00:00`).getDay()];
@@ -43,13 +47,15 @@ export function proximoDiaDeAula(grade, iso) {
 }
 
 /**
- * Conflitos ao trocar uma aula: o professor já está em outra turma do mesmo turno, dia e horário.
+ * Conflitos ao trocar uma aula: o professor já está em outra turma no mesmo dia e na mesma hora (compara o horário de início,
+ * então vale também entre turma integral e turmas da manhã ou da tarde).
  * @returns {string[]} Mensagens (vazio se não há conflito).
  */
 export function conflitosDeHorario(horarios, { turmaId, dia, indice, professorId }) {
   if (!professorId) return [];
   const g = horarios.find((x) => x.turmaId === turmaId);
+  const inicio = horaDaAula(g.turno, indice).inicio;
   return horarios
-    .filter((h) => h.turmaId !== turmaId && h.turno === g.turno && h.aulas[dia]?.[indice]?.professorId === professorId)
+    .filter((h) => inicio && h.turmaId !== turmaId && (h.aulas[dia] || []).some((a, j) => a?.professorId === professorId && horaDaAula(h.turno, j).inicio === inicio))
     .map((h) => `O professor já tem aula na ${h.turma} neste mesmo horário.`);
 }

@@ -1,4 +1,6 @@
 // Matrícula em 5 passos (HU04, HU07; wireframes W3 e W4). Uma decisão por tela;
+// Como na Matrícula Online oficial da SEDUC/SE: CPF do estudante obrigatório (sem pedido repetido), calendário em fases com
+// matrícula contínua enquanto houver vaga, lista oficial de documentos e comprovante para imprimir (dominio/matricula-online.js);
 // regras de ato e vaga aplicadas na escolha da escola. As vagas são calculadas a partir das turmas (dados.js, vagasDetalhadas):
 // o pedido enviado já segura a vaga até a escola confirmar ou recusar, sem ninguém mexer no número.
 // Sem escola com vaga na cidade, a família pode entrar na lista de espera: a rede vê essa procura por bairro (rede/mapa.html).
@@ -17,6 +19,8 @@ import { codificarRascunho, decodificarRascunho, codigoNoEndereco } from './rasc
 import { carregar, matriculas, vagas as lerVagas, salvar, novoProtocolo, estudantes, registrarAcao, conjunto } from '../dados.js';
 import { SERIES, etapaDaSerie, serieCompleta, nomeCurto, motivoBloqueio, proximaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
 import { hojeISO } from '../dominio/hoje.js';
+import { documentosDaMatricula, erroDoCpfDoEstudante, mascaraCpf, faseDaMatricula } from '../dominio/matricula-online.js';
+import { mascararCpf, somenteDigitos } from '../dominio/cadastros.js';
 import '../componentes/data-br.js'; // data de nascimento sempre em dd/mm/aaaa
 
 const MODO = document.body.dataset.modo === 'presencial' ? 'presencial' : 'online';
@@ -35,8 +39,8 @@ const idRematricula = BALCAO ? null : new URLSearchParams(location.search).get('
 
 async function preparar() {
   try {
-    const [escolas, atos, vagas, { lista }, dres, localidades] = await Promise.all([carregar('escolas'), carregar('atos'), lerVagas(), estudantes(), carregar('dres'), carregar('localidades')]);
-    base = { escolas, atos, vagas, dres, localidades };
+    const [escolas, atos, vagas, { lista }, dres, localidades, online, pedidos] = await Promise.all([carregar('escolas'), carregar('atos'), lerVagas(), estudantes(), carregar('dres'), carregar('localidades'), carregar('matricula-online'), matriculas()]);
+    base = { escolas, atos, vagas, dres, localidades, online, pedidos };
     const codigo = codigoNoEndereco();
     if (codigo && !BALCAO) {
       const r = await decodificarRascunho(codigo);
@@ -80,27 +84,52 @@ function desenharRematricula(erro = '') {
 async function enviarRematricula() {
   const pedidos = await matriculas();
   d.protocolo = await novoProtocolo('MAT');
-  pedidos.unshift({ protocolo: d.protocolo, estudante: d.estudante, estudanteId: d.estudanteId, responsavel: d.responsavel, serie: d.serie, tipo: 'Rematrícula', escolaId: d.escolaId, situacao: 'Aguardando confirmação', data: hojeBR(), meu: true, origem: 'online' });
+  pedidos.unshift({ protocolo: d.protocolo, estudante: d.estudante, nascimento: d.nascimento, estudanteId: d.estudanteId, responsavel: d.responsavel, serie: d.serie, tipo: 'Rematrícula', escolaId: d.escolaId, situacao: 'Aguardando confirmação', data: hojeBR(), meu: true, origem: 'online' });
   await salvar('matriculas', pedidos);
   await registrarAcao('Família', 'Pediu rematrícula', d.protocolo);
 }
 
-const documentos = () => [
-  'Certidão de nascimento ou RG do estudante',
-  'CPF do estudante, se tiver',
-  'Comprovante de residência (conta de luz ou de água)',
-  'Documento com foto do responsável',
-  ...(d.tipo === 'transferencia' ? ['Declaração de transferência da escola anterior'] : [])
-];
+// Lista oficial de documentos (data/matricula-online.json): a de transferência e a de vacinação só quando valem.
+const documentos = () => documentosDaMatricula(base.online.documentos, { tipo: d.tipo, nascimento: d.nascimento, hoje: hojeISO() });
+const prazoDocs = () => base.online.prazoDocumentosDiasUteis || 5;
+/** Calendário da matrícula (fases da SEDUC e matrícula contínua), aberto no primeiro passo. */
+function blocoCalendario() {
+  const o = base.online;
+  const agora = faseDaMatricula(o.fases, hojeISO());
+  const br = (iso) => iso.split('-').reverse().slice(0, 2).join('/');
+  return `<details class="cartao calendario-matricula esp-b-3"><summary><strong>Como funciona a matrícula na rede estadual</strong> <span class="texto-suave texto-pequeno">${agora.continua ? 'agora: matrícula contínua, enquanto houver vaga' : `agora: fase ${agora.fase}, ${esc(agora.nome.toLowerCase())}`}</span></summary>
+    <ol class="lista-fases">${o.fases.map((f) => `<li${!agora.continua && agora.fase === f.fase ? ' aria-current="step"' : ''}><strong>Fase ${f.fase}: ${esc(f.nome)}</strong> · ${br(f.inicio)} a ${br(f.fim)}<br><span class="texto-pequeno">${esc(f.publico)}. ${esc(f.detalhe)}</span></li>`).join('')}</ol>
+    <p class="texto-pequeno esp-b-0">${esc(o.continua)} Pedido pela internet ${esc(o.horario)}. Fonte: ${esc(o.fonte)}.</p></details>`;
+}
 
 // Texto lido pelo botão Ouvir do cabeçalho em cada passo.
 function narracao() {
-  if (passo === 1) return 'Quem vai estudar? Escreva o nome do estudante, a data de nascimento, o seu nome e um telefone. Depois diga se é a primeira vez na rede ou se vem de outra escola.';
+  if (passo === 1) return 'Quem vai estudar? Escreva o nome do estudante, a data de nascimento, o CPF do estudante, o seu nome e um telefone. Depois diga se é a primeira vez na rede ou se vem de outra escola.';
   if (passo === 2) return d.tipo === 'transferencia' ? 'Na transferência, o estudante continua na mesma série em que está hoje. Escolha a série atual.' : 'Escolha a série em que o estudante vai estudar.';
   if (passo === 3) return 'Escolha a cidade, o bairro onde vocês moram e depois a escola. Só dá para escolher escolas com vaga e com autorização para esta série. Se nenhuma escola tiver vaga, vocês podem entrar na lista de espera.';
   if (passo === 4) return `Separe estes documentos para levar à escola: ${documentos().join('. ')}.`;
   const escola = base.escolas.find((e) => e.id === d.escolaId);
   return `Confira: ${d.estudante}, ${serieCompleta(d.serie)}, na escola ${escola.nome}. Responsável: ${d.responsavel}.`;
+}
+
+/** Comprovante do pedido (como o da Matrícula Online): aparece na tela e sai na impressão. */
+function comprovante() {
+  const escola = base.escolas.find((e) => e.id === d.escolaId);
+  const docs = d.tipo === 'rematricula' ? [] : documentos();
+  return `<section class="comprovante-matricula cartao" aria-labelledby="comp-titulo">
+    <h2 id="comp-titulo" class="esp-t-0">Comprovante do pedido de matrícula</h2>
+    <p class="texto-pequeno texto-suave esp-t-0">Secretaria de Estado da Educação de Sergipe · rede estadual · pedido feito em ${hojeBR()}${BALCAO ? ' no atendimento presencial' : ' pela internet'}</p>
+    <dl class="dados-comprovante">
+      <dt>Protocolo</dt><dd><strong>${esc(d.protocolo)}</strong></dd>
+      <dt>Estudante</dt><dd>${esc(d.estudante)}${d.cpf ? ` · CPF ${esc(mascararCpf(d.cpf))}` : ''}</dd>
+      <dt>Série</dt><dd>${esc(serieCompleta(d.serie))}${d.tipo === 'transferencia' ? ' (transferência)' : d.tipo === 'rematricula' ? ' (rematrícula)' : ''}</dd>
+      <dt>Escola</dt><dd>${esc(escola?.nome || '')}${escola?.endereco ? `<br><span class="texto-pequeno">${esc(escola.endereco)}</span>` : escola ? `<br><span class="texto-pequeno">${esc(escola.bairro)}, ${esc(escola.municipio)}</span>` : ''}</dd>
+      <dt>Responsável</dt><dd>${esc(d.responsavel || '')}${d.telefone ? ` · ${esc(d.telefone)}` : ''}</dd>
+      <dt>Situação</dt><dd>Aguardando a escola conferir os documentos e confirmar</dd>
+    </dl>
+    ${docs.length ? `<p class="esp-b-1"><strong>Levar à secretaria em até ${prazoDocs()} dias úteis:</strong></p><ul class="texto-pequeno">${docs.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
+    <p class="texto-pequeno texto-suave esp-b-0">Para acompanhar: Portal Acadêmico › Matrícula › Acompanhar pedido, com o protocolo e a data de nascimento do estudante.</p>
+  </section>`;
 }
 
 function desenhar(erro = '', campoComErro = null) {
@@ -116,7 +145,10 @@ function desenhar(erro = '', campoComErro = null) {
       </div>
       <div class="protocolo"><span>Protocolo</span><strong>${esc(d.protocolo)}</strong></div>
       <p class="texto-medio">${BALCAO ? 'Entregue o número do protocolo à família. Os documentos podem ser conferidos agora ou em até 5 dias úteis.' : d.tipo === 'rematricula' ? 'A escola vai confirmar a rematrícula. Não é preciso levar documentos, a menos que a secretaria peça.' : 'A escola vai conferir e confirmar a matrícula. Leve os documentos à secretaria da escola em até 5 dias úteis.'}</p>
+      ${comprovante()}
       <div class="grade-acoes">
+        <button type="button" class="botao botao-secundario botao-grande" data-imprimir>${icone('imprimir', 22)}Imprimir ou salvar o comprovante</button>
+        ${BALCAO ? '' : `<a class="botao botao-secundario botao-grande" href="${link('familia/acompanhar.html')}">${icone('lista', 22)}Acompanhar o pedido</a>`}
         ${botaoOuvir(`Pedido de matrícula enviado. O protocolo é ${d.protocolo.split('').join(' ')}. Leve os documentos à secretaria da escola em até 5 dias úteis.`)}
         ${logado && !BALCAO ? `<a class="botao botao-secundario botao-grande" href="${link('aluno/documentos.html')}">${icone('documento', 22)}Ver lista de documentos</a>` : ''}
         ${BALCAO ? `<a class="botao botao-secundario botao-grande" href="${link('escola/atendimento.html')}">Novo atendimento</a>` : ''}
@@ -147,8 +179,10 @@ function desenhar(erro = '', campoComErro = null) {
   let corpo = '';
   if (passo === 1) {
     corpo = `<h1>${BALCAO ? 'Atendimento presencial: quem vai estudar?' : 'Quem vai estudar?'}</h1>
+      ${BALCAO ? '' : blocoCalendario()}
       <div class="campo"><label for="f-estudante">Nome do estudante</label><input id="f-estudante" class="entrada" type="text" autocomplete="off" value="${esc(d.estudante)}"></div>
       <div class="campo"><label for="f-nascimento">Data de nascimento <span class="dica">dd/mm/aaaa</span></label><input id="f-nascimento" class="entrada" type="text" data-campo-data inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa" autocomplete="bday" value="${esc(d.nascimento)}"></div>
+      <div class="campo"><label for="f-cpf">CPF do estudante <span class="dica">11 números, obrigatório</span></label><input id="f-cpf" class="entrada" type="text" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" maxlength="14" value="${esc(d.cpf ? mascaraCpf(d.cpf) : '')}"></div>
       <div class="campo"><label for="f-responsavel">${BALCAO ? 'Nome do responsável' : 'Seu nome (responsável)'}</label><input id="f-responsavel" class="entrada" type="text" autocomplete="name" value="${esc(d.responsavel)}"></div>
       <div class="campo"><label for="f-telefone">Telefone para contato <span class="dica">com DDD</span></label><input id="f-telefone" class="entrada" type="tel" inputmode="tel" autocomplete="tel" placeholder="(79) 99999-9999" maxlength="15" value="${esc(d.telefone)}"></div>
       <fieldset class="campo"><legend class="negrito">O estudante…</legend><div class="opcoes">
@@ -186,13 +220,14 @@ function desenhar(erro = '', campoComErro = null) {
     const docs = documentos();
     corpo = `<h1>Separe estes documentos</h1>
       <ul class="opcoes lista-limpa">${docs.map((x) => `<li class="opcao opcao-estatica">${icone('documento', 26)}<span>${esc(x)}</span></li>`).join('')}</ul>
+      <p class="texto-suave">Leve os documentos à secretaria da escola em até ${prazoDocs()} dias úteis depois do pedido. A escola só confirma a matrícula depois de conferir.</p>
       <label class="caixa-confirmar"><input class="caixa-grande" type="checkbox" id="f-documentos" ${d.documentos ? 'checked' : ''}> Tenho estes documentos ou vou conseguir</label>`;
   }
   if (passo === 5) {
     const escola = base.escolas.find((e) => e.id === d.escolaId);
     corpo = `<h1>Confira antes de enviar</h1>
       <dl class="cartao texto-medio">
-        <dt class="texto-suave">Estudante</dt><dd><strong>${esc(d.estudante)}</strong></dd>
+        <dt class="texto-suave">Estudante</dt><dd><strong>${esc(d.estudante)}</strong> <span class="texto-suave">CPF ${esc(mascararCpf(d.cpf))}</span></dd>
         <dt class="texto-suave">Tipo</dt><dd><strong>${d.tipo === 'transferencia' ? 'Transferência' : 'Matrícula nova'}</strong></dd>
         <dt class="texto-suave">Série</dt><dd><strong>${esc(serieCompleta(d.serie))}</strong></dd>
         <dt class="texto-suave">Escola</dt><dd><strong>${esc(escola.nome)}</strong></dd>
@@ -216,7 +251,7 @@ function desenhar(erro = '', campoComErro = null) {
 
 function guardarCampos() {
   const v = (id) => main.querySelector(id)?.value?.trim();
-  if (passo === 1) Object.assign(d, { estudante: v('#f-estudante'), nascimento: v('#f-nascimento'), responsavel: v('#f-responsavel'), telefone: v('#f-telefone') });
+  if (passo === 1) Object.assign(d, { estudante: v('#f-estudante'), nascimento: v('#f-nascimento'), cpf: somenteDigitos(v('#f-cpf')), responsavel: v('#f-responsavel'), telefone: v('#f-telefone') });
   if (passo === 4) d.documentos = main.querySelector('#f-documentos')?.checked;
 }
 
@@ -234,6 +269,7 @@ const hoje = new Date().toISOString().slice(0, 10);
 const REGRAS = {
   'f-estudante': (v) => (!v || v.length < 3 ? 'Escreva o nome do estudante.' : ''),
   'f-nascimento': (v) => (!v ? 'Informe a data de nascimento.' : !/^\d{4}-\d{2}-\d{2}$/.test(v) ? 'Escreva a data de nascimento como dd/mm/aaaa, por exemplo 15/03/2012.' : v > hoje ? 'A data de nascimento não pode ser no futuro.' : v < '1990-01-01' ? 'Confira a data de nascimento.' : ''),
+  'f-cpf': (v) => erroDoCpfDoEstudante(v, { pedidos: base?.pedidos || [] }),
   'f-responsavel': (v) => (!v ? 'Escreva o seu nome.' : ''),
   'f-telefone': (v) => ((v || '').replace(/\D/g, '').length < 10 ? 'Escreva um telefone com DDD, por exemplo (79) 99999-9999.' : '')
 };
@@ -249,7 +285,7 @@ const mostrarErroCampo = (campo, mensagem) => {
 // Devolve { erro, campo }: a primeira mensagem do passo e o id do campo com problema (para receber o foco).
 function validar() {
   if (passo === 1) {
-    const dados = { 'f-estudante': d.estudante, 'f-nascimento': d.nascimento, 'f-responsavel': d.responsavel, 'f-telefone': d.telefone };
+    const dados = { 'f-estudante': d.estudante, 'f-nascimento': d.nascimento, 'f-cpf': d.cpf, 'f-responsavel': d.responsavel, 'f-telefone': d.telefone };
     for (const [id, regra] of Object.entries(REGRAS)) { const erro = regra(dados[id]); if (erro) return { erro, campo: id }; }
     if (!d.tipo) return { erro: 'Escolha se é a primeira vez na rede ou se vem de outra escola.', campo: null };
   }
@@ -262,9 +298,12 @@ function validar() {
 
 async function enviarPedido() {
   const pedidos = await matriculas();
+  // Outra aba ou outro aparelho pode ter enviado um pedido com o mesmo CPF enquanto a família preenchia.
+  const erroCpf = erroDoCpfDoEstudante(d.cpf, { pedidos });
+  if (erroCpf) throw Object.assign(new Error('CPF_REPETIDO'), { mensagem: erroCpf });
   d.protocolo = await novoProtocolo('MAT');
   // O pedido aguardando confirmação já segura a vaga: as vagas são recalculadas a partir das turmas e dos pedidos.
-  pedidos.unshift({ protocolo: d.protocolo, estudante: d.estudante, responsavel: d.responsavel, serie: d.serie, tipo: d.tipo === 'transferencia' ? 'Transferência' : 'Matrícula nova', escolaId: d.escolaId, municipio: d.cidade, bairro: d.bairro, situacao: 'Aguardando confirmação', data: hojeBR(), meu: !BALCAO, origem: MODO });
+  pedidos.unshift({ protocolo: d.protocolo, estudante: d.estudante, nascimento: d.nascimento, cpf: d.cpf, responsavel: d.responsavel, telefone: d.telefone, serie: d.serie, tipo: d.tipo === 'transferencia' ? 'Transferência' : 'Matrícula nova', escolaId: d.escolaId, municipio: d.cidade, bairro: d.bairro, situacao: 'Aguardando confirmação', data: hojeBR(), meu: !BALCAO, origem: MODO });
   await salvar('matriculas', pedidos);
   await registrarAcao(BALCAO ? 'Secretaria escolar' : 'Família', BALCAO ? 'Registrou matrícula no atendimento presencial' : 'Pediu matrícula', d.protocolo);
 }
@@ -311,6 +350,7 @@ main.addEventListener('click', async (e) => {
   if (alvo.dataset.serie) { d.serie = alvo.dataset.serie; d.escolaId = null; desenhar(); }
   if (alvo.dataset.escola) { d.escolaId = alvo.dataset.escola; desenhar(); }
   if ('outroAparelho' in alvo.dataset) { guardarCampos(); compartilharRascunho(); return; }
+  if ('imprimir' in alvo.dataset) { document.body.classList.add('imprimindo-comprovante'); window.print(); setTimeout(() => document.body.classList.remove('imprimindo-comprovante'), 500); return; }
   if ('voltar' in alvo.dataset) { guardarCampos(); avisoRascunho = ''; passo -= 1; desenhar(); }
   if ('avancar' in alvo.dataset) {
     guardarCampos();
@@ -318,7 +358,7 @@ main.addEventListener('click', async (e) => {
     if (erro) { desenhar(erro, campo); return; }
     if (passo === 5) {
       alvo.disabled = true; alvo.setAttribute('aria-busy', 'true');
-      try { await enviarPedido(); } catch { desenhar('O pedido não foi enviado e nenhuma vaga foi reservada. Confira a conexão e clique em Enviar pedido de novo.'); return; }
+      try { await enviarPedido(); } catch (err) { desenhar(err.mensagem || 'O pedido não foi enviado e nenhuma vaga foi reservada. Confira a conexão e clique em Enviar pedido de novo.'); return; }
     }
     passo += 1;
     avisoRascunho = '';
@@ -365,6 +405,7 @@ async function compartilharRascunho() {
 main.addEventListener('input', (e) => {
   const campo = e.target;
   if (campo.id === 'f-telefone') campo.value = mascararTelefone(campo.value);
+  if (campo.id === 'f-cpf') campo.value = mascaraCpf(campo.value);
   if (REGRAS[campo.id] && campo.getAttribute('aria-invalid') && !REGRAS[campo.id](campo.value.trim())) mostrarErroCampo(campo, '');
 });
 main.addEventListener('focusout', (e) => {

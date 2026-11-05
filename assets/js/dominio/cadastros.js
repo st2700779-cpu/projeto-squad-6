@@ -1,20 +1,22 @@
 // Domínio: cadastros da rede (escola com ato autorizativo, professor, equipe do PROFIN) e carga horária por série.
 // Funções puras, sem tela: cada validação devolve { ok, erros } com UMA mensagem em português por campo.
 import { normalizar } from './texto.js';
+import { ETAPAS, HORAS_MINIMAS } from './niveis.js';
+import { VINCULOS } from './vinculos.js';
 
 export const somenteDigitos = (v) => String(v ?? '').replace(/\D/g, '');
 
-/** Níveis de ensino. Cada nível, ao ser liberado por um ato autorizativo, libera as séries listadas. */
-export const ETAPAS = [
-  { etapa: 'Ensino Fundamental — Anos Iniciais', curto: 'Anos Iniciais', resumo: '1º ao 5º ano', series: ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano'] },
-  { etapa: 'Ensino Fundamental — Anos Finais', curto: 'Anos Finais', resumo: '6º ao 9º ano', series: ['6º ano', '7º ano', '8º ano', '9º ano'] },
-  { etapa: 'Ensino Médio', curto: 'Ensino Médio', resumo: '1ª a 3ª série', series: ['1ª série EM', '2ª série EM', '3ª série EM'] }
-];
+/**
+ * Níveis de ensino (todos, inclusive os desativados) e a carga mínima de cada um. Cada nível, ao ser liberado por um ato
+ * autorizativo, libera as séries listadas. A lista vem de data/niveis.json (Rede › Cadastros); ver dominio/niveis.js.
+ */
+export { ETAPAS, HORAS_MINIMAS };
 export const seriesDaEtapa = (etapa) => ETAPAS.find((e) => e.etapa === etapa)?.series || [];
 export const TIPOS_DE_ATO = ['Criação de escola', 'Divisão de escola', 'Autorização de funcionamento', 'Reconhecimento de curso', 'Renovação de reconhecimento'];
-export const VINCULOS = ['Efetivo', 'Contratado (REDA)'];
+/** Tipos de vínculo ativos (vêm de data/vinculos.json, Rede › Cadastros; ver dominio/vinculos.js). */
+export { VINCULOS };
 export const FUNCOES_PROFIN = ['Coordenação do PROFIN', 'Analista financeiro', 'Apoio administrativo'];
-export const MODALIDADES = ['Regular', 'Tempo integral', 'Educação profissional (técnico integrado)', 'Educação de Jovens e Adultos (EJA)', 'Educação do campo', 'Educação especial'];
+export const MODALIDADES = ['Regular', 'Tempo integral', 'Educação profissional (técnico integrado)', 'Educação profissional (técnico subsequente)', 'Educação de Jovens e Adultos (EJA)', 'Educação do campo', 'Educação especial'];
 
 /** A DRE atende o município? (data/dres.json). Sem a lista de DREs, não há o que conferir. */
 export const municipioDaDre = (dres, dre, municipio) => !dres?.length || Boolean(dres.find((d) => d.dre === dre)?.municipios.includes(municipio));
@@ -41,7 +43,8 @@ const iguais = (a, b) => normalizar(a).replace(/\s+/g, ' ').trim() === normaliza
 /**
  * Cadastro de escola com o ato autorizativo.
  * @param {object} f nome, inep, municipio, dre, logradouro, numero, bairro, cep, referencia, telefone, email, atoTipo, atoNumero, atoPublicacao,
- *   atoVencimento, origemId, etapas[], series[] (séries que a escola tem; sem o campo, todas as séries dos níveis marcados) e cursos ({ [etapa]: nome do curso })
+ *   atoVencimento, origemId, etapas[], series[] (opcional: séries que a escola tem; sem o campo, todas as séries dos níveis marcados — a direção
+ *   escolhe depois em Direção › Estrutura da escola) e cursos ({ [etapa]: nome do curso })
  * @param {{escolas: Array<{id:string,nome:string,municipio:string,inep?:string}>, hoje: string, dres?: object[], cursos?: object[]}} ctx
  *   dres: confere se o município é da DRE; cursos: confere se o curso escolhido existe, está ativo e é do nível.
  */
@@ -67,8 +70,10 @@ export function validarEscola(f, { escolas, hoje, dres = null, cursos = null }) 
   if (!dataValida(f.atoVencimento)) e.atoVencimento = 'Informe a data de vencimento do ato.';
   else if (dataValida(f.atoPublicacao) && f.atoVencimento <= f.atoPublicacao) e.atoVencimento = 'O vencimento tem de ser depois da publicação.';
   else if (f.atoVencimento < hoje) e.atoVencimento = 'Esse ato já venceu. Informe um ato vigente.';
-  const etapas = (f.etapas || []).filter((x) => ETAPAS.some((t) => t.etapa === x));
+  const etapas = (f.etapas || []).filter((x) => ETAPAS.some((t) => t.etapa === x && t.ativo !== false));
+  const semSeries = etapas.find((t) => !seriesDaEtapa(t).length);
   if (!etapas.length) e.etapas = 'Marque pelo menos um nível de ensino liberado pelo ato.';
+  else if (semSeries) e.etapas = `${ETAPAS.find((x) => x.etapa === semSeries)?.curto || semSeries} ainda não tem séries cadastradas. Cadastre em Rede › Cadastros.`;
   else if (etapas.some((t) => !seriesEscolhidas(t, f.series).length)) e.series = 'Marque pelo menos uma série em cada nível liberado.';
   if (cursos) {
     const semCurso = etapas.find((t) => !cursos.some((c) => c.ativo !== false && c.etapa === t && c.nome === f.cursos?.[t]));
@@ -85,8 +90,8 @@ export function validarEscola(f, { escolas, hoje, dres = null, cursos = null }) 
 export const proximoIdDeEscola = (escolas) => `e${1 + Math.max(0, ...escolas.map((x) => Number(/^e(\d+)$/.exec(x.id)?.[1] || 0)))}`;
 
 /**
- * Monta os registros a gravar: a escola, um ato por nível liberado e as vagas zeradas das séries liberadas
- * (a secretaria ou a rede abre as vagas depois).
+ * Monta os registros a gravar: a escola, um ato por nível liberado e as vagas zeradas das séries liberadas.
+ * Quem cadastra a escola não cria turma nem vaga: a direção da escola faz isso (Direção › Turmas).
  */
 export function montarEscola(f, { escolas, coordenadas, hoje }) {
   const id = proximoIdDeEscola(escolas);
@@ -108,7 +113,7 @@ export function montarEscola(f, { escolas, coordenadas, hoje }) {
 
 /**
  * Cadastro de professor.
- * @param {object} f nome, cpf, matriculaFuncional, vinculo, formacao, habilitacao[], cargaHorariaSemanal, escolaId, email, telefone
+ * @param {object} f nome, cpf, matriculaFuncional, vinculo (um de VINCULOS), formacao, habilitacao[], cargaHorariaSemanal, escolaId, email, telefone
  * @param {{professores: object[], escolas: object[], componentes: string[]}} ctx
  */
 export function validarProfessor(f, { professores, escolas, componentes }) {
@@ -148,6 +153,7 @@ export function validarMembroProfin(f, { equipe }) {
   const palavras = String(f.nome ?? '').trim().split(/\s+/).filter(Boolean);
   if (palavras.length < 2 || String(f.nome).trim().length < 8) e.nome = 'Escreva o nome completo, com nome e sobrenome.';
   if (!FUNCOES_PROFIN.includes(f.funcao)) e.funcao = 'Escolha a função na equipe.';
+  if (!VINCULOS.includes(f.vinculo)) e.vinculo = 'Escolha o tipo de vínculo.';
   const mat = String(f.matricula ?? '').trim().toUpperCase();
   if (!/^PF-\d{5}$/.test(mat)) e.matricula = 'A matrícula funcional é PF- e 5 números, como PF-41007.';
   else if (equipe.some((m) => String(m.matricula).toUpperCase() === mat)) e.matricula = 'Essa matrícula já está na equipe.';
@@ -168,12 +174,11 @@ export function podeDesativar(equipe, id) {
 }
 export function montarMembroProfin(f, { equipe, hoje }) {
   const n = 1 + Math.max(0, ...equipe.map((m) => Number(/^m(\d+)$/.exec(m.id)?.[1] || 0)));
-  return { id: `m${n}`, nome: f.nome.trim(), funcao: f.funcao, matricula: f.matricula.trim().toUpperCase(), email: f.email.trim().toLowerCase(), telefone: somenteDigitos(f.telefone), atende: f.atende.trim(), ativo: true, cadastradoEm: hoje };
+  return { id: `m${n}`, nome: f.nome.trim(), funcao: f.funcao, vinculo: f.vinculo, matricula: f.matricula.trim().toUpperCase(), email: f.email.trim().toLowerCase(), telefone: somenteDigitos(f.telefone), atende: f.atende.trim(), ativo: true, cadastradoEm: hoje };
 }
 
 // ---------------- Carga horária por nível e série ----------------
 export const SEMANAS_LETIVAS = 40; // 200 dias letivos
-export const HORAS_MINIMAS = { 'Ensino Fundamental — Anos Iniciais': 800, 'Ensino Fundamental — Anos Finais': 800, 'Ensino Médio': 1000 };
 /** Carga horária anual em horas (aulas por semana × minutos da aula ÷ 60 × semanas letivas), arredondada. */
 export const cargaAnualHoras = ({ aulasSemana, minutosAula }, semanas = SEMANAS_LETIVAS) => Math.round((aulasSemana * minutosAula / 60) * semanas);
 export function situacaoDaCarga(etapa, linha) {
@@ -188,9 +193,9 @@ export function validarCarga(linha) {
   if (!Number.isInteger(m) || m < 40 || m > 60) e.minutosAula = 'Duração da aula: de 40 a 60 minutos.';
   return resultado(e);
 }
-/** Valores iniciais: 25 aulas por semana no Fundamental e 30 no Médio, de 50 minutos. */
+/** Valores iniciais: as aulas por semana padrão de cada nível (25 no Fundamental, 30 no Médio), de 50 minutos. Só níveis ativos. */
 export function cargaPadrao() {
-  return ETAPAS.flatMap((t) => t.series.map((serie) => ({ etapa: t.etapa, serie, aulasSemana: t.etapa === 'Ensino Médio' ? 30 : 25, minutosAula: 50 })));
+  return ETAPAS.filter((t) => t.ativo !== false).flatMap((t) => t.series.map((serie) => ({ etapa: t.etapa, serie, aulasSemana: Number(t.aulasPadrao) || (t.etapa === 'Ensino Médio' ? 30 : 25), minutosAula: 50 })));
 }
 
 // ---------------- Edição de escola, renovação de ato e edição de professor ----------------
@@ -259,7 +264,7 @@ export function validarCurso(f, { cursos }) {
   const e = {};
   if (String(f.nome ?? '').trim().length < 5) e.nome = 'Escreva o nome do curso, com pelo menos 5 letras.';
   else if (cursos.some((c) => iguais(c.nome, f.nome))) e.nome = 'Já existe um curso com esse nome.';
-  if (!ETAPAS.some((t) => t.etapa === f.etapa)) e.etapa = 'Escolha o nível de ensino do curso.';
+  if (!ETAPAS.some((t) => t.etapa === f.etapa && t.ativo !== false)) e.etapa = 'Escolha o nível de ensino do curso.';
   if (!MODALIDADES.includes(f.modalidade)) e.modalidade = 'Escolha a modalidade.';
   if (String(f.descricao ?? '').trim().length > 300) e.descricao = 'A descrição tem no máximo 300 letras.';
   return resultado(e);
@@ -275,9 +280,10 @@ export function podeDesativarCurso(curso, atos) {
 }
 
 /** Edição de professor: matrícula e CPF não mudam. Habilitação, lotação, vínculo e carga podem mudar. */
-export function validarEdicaoDeProfessor(f, { escolas, componentes, escolaAtual }) {
+export function validarEdicaoDeProfessor(f, { escolas, componentes, escolaAtual, vinculoAtual = null }) {
   const e = {};
-  if (!VINCULOS.includes(f.vinculo)) e.vinculo = 'Escolha o vínculo do professor.';
+  // O vínculo que o professor já tem continua aceito mesmo se a SEED o desativou (só some das opções de cadastro novo).
+  if (!VINCULOS.includes(f.vinculo) && !(vinculoAtual && f.vinculo === vinculoAtual)) e.vinculo = 'Escolha o vínculo do professor.';
   if (String(f.formacao ?? '').trim().length < 5) e.formacao = 'Escreva a formação, como Licenciatura em Matemática.';
   if (!(f.habilitacao || []).some((c) => componentes.includes(c))) e.habilitacao = 'Marque pelo menos um componente em que o professor é habilitado.';
   if (![10, 20, 30, 40].includes(Number(f.cargaHorariaSemanal))) e.cargaHorariaSemanal = 'Escolha a carga horária semanal: 10, 20, 30 ou 40 horas.';

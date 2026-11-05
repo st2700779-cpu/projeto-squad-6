@@ -20,7 +20,7 @@ async function passar(bytes, Fluxo, formato) {
 }
 
 /** Campos do formulário que viajam no link. Nunca inclui anexos. */
-const CAMPOS = ['estudante', 'nascimento', 'responsavel', 'telefone', 'tipo', 'serie', 'escolaId', 'cidade', 'bairro', 'documentos'];
+const CAMPOS = ['estudante', 'nascimento', 'cpf', 'responsavel', 'telefone', 'tipo', 'serie', 'escolaId', 'cidade', 'bairro', 'documentos'];
 
 export async function codificarRascunho(dados, passo) {
   const objeto = { p: passo, em: Date.now(), d: Object.fromEntries(CAMPOS.filter((c) => dados[c] !== undefined && dados[c] !== '').map((c) => [c, dados[c]])) };

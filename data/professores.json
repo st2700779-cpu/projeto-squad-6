@@ -10,6 +10,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 12,
     "matriculaFuncional": "PF-30412",
+    "vinculo": "Efetivo",
     "escolaId": "e1"
   },
   {
@@ -24,6 +25,7 @@
     "cargaHorariaSemanal": 20,
     "aulasEmOutrasTurmas": 13,
     "matriculaFuncional": "PF-28175",
+    "vinculo": "Efetivo",
     "escolaId": "e1"
   },
   {
@@ -36,8 +38,9 @@
       "Inglês"
     ],
     "cargaHorariaSemanal": 30,
-    "aulasEmOutrasTurmas": 17,
+    "aulasEmOutrasTurmas": 13,
     "matriculaFuncional": "PF-33096",
+    "vinculo": "Efetivo",
     "escolaId": "e1"
   },
   {
@@ -50,8 +53,9 @@
       "Ciências"
     ],
     "cargaHorariaSemanal": 20,
-    "aulasEmOutrasTurmas": 16,
+    "aulasEmOutrasTurmas": 14,
     "matriculaFuncional": "PF-27740",
+    "vinculo": "Efetivo",
     "escolaId": "e1"
   },
   {
@@ -65,6 +69,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 21,
     "matriculaFuncional": "PF-31258",
+    "vinculo": "Contratado temporário (PSS)",
     "escolaId": "e1"
   },
   {
@@ -79,6 +84,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 10,
     "matriculaFuncional": "PF-29014",
+    "vinculo": "Efetivo",
     "escolaId": "e2"
   },
   {
@@ -92,6 +98,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 14,
     "matriculaFuncional": "PF-31877",
+    "vinculo": "Efetivo",
     "escolaId": "e2"
   },
   {
@@ -106,6 +113,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 8,
     "matriculaFuncional": "PF-28650",
+    "vinculo": "Efetivo",
     "escolaId": "e2"
   },
   {
@@ -120,6 +128,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 16,
     "matriculaFuncional": "PF-27113",
+    "vinculo": "Contratado temporário (PSS)",
     "escolaId": "e2"
   },
   {
@@ -135,6 +144,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 12,
     "matriculaFuncional": "PF-32491",
+    "vinculo": "Efetivo",
     "escolaId": "e2"
   },
   {
@@ -148,6 +158,7 @@
     "cargaHorariaSemanal": 20,
     "aulasEmOutrasTurmas": 4,
     "matriculaFuncional": "PF-26302",
+    "vinculo": "Efetivo",
     "escolaId": "e2"
   },
   {
@@ -161,6 +172,7 @@
     "cargaHorariaSemanal": 20,
     "aulasEmOutrasTurmas": 6,
     "matriculaFuncional": "PF-30589",
+    "vinculo": "Cedido de outro órgão",
     "escolaId": "e2"
   },
   {
@@ -174,6 +186,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 9,
     "matriculaFuncional": "PF-29988",
+    "vinculo": "Efetivo",
     "escolaId": "e3"
   },
   {
@@ -187,6 +200,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 11,
     "matriculaFuncional": "PF-31026",
+    "vinculo": "Contratado temporário (PSS)",
     "escolaId": "e3"
   },
   {
@@ -201,6 +215,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 7,
     "matriculaFuncional": "PF-28377",
+    "vinculo": "Efetivo",
     "escolaId": "e3"
   },
   {
@@ -215,6 +230,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 5,
     "matriculaFuncional": "PF-30144",
+    "vinculo": "Efetivo",
     "escolaId": "e3"
   },
   {
@@ -229,6 +245,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 13,
     "matriculaFuncional": "PF-27795",
+    "vinculo": "Efetivo",
     "escolaId": "e4"
   },
   {
@@ -242,6 +259,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 10,
     "matriculaFuncional": "PF-32708",
+    "vinculo": "Efetivo",
     "escolaId": "e4"
   },
   {
@@ -256,6 +274,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 8,
     "matriculaFuncional": "PF-26841",
+    "vinculo": "Contratado temporário (PSS)",
     "escolaId": "e4"
   },
   {
@@ -270,6 +289,7 @@
     "cargaHorariaSemanal": 20,
     "aulasEmOutrasTurmas": 6,
     "matriculaFuncional": "PF-29451",
+    "vinculo": "Efetivo",
     "escolaId": "e4"
   },
   {
@@ -284,6 +304,7 @@
     "cargaHorariaSemanal": 20,
     "aulasEmOutrasTurmas": 3,
     "matriculaFuncional": "PF-28092",
+    "vinculo": "Efetivo",
     "escolaId": "e4"
   },
   {
@@ -298,6 +319,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 12,
     "matriculaFuncional": "PF-32310",
+    "vinculo": "Efetivo",
     "escolaId": "e5"
   },
   {
@@ -312,6 +334,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 15,
     "matriculaFuncional": "PF-30975",
+    "vinculo": "Contratado temporário (PSS)",
     "escolaId": "e5"
   },
   {
@@ -328,6 +351,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 9,
     "matriculaFuncional": "PF-27466",
+    "vinculo": "Efetivo",
     "escolaId": "e5"
   },
   {
@@ -343,6 +367,7 @@
     "cargaHorariaSemanal": 30,
     "aulasEmOutrasTurmas": 10,
     "matriculaFuncional": "PF-31593",
+    "vinculo": "Efetivo",
     "escolaId": "e5"
   }
 ]

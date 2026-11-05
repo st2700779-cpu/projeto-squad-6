@@ -52,7 +52,7 @@ async function mostrar() {
   try {
     const [logado, professores, turmas, alocacoes, matrizes, escolas, lv] = await Promise.all([carregar('professor'), carregar('professores'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), carregar('escolas'), letivo()]);
     const prof = professores.find((p) => p.id === logado.professorId);
-    const minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes.versoes[0].componentes });
+    const minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes });
     ctx = { minhas, dados: await diarioParaLeitura({ soAtivos: true }), escola: escolas.find((e) => e.id === prof.escolaId), aulasDadas: lv.aulasDadas, bimestres: lv.bimestresLancados };
     desenhar();
   } catch { falhaDados(main, mostrar); }

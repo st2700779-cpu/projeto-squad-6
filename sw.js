@@ -4,7 +4,7 @@
 // - Uso: arquivos do próprio site vão "rede primeiro" (a versão nova aparece quando há internet e a guardada serve quando não há);
 //   arquivos de CDN vão "cache primeiro". A API local (/api/) nunca passa pelo cache.
 // Só funciona em https ou localhost.
-const VERSAO = 'portal-df1e3904';
+const VERSAO = 'portal-e34fc795';
 const NUCLEO = [
   "index.html",
   "login.html",
@@ -56,24 +56,32 @@ const NUCLEO = [
   "assets/js/componentes/data-br.js",
   "assets/js/componentes/declaracao.js",
   "assets/js/componentes/equipe-profin.js",
+  "assets/js/componentes/ficha-profin.js",
   "assets/js/componentes/formulario.js",
   "assets/js/componentes/indicadores.js",
   "assets/js/componentes/linha-do-tempo.js",
+  "assets/js/componentes/notas-profin.js",
   "assets/js/componentes/pedidos.js",
   "assets/js/componentes/reuniao.js",
   "assets/js/dados.js",
+  "assets/js/dominio/alocacao.js",
   "assets/js/dominio/avisos.js",
   "assets/js/dominio/boletim-semanal.js",
   "assets/js/dominio/cadastros.js",
   "assets/js/dominio/codigos.js",
   "assets/js/dominio/demanda.js",
   "assets/js/dominio/equivalencias.js",
+  "assets/js/dominio/estrutura.js",
+  "assets/js/dominio/ficha-profin.js",
   "assets/js/dominio/habilitacao.js",
   "assets/js/dominio/hoje.js",
   "assets/js/dominio/horario.js",
   "assets/js/dominio/impacto-atos.js",
+  "assets/js/dominio/matricula-online.js",
   "assets/js/dominio/matricula.js",
   "assets/js/dominio/movimentacao.js",
+  "assets/js/dominio/niveis.js",
+  "assets/js/dominio/notas-profin.js",
   "assets/js/dominio/notas.js",
   "assets/js/dominio/painel.js",
   "assets/js/dominio/plano-aula.js",
@@ -87,6 +95,7 @@ const NUCLEO = [
   "assets/js/dominio/vagas.js",
   "assets/js/dominio/verificacao.js",
   "assets/js/dominio/vida-escolar.js",
+  "assets/js/dominio/vinculos.js",
   "assets/js/dre.js",
   "assets/js/estado.js",
   "assets/js/idb.js",
@@ -166,9 +175,11 @@ const NUCLEO = [
   "data/lista-espera.json",
   "data/localidades.json",
   "data/materiais.json",
+  "data/matricula-online.json",
   "data/matriculas.json",
   "data/matrizes.json",
   "data/movimentacoes.json",
+  "data/niveis.json",
   "data/planos-aula.json",
   "data/professor.json",
   "data/professores-novos.json",
@@ -180,6 +191,7 @@ const NUCLEO = [
   "data/renovacoes.json",
   "data/repasses-lancados.json",
   "data/rh-servidores.json",
+  "data/salas.json",
   "data/solicitacoes.json",
   "data/tour.json",
   "data/trajetorias.json",
@@ -187,7 +199,8 @@ const NUCLEO = [
   "data/turmas-rede.json",
   "data/turmas.json",
   "data/usuarios.json",
-  "data/vagas.json"
+  "data/vagas.json",
+  "data/vinculos.json"
 ];
 const CDN = [
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',

@@ -2,6 +2,7 @@
   {
     "protocolo": "MAT-2026-0004",
     "estudante": "Thaís Aragão Fontes",
+    "nascimento": "2011-03-14",
     "responsavel": "Eliane Aragão",
     "serie": "1ª série EM",
     "tipo": "Matrícula nova",
@@ -13,6 +14,7 @@
   {
     "protocolo": "MAT-2026-0005",
     "estudante": "Josué Menezes Batista",
+    "nascimento": "2010-07-02",
     "responsavel": "Gilvan Batista",
     "serie": "2ª série EM",
     "tipo": "Transferência",
@@ -24,6 +26,7 @@
   {
     "protocolo": "MAT-2026-0001",
     "estudante": "Ítalo Vasconcelos Dantas",
+    "nascimento": "2011-11-21",
     "responsavel": "Cleide Vasconcelos",
     "serie": "1ª série EM",
     "tipo": "Matrícula nova",
@@ -35,6 +38,7 @@
   {
     "protocolo": "MAT-2026-0002",
     "estudante": "Rayssa Bispo Amorim",
+    "nascimento": "2010-05-09",
     "responsavel": "Ednaldo Amorim",
     "serie": "1ª série EM",
     "tipo": "Transferência",
@@ -46,6 +50,7 @@
   {
     "protocolo": "MAT-2026-0003",
     "estudante": "Wesley Nascimento de Jesus",
+    "nascimento": "2009-08-30",
     "responsavel": "Marlene Nascimento",
     "serie": "2ª série EM",
     "tipo": "Matrícula nova",

@@ -14,13 +14,16 @@
     "documentos": {
       "titulo": "Documentos para a matrícula",
       "lista": [
+        "Comprovante da matrícula feita no portal",
         "Certidão de nascimento ou RG do estudante",
-        "CPF do estudante, se tiver",
-        "Comprovante de residência, como conta de luz ou de água",
+        "CPF do estudante",
+        "Número do NIS, se a família tiver",
         "Documento com foto do responsável",
-        "Se o estudante vem de outra escola: declaração de transferência"
+        "Comprovante de residência, como a conta de energia",
+        "Até 12 anos: cartão ou declaração de vacinação",
+        "Se o estudante vem de outra escola: guia de transferência ou declaração"
       ],
-      "fala": "Leve estes documentos. Certidão de nascimento ou RG do estudante. CPF do estudante, se tiver. Comprovante de residência, como conta de luz ou de água. Documento com foto do responsável. Se o estudante vem de outra escola, leve também a declaração de transferência. Quer fazer a matrícula agora? Toque no botão verde.",
+      "fala": "Leve estes documentos. O comprovante da matrícula feita no portal. Certidão de nascimento ou RG do estudante. CPF do estudante. Número do NIS, se a família tiver. Documento com foto do responsável. Comprovante de residência, como a conta de energia. Até 12 anos, o cartão ou a declaração de vacinação. Se o estudante vem de outra escola, leve também a guia de transferência ou a declaração. Quer fazer a matrícula agora? Toque no botão verde.",
       "opcoes": [
         { "rotulo": "Fazer matrícula", "cor": "verde", "icone": "formulario", "link": "familia/matricula.html" },
         { "rotulo": "Voltar ao início", "cor": "cinza", "icone": "voltar", "proximo": "menu" }

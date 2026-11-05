@@ -30,7 +30,12 @@ async function mostrar() {
     [dados, escolas, equipe, hoje] = await Promise.all([profinComDeclaracoes(), carregar('escolas'), conjunto('equipe-profin'), dataDeReferencia()]);
     escolas = escolas.filter((e) => !e.exemplo); // as escolas reais com vagas de exemplo não têm dados do PROFIN no protótipo
     declaracoes = dados.declaracoes;
+    // Vem da ficha da escola com ?declaracao=DG-...: abre essa declaração na aba em que ela está.
+    const pedida = new URLSearchParams(location.search).get('declaracao');
+    const alvo = !sel && pedida ? declaracoes.find((d) => d.id === pedida && d.situacao !== 'Rascunho') : null;
+    if (alvo) { sel = alvo.id; aba = ABAS.find(([, , f]) => f(alvo))?.[0] || 'todas'; }
     desenhar();
+    if (alvo) main.querySelector('#det-titulo')?.scrollIntoView({ block: 'start' });
   } catch { falhaDados(main, mostrar); }
 }
 

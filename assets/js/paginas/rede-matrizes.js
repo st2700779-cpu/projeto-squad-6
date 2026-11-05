@@ -15,7 +15,7 @@ const selo = (etapa, linha) => {
 };
 
 function tabelaCarga() {
-  return ETAPAS.map((t) => `<h3>${esc(t.etapa)} <span class="texto-suave peso-normal texto-pequeno">mínimo de ${HORAS_MINIMAS[t.etapa]} h por ano</span></h3>
+  return ETAPAS.filter((t) => t.ativo !== false && carga.some((l) => l.etapa === t.etapa)).map((t) => `<h3>${esc(t.etapa)} <span class="texto-suave peso-normal texto-pequeno">mínimo de ${HORAS_MINIMAS[t.etapa]} h por ano</span></h3>
     <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes cargas"><caption class="sr-only">Carga horária por série: ${esc(t.etapa)}</caption>
       <thead><tr><th scope="col">Série</th><th scope="col" class="num">Aulas por semana</th><th scope="col" class="num">Minutos por aula</th><th scope="col">Carga anual (${SEMANAS_LETIVAS} semanas)</th></tr></thead>
       <tbody>${carga.filter((l) => l.etapa === t.etapa).map((l) => { const i = carga.indexOf(l); return `<tr data-i="${i}"><td class="titulo-linha"><strong>${esc(l.serie.replace(' EM', ' (Ensino Médio)'))}</strong></td>
@@ -38,14 +38,17 @@ function tabelaMatriz(v, ref) {
 
 async function mostrar() {
   try {
-    [carga, m, componentesEtapa] = await Promise.all([conjunto('carga-horaria'), carregar('matrizes'), carregar('componentes-etapa')]);
+    let salva;
+    [salva, m, componentesEtapa] = await Promise.all([conjunto('carga-horaria'), carregar('matrizes'), carregar('componentes-etapa')]);
+    // Uma linha por série dos níveis ativos (Rede › Cadastros). Série nova entra com o padrão do nível até alguém salvar outro valor.
+    carga = cargaPadrao().map((p) => salva.find((l) => l.etapa === p.etapa && l.serie === p.serie) || p);
     const [nova, antiga] = m.versoes;
     const aulasMedio = carga.filter((l) => l.etapa === 'Ensino Médio').map((l) => l.aulasSemana);
     main.innerHTML = `
       <h1>Matrizes e carga horária</h1>
       <p class="pagina-descricao">A carga horária de cada série e as matrizes por componente. Cada estudante segue a versão da matriz do ano em que entrou.</p>
       <h2>Carga horária por série</h2>
-      <p class="texto-suave esp-t-0">Aulas por semana × minutos por aula × ${SEMANAS_LETIVAS} semanas letivas (200 dias) = horas por ano. O mínimo é de 800 h no Ensino Fundamental e de 1.000 h no Ensino Médio.</p>
+      <p class="texto-suave esp-t-0">Aulas por semana × minutos por aula × ${SEMANAS_LETIVAS} semanas letivas (200 dias) = horas por ano. O mínimo de cada nível (800 h no Ensino Fundamental, 1.000 h no Ensino Médio) e os níveis da lista vêm de Rede › Cadastros.</p>
       <form id="form-carga" novalidate>${tabelaCarga()}
         <div class="form-acoes esp-t-4"><button type="submit" class="botao">${icone('ok', 20)}Salvar carga horária</button><button type="button" class="botao botao-secundario" id="padrao-carga">Restaurar valores padrão</button></div></form>
       <h2>Ensino Fundamental — Anos Finais: componentes</h2>
@@ -67,7 +70,7 @@ main.addEventListener('input', (e) => {
 });
 main.addEventListener('click', async (e) => {
   if (e.target.id !== 'padrao-carga') return;
-  if (!(await confirmar({ titulo: 'Restaurar a carga horária padrão?', texto: 'Volta para 25 aulas por semana no Ensino Fundamental e 30 no Ensino Médio, de 50 minutos cada.', botao: 'Restaurar' }))) return;
+  if (!(await confirmar({ titulo: 'Restaurar a carga horária padrão?', texto: 'Volta para as aulas por semana padrão de cada nível (25 no Ensino Fundamental e 30 no Ensino Médio), de 50 minutos cada.', botao: 'Restaurar' }))) return;
   try { await salvar('carga-horaria', cargaPadrao()); await registrarAcao(sessao().nome, 'Restaurou a carga horária padrão', 'Todas as séries'); await mostrar(); avisar('Carga horária padrão restaurada.'); } catch { avisar('Não foi possível restaurar. Confira a conexão e tente de novo.'); }
 });
 main.addEventListener('submit', async (e) => {

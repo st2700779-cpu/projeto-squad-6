@@ -36,7 +36,7 @@ async function mostrar() {
   try {
     const [logado, professores, turmas, alocacoes, matrizes] = await Promise.all([carregar('professor'), carregar('professores'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes')]);
     prof = professores.find((p) => p.id === logado.professorId);
-    minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes.versoes[0].componentes });
+    minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes });
     materiais = await conjunto('materiais');
     main.innerHTML = `<h1>Materiais e planos de aula</h1>
       <p class="pagina-descricao">Registre o plano de aula ou o material de cada turma. A coordenação consulta a lista.</p>

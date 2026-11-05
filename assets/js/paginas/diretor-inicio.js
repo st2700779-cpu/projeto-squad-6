@@ -48,7 +48,7 @@ async function mostrar() {
       <h2>Prestação de contas (PROFIN)</h2>
       <p class="esp-t-0">${semaforo(adim, { grande: true })}</p>
       <p>${devolvidas ? `${etiqueta(`${devolvidas} ${plural(devolvidas, 'declaração devolvida', 'declarações devolvidas')}`, 'erro')} ` : ''}${emAnalise ? `${etiqueta(`${emAnalise} ${plural(emAnalise, 'em análise no PROFIN', 'em análise no PROFIN')}`, 'info')} ` : ''}${!devolvidas && !emAnalise ? '<span class="texto-suave">Nenhuma declaração de gastos em andamento.</span>' : ''}</p>
-      <p><a class="botao botao-secundario" href="${link('diretor/prestacao.html')}">${icone('moeda', 20)}Declarar gastos e ver o retorno do PROFIN</a></p>
+      <p class="linha-botoes"><a class="botao botao-secundario" href="${link('diretor/financeiro.html')}">${icone('moeda', 20)}Ver o financeiro da escola</a><a class="botao botao-secundario" href="${link('diretor/prestacao.html')}">${icone('formulario', 20)}Declarar gastos e ver o retorno do PROFIN</a></p>
       <p class="contagem">A prestação em atraso pode suspender o próximo repasse da escola. Os valores por categoria ficam na tela de prestação de contas.</p>
       <h2>Atos autorizativos</h2>
       <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Atos autorizativos da escola</caption>

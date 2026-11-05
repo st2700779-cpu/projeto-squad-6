@@ -4,7 +4,8 @@ import { iniciar, falhaDados } from '../app.js';
 import { sessao } from '../auth.js';
 import { esc, numeroBR, vazio, plural } from '../ui.js';
 import { desempenhoDaEscola } from '../painel-dados.js';
-import { semaforoNota, semaforoFrequencia, PRESENCA_MINIMA, SERIES } from '../regras.js';
+import { semaforoNota, semaforoFrequencia, PRESENCA_MINIMA } from '../regras.js';
+import { todasAsSeries } from '../dominio/niveis.js';
 import { celulaDeCalor, legendaDeNiveis } from '../componentes/indicadores.js';
 
 const main = await iniciar({ perfil: 'diretor', pagina: 'diretor/mapa.html', assistente: false });
@@ -16,7 +17,7 @@ const nivelAbaixo = (abaixo, alunos) => { const p = alunos ? abaixo / alunos : 0
 
 function desenhar() {
   const lista = painel.lista.filter((x) => !serie || x.turma.serie === serie);
-  const series = SERIES.filter((s) => painel.lista.some((x) => x.turma.serie === s));
+  const series = todasAsSeries().filter((s) => painel.lista.some((x) => x.turma.serie === s));
   const comuns = COMPONENTES.filter((c) => lista.some((x) => x.componentes[c] !== undefined));
   main.innerHTML = `
     <h1>Mapa de calor da escola</h1>

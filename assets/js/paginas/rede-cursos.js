@@ -40,7 +40,7 @@ function formulario() {
     <p class="texto-suave esp-t-0">Campos com <span class="obrigatorio" aria-hidden="true">*</span> são obrigatórios. Depois de cadastrado, o curso aparece para escolha no cadastro de escola, no nível dele.</p>
     <fieldset class="form-bloco"><legend>Dados do curso</legend>
       <div class="largo">${campo({ nome: 'nome', rotulo: 'Nome do curso', obrigatorio: true, dica: 'Exemplo: Ensino Médio Integrado — Técnico em Agropecuária', atributos: 'maxlength="120" autocomplete="off"' })}</div>
-      ${campo({ nome: 'etapa', rotulo: 'Nível de ensino', obrigatorio: true, opcoes: [['', 'Escolha o nível'], ...ETAPAS.map((t) => [t.etapa, `${t.curto} (${t.resumo})`])] })}
+      ${campo({ nome: 'etapa', rotulo: 'Nível de ensino', obrigatorio: true, opcoes: [['', 'Escolha o nível'], ...ETAPAS.filter((t) => t.ativo !== false).map((t) => [t.etapa, `${t.curto} (${t.resumo})`])], dica: 'Os níveis são cadastrados em Rede › Cadastros.' })}
       ${campo({ nome: 'modalidade', rotulo: 'Modalidade', obrigatorio: true, opcoes: [['', 'Escolha a modalidade'], ...MODALIDADES.map((m) => [m, m])] })}
       <div class="largo">${campo({ nome: 'descricao', rotulo: 'Descrição', dica: 'Opcional, até 300 letras', atributos: 'maxlength="300" autocomplete="off"' })}</div>
     </fieldset>
@@ -55,7 +55,7 @@ function desenhar() {
     ${podeEditar ? '' : '<p class="alerta-info" role="note"><span>O cadastro de cursos vale para a rede inteira e é feito pela equipe da SEED. Aqui você consulta os cursos e as escolas da sua regional que oferecem cada um.</span></p>'}
     <dl class="resumo-linha">
       <div><dd>${ativos.length}</dd><dt>${plural(ativos.length, 'curso ativo', 'cursos ativos')}</dt></div>
-      ${ETAPAS.map((t) => `<div><dd>${ativos.filter((c) => c.etapa === t.etapa).length}</dd><dt>${esc(t.curto)}</dt></div>`).join('')}
+      ${ETAPAS.filter((t) => t.ativo !== false || ativos.some((c) => c.etapa === t.etapa)).map((t) => `<div><dd>${ativos.filter((c) => c.etapa === t.etapa).length}</dd><dt>${esc(t.curto)}</dt></div>`).join('')}
     </dl>
     <div class="ferramentas-tabela">
       <div class="campo"><label for="filtro-nivel">Nível</label><select id="filtro-nivel" class="entrada"><option value="">Todos os níveis</option>${ETAPAS.map((t) => `<option value="${esc(t.etapa)}" ${t.etapa === nivel ? 'selected' : ''}>${esc(t.curto)}</option>`).join('')}</select></div>

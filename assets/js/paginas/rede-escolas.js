@@ -1,20 +1,23 @@
 // Escolas da rede (SEED e DRE): lista com endereço e os atos de cada nível; cadastro de escola com o ato autorizativo
-// (inclusive divisão de escola), as séries que a escola tem e o curso de cada nível; busca dos dados pelo código INEP no
-// Censo Escolar (base simulada); edição; histórico dos atos com o PDF; turmas e vagas calculadas.
+// (inclusive divisão de escola), os níveis de ensino (da lista de Rede › Cadastros) e o curso de cada nível; busca dos dados pelo
+// código INEP no Censo Escolar (base simulada); edição; histórico dos atos com o PDF; consulta das turmas e vagas (só DREs e DEA).
+// Quem cadastra a escola não cadastra vagas: a direção de cada escola escolhe as séries, os turnos e as salas e cria as turmas
+// (Direção › Estrutura da escola e Direção › Turmas). As vagas nascem dessas turmas.
 // Quem é de uma DRE vê e altera só as escolas da sua regional (dre.js). As regras ficam em dominio/cadastros.js e dominio/vagas.js.
 import { iniciar, falhaDados } from '../app.js';
 import { sessao } from '../auth.js';
 import { esc, etiqueta, icone, avisar, vazio, combina, debounce, comEspera, dataBR, plural, confirmar } from '../ui.js';
 import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia, vagasDetalhadas } from '../dados.js';
 import { situacaoAto } from '../regras.js';
-import { ETAPAS, TIPOS_DE_ATO, validarEscola, montarEscola, validarEdicaoDeEscola, aplicarEdicaoDeEscola, validarRenovacaoDeAto, aplicarRenovacaoDeAto, seriesEscolhidas, validarSeriesDaEscola, aplicarSeriesAosAtos, atosDoNivel, somenteDigitos } from '../dominio/cadastros.js';
-import { TURNOS, textoPorTurno, validarTurmaNova, montarTurmaNova } from '../dominio/vagas.js';
+import { ETAPAS, TIPOS_DE_ATO, validarEscola, montarEscola, validarEdicaoDeEscola, aplicarEdicaoDeEscola, validarRenovacaoDeAto, aplicarRenovacaoDeAto, seriesEscolhidas, atosDoNivel, somenteDigitos } from '../dominio/cadastros.js';
+import { textoPorTurno } from '../dominio/vagas.js';
+import { NOMENCLATURAS } from '../dominio/niveis.js';
 import { campo, marcas, lerFormulario, mostrarErros } from '../componentes/formulario.js';
 import { dreDaSessao, daMinhaDre, dresDoAcesso, municipiosDa, dreDoMunicipio, avisoDeAcesso, filtrosDreMunicipio } from '../dre.js';
 import { conferirPdf, guardarPdf, abrirPdf, tamanhoLegivel } from '../arquivos.js';
 
 const main = await iniciar({ perfil: 'rede', pagina: 'rede/escolas.html', assistente: true });
-let escolas, atos, detalhe, localidades, dres, cursos, turmasAbertas, comSecretaria, hoje;
+let escolas, atos, detalhe, localidades, dres, cursos, hoje;
 let busca = '';
 let dreFiltro = '';
 let municipio = '';
@@ -23,10 +26,7 @@ let painel = null; // { tipo: 'turmas' | 'editar' | 'atos', id, etapa? }
 
 async function mostrar() {
   try {
-    let usuarios;
-    [escolas, atos, detalhe, localidades, dres, cursos, turmasAbertas, usuarios, hoje] = await Promise.all([carregar('escolas'), carregar('atos'), vagasDetalhadas(), carregar('localidades'), carregar('dres'), conjunto('cursos'), conjunto('turmas-rede-novas'), carregar('usuarios'), dataDeReferencia()]);
-    // Escolas com secretaria no protótipo criam as próprias turmas (Secretaria › Turmas); nas outras, a rede abre as turmas.
-    comSecretaria = new Set(usuarios.filter((u) => u.perfil === 'escola' && u.escolaId).map((u) => u.escolaId));
+    [escolas, atos, detalhe, localidades, dres, cursos, hoje] = await Promise.all([carregar('escolas'), carregar('atos'), vagasDetalhadas(), carregar('localidades'), carregar('dres'), conjunto('cursos'), dataDeReferencia()]);
     const pedido = new URLSearchParams(location.search).get('renovar'); // vem da tela de atos: "Registrar ato renovado"
     if (pedido && !painel) { const [id, etapa] = pedido.split('|'); const e = escolas.find((x) => x.id === id); if (e && daMinhaDre(e)) painel = { tipo: 'atos', id, etapa }; }
     desenhar();
@@ -38,7 +38,7 @@ const filtradas = () => minhas().filter((e) => (!dreFiltro || e.dre === dreFiltr
 const hojeData = () => new Date(`${hoje}T12:00:00`);
 const atosDa = (e) => ETAPAS.map((t) => atos.find((a) => a.escolaId === e.id && a.etapa === t.etapa)).filter(Boolean);
 const etapaInfo = (etapa) => ETAPAS.find((t) => t.etapa === etapa) || { curto: etapa, resumo: '', series: [] };
-const listaDeSeries = (series) => series.map((s) => s.replace(' EM', '')).join(', ');
+const listaDeSeries = (series) => series.map((s) => s.replace(/ EM$/, '')).join(', ');
 const cursosDoNivel = (etapa) => cursos.filter((c) => c.etapa === etapa && c.ativo !== false);
 
 // ---------------- Lista ----------------
@@ -64,12 +64,15 @@ function tabela(lista) {
       return `<tr><td class="titulo-linha"><strong>${esc(e.nome)}</strong> ${e.cadastradaEm ? etiqueta('Nova', 'info') : ''}${e.exemplo ? ` ${etiqueta('Vagas de exemplo')}` : ''}<br><span class="texto-suave texto-pequeno">${esc(e.municipio)} · ${esc(e.dre)}${e.inep ? ` · INEP ${esc(e.inep)}` : ''}</span>${origem ? `<br><span class="texto-suave texto-pequeno">Dividida a partir de ${esc(origem.nome)}</span>` : ''}</td>
         <td data-rotulo="Endereço"><div>${esc(e.endereco || `${e.bairro}, ${e.municipio}`)}${e.referencia ? `<br><span class="texto-suave texto-pequeno">Referência: ${esc(e.referencia)}</span>` : ''}${e.telefone ? `<br><span class="texto-suave texto-pequeno">Tel. ${esc(e.telefone)}</span>` : ''}</div></td>
         <td data-rotulo="Atos">${atosPorNivel(e)}</td>
-        <td class="acoes"><div class="linha-botoes"><button type="button" class="botao botao-secundario botao-mini" data-editar="${e.id}" aria-label="Editar os dados de ${esc(e.nome)}">Editar</button><button type="button" class="botao botao-secundario botao-mini" data-atos="${e.id}" ${meus.length ? '' : 'disabled'} aria-label="Ver os atos e registrar ato renovado de ${esc(e.nome)}">Atos</button><button type="button" class="botao botao-secundario botao-mini" data-turmas="${e.id}" ${meus.length ? '' : 'disabled'} aria-label="Turmas e vagas de ${esc(e.nome)}">Turmas e vagas</button></div></td></tr>`;
+        <td class="acoes"><div class="linha-botoes"><button type="button" class="botao botao-secundario botao-mini" data-editar="${e.id}" aria-label="Editar os dados de ${esc(e.nome)}">Editar</button><button type="button" class="botao botao-secundario botao-mini" data-atos="${e.id}" ${meus.length ? '' : 'disabled'} aria-label="Ver os atos e registrar ato renovado de ${esc(e.nome)}">Atos</button>${veTurmas() ? `<button type="button" class="botao botao-secundario botao-mini" data-turmas="${e.id}" ${meus.length ? '' : 'disabled'} aria-label="Turmas e vagas de ${esc(e.nome)}">Turmas e vagas</button>` : ''}</div></td></tr>`;
     }).join('')}</tbody></table></div>
     <p class="contagem">${lista.length} ${plural(lista.length, 'escola', 'escolas')}</p>`;
 }
 
 // ---------------- Painel: turmas e vagas (calculadas) ----------------
+// Só as DREs e a DEA consultam as turmas das escolas da sua regional. A conta da SEED central não vê turmas aqui
+// (acompanha as vagas pelo Mapa de vagas); quem cria e muda as turmas é a direção de cada escola.
+function veTurmas() { return Boolean(dreDaSessao()); }
 function blocoTurmas(e) {
   const meus = atosDa(e);
   const series = meus.flatMap((a) => seriesEscolhidas(a.etapa, a.series));
@@ -84,24 +87,13 @@ function blocoTurmas(e) {
       <td class="num" data-rotulo="Pedidos sem turma">${c.aguardando + c.aguardandoTurma}</td>
       <td data-rotulo="Vagas"><div>${bloq ? etiqueta('bloq. (ato vencido)', 'erro') : c.excesso ? `${etiqueta('0', 'erro')}<br><span class="texto-pequeno">${c.excesso} ${plural(c.excesso, 'pedido a mais que os lugares', 'pedidos a mais que os lugares')}</span>` : `<strong>${c.vagas}</strong>`}</div></td></tr>`;
   }).join('');
-  const podeAbrir = !comSecretaria.has(e.id);
-  const abertas = turmasAbertas.filter((t) => t.escolaId === e.id);
   return `<section class="form-cadastro" id="painel-turmas" aria-labelledby="turmas-titulo">
     <h2 id="turmas-titulo">Turmas e vagas: ${esc(e.nome)}</h2>
-    <p class="texto-suave esp-t-0">As vagas não são digitadas: são os lugares livres nas turmas aprovadas (lugares da sala − alunos), menos os pedidos de matrícula que ainda não têm turma. Ato vencido bloqueia a série mesmo com lugar livre.</p>
+    <p class="texto-suave esp-t-0">Consulta. As vagas não são digitadas: são os lugares livres nas turmas aprovadas (vagas da turma − estudantes), menos os pedidos de matrícula que ainda não têm turma. Ato vencido bloqueia a série mesmo com lugar livre.</p>
     <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Turmas e vagas por série</caption>
       <thead><tr><th scope="col">Série</th><th scope="col">Turmas (ocupados de lugares)</th><th scope="col">Lugares livres por turno</th><th scope="col" class="num">Pedidos sem turma</th><th scope="col">Vagas</th></tr></thead>
       <tbody>${linhas}</tbody></table></div>
-    ${podeAbrir ? `<form id="form-turma" class="form-bloco" novalidate data-escola="${e.id}" aria-labelledby="tu-titulo">
-      <h3 id="tu-titulo">Abrir turma nesta escola</h3>
-      ${campo({ prefixo: 'tu', nome: 'serie', rotulo: 'Série', obrigatorio: true, opcoes: [['', 'Escolha a série'], ...series.map((s) => [s, s])] })}
-      ${campo({ prefixo: 'tu', nome: 'turno', rotulo: 'Turno', obrigatorio: true, opcoes: [['', 'Escolha o turno'], ...TURNOS.map((t) => [t, t])] })}
-      ${campo({ prefixo: 'tu', nome: 'nome', rotulo: 'Nome da turma', dica: 'Exemplo: 6º ano A', obrigatorio: true, atributos: 'maxlength="30" autocomplete="off"' })}
-      ${campo({ prefixo: 'tu', nome: 'capacidade', rotulo: 'Lugares na sala', tipo: 'number', dica: 'De 10 a 60', obrigatorio: true, atributos: 'min="10" max="60" step="1" inputmode="numeric"' })}
-      <div class="largo form-acoes"><button type="submit" class="botao">${icone('mais', 20)}Abrir turma</button></div>
-    </form>
-    ${abertas.length ? `<ul class="lista-simples">${abertas.map((t) => `<li><span>${esc(t.nome)} · ${esc(t.turno)} · ${t.capacidade} lugares <span class="texto-suave texto-pequeno">aberta pela rede em ${dataBR(t.abertaEm)}</span></span><button type="button" class="botao botao-secundario botao-mini" data-fechar-turma="${esc(t.id)}">Fechar turma</button></li>`).join('')}</ul>` : ''}`
-    : '<p class="alerta-info">As turmas desta escola são criadas pela secretaria e aprovadas pela direção (Secretaria › Turmas). Quando a turma é aprovada, as vagas aparecem aqui sozinhas.</p>'}
+    <p class="alerta-info">${icone('info', 20)}<span>Quem cria as turmas e diz quantas vagas cada uma tem é a direção da escola (Direção › Turmas), com as séries, os turnos e as salas que ela escolhe em Direção › Estrutura da escola. Quando a turma é criada, as vagas aparecem aqui sozinhas.</span></p>
     <div class="form-acoes"><button type="button" class="botao botao-secundario" id="fechar-painel">Fechar</button></div></section>`;
 }
 
@@ -119,16 +111,10 @@ function opcoesDeMunicipio(dre, valor) {
   if (valor && !lista.includes(valor)) itens.push([valor, `${valor} (fora da DRE)`]);
   return itens;
 }
-function blocoSeriesDaEscola(e, prefixo) {
-  const meus = atosDa(e);
-  return `<fieldset class="campo largo" id="${prefixo}-series" aria-describedby="${prefixo}-series-erro"><legend>Séries que a escola tem <span class="obrigatorio" aria-hidden="true">*</span></legend>
-    ${meus.map((a) => { const t = etapaInfo(a.etapa); const marcadas = seriesEscolhidas(a.etapa, a.series); return `<p class="negrito esp-b-0">${esc(t.curto)} <span class="texto-suave peso-normal">(${esc(a.numero)})</span></p><div class="marcas">${t.series.map((s) => `<label class="marca-item"><input type="checkbox" name="series" value="${esc(s)}" ${marcadas.includes(s) ? 'checked' : ''}><span>${esc(s.replace(' EM', ' (Médio)'))}</span></label>`).join('')}</div>`; }).join('')}
-    <span class="dica">Desmarque a série que a escola não oferece: ela some da matrícula e das vagas.</span><p class="erro" id="${prefixo}-series-erro" role="alert"></p></fieldset>`;
-}
 function blocoEdicao(e) {
   return `<form id="form-editar" class="form-cadastro" novalidate data-escola="${e.id}" aria-labelledby="ed-titulo">
     <h2 id="ed-titulo">Editar dados: ${esc(e.nome)}</h2>
-    <p class="texto-suave esp-t-0">Muda os dados da escola e as séries que ela tem. O ato de cada nível muda pelo botão "Atos".</p>
+    <p class="texto-suave esp-t-0">Muda os dados da escola. O ato de cada nível muda pelo botão "Atos". As séries, os turnos, as salas e as turmas (com as vagas) são escolhidos pela direção da escola.</p>
     <fieldset class="form-bloco"><legend>Dados da escola</legend>
       <div class="largo">${campo({ prefixo: 'ed', nome: 'nome', rotulo: 'Nome da escola', valor: e.nome, obrigatorio: true, atributos: 'maxlength="120"' })}</div>
       ${campo({ prefixo: 'ed', nome: 'inep', rotulo: 'Código INEP', valor: e.inep || '', dica: '8 números. Opcional se ainda não houver', atributos: 'inputmode="numeric" maxlength="8"' })}
@@ -142,7 +128,6 @@ function blocoEdicao(e) {
       ${campo({ prefixo: 'ed', nome: 'bairro', rotulo: 'Bairro ou povoado', valor: e.bairro || '', obrigatorio: true })}
       <div class="largo">${campo({ prefixo: 'ed', nome: 'referencia', rotulo: 'Ponto de referência', valor: e.referencia || '', dica: 'Opcional. Exemplo: ao lado da Praça da Matriz', atributos: 'maxlength="120" autocomplete="off"' })}</div>
     </fieldset>
-    ${blocoSeriesDaEscola(e, 'ed')}
     <div class="form-acoes"><button type="submit" class="botao">${icone('ok', 20)}Salvar dados</button><button type="button" class="botao botao-secundario" id="fechar-painel">Cancelar</button></div></form>`;
 }
 
@@ -184,31 +169,31 @@ function blocoPainel() {
   if (!painel) return '';
   const e = escolas.find((x) => x.id === painel.id);
   if (!e || !daMinhaDre(e)) return '';
+  if (painel.tipo === 'turmas' && !veTurmas()) return '';
   return painel.tipo === 'turmas' ? blocoTurmas(e) : painel.tipo === 'editar' ? blocoEdicao(e) : blocoAtos(e);
 }
 function abrirPainel(novo, seletor) { painel = novo; aberto = false; desenhar(); const f = main.querySelector(seletor); f?.querySelector('input:not([type=hidden]), select')?.focus(); f?.scrollIntoView({ block: 'start' }); }
 
 // ---------------- Cadastro ----------------
-function blocoSeriesNovas(etapasMarcadas, seriesMarcadas, cursosEscolhidos) {
+// Curso de cada nível marcado. As séries não são escolhidas aqui: a escola pode oferecer todas as do nível, e a direção escolhe
+// quais oferece em Direção › Estrutura da escola.
+function blocoCursosNovos(etapasMarcadas, cursosEscolhidos) {
   const lista = ETAPAS.filter((t) => etapasMarcadas.includes(t.etapa));
-  if (!lista.length) return '<p class="texto-suave esp-t-0">Marque um nível acima para escolher as séries e o curso.</p>';
-  return `<fieldset class="campo" id="f-series" aria-describedby="f-series-erro"><legend>Séries que a escola tem <span class="obrigatorio" aria-hidden="true">*</span></legend>
-    ${lista.map((t) => {
-      const i = ETAPAS.indexOf(t);
-      const opcoesCurso = cursosDoNivel(t.etapa);
-      const escolhido = cursosEscolhidos[t.etapa] || (opcoesCurso.find((c) => c.modalidade === 'Regular') || opcoesCurso[0])?.nome || '';
-      return `<div class="nivel-series"><p class="negrito esp-b-0">${esc(t.curto)}</p>
-        <div class="marcas">${t.series.map((s) => `<label class="marca-item"><input type="checkbox" name="series" value="${esc(s)}" ${seriesMarcadas === null || seriesMarcadas.includes(s) ? 'checked' : ''}><span>${esc(s.replace(' EM', ' (Médio)'))}</span></label>`).join('')}</div>
-        ${campo({ nome: `curso-${i}`, rotulo: `Curso de ${t.curto}`, valor: escolhido, obrigatorio: true, dica: 'Os cursos são cadastrados em Rede › Cursos.', opcoes: [['', 'Escolha o curso'], ...opcoesCurso.map((c) => [c.nome, `${c.nome} (${c.modalidade})`])] })}</div>`;
-    }).join('')}
-    <p class="erro" id="f-series-erro" role="alert"></p></fieldset>`;
+  if (!lista.length) return '<p class="texto-suave esp-t-0">Marque um nível acima para escolher o curso.</p>';
+  return lista.map((t) => {
+    const i = ETAPAS.indexOf(t);
+    const opcoesCurso = cursosDoNivel(t.etapa);
+    const escolhido = cursosEscolhidos[t.etapa] || (opcoesCurso.find((c) => c.modalidade === 'Regular') || opcoesCurso[0])?.nome || '';
+    return `<div class="nivel-series"><p class="negrito esp-b-0">${esc(t.curto)} <span class="texto-suave peso-normal texto-pequeno">${esc(NOMENCLATURAS[t.nomenclatura]?.rotulo || 'Séries')}: ${esc(listaDeSeries(t.series)) || 'nenhuma cadastrada'}</span></p>
+      ${campo({ nome: `curso-${i}`, rotulo: `Curso de ${t.curto}`, valor: escolhido, obrigatorio: true, dica: 'Os cursos são cadastrados em Rede › Cursos.', opcoes: [['', 'Escolha o curso'], ...opcoesCurso.map((c) => [c.nome, `${c.nome} (${c.modalidade})`])] })}</div>`;
+  }).join('');
 }
 function formulario() {
   const so = (rot, lista) => [['', rot], ...lista.map((x) => [x, x])];
   const minhaDre = dreDaSessao();
   return `<form id="form-escola" class="form-cadastro" novalidate ${aberto ? '' : 'hidden'} aria-labelledby="cad-titulo">
     <h2 id="cad-titulo">Cadastrar escola</h2>
-    <p class="texto-suave esp-t-0">Campos com <span class="obrigatorio" aria-hidden="true">*</span> são obrigatórios. Comece pelo código INEP: se a escola estiver no Censo Escolar, os dados vêm preenchidos. A escola só oferece as séries marcadas nos níveis liberados pelo ato, e só enquanto ele estiver vigente.</p>
+    <p class="texto-suave esp-t-0">Campos com <span class="obrigatorio" aria-hidden="true">*</span> são obrigatórios. Comece pelo código INEP: se a escola estiver no Censo Escolar, os dados vêm preenchidos. A escola só oferece séries dos níveis liberados pelo ato, e só enquanto ele estiver vigente. Vagas não são cadastradas aqui: a direção da escola escolhe as séries, os turnos e as salas e cria as turmas com as vagas.</p>
     <fieldset class="form-bloco"><legend>Censo Escolar</legend>
       <div class="campo campo-com-botao largo"><label for="f-inep">Código INEP <span class="obrigatorio" aria-hidden="true">*</span></label>
         <div class="linha-campo"><input id="f-inep" name="inep" class="entrada" inputmode="numeric" maxlength="8" autocomplete="off" aria-describedby="f-inep-dica f-inep-erro" required><button type="button" class="botao botao-secundario" id="buscar-inep">${icone('busca', 20)}Buscar no Censo Escolar</button></div>
@@ -235,8 +220,8 @@ function formulario() {
       ${campo({ nome: 'atoVencimento', rotulo: 'Data de vencimento', tipo: 'date', obrigatorio: true })}
       ${campoPdf('f')}
       <div class="largo" id="campo-origem" hidden>${campo({ nome: 'origemId', rotulo: 'Escola que foi dividida', dica: 'A escola de origem continua cadastrada', opcoes: [['', 'Escolha a escola de origem'], ...minhas().map((e) => [e.id, `${e.nome} (${e.municipio})`])] })}</div>
-      <div class="largo">${marcas({ nome: 'etapas', rotulo: 'Nível de ensino que o ato libera', obrigatorio: true, dica: 'Depois de marcar o nível, escolha abaixo as séries que a escola tem e o curso.', itens: ETAPAS.map((t) => [t.etapa, t.curto, `${t.resumo}`]) })}</div>
-      <div class="largo" id="series-niveis">${blocoSeriesNovas([], null, {})}</div>
+      <div class="largo">${marcas({ nome: 'etapas', rotulo: 'Nível de ensino que o ato libera', obrigatorio: true, dica: 'A lista de níveis (com EJA e educação profissional) é mantida em Rede › Cadastros. Depois de marcar, escolha o curso de cada nível.', itens: ETAPAS.filter((t) => t.ativo !== false).map((t) => [t.etapa, t.curto, `${t.resumo}`]) })}</div>
+      <div class="largo" id="series-niveis">${blocoCursosNovos([], {})}</div>
       <p class="previa-series largo" id="previa" aria-live="polite">Nenhuma série liberada ainda.</p>
     </fieldset>
     <div class="form-acoes"><button type="submit" class="botao">${icone('ok', 20)}Cadastrar escola</button><button type="button" class="botao botao-secundario" id="cancelar-cadastro">Cancelar</button></div>
@@ -255,7 +240,7 @@ function desenhar() {
   const vencidas = vistas.filter((e) => atos.some((a) => a.escolaId === e.id && !situacaoAto(a, hojeData()).vigente)).length;
   main.innerHTML = `
     <div class="cabecalho-pagina"><h1>Escolas da rede</h1></div>
-    <p class="pagina-descricao">Cadastro das escolas com endereço, DRE, os atos autorizativos de cada nível, as séries que a escola tem e o curso. As escolas com a etiqueta <strong>Vagas de exemplo</strong> são escolas reais da rede estadual (nome, município, DRE e INEP da SEDUC); as turmas, os atos e as vagas delas são de demonstração.</p>
+    <p class="pagina-descricao">Cadastro das escolas com endereço, DRE, os atos autorizativos de cada nível e o curso. As séries, as salas, os turnos e as turmas com as vagas ficam com a direção de cada escola. As escolas com a etiqueta <strong>Vagas de exemplo</strong> são escolas reais da rede estadual (nome, município, DRE e INEP da SEDUC); as turmas, os atos e as vagas delas são de demonstração.</p>
     ${avisoDeAcesso()}
     <dl class="resumo-linha">
       <div><dd>${vistas.length}</dd><dt>${plural(vistas.length, 'escola cadastrada', 'escolas cadastradas')}</dt></div>
@@ -273,15 +258,13 @@ const redesenharTabela = () => { main.querySelector('#tabela-escolas').innerHTML
 function estadoDoCadastro() {
   const form = main.querySelector('#form-escola');
   const etapas = [...form.querySelectorAll('[name="etapas"]:checked')].map((i) => i.value);
-  const temSeries = form.querySelector('#f-series');
-  const series = temSeries ? [...form.querySelectorAll('[name="series"]:checked')].map((i) => i.value) : null;
   const cursosEscolhidos = Object.fromEntries(ETAPAS.map((t, i) => [t.etapa, form.querySelector(`#f-curso-${i}`)?.value]).filter(([, v]) => v));
-  return { etapas, series, cursosEscolhidos };
+  return { etapas, cursosEscolhidos };
 }
 function atualizarPrevia() {
-  const { etapas, series } = estadoDoCadastro();
-  const lista = etapas.flatMap((t) => seriesEscolhidas(t, series ?? undefined));
-  main.querySelector('#previa').textContent = lista.length ? `Séries que a escola terá: ${lista.map((s) => s.replace(' EM', ' (EM)')).join(', ')}.` : 'Nenhuma série liberada ainda.';
+  const { etapas } = estadoDoCadastro();
+  const lista = etapas.flatMap((t) => seriesEscolhidas(t));
+  main.querySelector('#previa').textContent = lista.length ? `Séries que a escola poderá oferecer (a direção escolhe): ${listaDeSeries(lista)}.` : 'Nenhuma série liberada ainda.';
 }
 function trocarMunicipios(form, prefixo, dre, valor = '') {
   const sel = form.querySelector(`#${prefixo}-municipio`);
@@ -294,13 +277,10 @@ main.addEventListener('change', (e) => {
   if (t.id === 'filtro-municipio') { municipio = t.value; redesenharTabela(); }
   if (t.id === 'f-atoTipo') main.querySelector('#campo-origem').hidden = t.value !== 'Divisão de escola';
   if (t.name === 'etapas' && t.closest('#form-escola')) {
-    const { etapas, series, cursosEscolhidos } = estadoDoCadastro();
-    // Nível recém-marcado vem com todas as séries marcadas; as escolhas dos outros níveis continuam.
-    const novas = series === null ? null : [...series, ...(t.checked ? ETAPAS.find((x) => x.etapa === t.value).series : [])];
-    main.querySelector('#series-niveis').innerHTML = blocoSeriesNovas(etapas, novas, cursosEscolhidos);
+    const { etapas, cursosEscolhidos } = estadoDoCadastro();
+    main.querySelector('#series-niveis').innerHTML = blocoCursosNovos(etapas, cursosEscolhidos);
     atualizarPrevia();
   }
-  if (t.name === 'series' && t.closest('#form-escola')) atualizarPrevia();
   if (t.id === 'f-dre') trocarMunicipios(t.form, 'f', t.value);
   if (t.id === 'ed-dre') trocarMunicipios(t.form, 'ed', t.value, t.form.querySelector('#ed-municipio').value);
   if (t.id === 'at-etapa' && painel?.tipo === 'atos') { painel = { ...painel, etapa: t.value }; main.querySelector('#area-painel').innerHTML = blocoPainel(); main.querySelector('#at-numero').focus(); }
@@ -316,12 +296,11 @@ main.addEventListener('click', async (e) => {
   if (b.id === 'nova-escola') { aberto = true; painel = null; desenhar(); const f = main.querySelector('#form-escola'); f.querySelector('#f-inep').focus(); f.scrollIntoView({ block: 'start' }); }
   if (b.id === 'cancelar-cadastro') { aberto = false; desenhar(); main.querySelector('#nova-escola').focus(); }
   if (b.id === 'buscar-inep') await buscarNoCenso(b.form);
-  if (b.dataset.turmas) abrirPainel({ tipo: 'turmas', id: b.dataset.turmas }, '#painel-turmas');
+  if (b.dataset.turmas && veTurmas()) abrirPainel({ tipo: 'turmas', id: b.dataset.turmas }, '#painel-turmas');
   if (b.dataset.editar) abrirPainel({ tipo: 'editar', id: b.dataset.editar }, '#form-editar');
   if (b.dataset.atos) abrirPainel({ tipo: 'atos', id: b.dataset.atos }, '#painel-atos');
   if (b.id === 'fechar-painel') { painel = null; desenhar(); }
   if (b.dataset.pdf) { if (!(await abrirPdf(b.dataset.pdf))) avisar('Esse PDF não está neste navegador. No protótipo, o PDF fica só no computador em que foi anexado.', 'erro'); }
-  if (b.dataset.fecharTurma) await fecharTurma(b.dataset.fecharTurma);
 });
 
 // Busca no Censo Escolar (base simulada em data/censo-escolar.json): preenche o que a base tiver.
@@ -348,17 +327,6 @@ async function buscarNoCenso(form) {
   form.querySelector('#f-nome').focus();
 }
 
-async function fecharTurma(id) {
-  const t = turmasAbertas.find((x) => x.id === id);
-  if (!t || !(await confirmar({ titulo: 'Fechar esta turma?', texto: `${t.nome} (${t.turno}) deixa de oferecer vagas. Os pedidos de matrícula já feitos continuam com a escola.`, botao: 'Fechar turma', perigo: true }))) return;
-  try {
-    const lista = (await conjunto('turmas-rede-novas')).filter((x) => x.id !== id);
-    await salvar('turmas-rede-novas', lista);
-    await registrarAcao(sessao().nome, `Fechou a turma ${t.nome} (${t.turno})`, escolas.find((x) => x.id === t.escolaId)?.nome || t.escolaId);
-    await mostrar(); avisar('Turma fechada.');
-  } catch { avisar('Não foi possível fechar a turma. Confira a conexão e tente de novo.'); }
-}
-
 function coordenadasDe(nomeMunicipio) {
   const m = localidades.municipios.find((x) => x.municipio === nomeMunicipio);
   if (m) return { lat: m.lat, lng: m.lng };
@@ -373,8 +341,8 @@ main.addEventListener('submit', async (e) => {
   const form = e.target;
   if (form.id === 'form-escola') {
     const dados = lerFormulario(form);
-    const { series, cursosEscolhidos } = estadoDoCadastro();
-    const f = { ...dados, dre: dreDaSessao() || dados.dre, etapas: dados.etapas || [], series: series ?? undefined, cursos: cursosEscolhidos };
+    const { cursosEscolhidos } = estadoDoCadastro();
+    const f = { ...dados, dre: dreDaSessao() || dados.dre, etapas: dados.etapas || [], cursos: cursosEscolhidos };
     const { erros } = validarEscola(f, { escolas, hoje, dres, cursos });
     if (erros.cursos) { const i = ETAPAS.findIndex((t) => (f.etapas || []).includes(t.etapa) && !cursosEscolhidos[t.etapa]); erros[`curso-${i >= 0 ? i : 0}`] = erros.cursos; delete erros.cursos; }
     const pdf = erroDoPdf(form, 'f');
@@ -388,11 +356,11 @@ main.addEventListener('submit', async (e) => {
         escolasNovas.push(novo.escola); atosNovos.push(...novo.atos);
         await salvar('escolas-novas', escolasNovas); await salvar('atos-novos', atosNovos);
         await registrarAcao(sessao().nome, `Cadastrou a escola e o ${novo.atos[0].numero}`, novo.escola.nome);
-        painel = { tipo: 'turmas', id: novo.escola.id };
+        painel = veTurmas() ? { tipo: 'turmas', id: novo.escola.id } : null;
       });
       aberto = false;
       await mostrar();
-      avisar('Escola cadastrada. As vagas aparecem quando a escola tiver turmas aprovadas: abra as turmas abaixo.');
+      avisar('Escola cadastrada. A direção da escola escolhe as séries, os turnos e as salas e cria as turmas; as vagas aparecem quando houver turma aprovada.');
       main.querySelector('#painel-turmas')?.scrollIntoView({ block: 'start' });
     } catch { avisar('Não foi possível cadastrar a escola. Confira a conexão e tente de novo.'); mostrar(); }
     return;
@@ -400,23 +368,15 @@ main.addEventListener('submit', async (e) => {
   if (form.id === 'form-editar') {
     const dados = lerFormulario(form);
     const atual = escolas.find((x) => x.id === form.dataset.escola);
-    const meusAtos = atosDa(atual);
     const f = { ...dados, dre: dreDaSessao() || dados.dre };
-    const erros = { ...validarEdicaoDeEscola(f, { escolas, id: form.dataset.escola, dres }).erros, ...validarSeriesDaEscola(dados.series || [], meusAtos).erros };
+    const erros = validarEdicaoDeEscola(f, { escolas, id: form.dataset.escola, dres }).erros;
     if (!mostrarErros(form, erros, 'ed-')) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
     try {
       await comEspera(e.submitter, async () => {
         const nova = aplicarEdicaoDeEscola(atual, f, hoje);
         const novas = (await conjunto('escolas-novas')).filter((x) => x.id !== nova.id);
         await salvar('escolas-novas', [...novas, nova]);
-        const comSeries = aplicarSeriesAosAtos(meusAtos, dados.series || []);
-        const mudou = comSeries.some((a, i) => JSON.stringify(a.series) !== JSON.stringify(seriesEscolhidas(meusAtos[i].etapa, meusAtos[i].series)));
-        if (mudou) {
-          const chave = (a) => `${a.escolaId}|${a.etapa}`;
-          const outros = (await conjunto('atos-novos')).filter((a) => !comSeries.some((x) => chave(x) === chave(a)));
-          await salvar('atos-novos', [...outros, ...comSeries]);
-        }
-        await registrarAcao(sessao().nome, mudou ? 'Editou os dados e as séries da escola' : 'Editou os dados da escola', nova.nome);
+        await registrarAcao(sessao().nome, 'Editou os dados da escola', nova.nome);
       });
       painel = null; await mostrar(); avisar('Dados da escola salvos.');
     } catch { avisar('Não foi possível salvar os dados. Confira a conexão e tente de novo.'); }
@@ -443,23 +403,6 @@ main.addEventListener('submit', async (e) => {
       main.querySelector('#painel-atos')?.scrollIntoView({ block: 'start' });
     } catch { avisar('Não foi possível registrar o ato. Confira a conexão e tente de novo.'); }
     return;
-  }
-  if (form.id === 'form-turma') {
-    const dados = lerFormulario(form);
-    const escolaId = form.dataset.escola;
-    const series = atosDa(escolas.find((x) => x.id === escolaId)).flatMap((a) => seriesEscolhidas(a.etapa, a.series));
-    const turmasDaEscola = Object.values(detalhe[escolaId] || {}).flatMap((c) => c.turmas.map((t) => ({ ...t, escolaId })));
-    const { erros } = validarTurmaNova(dados, { series, turmas: turmasDaEscola, escolaId });
-    if (!mostrarErros(form, erros, 'tu-')) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
-    try {
-      await comEspera(e.submitter, async () => {
-        const nova = montarTurmaNova(dados, { escolaId, hoje, por: sessao().nome });
-        await salvar('turmas-rede-novas', [...(await conjunto('turmas-rede-novas')), nova]);
-        await registrarAcao(sessao().nome, `Abriu a turma ${nova.nome} (${nova.turno}, ${nova.capacidade} lugares)`, escolas.find((x) => x.id === escolaId).nome);
-      });
-      await mostrar(); avisar('Turma aberta. As vagas da série já contam com ela.');
-      main.querySelector('#painel-turmas')?.scrollIntoView({ block: 'start' });
-    } catch { avisar('Não foi possível abrir a turma. Confira a conexão e tente de novo.'); }
   }
 });
 mostrar();

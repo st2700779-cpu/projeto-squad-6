@@ -7,6 +7,7 @@ import { carregar, estudantes, escolherEstudante, matriculas, dataDeReferencia }
 import { serieCompleta, proximaSerie, semaforoPrazo, diasEntre, nomeCurto, SERIES } from '../regras.js';
 import { semaforo, seletorDeEstudante } from '../componentes/indicadores.js';
 import { blocoDePedidos, ligarPedidos } from '../componentes/pedidos.js';
+import { periodoDaRematricula } from '../dominio/matricula-online.js';
 
 const main = await iniciar({ perfil: 'responsavel', pagina: 'responsavel/matricula.html', assistente: true, titulo: 'Matrícula e documentos' });
 let atual;
@@ -17,14 +18,16 @@ async function mostrar() {
   try {
     const { lista, atual: est } = await estudantes();
     atual = est;
-    const [escolas, pedidos, hoje] = await Promise.all([carregar('escolas'), matriculas(), dataDeReferencia()]);
+    const [escolas, pedidos, hoje, calendario] = await Promise.all([carregar('escolas'), matriculas(), dataDeReferencia(), carregar('calendario')]);
+    // O período da rematrícula vem do calendário escolar (data/calendario.json), o mesmo dos avisos e da área do aluno.
+    const periodo = periodoDaRematricula(calendario) || { fim: hoje, texto: 'no período que a escola divulgar' };
     const escola = escolas.find((e) => e.id === est.escolaId);
     const nome = est.nome.split(' ')[0];
     const docs = est.documentos || [];
     const pendentes = docs.filter((x) => x.situacao === 'pendente');
     const rematricula = pedidos.find((x) => x.meu && x.estudanteId === est.id && x.tipo === 'Rematrícula');
     const seguinte = proximaSerie(est.serie);
-    const diasRemat = diasEntre(hoje, '2026-11-28');
+    const diasRemat = diasEntre(hoje, periodo.fim);
     main.innerHTML = `
       <h1>Matrícula e documentos</h1>
       <p class="pagina-descricao">Situação da matrícula de ${esc(nome)} e dos documentos que a escola pede.</p>
@@ -35,10 +38,10 @@ async function mostrar() {
       <p class="esp-t-1">${esc(est.nome)} está ${art(est.serie, 'na', 'no')} <strong>${esc(serieCompleta(est.serie))}</strong>, turma ${esc(est.turma.replace(/^.* /, ''))}, ${esc(est.turno.toLowerCase())}, em ${esc(nomeCurto(escola.nome))}.</p>
       <p class="so-completo texto-suave">Código do aluno <strong>${esc(est.codigoAluno)}</strong> · código da matrícula <strong>${esc(est.matricula)}</strong></p>
       ${seguinte ? `<h2>Rematrícula para 2027</h2>${!SERIES.includes(seguinte)
-        ? `<p>${esc(nome)} segue para ${art(seguinte, 'a', 'o')} <strong>${esc(serieCompleta(seguinte))}</strong>. A rematrícula dos anos iniciais é feita na secretaria da escola, de 3 a 28 de novembro.</p>`
+        ? `<p>${esc(nome)} segue para ${art(seguinte, 'a', 'o')} <strong>${esc(serieCompleta(seguinte))}</strong>. A rematrícula dos anos iniciais é feita na secretaria da escola, de ${esc(periodo.texto)}.</p>`
         : rematricula
         ? `<p>${etiqueta(rematricula.situacao, cor(rematricula.situacao))} <span class="texto-suave">protocolo ${esc(rematricula.protocolo)}</span></p>`
-        : `<p>A rematrícula vai de 3 a 28 de novembro. ${esc(nome)} segue para ${art(seguinte, 'a', 'o')} <strong>${esc(serieCompleta(seguinte))}</strong>.</p><p>${semaforo(semaforoPrazo(diasRemat))} <span class="texto-suave">prazo final: 28/11</span></p><p><a class="botao" href="${link('familia/matricula.html')}?rematricula=${est.id}">Fazer a rematrícula de ${esc(nome)}</a></p>`}` : ''}
+        : `<p>A rematrícula vai de ${esc(periodo.texto)}. ${esc(nome)} segue para ${art(seguinte, 'a', 'o')} <strong>${esc(serieCompleta(seguinte))}</strong>.</p><p>${semaforo(semaforoPrazo(diasRemat))} <span class="texto-suave">prazo final: ${dataBR(periodo.fim)}</span></p><p><a class="botao" href="${link('familia/matricula.html')}?rematricula=${est.id}">Fazer a rematrícula de ${esc(nome)}</a></p>`}` : ''}
       <h2>Documentos</h2>
       ${docs.length ? `<p class="esp-t-0">${pendentes.length ? `<strong>${pendentes.length} ${plural(pendentes.length, 'documento pendente', 'documentos pendentes')}.</strong> Leve na secretaria.` : 'Nenhum documento pendente.'}</p>
       <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Documentos da matrícula de ${esc(nome)}</caption>

@@ -3,7 +3,8 @@ import { isoDoAviso } from './dominio/avisos.js';
 import { carregar, conjunto, diarioParaLeitura, letivo, dataDeReferencia, turmasDaRede } from './dados.js';
 import { obter, definir } from './estado.js';
 import { dataBR } from './ui.js';
-import { desempenhoDaTurma, mediaGeral, SERIES, desempenho, margemDeFaltas, semaforoFrequencia, horarioDaTurma, montarAgenda, diaDaSemana, aulasDoDia, notaNecessaria } from './regras.js';
+import { desempenhoDaTurma, mediaGeral, desempenho, margemDeFaltas, semaforoFrequencia, horarioDaTurma, montarAgenda, diaDaSemana, aulasDoDia, notaNecessaria } from './regras.js';
+import { ordemDaSerie } from './dominio/niveis.js';
 
 const feitos = (id) => (obter('agenda-feitos', {})[id] || []);
 /** Marca ou desmarca um item da agenda como feito (só no navegador). */
@@ -62,7 +63,7 @@ export async function desempenhoDaEscola(escolaId) {
   const lista = turmas
     .filter((t) => t.escolaId === escolaId && t.situacao === 'Aprovada' && (dia[t.id]?.length || sementes[t.id]))
     .map((t) => { const d = desempenhoDaTurma(t, dia[t.id], sementes[t.id], lv.aulasDadas); return { turma: t, ...d, media: mediaGeral(d.componentes) }; })
-    .sort((a, b) => SERIES.indexOf(a.turma.serie) - SERIES.indexOf(b.turma.serie) || a.turma.nome.localeCompare(b.turma.nome, 'pt-BR'));
+    .sort((a, b) => ordemDaSerie(a.turma.serie) - ordemDaSerie(b.turma.serie) || a.turma.nome.localeCompare(b.turma.nome, 'pt-BR'));
   const alunos = lista.reduce((n, x) => n + x.alunos, 0);
   const comFreq = lista.filter((x) => x.frequencia !== null);
   const pesoFreq = comFreq.reduce((n, x) => n + x.alunos, 0);

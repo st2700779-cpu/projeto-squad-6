@@ -163,5 +163,74 @@
         ]
       ]
     }
-  ]
+  ],
+  "fundamental": {
+    "curso": "Ensino Fundamental — Anos Finais",
+    "versao": "2025",
+    "aplicacao": "Todas as turmas do 6º ao 9º ano",
+    "series": [
+      "6º ano",
+      "7º ano",
+      "8º ano",
+      "9º ano"
+    ],
+    "componentes": [
+      [
+        "Língua Portuguesa",
+        5,
+        5,
+        5,
+        5
+      ],
+      [
+        "Matemática",
+        5,
+        5,
+        5,
+        5
+      ],
+      [
+        "Ciências",
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        "História",
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        "Geografia",
+        3,
+        3,
+        3,
+        3
+      ],
+      [
+        "Arte",
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        "Inglês",
+        2,
+        2,
+        2,
+        2
+      ],
+      [
+        "Educação Física",
+        2,
+        2,
+        2,
+        2
+      ]
+    ]
+  }
 }

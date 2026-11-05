@@ -41,10 +41,14 @@ O diário tinha chamada e notas, mas nada para dizer **o que foi ensinado**, que
 
 ## Coordenação pedagógica
 
+- **Feito na quarta rodada:** **Horários**: na grade, a aula é um botão; escolhe-se a disciplina (filtrada por área) e depois o professor, entre os habilitados, vendo quem está livre, ocupado em outra turma ou sem carga. A troca vale para a alocação. Há também **Horário do professor**, **Professores por disciplina** e **montar a grade a partir da matriz**.
+
 - **Feito:** **Registros de aula** (só leitura): lista por turma com professor, aulas e conteúdo, e quantas turmas já têm algum registro.
 - **Feito na segunda rodada:** **alerta de turma sem registro de aula**: tabela com o último registro de cada turma e semáforo (verde até 7 dias, amarelo de 8 a 14, vermelho acima disso ou sem nenhum registro, sempre com símbolo e palavra), e a contagem no início da coordenação. A consulta também lista os **planos de aula**.
 
 ## Secretaria
+
+- **Mudou na quarta rodada:** **Turmas** saiu do menu (a direção cria; a secretaria consulta pelo endereço antigo e enturma). **Alocação** ganhou o modo **por disciplina** (Matemática, Linguagens, Ciências...: as turmas da disciplina e os professores habilitados nela) e passou a valer também para os anos finais.
 
 A secretaria recebia matrícula, enturmação e solicitações, mas as famílias não tinham como justificar falta, então a fila ficava de fora.
 
@@ -56,6 +60,10 @@ A secretaria recebia matrícula, enturmação e solicitações, mas as famílias
 
 Prestação de contas, atos e comunicados já cobriam o dia a dia. Nada novo em tela; a direção se beneficia do prazo de ato corrigido e de a PROFIN poder lançar repasses (a prestação ganha novo prazo e aparece na direção).
 
+- **Feito na quarta rodada:** **Estrutura da escola** (só a direção): séries oferecidas dentro dos níveis do ato, salas com o número de lugares e turnos, inclusive **integral**. Série, sala ou turno com turma não sai.
+- **Feito na quarta rodada:** **Turmas** e **Vagas** saíram da secretaria e da rede e vieram para a direção. A turma é criada em passos (série, turno, sala, vagas e nome, com resumo ao vivo); a turma integral ocupa a sala de manhã e de tarde. As vagas da matrícula são os lugares livres nessas turmas.
+- **Feito na quarta rodada:** **Financeiro (PROFIN)**: a mesma ficha que a equipe do PROFIN acompanha, só da própria escola: saldo, o que falta para ficar em dia, como a escola gasta e o contexto.
+
 ## Rede (SEED e DRE)
 
 Aqui estavam as maiores faltas: era possível **criar**, mas não **corrigir**.
@@ -65,10 +73,14 @@ Aqui estavam as maiores faltas: era possível **criar**, mas não **corrigir**.
 - **Feito:** **Editar professor** (vínculo, formação, habilitação, carga e lotação; matrícula funcional e CPF não mudam) e **Desligar / Reativar**. Desligar só é possível sem turma alocada, e a mensagem diz quantas turmas faltam tirar.
 - **Feito na segunda rodada:** **mudar o professor de escola**: pede o motivo, mostra e confirma as turmas de que ele sai (elas ficam sem professor naquele componente, e as alocações são liberadas), e guarda o **histórico de lotação** (escola, período e motivo), visível na edição.
 - **Feito na segunda rodada:** **Acessos e senhas** também na rede, para as contas institucionais (secretaria, direção, coordenação e PROFIN).
+- **Feito na quarta rodada:** **Cadastros** (só a SEED central): **níveis e séries** (todos os níveis, com EJA e técnico subsequente; anos, séries, etapas ou módulos; carga mínima; quais aparecem na matrícula) e **tipos de vínculo**. As caixas de marcar do cadastro de escola, os cursos, a matrícula e as matrizes leem dessas listas.
+- **Feito na quarta rodada:** quem cadastra a escola **não cadastra vagas**: "Vagas por escola" e "Abrir turma" saíram da rede; a SEED central acompanha pelo Mapa de vagas; a consulta Turmas e vagas ficou só para as DREs e a DEA.
 
 ## PROFIN
 
 - **Feito:** **Lançar repasse** no painel da escola: categoria, valor (até 2 casas, no máximo R$ 5.000.000,00), data do crédito (dentro do ano, não futura) e prazo depois do crédito. O valor soma ao recebido, a prestação da categoria ganha novo prazo e volta a ficar pendente até a escola declarar de novo.
+- **Feito na quarta rodada:** **Ficha da escola**, o lugar consolidado: saldo por recurso e quanto já foi comprovado, **o que falta** (prestação atrasada ou perto do prazo, declaração devolvida com os documentos recusados, rascunho sem comprovante, valor glosado, saldo parado), **como a escola gasta** (por natureza e fornecedor), declarações, contexto escolar e linha do tempo. O painel mostra as pendências de cada escola e leva à ficha; repasses e anotações ficam na ficha.
+- **Feito depois da quarta rodada:** o painel virou **PROFIN · Prestação de contas**, com os mesmos dados. *Ver como* técnico ou gestor da escola; um cartão por escola com as pendências abertas e um chip por recurso; anotação de **pendência** (com NF) ou de **contexto**, compartilhada com a gestão ou interna; **marcar como resolvida**; rascunho do relatório no painel com **Aprovar rascunho**. Na direção (Financeiro) só aparecem as anotações compartilhadas: as pendências em "O que falta regularizar" e o contexto em "Informações do PROFIN para a sua escola".
 - **Feito na segunda rodada:** **Estornar repasse**: pede o motivo e só deixa estornar se o valor ainda estiver livre (o que a escola executou ou declarou não pode passar do que sobraria). O repasse estornado sai do recebido e o prazo anterior volta; ele continua na lista, marcado como *Estornado*, com data, quem fez e o motivo.
 
 ## Erros que a leitura e os testes de navegador acharam
@@ -79,10 +91,14 @@ Aqui estavam as maiores faltas: era possível **criar**, mas não **corrigir**.
 | PROFIN › Lançar repasse | O formulário tinha `data-escola`, o mesmo atributo dos botões da lista; qualquer clique nele redesenhava o painel antes do envio, e o repasse nunca era lançado | Atributo renomeado para `data-escola-id` e o clique da lista só vale para `button` |
 | Rede › Matrizes (celular) | A etiqueta longa do título fazia a página rolar na horizontal | Etiquetas em títulos quebram linha |
 | Atos | Ato vencido há menos de 24 h aparecia como vigente | Ver "Em todos os perfis" |
+| Turmas da escola e1 (quarta rodada) | As turmas dos anos finais estavam no arquivo das outras escolas e a escola não conseguia gerenciá-las; a sala de uma turma de 40 vagas tinha 32 lugares | Turmas movidas para `data/turmas.json`; salas em `data/salas.json` |
+| Horários e alocação (quarta rodada) | A grade tinha professores sem alocação; a alocação só valia no Ensino Médio; o conflito só olhava o mesmo turno | Alocação completada, matriz dos anos finais, conflito pela hora (vale para o integral) |
+| Prestação de contas (quarta rodada) | Rascunho de declaração com gasto sem comprovante quebrava a tela | A tabela mostra "Sem comprovante" |
+| Matrícula e documentos (quarta rodada) | Período da rematrícula escrito no código; listas de documentos diferentes entre matrícula, guia por voz, assistente e área do aluno; "Contratado (REDA)" (vínculo da Bahia) | Período lido de `data/calendario.json`; lista única em `data/matricula-online.json`; vínculo "Contratado temporário (PSS)" |
 
 ## Como isso foi verificado
 
-- `node tools/testar-cadastros.mjs`: 32 grupos (senha e redefinição, data do "hoje", editar escola, ato renovado, professor e lotação, repasse e estorno, registro de aula e alerta, justificativa, decisão e abono, plano de aula com BNCC, avisos lidos, transferência e cancelamento).
+- `node tools/testar-cadastros.mjs`: 50 grupos, 49 da quarta rodada mais as anotações do PROFIN (eram 32: senha e redefinição, data do "hoje", editar escola, ato renovado, professor e lotação, repasse e estorno, registro de aula e alerta, justificativa, decisão e abono, plano de aula com BNCC, avisos lidos, transferência e cancelamento).
 - Roteiros de navegador (Playwright) com contexto compartilhado (primeira e segunda rodada): justificativa de ponta a ponta (responsável → secretaria recusa → responsável reenvia com anexo → secretaria aceita), registro de aula e consulta da coordenação, troca de senha (senha antiga deixa de valer, nova entra, restaurar dados volta à original), inatividade com relógio simulado (29 min continua, atividade reinicia, 30 min encerra), editar escola, ato renovado, editar e desligar professor, repasse.
 - Varredura de todas as telas dos 8 perfis em 1280 e 390 px: sem erro de console, sem rolagem horizontal, com `h1` e sem `id` repetido.
 - Esses roteiros de navegador não fazem parte do repositório (rodam fora dele, como os anteriores).

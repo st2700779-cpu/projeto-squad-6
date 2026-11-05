@@ -1,0 +1,74 @@
+[
+  {
+    "id": "s1",
+    "escolaId": "e1",
+    "nome": "Bloco A, sala 01",
+    "capacidade": 36
+  },
+  {
+    "id": "s2",
+    "escolaId": "e1",
+    "nome": "Bloco A, sala 02",
+    "capacidade": 30
+  },
+  {
+    "id": "s3",
+    "escolaId": "e1",
+    "nome": "Bloco A, sala 03",
+    "capacidade": 36
+  },
+  {
+    "id": "s4",
+    "escolaId": "e1",
+    "nome": "Bloco B, sala 04",
+    "capacidade": 38
+  },
+  {
+    "id": "s5",
+    "escolaId": "e1",
+    "nome": "Bloco B, sala 05",
+    "capacidade": 34
+  },
+  {
+    "id": "s6",
+    "escolaId": "e1",
+    "nome": "Bloco B, sala 06",
+    "capacidade": 38
+  },
+  {
+    "id": "s7",
+    "escolaId": "e1",
+    "nome": "Bloco C, sala 02",
+    "capacidade": 40
+  },
+  {
+    "id": "s8",
+    "escolaId": "e1",
+    "nome": "Bloco C, sala 03",
+    "capacidade": 32
+  },
+  {
+    "id": "s9",
+    "escolaId": "e1",
+    "nome": "Bloco C, sala 04",
+    "capacidade": 32
+  },
+  {
+    "id": "s10",
+    "escolaId": "e1",
+    "nome": "Bloco C, sala 05",
+    "capacidade": 30
+  },
+  {
+    "id": "s11",
+    "escolaId": "e1",
+    "nome": "Bloco C, sala 07",
+    "capacidade": 32
+  },
+  {
+    "id": "s12",
+    "escolaId": "e1",
+    "nome": "Laboratório de Ciências",
+    "capacidade": 24
+  }
+]

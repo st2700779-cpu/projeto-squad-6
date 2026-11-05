@@ -61,7 +61,7 @@ async function mostrar() {
   try {
     const [logado, professores, turmas, alocacoes, matrizes, ps, dia] = await Promise.all([carregar('professor'), carregar('professores'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), conjunto('planos-aula'), dataDeReferencia()]);
     prof = professores.find((p) => p.id === logado.professorId);
-    minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes.versoes[0].componentes });
+    minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes });
     planos = ps; hoje = dia;
     desenhar();
   } catch { falhaDados(main, mostrar); }

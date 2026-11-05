@@ -12,9 +12,9 @@ export function tabelaLancamentos(d) {
   const glosas = new Map((d.retorno?.glosas || []).map((g) => [g.indice, g.motivo]));
   return `<div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Gastos da declaração ${esc(d.id)}</caption>
     <thead><tr><th scope="col">Gasto</th><th scope="col">Fornecedor e documento</th><th scope="col">Comprovante</th><th scope="col" class="num">Valor</th></tr></thead>
-    <tbody>${d.lancamentos.map((l, i) => `<tr><td class="titulo-linha"><strong>${esc(l.descricao)}</strong><br><span class="texto-suave texto-pequeno">${dataBR(l.data)} · ${esc(l.natureza)}</span>${glosas.has(i) ? `<br>${etiqueta('Glosado', 'erro')} <span class="texto-pequeno">${esc(glosas.get(i))}</span>` : ''}</td>
+    <tbody>${d.lancamentos.map((l, i) => `<tr><td class="titulo-linha"><strong>${esc(l.descricao || 'Gasto sem descrição')}</strong><br><span class="texto-suave texto-pequeno">${l.data ? dataBR(l.data) : 'sem data'} · ${esc(l.natureza)}</span>${glosas.has(i) ? `<br>${etiqueta('Glosado', 'erro')} <span class="texto-pequeno">${esc(glosas.get(i))}</span>` : ''}</td>
       <td data-rotulo="Fornecedor"><div>${esc(l.fornecedor)}<br><span class="texto-suave texto-pequeno">${esc(l.documento)}</span></div></td>
-      <td data-rotulo="Comprovante"><div>${icone('documento', 16)} ${esc(l.comprovante.nome)}<br><span class="texto-suave texto-pequeno">${kb(l.comprovante.tamanho)}</span></div></td>
+      <td data-rotulo="Comprovante"><div>${l.comprovante?.nome ? `${icone('documento', 16)} ${esc(l.comprovante.nome)}<br><span class="texto-suave texto-pequeno">${kb(l.comprovante.tamanho)}</span>` : etiqueta('Sem comprovante', 'atencao')}</div></td>
       <td class="num valor-reais" data-rotulo="Valor"><div>${reais(l.valor)}</div></td></tr>`).join('')}</tbody>
     <tfoot><tr><th scope="row" colspan="3">Total declarado</th><td class="num valor-reais"><strong>${reais(d.total)}</strong></td></tr>${valorGlosado(d) ? `<tr><th scope="row" colspan="3">Glosado</th><td class="num valor-reais">− ${reais(valorGlosado(d))}</td></tr>` : ''}${APROVADAS.includes(d.situacao) ? `<tr><th scope="row" colspan="3">Valor aprovado</th><td class="num valor-reais"><strong>${reais(valorAprovado(d))}</strong></td></tr>` : ''}</tfoot></table></div>`;
 }

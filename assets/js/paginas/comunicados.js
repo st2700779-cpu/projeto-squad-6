@@ -42,7 +42,7 @@ async function mostrar() {
       const [logado, professores, tt, alocacoes, matrizes] = await Promise.all([carregar('professor'), carregar('professores'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes')]);
       const prof = professores.find((p) => p.id === logado.professorId);
       escolaId = prof.escolaId;
-      const minhas = turmasDoProfessor(prof.id, { alocacoes, turmas: tt, matriz: matrizes.versoes[0].componentes });
+      const minhas = turmasDoProfessor(prof.id, { alocacoes, turmas: tt, matriz: matrizes });
       turmas = minhas.map((m) => m.turma);
       remetente = `${prof.nome} (${[...new Set(minhas.map((m) => m.componente))].join(', ')})`;
     } else {

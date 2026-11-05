@@ -7,6 +7,7 @@ import { esc, etiqueta, icone, baixarCSV, vazio, avisar, comEspera, plural, comb
 import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia, professoresComInativos, turmasDaRede } from '../dados.js';
 import { mapaDeFalta } from '../dominio/habilitacao.js';
 import { VINCULOS, validarProfessor, montarProfessor, mascararCpf, validarEdicaoDeProfessor, aplicarEdicaoDeProfessor, podeDesligar, turmasQueDeixa, semAlocacoesDe } from '../dominio/cadastros.js';
+import { nomeAtualDoVinculo } from '../dominio/vinculos.js';
 import { campo, marcas, lerFormulario, mostrarErros } from '../componentes/formulario.js';
 import { daMinhaDre, avisoDeAcesso } from '../dre.js';
 
@@ -14,7 +15,7 @@ const perfil = document.body.dataset.perfil === 'escola' ? 'escola' : 'rede';
 const main = await iniciar({ perfil, pagina: `${perfil}/professores.html`, assistente: true });
 const ETAPA_EM = 'Ensino Médio';
 let aberto = false;
-let escolasDoAcesso = [], todosProfessores = [], componentesDaRede = [], hoje = '', busca = '', alocacoes = [], turmasRede = [];
+let escolasDoAcesso = [], todosProfessores = [], componentesDaRede = [], hoje = '', busca = '', vinculoFiltro = '', alocacoes = [], turmasRede = [];
 
 async function mostrar() {
   try {
@@ -46,7 +47,8 @@ async function mostrar() {
       ${formularioProfessor()}
       <div id="area-edicao"></div>
       <h2>Professores cadastrados</h2>
-      <div class="campo campo-busca nao-imprimir"><label for="busca-prof">Buscar professor</label><input id="busca-prof" class="entrada" type="search" placeholder="Nome, matrícula ou componente" value="${esc(busca)}">${icone('busca', 20)}</div>
+      <div class="ferramentas-tabela nao-imprimir"><div class="campo campo-busca"><label for="busca-prof">Buscar professor</label><input id="busca-prof" class="entrada" type="search" placeholder="Nome, matrícula ou componente" value="${esc(busca)}">${icone('busca', 20)}</div>
+        <div class="campo"><label for="filtro-vinculo">Vínculo</label><select id="filtro-vinculo" class="entrada"><option value="">Todos os vínculos</option>${vinculosNaLista().map((v) => `<option ${v === vinculoFiltro ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div></div>
       <div id="tabela-prof">${tabelaProfessores()}</div>
       <h2>Componentes sem professor habilitado</h2>
       ${linhas.length ? `<div class="tabela-rolagem"><table class="tabela tabela-matriz"><caption class="sr-only">Componentes sem professor habilitado, por escola</caption>
@@ -98,7 +100,7 @@ function formularioEdicao(p) {
     <h2 id="pe-titulo">Editar professor: ${esc(p.nome)}</h2>
     <p class="texto-suave esp-t-0">Matrícula funcional ${esc(p.matriculaFuncional)}${p.cpf ? ` · CPF ${esc(mascararCpf(p.cpf))}` : ''}. Nome, matrícula e CPF não mudam aqui.</p>
     <fieldset class="form-bloco"><legend>Dados do professor</legend>
-      ${campo({ prefixo: 'pe', nome: 'vinculo', rotulo: 'Vínculo', valor: p.vinculo || 'Efetivo', obrigatorio: true, opcoes: VINCULOS.map((v) => [v, v]) })}
+      ${campo({ prefixo: 'pe', nome: 'vinculo', rotulo: 'Vínculo', valor: nomeAtualDoVinculo(p.vinculo), obrigatorio: true, dica: 'A lista de vínculos é mantida pela SEED em Rede › Cadastros.', opcoes: opcoesDeVinculo(p) })}
       ${campo({ prefixo: 'pe', nome: 'cargaHorariaSemanal', rotulo: 'Carga horária semanal', valor: String(p.cargaHorariaSemanal), obrigatorio: true, opcoes: [['10', '10 horas'], ['20', '20 horas'], ['30', '30 horas'], ['40', '40 horas']] })}
       ${lotacao}
       ${lotacao ? `<div class="largo" id="pe-area-mudanca" hidden><p class="alerta-info" id="pe-aviso-turmas" role="status" hidden></p>${campo({ prefixo: 'pe', nome: 'motivoLotacao', rotulo: 'Motivo da mudança de escola', obrigatorio: true, dica: 'Fica no histórico de lotação.', atributos: 'maxlength="160" autocomplete="off"' })}</div>` : ''}
@@ -110,13 +112,22 @@ function formularioEdicao(p) {
     ${historicoDeLotacao(p)}
     <div class="form-acoes"><button type="submit" class="botao">${icone('ok', 20)}Salvar alterações</button><button type="button" class="botao botao-secundario" id="cancelar-edicao">Cancelar</button></div></form>`;
 }
+// Vínculo do professor: o nome atual (troca "Contratado (REDA)" por "Contratado temporário (PSS)"); vazio quando não foi informado.
+const vinculoDe = (p) => nomeAtualDoVinculo(p.vinculo);
+/** Opções do vínculo na edição: os ativos e, se o professor tiver um vínculo desativado, também o dele. */
+function opcoesDeVinculo(p) {
+  const atual = vinculoDe(p);
+  const lista = atual && !VINCULOS.includes(atual) ? [...VINCULOS, atual] : VINCULOS;
+  return [...(atual ? [] : [['', 'Escolha o vínculo']]), ...lista.map((v) => [v, v])];
+}
+const vinculosNaLista = () => [...new Set([...VINCULOS, ...todosProfessores.map(vinculoDe).filter(Boolean)])];
 function tabelaProfessores() {
   const ids = new Set(escolasDoAcesso.map((e) => e.id));
-  const lista = todosProfessores.filter((p) => ids.has(p.escolaId) && combina(busca, p.nome, p.matriculaFuncional, p.habilitacao.join(' ')));
+  const lista = todosProfessores.filter((p) => ids.has(p.escolaId) && (!vinculoFiltro || vinculoDe(p) === vinculoFiltro) && combina(busca, p.nome, p.matriculaFuncional, p.habilitacao.join(' '), vinculoDe(p)));
   if (!lista.length) return vazio('Nenhum professor encontrado', 'Mude a busca ou cadastre um professor.');
   return `<div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Professores cadastrados</caption>
     <thead><tr><th scope="col">Professor</th><th scope="col">Habilitação</th><th scope="col" class="num">Carga semanal</th>${perfil === 'rede' ? '<th scope="col">Escola</th>' : ''}<th scope="col" class="nao-imprimir"><span class="sr-only">Ações</span></th></tr></thead>
-    <tbody>${lista.map((p) => `<tr><td class="titulo-linha"><strong>${esc(p.nome)}</strong> ${p.ativo === false ? etiqueta('Desligado', 'neutra') : p.cadastradoEm ? etiqueta('Novo', 'info') : ''}<br><span class="texto-suave texto-pequeno">${esc(p.matriculaFuncional)} · ${esc(p.vinculo || 'Efetivo')}${p.cpf ? ` · CPF ${esc(mascararCpf(p.cpf))}` : ''}</span></td>
+    <tbody>${lista.map((p) => `<tr><td class="titulo-linha"><strong>${esc(p.nome)}</strong> ${p.ativo === false ? etiqueta('Desligado', 'neutra') : p.cadastradoEm ? etiqueta('Novo', 'info') : ''}<br><span class="texto-suave texto-pequeno">${esc(p.matriculaFuncional)} · ${vinculoDe(p) ? esc(vinculoDe(p)) : 'vínculo não informado'}${p.cpf ? ` · CPF ${esc(mascararCpf(p.cpf))}` : ''}</span></td>
       <td data-rotulo="Habilitação"><div>${esc(p.habilitacao.join(', '))}<br><span class="texto-suave texto-pequeno">${esc(p.formacao)}</span></div></td>
       <td class="num" data-rotulo="Carga semanal"><div>${p.cargaHorariaSemanal} h<br><span class="texto-suave texto-pequeno">${p.aulasEmOutrasTurmas ?? 0} aulas em turmas</span></div></td>
       ${perfil === 'rede' ? `<td data-rotulo="Escola"><div>${esc(escolasDoAcesso.find((e) => e.id === p.escolaId)?.nome || '')}</div></td>` : ''}
@@ -124,6 +135,7 @@ function tabelaProfessores() {
     <p class="contagem">${lista.length} ${plural(lista.length, 'professor', 'professores')}</p>`;
 }
 main.addEventListener('input', (e) => { if (e.target.id === 'busca-prof') { busca = e.target.value; main.querySelector('#tabela-prof').innerHTML = tabelaProfessores(); } });
+main.addEventListener('change', (e) => { if (e.target.id === 'filtro-vinculo') { vinculoFiltro = e.target.value; main.querySelector('#tabela-prof').innerHTML = tabelaProfessores(); } });
 main.addEventListener('click', (e) => {
   const b = e.target.closest('button');
   if (b?.id === 'novo-professor') { aberto = true; const f = main.querySelector('#form-professor'); f.hidden = false; f.querySelector('#f-cpf').focus(); f.scrollIntoView({ block: 'start' }); }
@@ -147,7 +159,8 @@ async function buscarNoRh(form) {
   const pessoa = rh.servidores.find((x) => x.cpf === cpf);
   if (!pessoa) { dizer('Esse CPF não está no sistema de RH (base simulada). Confira o número ou preencha os dados à mão.'); return; }
   form.querySelector('#f-cpf').value = formatarCpf(cpf);
-  for (const c of ['nome', 'matriculaFuncional', 'vinculo', 'formacao']) { const el = form.querySelector(`#f-${c}`); if (el) el.value = pessoa[c] || ''; }
+  for (const c of ['nome', 'matriculaFuncional', 'formacao']) { const el = form.querySelector(`#f-${c}`); if (el) el.value = pessoa[c] || ''; }
+  const vinculo = form.querySelector('#f-vinculo'); if (vinculo) vinculo.value = VINCULOS.includes(nomeAtualDoVinculo(pessoa.vinculo)) ? nomeAtualDoVinculo(pessoa.vinculo) : '';
   const carga = form.querySelector('#f-cargaHorariaSemanal'); if (carga) carga.value = String(pessoa.cargaHorariaSemanal || '');
   form.querySelectorAll('[name="habilitacao"]').forEach((c) => { c.checked = (pessoa.habilitacao || []).includes(c.value); });
   dizer(`Dados encontrados no RH (base simulada): ${pessoa.nome}. Confira e escolha a escola de lotação.`);
@@ -188,7 +201,7 @@ main.addEventListener('submit', async (e) => {
     if (escolasDoAcesso.length === 1) dados.escolaId = escolasDoAcesso[0].id;
     dados.habilitacao ||= [];
     const atual = todosProfessores.find((x) => x.id === e.target.dataset.id);
-    if (!mostrarErros(e.target, validarEdicaoDeProfessor(dados, { escolas: escolasDoAcesso, componentes: componentesDaRede, escolaAtual: atual.escolaId }).erros, 'pe-')) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
+    if (!mostrarErros(e.target, validarEdicaoDeProfessor(dados, { escolas: escolasDoAcesso, componentes: componentesDaRede, escolaAtual: atual.escolaId, vinculoAtual: vinculoDe(atual) }).erros, 'pe-')) { avisar('Confira os campos marcados em vermelho.', 'erro'); return; }
     const saidas = dados.escolaId !== atual.escolaId ? turmasQueDeixa(atual, dados.escolaId, alocacoes, turmasRede) : [];
     if (saidas.length && !(await confirmar({ titulo: `Mudar ${atual.nome.split(' ')[0]} de escola?`, texto: `Sai de ${saidas.length} ${plural(saidas.length, 'turma', 'turmas')} da escola atual: ${saidas.map((s) => `${s.turma} (${s.componente})`).join(', ')}. Essas turmas ficam sem professor nesse componente. A mudança entra no histórico de lotação.`, botao: 'Mudar de escola', perigo: true }))) return;
     try {

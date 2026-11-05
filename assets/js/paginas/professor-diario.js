@@ -70,7 +70,7 @@ async function mostrar() {
     prof = professores.find((p) => p.id === logado.professorId);
     aulasDadas = lv.aulasDadas;
     bimestres = lv.bimestresLancados;
-    minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes.versoes[0].componentes });
+    minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes });
     // Estudantes enturmados pela secretaria entram no diário, com notas em branco.
     const novos = minhas.map(({ turma }) => sincronizarDiario(dados, turma.id, { pedidos, enturmacao })).some(Boolean);
     if (novos) await salvarDados('diario', dados);

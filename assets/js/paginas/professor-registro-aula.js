@@ -51,7 +51,7 @@ function desenhar(foco = '') {
 async function carregarTudo() {
   const [logado, professores, turmas, alocacoes, matrizes, regs, cham, dia] = await Promise.all([carregar('professor'), carregar('professores'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), conjunto('registros-aula'), conjunto('chamadas'), dataDeReferencia()]);
   prof = professores.find((p) => p.id === logado.professorId);
-  minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes.versoes[0].componentes });
+  minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes });
   registros = regs; chamadas = cham; hoje = dia;
 }
 async function mostrar() {

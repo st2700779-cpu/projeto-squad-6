@@ -28,7 +28,7 @@ function desenhar() {
     const comVaga = opcoes.filter((t) => livres(t) > 0);
     const acao = comVaga.length
       ? `<div class="linha-botoes"><label class="sr-only" for="turma-${esc(p.protocolo)}">Turma de ${esc(p.estudante)}</label><select id="turma-${esc(p.protocolo)}" class="entrada">${opcoes.map((t) => `<option value="${t.id}" ${livres(t) > 0 ? '' : 'disabled'}>${esc(t.nome)} · ${esc(t.turno)} · ${livres(t) > 0 ? `${livres(t)} ${livres(t) > 1 ? 'vagas' : 'vaga'}` : 'sem vaga'}</option>`).join('')}</select><button type="button" class="botao botao-mini" data-enturmar="${esc(p.protocolo)}" aria-label="Colocar ${esc(p.estudante)} na turma escolhida">Enturmar</button></div>`
-      : `<span class="erro">Nenhuma turma aprovada com vaga na ${esc(p.serie)}. Crie a turma em <a href="${link('escola/turmas.html')}">Turmas</a> e peça a aprovação da direção.</span>`;
+      : `<span class="erro">Nenhuma turma aprovada com vaga na ${esc(p.serie)}. Peça à direção da escola para criar a turma ou aumentar as vagas (Direção › Turmas). <a href="${link('escola/turmas.html')}">Ver as turmas</a></span>`;
     return `<tr><td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)}</small></td><td data-rotulo="Tipo">${esc(p.tipo)}</td><td data-rotulo="Série" class="sem-quebra-texto">${esc(p.serie)}</td><td class="acoes">${acao}</td></tr>`;
   };
   main.innerHTML = `

@@ -4,6 +4,7 @@
 //   Ensino Médio   → sóbrio e denso: painel de desempenho por matéria com a nota que falta para a média.
 // Os três blocos ficam na página e o CSS mostra o da faixa: trocar em "Ver visual" é imediato.
 import { iniciar, link, falhaDados, faixaEscolhida, escolherFaixa } from '../app.js';
+import { periodoDaRematricula } from '../dominio/matricula-online.js';
 import { icone, esc, etiqueta, plural, numeroBR, vazio } from '../ui.js';
 import { botaoOuvir } from '../acessibilidade.js';
 import { carregar, matriculas, estudantes } from '../dados.js';
@@ -17,6 +18,7 @@ const cor = (s) => (s === 'Confirmada' ? 'ok' : s === 'Recusada' ? 'erro' : 'ate
 async function mostrar() {
   try {
     const [{ atual: est }, escolas, pedidos, calendario] = await Promise.all([estudantes(), carregar('escolas'), matriculas(), carregar('calendario')]);
+    const periodoRemat = periodoDaRematricula(calendario); // data/calendario.json
     const p = await painelDoEstudante(est);
     const { d, lv, margem, semFreq, aulasHoje, agenda } = p;
     const escola = escolas.find((e) => e.id === est.escolaId);
@@ -97,7 +99,7 @@ async function mostrar() {
       ${iniciais}${finais}${medio}
       ${seguinte && SERIES.includes(seguinte) ? `<div class="so-detalhe esp-t-5">${rematricula
         ? `<p>Rematrícula para 2027: ${etiqueta(rematricula.situacao, cor(rematricula.situacao))} <span class="texto-suave">protocolo ${esc(rematricula.protocolo)}</span></p>`
-        : `<div class="alerta-info">${icone('info', 20)}<span>Rematrícula 2027 aberta de 3 a 28 de novembro: ${esc(serieCompleta(seguinte))} em ${esc(nomeCurto(escola.nome))}. Quem faz é o responsável: avise em casa.</span></div>`}</div>` : ''}
+        : `<div class="alerta-info">${icone('info', 20)}<span>Rematrícula 2027 ${periodoRemat ? `de ${esc(periodoRemat.texto)}` : 'no período que a escola divulgar'}: ${esc(serieCompleta(seguinte))} em ${esc(nomeCurto(escola.nome))}. Quem faz é o responsável: avise em casa.</span></div>`}</div>` : ''}
       <div class="escolha-visual" id="visual-faixa"><label for="faixa">Ver visual de</label>
         <select id="faixa" class="entrada">${[['', `Minha série (${FAIXAS[auto]})`], ...Object.entries(FAIXAS)].map(([v, t]) => `<option value="${v}" ${faixaEscolhida() === v ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>
         <span>Só para comparar os desenhos. A escolha fica neste aparelho.</span></div>`;

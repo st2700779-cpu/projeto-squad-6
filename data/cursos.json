@@ -37,8 +37,22 @@
   {
     "id": "c6",
     "nome": "EJA — Ensino Médio",
-    "etapa": "Ensino Médio",
+    "etapa": "EJA — Ensino Médio",
     "modalidade": "Educação de Jovens e Adultos (EJA)",
+    "ativo": true
+  },
+  {
+    "id": "c7",
+    "nome": "EJA — Ensino Fundamental",
+    "etapa": "EJA — Ensino Fundamental",
+    "modalidade": "Educação de Jovens e Adultos (EJA)",
+    "ativo": true
+  },
+  {
+    "id": "c8",
+    "nome": "Técnico em Administração (subsequente)",
+    "etapa": "Educação Profissional — Técnico subsequente",
+    "modalidade": "Educação profissional (técnico subsequente)",
     "ativo": true
   }
 ]

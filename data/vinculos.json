@@ -1,0 +1,38 @@
+[
+  {
+    "id": "v1",
+    "nome": "Efetivo",
+    "descricao": "Servidor concursado do quadro permanente.",
+    "ativo": true
+  },
+  {
+    "id": "v2",
+    "nome": "Contratado temporário (PSS)",
+    "descricao": "Contrato por tempo determinado, selecionado em processo seletivo simplificado.",
+    "ativo": true
+  },
+  {
+    "id": "v3",
+    "nome": "Comissionado",
+    "descricao": "Cargo em comissão, de livre nomeação.",
+    "ativo": true
+  },
+  {
+    "id": "v4",
+    "nome": "Cedido de outro órgão",
+    "descricao": "Servidor de outro órgão ou município que trabalha na rede.",
+    "ativo": true
+  },
+  {
+    "id": "v5",
+    "nome": "Estagiário",
+    "descricao": "Estudante em estágio supervisionado.",
+    "ativo": true
+  },
+  {
+    "id": "v6",
+    "nome": "Terceirizado",
+    "descricao": "Trabalhador de empresa contratada.",
+    "ativo": true
+  }
+]

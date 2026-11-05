@@ -1,8 +1,9 @@
 // Domínio: séries, atos autorizativos e vagas (regras de matrícula da rede).
 import { hojeISO, diasEntreDatas } from './hoje.js';
+import { SERIES, nivelDaSerie, ETAPAS } from './niveis.js';
 
-/** Séries atendidas pela rede, em ordem. */
-export const SERIES = ['6º ano', '7º ano', '8º ano', '9º ano', '1ª série EM', '2ª série EM', '3ª série EM'];
+/** Séries da matrícula on-line, em ordem (vêm dos níveis cadastrados em Rede › Cadastros; ver dominio/niveis.js). */
+export { SERIES };
 
 /** A partir de 120 dias do vencimento, o ato entra em alerta e a rede já pode pedir a renovação. */
 export const DIAS_RENOVACAO = 120;
@@ -12,20 +13,32 @@ export const DIAS_RENOVACAO = 120;
  * @param {string} serie Ex.: "1ª série EM".
  * @returns {string} "Ensino Médio" ou "Ensino Fundamental — Anos Finais".
  */
-export const etapaDaSerie = (serie) => (serie.includes('EM') ? 'Ensino Médio' : /^[1-5]º ano$/.test(serie) ? 'Ensino Fundamental — Anos Iniciais' : 'Ensino Fundamental — Anos Finais');
+export const etapaDaSerie = (serie) => nivelDaSerie(serie)?.etapa ?? (serie.includes(' EM') ? 'Ensino Médio' : /^[1-5]º ano$/.test(serie) ? 'Ensino Fundamental — Anos Iniciais' : 'Ensino Fundamental — Anos Finais');
 
 /** "1ª série EM" → "1ª série do Ensino Médio"; "6º ano" → "6º ano do Ensino Fundamental". */
-export const serieCompleta = (serie) => (serie.includes('EM') ? serie.replace(' EM', ' do Ensino Médio') : `${serie} do Ensino Fundamental`);
+export const serieCompleta = (serie) => {
+  const n = nivelDaSerie(serie);
+  if (n && !['n-ai', 'n-af', 'n-em'].includes(n.id)) return serie.includes(n.curto) || /^(EJA|Técnico)/.test(serie) ? serie : `${serie} (${n.curto})`;
+  return / EM$/.test(serie) ? serie.replace(' EM', ' do Ensino Médio') : /º ano$/.test(serie) ? `${serie} do Ensino Fundamental` : serie;
+};
 
 /** "Colégio Estadual Professor Osvaldo Tavares Rezende" → "C. E. Professor Osvaldo Tavares Rezende" (telas estreitas). */
 export const nomeCurto = (nome) => nome.replace(/^Colégio Estadual /, 'C. E. ').replace(/^Escola Estadual /, 'E. E. ');
 
-/** Série seguinte, para a rematrícula (null no fim do Ensino Médio). Os anos iniciais (1º ao 5º) não estão em SERIES: seguem em sequência. */
+/**
+ * Série seguinte, para a rematrícula: a próxima do mesmo nível; no fim do nível, a primeira do nível que vem depois
+ * (campo continuaEm, como Anos Iniciais → Anos Finais → Ensino Médio). Null no fim do último nível.
+ */
 export function proximaSerie(serie) {
-  const i = SERIES.indexOf(serie);
-  if (i >= 0) return SERIES[i + 1] || null;
+  const n = nivelDaSerie(serie);
+  if (n) {
+    const i = n.series.indexOf(serie);
+    if (i < n.series.length - 1) return n.series[i + 1];
+    const depois = ETAPAS.find((x) => x.id === n.continuaEm);
+    return depois?.series[0] || null;
+  }
   const m = /^(\d)º ano$/.exec(serie);
-  return m ? (Number(m[1]) < 5 ? `${Number(m[1]) + 1}º ano` : SERIES[0]) : null;
+  return m ? (Number(m[1]) < 5 ? `${Number(m[1]) + 1}º ano` : SERIES[0] || null) : null;
 }
 
 /** Coluna da matriz do Ensino Médio para a série ("2ª série EM" → 2). Null fora do EM. */

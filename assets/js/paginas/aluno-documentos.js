@@ -6,9 +6,10 @@ import { botaoOuvir } from '../acessibilidade.js';
 import { estudantes, carregar } from '../dados.js';
 import { sessao } from '../auth.js';
 import { blocoDePedidos, ligarPedidos } from '../componentes/pedidos.js';
+import { documentosDaMatricula } from '../dominio/matricula-online.js';
+import { hojeISO } from '../dominio/hoje.js';
 
 const main = await iniciar({ perfil: 'aluno', assistente: true, titulo: 'Documentos', voltar: 'aluno/index.html', estreito: true });
-const matricula = ['Certidão de nascimento ou RG do estudante', 'CPF do estudante, se tiver', 'Comprovante de residência (conta de luz ou de água)', 'Documento com foto do responsável'];
 const lista = (itens) => `<ul class="lista-texto">${itens.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>`;
 const DECLARACOES = [
   ['matricula', 'Declaração de matrícula', 'Para bolsa, transporte, trabalho ou benefícios'],
@@ -19,7 +20,10 @@ const DECLARACOES = [
 let atual;
 async function mostrar() {
   try {
-    const [{ lista: todos, atual: est }, escolas] = await Promise.all([estudantes(), carregar('escolas')]);
+    const [{ lista: todos, atual: est }, escolas, online] = await Promise.all([estudantes(), carregar('escolas'), carregar('matricula-online')]);
+    // A lista oficial de documentos (data/matricula-online.json), a mesma do pedido de matrícula.
+    const matricula = documentosDaMatricula(online.documentos, { tipo: 'nova', nascimento: est.nascimento, hoje: hojeISO() });
+    const naTransferencia = online.documentos.filter((d) => d.quando === 'transferencia').map((d) => d.texto);
     atual = est;
     const escola = escolas.find((e) => e.id === est.escolaId);
     main.innerHTML = `
@@ -33,8 +37,8 @@ async function mostrar() {
       ${await blocoDePedidos(est)}
       <div class="linha-botoes entre esp-t-5"><h2 class="esp-t-0 esp-b-0">Documentos para a matrícula</h2>${botaoOuvir(`Para a matrícula, leve: ${matricula.join('. ')}.`, 'Ouvir a lista')}</div>
       ${lista(matricula)}
-      <h2>Na transferência, leve também</h2>${lista(['Declaração de transferência da escola anterior'])}
-      <p>Depois de enviar o pedido pelo portal, leve os documentos à secretaria da escola em até 5 dias úteis.</p>
+      <h2>Na transferência, leve também</h2>${lista(naTransferencia)}
+      <p>Depois de enviar o pedido pelo portal, leve os documentos à secretaria da escola em até ${online.prazoDocumentosDiasUteis || 5} dias úteis.</p>
       <h2 id="contato" tabindex="-1">Contato da escola</h2>
       <p class="esp-b-1"><strong>Secretaria do ${esc(escola.nome)}</strong></p>
       <p class="esp-t-0 esp-b-1">Atende de segunda a sexta, das 7h às 17h.</p>

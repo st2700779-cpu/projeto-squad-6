@@ -18,5 +18,75 @@
     "turmaId": "tt4",
     "componente": "Matemática",
     "professorId": "p1"
+  },
+  {
+    "turmaId": "tt1",
+    "componente": "Inglês",
+    "professorId": "p3"
+  },
+  {
+    "turmaId": "tt1",
+    "componente": "Física",
+    "professorId": "p2"
+  },
+  {
+    "turmaId": "tt1",
+    "componente": "Biologia",
+    "professorId": "p4"
+  },
+  {
+    "turmaId": "tt1",
+    "componente": "História",
+    "professorId": "p5"
+  },
+  {
+    "turmaId": "tt4",
+    "componente": "Língua Portuguesa",
+    "professorId": "p3"
+  },
+  {
+    "turmaId": "tt4",
+    "componente": "Inglês",
+    "professorId": "p3"
+  },
+  {
+    "turmaId": "tt4",
+    "componente": "Física",
+    "professorId": "p2"
+  },
+  {
+    "turmaId": "tt4",
+    "componente": "Biologia",
+    "professorId": "p4"
+  },
+  {
+    "turmaId": "tt4",
+    "componente": "História",
+    "professorId": "p5"
+  },
+  {
+    "turmaId": "tt5",
+    "componente": "Língua Portuguesa",
+    "professorId": "p3"
+  },
+  {
+    "turmaId": "tt5",
+    "componente": "Inglês",
+    "professorId": "p3"
+  },
+  {
+    "turmaId": "tt5",
+    "componente": "Física",
+    "professorId": "p2"
+  },
+  {
+    "turmaId": "tt5",
+    "componente": "Biologia",
+    "professorId": "p4"
+  },
+  {
+    "turmaId": "tt5",
+    "componente": "História",
+    "professorId": "p5"
   }
 ]

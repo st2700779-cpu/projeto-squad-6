@@ -70,5 +70,65 @@
     "serie": "3ª série EM",
     "aulasSemana": 30,
     "minutosAula": 50
+  },
+  {
+    "etapa": "EJA — Ensino Fundamental",
+    "serie": "EJA EF — Etapa I",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "EJA — Ensino Fundamental",
+    "serie": "EJA EF — Etapa II",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "EJA — Ensino Fundamental",
+    "serie": "EJA EF — Etapa III",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "EJA — Ensino Fundamental",
+    "serie": "EJA EF — Etapa IV",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "EJA — Ensino Médio",
+    "serie": "EJA EM — Etapa I",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "EJA — Ensino Médio",
+    "serie": "EJA EM — Etapa II",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "EJA — Ensino Médio",
+    "serie": "EJA EM — Etapa III",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Educação Profissional — Técnico subsequente",
+    "serie": "Técnico — Módulo I",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Educação Profissional — Técnico subsequente",
+    "serie": "Técnico — Módulo II",
+    "aulasSemana": 25,
+    "minutosAula": 50
+  },
+  {
+    "etapa": "Educação Profissional — Técnico subsequente",
+    "serie": "Técnico — Módulo III",
+    "aulasSemana": 25,
+    "minutosAula": 50
   }
 ]

@@ -4,7 +4,12 @@
 // Funções puras, sem tela, testadas em tools/testar-cadastros.mjs.
 import { atoDaEtapa, situacaoAto } from './matricula.js';
 
-export const TURNOS = ['Manhã', 'Tarde', 'Noite'];
+/** Turnos de aula. A turma integral fica na escola de manhã e de tarde (ocupa a sala nos dois turnos). */
+export const TURNOS = ['Manhã', 'Tarde', 'Noite', 'Integral'];
+/** Turnos em que a turma ocupa a sala: Integral ocupa Manhã e Tarde. */
+export const turnosOcupados = (turno) => (turno === 'Integral' ? ['Manhã', 'Tarde'] : [turno]);
+/** Duas turmas ao mesmo tempo? (para sala e professor). */
+export const turnosSeCruzam = (a, b) => turnosOcupados(a).some((t) => turnosOcupados(b).includes(t));
 
 /** Lugares livres de uma turma aprovada (nunca negativo). */
 export function lugaresLivres(turma, enturmacao = {}) {

@@ -11,7 +11,7 @@ async function mostrar() {
   try {
     const [logado, professores, escolas, turmas, alocacoes, matrizes, dia, lv, horarios] = await Promise.all([carregar('professor'), carregar('professores'), carregar('escolas'), turmasEscola(), conjunto('alocacoes'), carregar('matrizes'), diarioParaLeitura({ soAtivos: true }), letivo(), conjunto('horarios')]);
     const prof = professores.find((p) => p.id === logado.professorId);
-    const ctx = { alocacoes, turmas, matriz: matrizes.versoes[0].componentes };
+    const ctx = { alocacoes, turmas, matriz: matrizes };
     const minhas = turmasDoProfessor(prof.id, ctx);
     const usadas = prof.aulasEmOutrasTurmas + aulasAlocadas(prof.id, ctx);
     const estudantes = minhas.reduce((s, { turma }) => s + (dia[turma.id] || []).length, 0);

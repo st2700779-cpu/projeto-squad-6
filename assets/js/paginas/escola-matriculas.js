@@ -1,7 +1,8 @@
 // Pedidos de matrícula (HU12; wireframe W14): confirmar ou recusar com motivo em um painel logo abaixo
 // do pedido. Recusar libera a vaga. Busca, exportação para CSV e registro de quem fez cada ação.
 import { iniciar, link, falhaDados } from '../app.js';
-import { esc, etiqueta, avisar, icone, confirmar, vazio, baixarCSV, combina, dataHoraBR, debounce } from '../ui.js';
+import { esc, etiqueta, avisar, icone, confirmar, vazio, baixarCSV, combina, dataHoraBR, debounce, dataBR } from '../ui.js';
+import { mascararCpf } from '../dominio/cadastros.js';
 import { matriculas, salvar, conjunto, registrarAcao } from '../dados.js';
 
 const ESCOLA = 'e1';
@@ -47,7 +48,7 @@ function linha(p) {
     ? `<div class="linha-botoes coluna-botoes"><button type="button" class="botao botao-mini" data-confirmar="${esc(p.protocolo)}" aria-label="Confirmar matrícula de ${esc(p.estudante)}">Confirmar matrícula</button><button type="button" class="botao botao-secundario botao-mini" data-recusar="${esc(p.protocolo)}" aria-expanded="${recusando === p.protocolo}" aria-label="Recusar matrícula de ${esc(p.estudante)}">Recusar matrícula</button></div>`
     : p.situacao === 'Confirmada' ? `<a class="botao botao-secundario botao-mini" href="${link('aluno/declaracao.html')}?tipo=matricula&protocolo=${encodeURIComponent(p.protocolo)}">Emitir declaração</a>` : '';
   return `<tr>
-    <td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)} · resp. ${esc(p.responsavel)}</small></td>
+    <td class="titulo-linha"><strong>${esc(p.estudante)}</strong><small>${esc(p.protocolo)} · resp. ${esc(p.responsavel)}${p.telefone ? ` · ${esc(p.telefone)}` : ''}</small>${p.cpf || p.nascimento ? `<small>${p.cpf ? `CPF ${esc(mascararCpf(p.cpf))}` : ''}${p.cpf && p.nascimento ? ' · ' : ''}${p.nascimento ? `nasc. ${esc(dataBR(p.nascimento))}` : ''}</small>` : ''}</td>
     <td data-rotulo="Tipo">${esc(p.tipo)}<small>${p.origem === 'presencial' ? 'Presencial' : 'Online'}</small></td><td data-rotulo="Série" class="sem-quebra-texto">${esc(p.serie)}</td>
     <td class="num" data-rotulo="Pedido em">${esc(p.data || '—')}</td>
     <td data-rotulo="Situação">${etiqueta(p.situacao, p.situacao === 'Confirmada' ? 'ok' : p.situacao === 'Recusada' ? 'erro' : 'atencao')}${p.motivo ? `<small>Motivo: ${esc(p.motivo)}</small>` : ''}${ultima ? `<small class="registro">${esc(ultima.acao)} por ${esc(ultima.quem)} em ${dataHoraBR(ultima.quando)}</small>` : ''}</td>

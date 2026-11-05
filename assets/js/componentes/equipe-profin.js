@@ -2,7 +2,8 @@
 import { sessao } from '../auth.js';
 import { esc, etiqueta, icone, avisar, vazio, comEspera, confirmar, plural } from '../ui.js';
 import { conjunto, salvar, registrarAcao, dataDeReferencia } from '../dados.js';
-import { FUNCOES_PROFIN, validarMembroProfin, montarMembroProfin, podeDesativar, coordenadoresAtivos } from '../dominio/cadastros.js';
+import { FUNCOES_PROFIN, VINCULOS, validarMembroProfin, montarMembroProfin, podeDesativar, coordenadoresAtivos } from '../dominio/cadastros.js';
+import { nomeAtualDoVinculo } from '../dominio/vinculos.js';
 import { campo, lerFormulario, mostrarErros } from './formulario.js';
 
 const formatarTel = (t) => { const d = String(t || ''); return d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : d.length === 10 ? `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}` : ''; };
@@ -16,9 +17,9 @@ export async function montarEquipe(main, falha) {
     const ordem = (m) => FUNCOES_PROFIN.indexOf(m.funcao);
     const lista = [...equipe].sort((a, b) => (b.ativo !== false) - (a.ativo !== false) || ordem(a) - ordem(b) || a.nome.localeCompare(b.nome, 'pt-BR'));
     return `<div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Equipe do PROFIN</caption>
-      <thead><tr><th scope="col">Nome</th><th scope="col">Função</th><th scope="col">Contato</th><th scope="col">Atende</th><th scope="col">Situação</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead>
+      <thead><tr><th scope="col">Nome</th><th scope="col">Função e vínculo</th><th scope="col">Contato</th><th scope="col">Atende</th><th scope="col">Situação</th><th scope="col"><span class="sr-only">Ações</span></th></tr></thead>
       <tbody>${lista.map((m) => `<tr><td class="titulo-linha"><strong>${esc(m.nome)}</strong><br><span class="texto-suave texto-pequeno">Matrícula ${esc(m.matricula)}</span></td>
-        <td data-rotulo="Função"><div>${etiqueta(m.funcao, m.funcao === 'Coordenação do PROFIN' ? 'info' : 'neutra')}</div></td>
+        <td data-rotulo="Função e vínculo"><div>${etiqueta(m.funcao, m.funcao === 'Coordenação do PROFIN' ? 'info' : 'neutra')}<br><span class="texto-suave texto-pequeno">${m.vinculo ? esc(nomeAtualDoVinculo(m.vinculo)) : 'Vínculo não informado'}</span></div></td>
         <td data-rotulo="Contato"><div>${esc(m.email)}${m.telefone ? `<br><span class="texto-suave texto-pequeno">${esc(formatarTel(m.telefone))}</span>` : ''}</div></td>
         <td data-rotulo="Atende"><div>${esc(m.atende)}</div></td>
         <td data-rotulo="Situação"><div>${m.ativo === false ? etiqueta('Desativado', 'neutra') : etiqueta('Ativo', 'ok')}</div></td>
@@ -33,6 +34,7 @@ export async function montarEquipe(main, falha) {
       <fieldset class="form-bloco"><legend>Dados da pessoa</legend>
         <div class="largo">${campo({ nome: 'nome', rotulo: 'Nome completo', obrigatorio: true, atributos: 'maxlength="120" autocomplete="off"' })}</div>
         ${campo({ nome: 'funcao', rotulo: 'Função na equipe', obrigatorio: true, opcoes: [['', 'Escolha a função'], ...FUNCOES_PROFIN.map((f) => [f, f])] })}
+        ${campo({ nome: 'vinculo', rotulo: 'Tipo de vínculo', obrigatorio: true, dica: 'A lista é mantida pela SEED em Rede › Cadastros.', opcoes: [['', 'Escolha o vínculo'], ...VINCULOS.map((v) => [v, v])] })}
         ${campo({ nome: 'matricula', rotulo: 'Matrícula funcional', dica: 'Exemplo: PF-41007', obrigatorio: true, atributos: 'maxlength="8" autocomplete="off"' })}
         ${campo({ nome: 'email', rotulo: 'E-mail institucional', tipo: 'email', obrigatorio: true, dica: 'Exemplo: nome@seed.se.gov.br', atributos: 'autocomplete="off"' })}
         ${campo({ nome: 'telefone', rotulo: 'Telefone', tipo: 'tel', dica: 'Com DDD. Opcional', atributos: 'inputmode="tel" autocomplete="off"' })}

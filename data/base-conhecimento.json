@@ -36,7 +36,7 @@
       "id": "matricula-como",
       "tema": "matricula",
       "pergunta": "Como faço a matrícula pelo portal?",
-      "resposta": "No portal, toque em Fazer matrícula e siga 5 passos: dados do estudante, série, escola, documentos e confirmação. No fim, você recebe um número de protocolo.",
+      "resposta": "No portal, toque em Fazer matrícula e siga 5 passos: dados do estudante (com o CPF dele), série, escola, documentos e confirmação. No fim, você recebe um número de protocolo e o comprovante; o pedido pode ser acompanhado em Acompanhar pedido, com o protocolo e a data de nascimento.",
       "palavras_chave": [
         "como matricular",
         "onde faco a matricula",
@@ -51,7 +51,7 @@
       "id": "documentos-matricula",
       "tema": "documentos",
       "pergunta": "Quais documentos levar para a matrícula?",
-      "resposta": "Certidão de nascimento ou RG do estudante, CPF do estudante se tiver, comprovante de residência e documento com foto do responsável.",
+      "resposta": "O comprovante da matrícula feita no portal, certidão de nascimento ou RG do estudante, CPF do estudante, número do NIS (se tiver), documento com foto do responsável e comprovante de residência (conta de energia). Até 12 anos, também o cartão ou a declaração de vacinação; na transferência, a guia de transferência ou a declaração da escola anterior.",
       "palavras_chave": [
         "documento",
         "documentos",

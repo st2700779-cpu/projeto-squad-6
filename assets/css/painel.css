@@ -655,3 +655,96 @@ h2 .etiqueta, h3 .etiqueta { white-space: normal; max-width: 100%; }
 .sucesso-texto { color: var(--sucesso); }
 .vaga-celula strong { display: block; font-size: var(--texto-medio); }
 .vaga-celula small { display: block; color: var(--texto-suave); font-size: var(--texto-xs); line-height: 1.3; min-width: 9ch; }
+
+/* ---------- Rodada 4: cadastros da rede, estrutura da escola, turmas, alocação, horários ---------- */
+.bloco-nivel { border: 1px solid var(--borda); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-1); padding: var(--sp-4) var(--sp-5); margin: 0 0 var(--sp-4); }
+.bloco-nivel.desativado { background: var(--superficie-2); }
+.linha-entre { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--sp-2) var(--sp-4); }
+.lista-series { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: var(--sp-2); margin-top: var(--sp-3); }
+.lista-series li { border: 1px solid var(--borda); border-radius: var(--raio); padding: var(--sp-2) var(--sp-3); }
+.bloco-nivel form.linha-campo { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--sp-2) var(--sp-3); }
+.bloco-nivel form.linha-campo .campo { flex: 1 1 18rem; max-width: 30rem; }
+.bloco-nivel .marca-item small, .lista-escolha .marca-item small, .opcoes-chip .marca-item small { display: block; color: var(--texto-suave); font-weight: var(--peso-normal); font-size: var(--texto-sm); }
+.opcoes-chip { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-2); }
+.opcoes-chip .marca-item { flex: 0 1 auto; }
+.passos-form { display: grid; gap: var(--sp-4); margin: 0; padding-left: var(--sp-5); }
+.passos-form > li::marker { font-weight: var(--peso-forte); color: var(--cor-primaria); }
+.passos-form fieldset.campo { border: 0; padding: 0; margin: 0; }
+.lista-escolha { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-2); }
+.marca-item.bloqueado { opacity: .7; cursor: not-allowed; background: var(--superficie-2); }
+.marca-item.bloqueado:hover { border-color: var(--borda-forte); background: var(--superficie-2); }
+.linha-erro td, .linha-erro th { background: var(--erro-fundo); }
+.editor-aula { border: 1px solid var(--borda); border-left: 4px solid var(--cor-primaria); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-1); padding: var(--sp-4) var(--sp-5); margin: var(--sp-4) 0; }
+.editor-aula fieldset.campo { border: 0; padding: 0; margin: 0 0 var(--sp-4); }
+.editor-aula legend { font-weight: var(--peso-forte); margin-bottom: var(--sp-2); }
+.grade-editavel td { padding: var(--sp-1); }
+.celula-aula { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; min-height: var(--toque); padding: var(--sp-2); border: 1.5px solid var(--borda); border-radius: var(--raio); background: var(--superficie); color: var(--texto); font: inherit; font-size: var(--texto-sm); text-align: left; cursor: pointer; }
+.celula-aula small { color: var(--texto-suave); font-size: var(--texto-xs); }
+.celula-aula:hover { border-color: var(--cor-primaria); background: var(--cor-primaria-suave); }
+.celula-aula[aria-pressed="true"] { border-color: var(--cor-primaria); background: var(--cor-primaria-suave); box-shadow: 0 0 0 2px var(--cor-primaria) inset; }
+.celula-aula.sem-professor { border-color: var(--alerta-borda); background: var(--alerta-fundo); }
+.celula-aula.sem-professor small { color: var(--alerta); font-weight: var(--peso-medio); }
+.celula-aula.destaque { border-color: var(--cor-primaria); background: var(--cor-primaria); color: var(--sobre-primaria); }
+.celula-aula.destaque small { color: var(--sobre-primaria); }
+.grade-horario tr.apos-almoco th, .grade-horario tr.apos-almoco td { border-top: 3px double var(--borda-forte); }
+/* Ficha financeira da escola (PROFIN e direção) */
+.ficha-cabecalho { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--sp-3) var(--sp-5); margin-bottom: var(--sp-3); }
+.lista-pendencias { list-style: none; padding: 0; margin: 0 0 var(--sp-4); display: grid; gap: var(--sp-2); }
+.pendencia { display: grid; grid-template-columns: minmax(9rem, auto) 1fr; gap: var(--sp-2) var(--sp-4); align-items: start; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--borda); border-left-width: 4px; border-radius: var(--raio); background: var(--superficie); }
+.pendencia-erro { border-left-color: var(--erro); } .pendencia-atencao { border-left-color: var(--alerta); } .pendencia-info { border-left-color: var(--info); }
+.pendencia ul { margin: var(--sp-1) 0 0; padding-left: var(--sp-5); }
+@media (max-width: 599px) { .pendencia { grid-template-columns: minmax(0, 1fr); } }
+/* Matrícula on-line: calendário em fases, comprovante e acompanhamento */
+.calendario-matricula summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-3); align-items: baseline; }
+.lista-fases { display: grid; gap: var(--sp-2); padding-left: var(--sp-5); margin: var(--sp-3) 0; }
+.lista-fases li[aria-current="step"] { color: var(--cor-primaria); }
+.comprovante-matricula { margin: var(--sp-4) 0; }
+.dados-comprovante { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sp-2) var(--sp-4); margin: var(--sp-3) 0; }
+.dados-comprovante dt { color: var(--texto-suave); font-weight: var(--peso-medio); }
+.dados-comprovante dd { margin: 0; }
+.etapas-pedido { list-style: none; padding: 0; margin: var(--sp-4) 0; display: grid; gap: var(--sp-3); }
+.etapas-pedido li { display: grid; grid-template-columns: auto 1fr; gap: var(--sp-3); align-items: start; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--borda); border-radius: var(--raio); background: var(--superficie); }
+@media print {
+  body.imprimindo-comprovante #pagina > *:not(.comprovante-matricula) { display: none !important; }
+  body.imprimindo-comprovante .comprovante-matricula { border: 0; box-shadow: none; }
+}
+.bloco-declaracao summary .etiqueta, .lista-pendencias .etiqueta { white-space: normal; }
+.bloco-declaracao > summary { flex-wrap: wrap; row-gap: var(--sp-1); }
+.lista-series li { flex-wrap: wrap; row-gap: var(--sp-1); }
+/* PROFIN · Prestação de contas: ver como, cartões por escola, chips de recurso, anotações e rascunho do relatório */
+.heroi-linha + .heroi-linha { margin-top: var(--sp-2); }
+.ver-como { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-4); }
+.ver-como > span { font-weight: var(--peso-forte); }
+.ver-como .chip { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.filtros-profin { align-items: flex-end; }
+.marca-filtro { align-self: flex-end; }
+.cartao-escola { margin: 0 0 var(--sp-4); padding: var(--sp-4) var(--sp-5); border: 1px solid var(--borda); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-1); }
+.cartao-escola > .linha-entre { align-items: flex-start; gap: var(--sp-2) var(--sp-4); flex-wrap: wrap; }
+.cartao-escola h2, .cartao-escola h3 { margin-bottom: var(--sp-2); }
+.botao-expandir { display: inline-flex; align-items: flex-start; gap: var(--sp-2); min-height: var(--toque); padding: var(--sp-1) var(--sp-2) var(--sp-1) 0; border: 0; background: none; color: var(--texto); font: inherit; font-weight: var(--peso-forte); text-align: left; cursor: pointer; border-radius: var(--raio); }
+.botao-expandir:hover { color: var(--cor-primaria); text-decoration: underline; }
+.seta-expandir { display: inline-block; width: 1.1em; flex: none; color: var(--cor-primaria); }
+.selos-escola { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; }
+.selos-escola .etiqueta { white-space: normal; }
+.linha-escola { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-4); align-items: center; margin: var(--sp-1) 0 var(--sp-3); color: var(--texto-suave); font-size: var(--texto-sm); }
+.linha-escola .cor-perigo { font-weight: var(--peso-forte); }
+.chips-recursos { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.chip-recurso { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1) var(--sp-2); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--borda-forte); border-radius: var(--raio); background: var(--superficie-2); font-size: var(--texto-sm); }
+.chip-recurso small { color: var(--texto-suave); }
+.corpo-escola { margin-top: var(--sp-4); padding-top: var(--sp-4); border-top: 1px solid var(--borda); }
+.nota-profin { margin: 0 0 var(--sp-3); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--borda); border-left-width: 4px; border-radius: var(--raio); background: var(--superficie); }
+.nota-profin.nota-tipo-pendencia, .nota-profin.nota-grav-atencao { border-left-color: var(--alerta); }
+.nota-profin.nota-grav-erro { border-left-color: var(--erro); }
+.nota-profin.nota-grav-info { border-left-color: var(--info); }
+.nota-profin.nota-tipo-contexto { border-left-color: var(--cor-primaria); background: var(--cor-primaria-suave); }
+.nota-profin.resolvida { border-left-color: var(--sucesso); background: var(--superficie-2); }
+.tags-nota { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-3); align-items: center; font-size: var(--texto-sm); color: var(--texto-suave); }
+.tags-nota strong { display: inline-flex; align-items: center; gap: var(--sp-1); color: var(--texto); }
+.tags-nota .etiqueta { white-space: normal; }
+.form-nota { margin-top: var(--sp-4); padding-top: var(--sp-4); border-top: 2px dashed var(--borda-forte); }
+.caixa-contexto { margin: var(--sp-4) 0 0; padding: var(--sp-3) var(--sp-4); border-radius: var(--raio); background: var(--superficie-2); border: 1px solid var(--borda); font-size: var(--texto-sm); }
+.painel-rascunho { margin: 0 0 var(--sp-5); padding: var(--sp-4) var(--sp-5); border: 1px solid var(--borda-forte); border-radius: var(--raio-lg); background: var(--superficie); box-shadow: var(--sombra-1); }
+.painel-rascunho .linha-entre { flex-wrap: wrap; gap: var(--sp-2) var(--sp-4); }
+.texto-rascunho { white-space: pre-wrap; word-break: break-word; max-height: 28rem; overflow: auto; margin: var(--sp-3) 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--borda); border-radius: var(--raio); background: var(--superficie-2); color: var(--texto); font-size: var(--texto-sm); line-height: 1.55; }
+@media (max-width: 599px) { .cartao-escola, .painel-rascunho { padding: var(--sp-3) var(--sp-4); } .marca-filtro { align-self: stretch; } }
+.painel-inline > .form-nota { margin-top: 0; padding-top: 0; border-top: 0; }

@@ -38,8 +38,11 @@ export const saldo = (r) => Math.round((r.recebido - r.executado) * 100) / 100;
 export const percentualExecutado = (r) => (r.recebido > 0 ? Math.round((r.executado / r.recebido) * 1000) / 10 : 0);
 export const reais = (v) => Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+/** Rótulo da anotação no relatório: "Contexto" (as antigas são contexto), "Pendência NF 101" ou "Pendência resolvida". */
+const rotuloDaNota = (n) => (n.tipo === 'pendencia' ? `Pendência${n.aberta === false ? ' resolvida' : ''}${n.nf ? ` ${n.nf}` : ''}` : 'Contexto');
+
 /**
- * Rascunho de relatório consolidado: texto montado por modelo fixo a partir dos números do painel e das anotações de contexto.
+ * Rascunho de relatório consolidado: texto montado por modelo fixo a partir dos números do painel e das anotações (contexto e pendência).
  * Não usa inteligência artificial: quem revisa e conclui é a pessoa.
  * @param {{escolas: Array<{id: string, nome: string, municipio: string}>, repasses: Array<object>, notas?: Record<string, Array<{quando: string, por: string, texto: string}>>, hoje: string, categorias?: string[]}} d
  */
@@ -65,9 +68,9 @@ export function rascunhoDoRelatorio({ escolas, repasses, notas = {}, hoje, categ
     doIdRepasses.forEach((r) => {
       const s = situacaoDaPrestacao(r, hoje);
       L.push(r.recebido === 0 ? `- ${r.categoria}: sem repasse neste ano.` : `- ${r.categoria}: recebido ${reais(r.recebido)}; executado ${reais(r.executado)} (${percentualExecutado(r).toLocaleString('pt-BR')}%); saldo ${reais(saldo(r))}. Prestação: ${s.texto.toLowerCase()} (prazo ${br(r.prestacao.prazo)}).`);
-      (notas[`${id}|${r.categoria}`] || []).forEach((n) => L.push(`    Contexto (${n.por}, ${br(n.quando)}): ${n.texto}`));
+      (notas[`${id}|${r.categoria}`] || []).forEach((n) => L.push(`    ${rotuloDaNota(n)} (${n.por}, ${br(n.quando)}): ${n.texto}`));
     });
-    (notas[`${id}|Geral`] || []).forEach((n) => L.push(`  Contexto geral (${n.por}, ${br(n.quando)}): ${n.texto}`));
+    (notas[`${id}|Geral`] || []).forEach((n) => L.push(`  ${rotuloDaNota(n)} geral (${n.por}, ${br(n.quando)}): ${n.texto}`));
   });
   L.push('', '3. PENDÊNCIAS');
   if (!atrasadas.length && !aVencer.length) L.push('Nenhuma prestação atrasada ou perto do vencimento.');

@@ -1,8 +1,4 @@
 [
-  {"id": "r1", "nome": "6º ano A", "serie": "6º ano", "turno": "Tarde", "escolaId": "e1", "situacao": "Aprovada", "matriculados": 31, "capacidade": 40},
-  {"id": "r2", "nome": "7º ano A", "serie": "7º ano", "turno": "Tarde", "escolaId": "e1", "situacao": "Aprovada", "matriculados": 28, "capacidade": 32},
-  {"id": "r3", "nome": "8º ano A", "serie": "8º ano", "turno": "Tarde", "escolaId": "e1", "situacao": "Aprovada", "matriculados": 30, "capacidade": 32},
-  {"id": "r4", "nome": "9º ano A", "serie": "9º ano", "turno": "Tarde", "escolaId": "e1", "situacao": "Aprovada", "matriculados": 26, "capacidade": 30},
   {"id": "r5", "nome": "1ª série A", "serie": "1ª série EM", "turno": "Manhã", "escolaId": "e2", "situacao": "Aprovada", "matriculados": 35, "capacidade": 40},
   {"id": "r6", "nome": "2ª série A", "serie": "2ª série EM", "turno": "Manhã", "escolaId": "e2", "situacao": "Aprovada", "matriculados": 33, "capacidade": 40},
   {"id": "r7", "nome": "3ª série A", "serie": "3ª série EM", "turno": "Manhã", "escolaId": "e2", "situacao": "Aprovada", "matriculados": 27, "capacidade": 31},
