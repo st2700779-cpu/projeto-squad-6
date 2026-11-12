@@ -43,7 +43,7 @@
       "alvo": "#menu-lateral",
       "alternativa": ".topo-menu-botao",
       "titulo": "Diário de classe",
-      "texto": "O Diário abre a chamada e o lançamento de notas por bimestre. Os avisos da escola ficam logo abaixo."
+      "texto": "O Diário mostra a frequência e as observações; as notas ficam na aba Notas, lançadas uma vez por bimestre. Os avisos da escola ficam logo abaixo."
     },
     {
       "alvo": "[data-escala='0.1']",

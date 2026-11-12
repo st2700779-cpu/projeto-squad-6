@@ -28,7 +28,7 @@
       "5º ano"
     ],
     "ativo": true,
-    "matricula": false,
+    "matricula": true,
     "horasMinimas": 800,
     "aulasPadrao": 25,
     "continuaEm": "n-af"

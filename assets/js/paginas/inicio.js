@@ -1,32 +1,49 @@
-// Entrada do portal: um acesso por perfil. Todos os perfis, menos a Matrícula, pedem login;
-// Matrícula (família) é aberta e não pede.
+// Entrada do portal: os perfis agrupados em 5 portais (Estudante, Professor, Escola, Rede e Financeiro), cada perfil com o seu
+// login. A Matrícula On-line (família) fica numa caixa acima dos portais e não pede login. Lista simples, sem cartões.
 import { iniciar, link } from '../app.js';
 import { avisar, confirmar, esc } from '../ui.js';
 import { sessao, sair, PERFIS } from '../auth.js';
 import { reiniciarDados } from '../dados.js';
 
 const main = await iniciar();
-const acessos = [
-  ['login.html?perfil=aluno', 'Aluno', 'Notas, faltas, horário, provas e quiz, com o visual da sua idade'],
-  ['login.html?perfil=responsavel', 'Responsável', 'Boletim e frequência dos filhos, o que precisa de atenção e a situação da matrícula'],
-  ['login.html?perfil=professor', 'Professor', 'Turmas, horário e diário de classe: chamada, notas e mapa de calor'],
-  ['login.html?perfil=coordenador', 'Coordenação pedagógica', 'Turmas lado a lado, horários e reunião pedagógica'],
-  ['login.html?perfil=diretor', 'Direção', 'Visão da escola, mapa de calor, declaração dos gastos (prestação de contas) e tela de reunião'],
-  ['login.html?perfil=escola', 'Secretaria', 'Matrículas, solicitações, enturmação, turmas e alocação de professores'],
-  ['login.html?perfil=rede', 'Rede (SEED e DRE)', 'Escolas, atos e cursos, vagas calculadas das turmas, procura por bairro, professores e acesso por DRE'],
-  ['login.html?perfil=profin', 'PROFIN (financeiro)', 'Painel por escola, análise das declarações de gastos, retorno às escolas e equipe do PROFIN'],
-  ['familia/matricula.html', 'Matrícula', 'Pedido de matrícula pela família, sem login']
+// Os perfis agrupados em portais. Cada perfil continua com o seu login (login.html?perfil=...).
+const portais = [
+  ['Portal do Estudante', [
+    ['aluno', 'Aluno', 'Notas, faltas, horário, provas e quiz'],
+    ['responsavel', 'Responsável', 'Boletim e frequência dos filhos e a situação da matrícula']]],
+  ['Portal do Professor', [
+    ['professor', 'Professor', 'Turmas, horário, chamada, notas e plano de aula']]],
+  ['Portal da Escola', [
+    ['diretor', 'Direção', 'Visão da escola, turmas, vagas, financeiro e prestação de contas'],
+    ['coordenador', 'Coordenação pedagógica', 'Turmas lado a lado, horários e reunião pedagógica'],
+    ['escola', 'Secretaria', 'Matrículas, solicitações, enturmação e professores']]],
+  ['Portal da Rede', [
+    ['rede', 'SEED, DEA e DREs', 'Escolas, atos, cursos, vagas e professores. Cada DRE e a DEA veem só a sua regional']]],
+  ['Portal Financeiro (PROFIN)', [
+    ['profin', 'Equipe do PROFIN', 'Prestação de contas das escolas, análise das declarações e relatório']]]
 ];
 const s = sessao();
 main.innerHTML = `
-  <header class="heroi"><h1>Entrar no sistema</h1>
-  <p class="heroi-linha">Acesso simulado. As contas de teste ficam na tela de login.</p></header>
+  <h1 class="entrada-titulo">Entrar no Portal Acadêmico</h1>
+  <p class="entrada-sub">Escolha o portal e o seu perfil. Acesso simulado: as contas de teste ficam na tela de login.</p>
   ${!s && new URLSearchParams(location.search).get('motivo') === 'inatividade' ? `<div class="sessao-atual" role="status"><span>Por segurança, a sua sessão foi encerrada depois de 30 minutos sem uso. Entre de novo para continuar.</span></div>` : ''}
   ${s ? `<div class="sessao-atual" role="status"><span>Você entrou como <strong>${esc(s.nome)}</strong> (${esc(PERFIS[s.perfil]?.rotulo || s.perfil)}).</span><a class="botao botao-secundario botao-mini" href="${link(PERFIS[s.perfil]?.inicio || 'index.html')}">Continuar</a><button type="button" class="botao botao-texto botao-mini" id="sair">Sair</button></div>` : ''}
-  <ul class="lista-perfis">
-    ${acessos.map(([h, t, d]) => `<li><a href="${link(h)}"><strong>${t}</strong><span>${d}</span></a></li>`).join('')}
-  </ul>
-  <p><a href="${link('verificar.html')}">Verificar um documento pelo código</a></p>
+  <section class="caixa-matricula" aria-labelledby="matricula-titulo">
+    <h2 id="matricula-titulo">Matrícula On-line</h2>
+    <p>Para as famílias. Não precisa de login.</p>
+    <ul>
+      <li><a class="botao" href="${link('familia/matricula.html')}">Fazer matrícula</a></li>
+      <li><a href="${link('familia/mapa.html')}">Ver vagas perto de casa</a></li>
+      <li><a href="${link('familia/acompanhar.html')}">Acompanhar meu pedido</a></li>
+    </ul>
+  </section>
+  <div class="portais">
+    ${portais.map(([nome, perfis], i) => `<section class="portal portal-${i + 1}" aria-labelledby="portal-${i}">
+      <h2 id="portal-${i}">${esc(nome)}</h2>
+      <ul>${perfis.map(([perfil, rotulo, d]) => `<li><a href="${link(`login.html?perfil=${perfil}`)}">${esc(rotulo)}</a><span>${esc(d)}</span></li>`).join('')}</ul>
+    </section>`).join('')}
+  </div>
+  <p class="entrada-rodape"><a href="${link('verificar.html')}">Verificar um documento pelo código</a></p>
   <p class="aviso-prototipo">Squad 6 · Residência RiseUp · Escolas, pessoas e dados fictícios · <button type="button" class="botao botao-texto botao-mini" id="reiniciar">Restaurar dados de demonstração</button></p>`;
 main.querySelector('#sair')?.addEventListener('click', sair);
 main.querySelector('#reiniciar').addEventListener('click', async () => {

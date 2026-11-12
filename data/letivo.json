@@ -10,5 +10,27 @@
       "ate": "2026-10-30",
       "rotulo": "Lançamento das notas do 3º bimestre"
     }
+  ],
+  "bimestres": [
+    {
+      "numero": 1,
+      "inicio": "2026-02-09",
+      "fim": "2026-04-24"
+    },
+    {
+      "numero": 2,
+      "inicio": "2026-04-27",
+      "fim": "2026-07-10"
+    },
+    {
+      "numero": 3,
+      "inicio": "2026-07-27",
+      "fim": "2026-10-16"
+    },
+    {
+      "numero": 4,
+      "inicio": "2026-10-19",
+      "fim": "2026-12-18"
+    }
   ]
 }

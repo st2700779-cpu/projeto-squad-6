@@ -17,7 +17,7 @@ let painel, atencoes, dia, registros;
 function acompanhamento() {
   const lv = painel.lv;
   const nomes = Object.fromEntries(painel.lista.map((x) => [x.turma.id, x.turma.nome]));
-  const todos = Object.entries(dia).filter(([t]) => nomes[t]).flatMap(([t, alunos]) => alunos.map((a) => { const f = presenca(a.faltas, lv.aulasDadas); const m = media(a.n1, a.n2); return { a, t, f, m, s: situacao(m, f) }; }))
+  const todos = Object.entries(dia).filter(([t]) => nomes[t]).flatMap(([t, alunos]) => alunos.map((a) => { const f = presenca(a.faltas, lv.aulasDadas); const m = media(a.n1, a.n2, a.n3, a.n4); return { a, t, f, m, s: situacao(m, f) }; }))
     .filter((x) => ['recuperacao', 'reprovado'].includes(x.s.chave));
   const lista = todos.filter((x) => !filtro || x.t === filtro).sort((x, y) => (x.s.chave === 'reprovado' ? 0 : 1) - (y.s.chave === 'reprovado' ? 0 : 1) || (x.m ?? 99) - (y.m ?? 99));
   return `<div class="ferramentas-tabela"><div class="campo"><label for="filtro-turma">Turma</label><select id="filtro-turma" class="entrada"><option value="">Todas as turmas com diário</option>${Object.keys(dia).filter((t) => nomes[t]).map((t) => `<option value="${t}" ${t === filtro ? 'selected' : ''}>${esc(nomes[t])}</option>`).join('')}</select></div></div>

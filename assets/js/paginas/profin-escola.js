@@ -45,7 +45,7 @@ function blocoRepasses() {
     <form id="form-repasse" class="painel-inline esp-t-2" novalidate><h3 class="esp-t-0">Lançar repasse</h3>
       <p class="texto-suave esp-t-0">Registre o recurso que entrou na conta da escola. O valor soma ao recebido e a prestação de contas ganha um novo prazo.</p>
       <div class="form-bloco">${campo({ nome: 'categoria', rotulo: 'Categoria do recurso', obrigatorio: true, opcoes: [['', 'Escolha a categoria'], ...base.dados.categorias.map((c) => [c, c])] })}
-        ${campo({ nome: 'valor', rotulo: 'Valor (R$)', tipo: 'number', obrigatorio: true, atributos: 'min="0.01" step="0.01" inputmode="decimal"' })}
+        ${campo({ nome: 'valor', rotulo: 'Valor (R$)', obrigatorio: true, dica: 'Digite só os números: 1500000 vira 15.000,00', atributos: 'data-formato="dinheiro"' })}
         ${campo({ nome: 'data', rotulo: 'Data do crédito', tipo: 'date', obrigatorio: true, atributos: `max="${base.hoje}"` })}
         ${campo({ nome: 'prazo', rotulo: 'Prazo para prestar contas', tipo: 'date', obrigatorio: true, dica: 'Em geral de 60 a 90 dias depois do crédito' })}</div>
       <button type="submit" class="botao">${icone('moeda', 20)}Lançar repasse</button></form>`;

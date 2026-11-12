@@ -16,7 +16,7 @@ export const NOMENCLATURAS = {
 /** Níveis de ensino padrão (o mesmo conteúdo de data/niveis.json). */
 export const NIVEIS_PADRAO = [
   { id: 'n-ei', etapa: 'Educação Infantil', curto: 'Educação Infantil', nomenclatura: 'etapa', series: ['Creche', 'Pré-escola'], ativo: false, matricula: false, horasMinimas: 800, aulasPadrao: 25, continuaEm: 'n-ai', observacao: 'Oferecida pelos municípios. Fica desativada na rede estadual.' },
-  { id: 'n-ai', etapa: 'Ensino Fundamental — Anos Iniciais', curto: 'Anos Iniciais', nomenclatura: 'ano', series: ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano'], ativo: true, matricula: false, horasMinimas: 800, aulasPadrao: 25, continuaEm: 'n-af' },
+  { id: 'n-ai', etapa: 'Ensino Fundamental — Anos Iniciais', curto: 'Anos Iniciais', nomenclatura: 'ano', series: ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano'], ativo: true, matricula: true, horasMinimas: 800, aulasPadrao: 25, continuaEm: 'n-af' },
   { id: 'n-af', etapa: 'Ensino Fundamental — Anos Finais', curto: 'Anos Finais', nomenclatura: 'ano', series: ['6º ano', '7º ano', '8º ano', '9º ano'], ativo: true, matricula: true, horasMinimas: 800, aulasPadrao: 25, continuaEm: 'n-em' },
   { id: 'n-em', etapa: 'Ensino Médio', curto: 'Ensino Médio', nomenclatura: 'serie', series: ['1ª série EM', '2ª série EM', '3ª série EM'], ativo: true, matricula: true, horasMinimas: 1000, aulasPadrao: 30, continuaEm: null },
   { id: 'n-ejaf', etapa: 'EJA — Ensino Fundamental', curto: 'EJA Fundamental', nomenclatura: 'etapa', series: ['EJA EF — Etapa I', 'EJA EF — Etapa II', 'EJA EF — Etapa III', 'EJA EF — Etapa IV'], ativo: true, matricula: false, horasMinimas: 800, aulasPadrao: 25, continuaEm: 'n-ejam' },

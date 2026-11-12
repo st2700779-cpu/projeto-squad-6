@@ -24,7 +24,8 @@ const dataValida = (v) => ISO.test(v || '') && !Number.isNaN(Date.parse(v + 'T00
  * @param {{turma?: string, data?: string, aulas?: string|number, conteudo?: string, tarefa?: string}} f turma no formato "turmaId|componente"
  * @param {{hoje: string, minhasTurmas: string[], existentes: Array<{id: string, turmaId: string, componente: string, data: string}>, editandoId?: string}} ctx
  */
-export function validarRegistroDeAula(f, { hoje, minhasTurmas, existentes, editandoId = '' }) {
+// daGrade: o número de aulas veio da grade de horários (o professor não digita). Sem aula na grade, o erro vai para a data.
+export function validarRegistroDeAula(f, { hoje, minhasTurmas, existentes, editandoId = '', daGrade = false }) {
   const e = {};
   const [turmaId, componente] = String(f.turma || '').split('|');
   if (!turmaId || !minhasTurmas.includes(turmaId)) e.turma = 'Escolha uma das suas turmas.';
@@ -32,7 +33,8 @@ export function validarRegistroDeAula(f, { hoje, minhasTurmas, existentes, edita
   else if (f.data > hoje) e.data = 'A data da aula não pode ser no futuro.';
   else if (diasEntreDatas(f.data, hoje) > 180) e.data = 'Confira a data: a aula é de mais de 6 meses atrás.';
   const n = Number(f.aulas);
-  if (!Number.isInteger(n) || n < 1 || n > AULAS_POR_DIA_MAX) e.aulas = `Informe de 1 a ${AULAS_POR_DIA_MAX} aulas.`;
+  if (daGrade && !e.data && n === 0) e.data = 'Pela grade de horários, não há aula deste componente nesta turma neste dia. Escolha uma data com aula.';
+  else if (!daGrade && (!Number.isInteger(n) || n < 1 || n > AULAS_POR_DIA_MAX)) e.aulas = `Informe de 1 a ${AULAS_POR_DIA_MAX} aulas.`;
   const conteudo = String(f.conteudo ?? '').trim();
   if (conteudo.length < CONTEUDO_MIN) e.conteudo = `Descreva o conteúdo trabalhado (pelo menos ${CONTEUDO_MIN} letras).`;
   else if (conteudo.length > 600) e.conteudo = 'Resuma o conteúdo em até 600 letras.';
@@ -129,10 +131,11 @@ export function abonosPorEstudante(chamadas, justificativas) {
   for (const j of justificativas || []) {
     if (j.situacao !== 'Aceita') continue;
     for (const [data, c] of Object.entries(chamadas?.[j.turmaId] || {})) {
-      if (data >= j.de && data <= j.ate && c.ausentes?.includes(j.estudanteId)) (dias[j.estudanteId] ||= new Set()).add(`${j.turmaId}|${data}`);
+      if (data >= j.de && data <= j.ate && c.ausentes?.includes(j.estudanteId)) (dias[j.estudanteId] ||= new Map()).set(`${j.turmaId}|${data}`, Number(c.aulas) || 1);
     }
   }
-  return Object.fromEntries(Object.entries(dias).map(([id, s]) => [id, s.size]));
+  // Cada dia abonado devolve as aulas daquele dia (chamada antiga, sem o número de aulas, vale 1).
+  return Object.fromEntries(Object.entries(dias).map(([id, m]) => [id, [...m.values()].reduce((s, n) => s + n, 0)]));
 }
 
 /** Cópia do diário com as faltas abonadas descontadas (`faltas`) e o total abonado em `abonadas`. O diário original não muda. */

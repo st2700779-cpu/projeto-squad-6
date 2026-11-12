@@ -58,12 +58,12 @@ export function situacao(mediaMateria, frequencia = 100) {
 export function desempenho(est, diario, aulasDadas) {
   const doDiario = est.turmaId && diario?.[est.turmaId]?.find((a) => a.id === est.id);
   const notas = { ...est.notas };
-  if (doDiario) notas['Matemática'] = [doDiario.n1, doDiario.n2];
+  if (doDiario) notas['Matemática'] = [doDiario.n1, doDiario.n2, doDiario.n3 ?? null, doDiario.n4 ?? null];
   const faltas = doDiario ? doDiario.faltas : (est.faltas ?? 0);
   const freq = presenca(faltas, aulasDadas);
-  const linhas = Object.entries(notas).map(([materia, [n1, n2]]) => {
-    const m = media(n1, n2);
-    return { materia, n1, n2, media: m, situacao: situacao(m, freq) };
+  const linhas = Object.entries(notas).map(([materia, [n1, n2, n3 = null, n4 = null]]) => {
+    const m = media(n1, n2, n3, n4);
+    return { materia, n1, n2, n3, n4, media: m, situacao: situacao(m, freq) };
   });
   linhas.sort((a, b) => (a.materia === 'Matemática' ? -1 : b.materia === 'Matemática' ? 1 : 0));
   return { linhas, faltas, abonadas: doDiario?.abonadas ?? 0, presenca: freq, matematicaDoDiario: Boolean(doDiario) };

@@ -114,6 +114,8 @@ A senha pode ser trocada em **Configurações › Conta › Alterar senha**. A t
 | Painel de impacto de atos | `rede/atos.html` | Faixas de prioridade, turmas e estudantes afetados, filtros por município e escola |
 | Professores habilitados | `rede/professores.html`, `escola/professores.html` | Tabela escola x componente sem professor habilitado (`assets/js/dominio/habilitacao.js`) |
 | Diário offline | `professor/diario.html` | Fila em IndexedDB, faixa online/offline, botão **Ficar offline** e sincronização com conflito pelo registro mais recente |
+| Notas por bimestre | `professor/notas.html` | Prova (60%), atividade (30%) e presença (10%, da chamada); cada nota é lançada uma vez e fica travada; só o bimestre em andamento abre |
+| Retirada de falta | `professor/diario.html` | Faltas vêm da chamada do registro de aula; retirar exige escolher a data e um motivo da lista, que fica registrado na chamada |
 | Visual por faixa etária | início do aluno | Anos iniciais (mascote e cartões grandes), anos finais (barra de frequência e selos) e ensino médio (painel denso); vem da série, com o seletor "Ver visual de" para comparar |
 | Frequência proativa | `aluno/frequencia.html` | Anel e barra que mudam de cor, margem de faltas em linguagem neutra e **Simular falta hoje** |
 | Provas e rotina | `aluno/rotina.html` | Agenda por urgência, calculadora "Quanto preciso tirar" e modo **Dia de Prova** |
@@ -280,7 +282,6 @@ O **QR Code que abre em outro aparelho, o PWA (service worker) e a verificação
 
 1. No repositório, abra **Settings → Pages → Build and deployment** e escolha **Source: GitHub Actions**.
 2. Faça merge na branch `main` (ou rode **Actions → Publicar no GitHub Pages → Run workflow**). O arquivo `.github/workflows/pages.yml` monta a pasta do site e publica.
-   Se o Pages não estiver ativado, o workflow não falha: ele mostra um aviso e pula a publicação (o site continua no Netlify). Repositório **privado** só publica no Pages em plano pago; em conta gratuita, deixe o repositório público para ativar.
 3. O endereço é `https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/`. Todos os caminhos do código são relativos, então funciona dentro de uma subpasta.
 4. Depois de acrescentar arquivos às telas que abrem sem internet, rode `node tools/gerar-sw.mjs` antes do commit.
 

@@ -69,6 +69,28 @@
     "ate": "2026-10-30",
     "rotulo": "Lançamento das notas do 3º bimestre"
    }
+  ],
+  "bimestres": [
+   {
+    "numero": 1,
+    "inicio": "2026-02-09",
+    "fim": "2026-04-24"
+   },
+   {
+    "numero": 2,
+    "inicio": "2026-04-27",
+    "fim": "2026-07-10"
+   },
+   {
+    "numero": 3,
+    "inicio": "2026-07-27",
+    "fim": "2026-10-16"
+   },
+   {
+    "numero": 4,
+    "inicio": "2026-10-19",
+    "fim": "2026-12-18"
+   }
   ]
  },
  "escola": {
@@ -79,7 +101,13 @@
   "dre": "DEA — Aracaju",
   "bairro": "Grageru",
   "lat": -10.9445,
-  "lng": -37.0577
+  "lng": -37.0577,
+  "turnos": [
+   "Manhã",
+   "Tarde",
+   "Noite",
+   "Integral"
+  ]
  },
  "turmas": [
   {
@@ -804,12 +832,12 @@ function situacao(mediaMateria, frequencia = 100) {
 function desempenho(est, diario, aulasDadas) {
   const doDiario = est.turmaId && diario?.[est.turmaId]?.find((a) => a.id === est.id);
   const notas = { ...est.notas };
-  if (doDiario) notas['Matemática'] = [doDiario.n1, doDiario.n2];
+  if (doDiario) notas['Matemática'] = [doDiario.n1, doDiario.n2, doDiario.n3 ?? null, doDiario.n4 ?? null];
   const faltas = doDiario ? doDiario.faltas : (est.faltas ?? 0);
   const freq = presenca(faltas, aulasDadas);
-  const linhas = Object.entries(notas).map(([materia, [n1, n2]]) => {
-    const m = media(n1, n2);
-    return { materia, n1, n2, media: m, situacao: situacao(m, freq) };
+  const linhas = Object.entries(notas).map(([materia, [n1, n2, n3 = null, n4 = null]]) => {
+    const m = media(n1, n2, n3, n4);
+    return { materia, n1, n2, n3, n4, media: m, situacao: situacao(m, freq) };
   });
   linhas.sort((a, b) => (a.materia === 'Matemática' ? -1 : b.materia === 'Matemática' ? 1 : 0));
   return { linhas, faltas, abonadas: doDiario?.abonadas ?? 0, presenca: freq, matematicaDoDiario: Boolean(doDiario) };

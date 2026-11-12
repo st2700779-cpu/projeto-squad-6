@@ -80,7 +80,7 @@ async function mostrar() {
       <div class="tabela-rolagem sem-limite"><table class="tabela tabela-cartoes"><caption class="sr-only">Desempenho por matéria, com a nota necessária para fechar o ano com média ${MEDIA_APROVACAO}</caption>
         <thead><tr><th scope="col">Matéria</th><th scope="col" class="num">1º bim.</th><th scope="col" class="num">2º bim.</th><th scope="col" class="num">Média</th><th scope="col">Nota</th><th scope="col" class="num">Preciso tirar</th></tr></thead>
         <tbody>${d.linhas.map((l) => {
-          const n = notaNecessaria([l.n1, l.n2, null, null], MEDIA_APROVACAO);
+          const n = notaNecessaria([l.n1, l.n2, l.n3 ?? null, l.n4 ?? null], MEDIA_APROVACAO);
           const preciso = n.estado === 'completo' ? '—' : n.estado === 'ja-alcancada' ? 'já alcançada' : n.estado === 'impossivel' ? `acima de 10${n.precisaRecuperacao !== null ? ` (rec.: ${numeroBR(n.precisaRecuperacao)})` : ''}` : `${numeroBR(n.precisa)} em cada`;
           const nf = (v) => (v === null ? '—' : numeroBR(v));
           return `<tr><td class="titulo-linha"><strong>${esc(l.materia)}</strong></td><td class="num" data-rotulo="1º bim."><div>${nf(l.n1)}</div></td><td class="num" data-rotulo="2º bim."><div>${nf(l.n2)}</div></td><td class="num negrito" data-rotulo="Média"><div>${nf(l.media)}</div></td><td data-rotulo="Nota"><div>${semaforo(semaforoNota(l.media))}</div></td><td class="num" data-rotulo="Preciso tirar"><div>${preciso}</div></td></tr>`;

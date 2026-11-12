@@ -45,7 +45,7 @@ main.innerHTML = `
   <p class="pagina-descricao">Digite o código impresso no rodapé da declaração ou da carteirinha, ou leia o QR Code.</p>
   <form id="form-verificar" class="form-login" novalidate>
     <div class="campo"><label for="codigo">Código de verificação</label>
-      <input id="codigo" class="entrada" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XX" maxlength="14" value="${esc(inicial)}">
+      <input id="codigo" class="entrada" type="text" data-formato="codigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XX" maxlength="14" value="${esc(inicial)}">
       <span class="dica">Exemplo: 1A2B-3C4D-5E</span></div>
     <button type="submit" class="botao botao-grande" id="verificar">Verificar</button>
   </form>

@@ -2,6 +2,7 @@
 // grupo de caixas de marcar; leitura dos valores e exibição dos erros (foco no primeiro campo com problema).
 import { esc } from '../ui.js';
 import './data-br.js'; // datas sempre em dd/mm/aaaa (o .value continua AAAA-MM-DD)
+import { numeroDoDinheiro } from './formatos.js';
 
 /**
  * @param {{nome: string, rotulo: string, tipo?: string, valor?: string, dica?: string, obrigatorio?: boolean, opcoes?: Array<string|[string,string]>|null, atributos?: string, prefixo?: string}} p
@@ -34,6 +35,7 @@ export function lerFormulario(form) {
     if (!el.name) continue;
     if (el.type === 'checkbox') { (dados[el.name] ||= []); if (el.checked) dados[el.name].push(el.value); }
     else if (el.type === 'radio') { if (el.checked) dados[el.name] = el.value; }
+    else if (el.dataset.formato === 'dinheiro') { const n = numeroDoDinheiro(el.value); dados[el.name] = Number.isFinite(n) ? String(n) : ''; } // "1.234,56" → "1234.56"
     else if (el.type !== 'file' && el.type !== 'submit' && el.type !== 'button') dados[el.name] = el.value;
   }
   return dados;

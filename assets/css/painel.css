@@ -748,3 +748,91 @@ h2 .etiqueta, h3 .etiqueta { white-space: normal; max-width: 100%; }
 .texto-rascunho { white-space: pre-wrap; word-break: break-word; max-height: 28rem; overflow: auto; margin: var(--sp-3) 0; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--borda); border-radius: var(--raio); background: var(--superficie-2); color: var(--texto); font-size: var(--texto-sm); line-height: 1.55; }
 @media (max-width: 599px) { .cartao-escola, .painel-rascunho { padding: var(--sp-3) var(--sp-4); } .marca-filtro { align-self: stretch; } }
 .painel-inline > .form-nota { margin-top: 0; padding-top: 0; border-top: 0; }
+/* Entrada por portais: texto e links, como um site de governo (ver SINAIS-DE-IA.md, V1 e V2). Sem ícones, sombras ou faixas. */
+.entrada-titulo { margin: var(--sp-2) 0 var(--sp-1); }
+.entrada-titulo::after { display: none; }
+.entrada-sub { margin: 0 0 var(--sp-5); color: var(--texto-suave); }
+.caixa-matricula { margin: 0 0 var(--sp-6); padding: var(--sp-4) var(--sp-5); border: 1px solid var(--borda-forte); border-radius: var(--raio); background: var(--superficie-2); }
+.caixa-matricula h2, .portal h2 { margin: 0 0 var(--sp-1); padding: 0; border: 0; font-size: var(--texto-lg); }
+.caixa-matricula p { margin: 0 0 var(--sp-3); color: var(--texto-suave); font-size: var(--texto-sm); }
+.caixa-matricula ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-5); }
+.caixa-matricula a { display: inline-flex; align-items: center; min-height: var(--toque); }
+.portais { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 0 var(--sp-8, 3rem); margin: 0 0 var(--sp-5); border-top: 1px solid var(--borda); }
+.portal { padding: var(--sp-4) 0; border-bottom: 1px solid var(--borda); }
+.portal ul { list-style: none; margin: var(--sp-2) 0 0; padding: 0; }
+.portal li { padding: var(--sp-1) 0 var(--sp-2); }
+.portal li a { font-weight: var(--peso-forte); display: inline-flex; align-items: center; min-height: 32px; }
+.portal li span { display: block; color: var(--texto-suave); font-size: var(--texto-sm); }
+.entrada-rodape { margin: 0; }
+.selo-portal { margin: 0 0 var(--sp-1); color: var(--texto-suave); font-size: var(--texto-sm); }
+/* Tela de login no mesmo estilo da entrada e da matrícula: título à esquerda, formulário sem cartão, sem sombra nem animação */
+body.pagina-login > main.conteudo { max-width: 460px; align-items: stretch; text-align: left; }
+body.pagina-login main > .pagina-descricao { margin-inline: 0; }
+body.pagina-login .form-login { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; transform: none; transition: none; }
+body.pagina-login .form-login:hover { transform: none; box-shadow: none; }
+body.pagina-login .form-login .entrada:hover { box-shadow: none; }
+body.pagina-login .demo { border-radius: var(--raio); margin: var(--sp-4) 0 0; }
+body.pagina-login .demo summary, body.pagina-login .demo summary:hover { padding-left: var(--sp-4); transition: none; }
+body.pagina-login main > p:last-child { margin-top: var(--sp-5); }
+body.pagina-login .form-login, body.pagina-login .demo, body.pagina-login .sessao-atual { max-width: none; margin-inline: 0; }
+/* Bordas de volta: cada portal numa caixa com borda e a faixa colorida no topo; o login dentro da caixa com a faixa azul */
+.portais { display: block; columns: 3 300px; column-gap: var(--sp-4); border-top: 0; }
+.portal { break-inside: avoid; margin: 0 0 var(--sp-4); padding: var(--sp-4) var(--sp-5); border: 1px solid var(--borda); border-top: 5px solid var(--cor-portal, var(--cor-primaria)); border-radius: var(--raio-lg); background: var(--superficie); }
+.portal-1 { --cor-portal: #1e4fa8; } .portal-2 { --cor-portal: #0b7a5a; } .portal-3 { --cor-portal: #b45309; } .portal-4 { --cor-portal: #12326b; } .portal-5 { --cor-portal: #7c3aed; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) .portal-1 { --cor-portal: #8fb4ff; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) .portal-2 { --cor-portal: #4ade9f; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) .portal-3 { --cor-portal: #fbae5c; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) .portal-4 { --cor-portal: #a5c8ff; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) .portal-5 { --cor-portal: #c4a5ff; }
+.caixa-matricula { border-radius: var(--raio-lg); border-left: 5px solid #0b7a5a; }
+:root[data-tema="escuro"]:not([data-contraste="alto"]) .caixa-matricula { border-left-color: #4ade9f; }
+body.pagina-login .form-login { padding: var(--sp-6); border: 1px solid var(--borda); border-left: 4px solid var(--cor-primaria); border-radius: var(--raio-lg); background: var(--superficie); }
+body.pagina-login .demo { border-radius: var(--raio-lg); }
+/* Diário por bimestre: abas (fechado, em andamento, bloqueado), faltas x frequência e a trilha das chamadas */
+.abas-bimestre { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--sp-2); margin: var(--sp-4) 0 0; }
+.aba-bimestre { display: flex; align-items: center; gap: var(--sp-2); min-height: var(--toque); padding: var(--sp-2) var(--sp-3); border: 1px solid var(--borda-forte); border-radius: var(--raio); background: var(--superficie); color: var(--texto); font: inherit; text-align: left; cursor: pointer; }
+.aba-bimestre span { display: flex; flex-direction: column; line-height: 1.25; }
+.aba-bimestre small { color: var(--texto-suave); font-size: var(--texto-xs); }
+.aba-bimestre[aria-pressed="true"] { border: 2px solid var(--cor-primaria); background: var(--cor-primaria-suave); }
+.aba-bimestre.aberto svg { color: var(--cor-primaria); }
+.aba-bimestre.fechado svg { color: var(--sucesso); }
+.aba-bimestre.bloqueado { cursor: not-allowed; background: var(--superficie-2); color: var(--texto-suave); border-style: dashed; }
+.th-apoio { display: block; font-weight: var(--peso-normal); font-size: var(--texto-xs); color: var(--texto-suave); }
+.celula-faltas strong { font-size: var(--texto-lg); }
+.barra-frequencia { width: 100%; min-width: 70px; height: 10px; border-radius: var(--raio-pill); background: var(--superficie-2); border: 1px solid var(--borda); overflow: hidden; }
+.barra-frequencia > span { display: block; height: 100%; background: var(--nivel, var(--sucesso)); }
+.barra-frequencia > span.nivel-verde { background: var(--sucesso); } .barra-frequencia > span.nivel-amarelo { background: var(--alerta-borda); } .barra-frequencia > span.nivel-vermelho { background: var(--erro); }
+.valor-frequencia { display: block; margin-top: 2px; font-weight: var(--peso-forte); }
+.entrada-nota { max-width: 6rem; text-align: center; }
+.tabela-notas td .semaforo { white-space: nowrap; }
+.trilha-frequencia { margin: 0 0 var(--sp-3); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--borda); border-left: 5px solid var(--cor-primaria); border-radius: var(--raio-lg); background: var(--superficie); }
+.trilha-frequencia .linha-entre { flex-wrap: wrap; gap: var(--sp-2); }
+.trilha-frequencia h2 { font-size: var(--texto-lg); margin-bottom: var(--sp-1); }
+.lista-trilha { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; gap: var(--sp-1); font-size: var(--texto-sm); }
+.lista-trilha li { padding: var(--sp-1) 0; border-bottom: 1px dashed var(--borda); }
+/* Mapa de calor: cor no nome conforme o desempenho geral (sempre com o ponto e o texto escondido para leitor de tela) */
+.mapa-calor th.nome { white-space: nowrap; }
+.mapa-calor .ponto-desempenho { display: inline-block; width: 10px; height: 10px; margin-right: var(--sp-2); border-radius: 50%; background: currentColor; vertical-align: middle; }
+.mapa-calor th.nome-verde { color: var(--sucesso); } .mapa-calor th.nome-amarelo { color: var(--alerta); } .mapa-calor th.nome-vermelho { color: var(--erro); } .mapa-calor th.nome-neutro { color: var(--texto-suave); }
+.mapa-calor td.celula-vazia { text-align: center; }
+/* Registro de aula com chamada */
+.chamada-registro { margin: 0 0 var(--sp-4); border: 1px solid var(--borda); border-radius: var(--raio-lg); padding: var(--sp-3) var(--sp-4); }
+.chamada-registro legend { font-weight: var(--peso-negrito); padding: 0 var(--sp-1); }
+.lista-chamada { list-style: none; margin: var(--sp-2) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: var(--sp-2); }
+.lista-chamada label { display: flex; align-items: center; gap: var(--sp-2); min-height: var(--toque); padding: var(--sp-1) var(--sp-3); border: 1px solid var(--borda); border-radius: var(--raio); cursor: pointer; }
+.lista-chamada label:has(input:checked) { border-color: var(--erro); background: var(--erro-fundo); color: var(--erro); font-weight: var(--peso-forte); }
+.aulas-da-grade { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; padding: var(--sp-3) var(--sp-4); margin: 0 0 var(--sp-3); border-radius: var(--raio); background: var(--cor-primaria-suave); }
+.aulas-da-grade.sem-aula { background: var(--alerta-fundo); color: var(--alerta); }
+
+/* ───── Notas travadas (aba Notas do professor) e retirada de falta (diário) ───── */
+.nota-travada { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: var(--toque); padding: 0 var(--sp-2); border: 1px solid var(--borda); border-radius: var(--raio); background: var(--superficie-2, var(--cor-primaria-suave)); color: var(--texto); }
+.nota-travada svg { flex: none; color: var(--texto-suave); }
+.nota-travada small { color: var(--texto-suave); font-size: var(--texto-pp, .75rem); }
+.tabela-notas tr.linha-travada td:first-child { color: var(--texto-suave); }
+.lista-opcoes { display: grid; gap: var(--sp-2); }
+.campo label.opcao-radio, .opcao-radio { display: flex; margin: 0; font-weight: var(--peso-normal); font-size: var(--texto-base); align-items: center; gap: var(--sp-2); min-height: var(--toque); padding: var(--sp-1) var(--sp-3); border: 1px solid var(--borda); border-radius: var(--raio); cursor: pointer; }
+.campo label.opcao-radio:has(input:checked), .opcao-radio:has(input:checked) { border-color: var(--cor-primaria); background: var(--cor-primaria-suave); font-weight: var(--peso-forte); }
+.opcao-radio input { accent-color: var(--cor-primaria); width: 1.125rem; height: 1.125rem; margin: 0; flex: none; }
+.janela fieldset.campo { border: 0; padding: 0; margin: 0 0 var(--sp-3); }
+.janela fieldset.campo legend { font-weight: var(--peso-forte); margin-bottom: var(--sp-2); }
+.trilha-retirada { color: var(--texto-suave); }

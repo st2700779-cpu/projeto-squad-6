@@ -1,0 +1,151 @@
+/* Matrícula on-line: as funções do Portal da Matrícula da SEDUC/SE (análise "Analise_Portal_Matricula_SEDUC-SE.pdf") com o visual
+   do próprio Portal Acadêmico: fonte, cores e cartões com borda e faixa no topo, como a tela de entrada. Botões-opção grandes,
+   caminho com as escolhas feitas, turno com cor e texto, verde só para o que deu certo. Vale só nas telas com body.portal-matricula. */
+body.portal-matricula {
+  /* Tudo vem dos tokens do tema do portal: claro, escuro e alto contraste já funcionam sozinhos. */
+  --mt-azul: var(--cor-primaria);
+  --mt-azul-texto: var(--cor-primaria);
+  --mt-azul-borda: var(--borda-forte);
+  --mt-azul-claro: var(--cor-primaria-suave);
+  --mt-azul-claro-texto: var(--texto);
+  --mt-rosa-texto: var(--erro);
+  --mt-verde: var(--sucesso);
+  --mt-cinza-claro: var(--superficie-2);
+  --mt-cinza-texto: var(--texto-suave);
+  --mt-borda-campo: var(--borda-forte);
+  --mt-texto: var(--texto);
+  --mt-cartao: var(--superficie);
+  --mt-borda: var(--borda);
+}
+body.portal-matricula main.conteudo { color: var(--mt-texto); }
+body.portal-matricula main h1, body.portal-matricula main h2, body.portal-matricula main h3 { font-family: inherit; }
+body.portal-matricula #pagina > h1:first-child::after, body.portal-matricula main h1::after { display: none; }
+body.portal-matricula #pagina h2 { padding-left: 0; border-left: 0; }
+.mt-titulo { font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem); margin: var(--sp-2) 0 var(--sp-1); }
+.mt-sub { color: var(--mt-cinza-texto); margin: 0 0 var(--sp-5); }
+
+/* Cartão com cabeçalho azul (login, serviços e títulos de formulário no site oficial) */
+.mt-cartao { margin: 0 0 var(--sp-5); border: 1px solid var(--mt-borda); border-top: 5px solid var(--cor-primaria); border-radius: var(--raio-lg); background: var(--mt-cartao); }
+.mt-cartao-titulo { margin: 0; padding: var(--sp-4) var(--sp-5) 0; color: var(--texto); font-size: var(--texto-lg); font-weight: var(--peso-negrito); }
+.mt-cartao-corpo { padding: var(--sp-3) var(--sp-5) var(--sp-5); }
+.mt-cartao-corpo > :last-child { margin-bottom: 0; }
+.mt-grade-inicio { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: var(--sp-5); align-items: start; }
+.mt-grade-inicio .mt-cartao { margin: 0; }
+
+/* Botões: ação principal rosa, secundário com contorno azul, cantos de 4 px */
+.mt-acao.botao-grande { width: 100%; }
+.mt-servicos { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.mt-servicos .botao { justify-content: flex-start; }
+.mt-servicos .botao { width: 100%; }
+.mt-nota { color: var(--mt-cinza-texto); font-size: var(--texto-sm); margin: var(--sp-3) 0 0; }
+.mt-periodos { margin: var(--sp-5) 0 0; border: 1px solid var(--mt-borda); border-radius: var(--raio-lg); background: var(--mt-cartao); }
+.mt-periodos summary { cursor: pointer; padding: var(--sp-3) var(--sp-4); min-height: var(--toque); font-weight: 500; color: var(--mt-azul-texto); }
+.mt-periodos ol { margin: 0 var(--sp-4) var(--sp-3); }
+.mt-periodos li { margin-bottom: var(--sp-2); }
+.mt-periodos li[aria-current] strong { color: var(--mt-verde); }
+.mt-periodos > p { margin: 0 var(--sp-4) var(--sp-4); color: var(--mt-cinza-texto); }
+
+/* Etapas 1-6 */
+.mt-etapas { list-style: none; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: var(--sp-2) var(--sp-4); margin: var(--sp-3) 0 var(--sp-5); padding: 0; counter-reset: none; }
+.mt-etapas li { display: flex; align-items: center; gap: var(--sp-2); color: var(--mt-cinza-texto); font-size: var(--texto-sm); }
+.mt-etapa-num { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--mt-borda-campo); font-weight: 600; font-size: .85rem; background: var(--mt-cartao); }
+.mt-etapas li.feita .mt-etapa-num { border-color: var(--mt-azul-texto); color: var(--mt-azul-texto); }
+.mt-etapas li.atual { color: var(--mt-texto); font-weight: 600; }
+.mt-etapas li.atual .mt-etapa-num { background: var(--cor-primaria); border-color: var(--cor-primaria); color: var(--sobre-primaria); }
+@media (max-width: 699px) { .mt-etapas li:not(.atual) .mt-etapa-nome { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
+
+/* Caminho (breadcrumb) com as escolhas feitas */
+.mt-caminho ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 2px; margin: 0 0 var(--sp-3); padding: 0 0 var(--sp-3); border-bottom: 1px solid var(--mt-borda); font-size: var(--texto-sm); }
+.mt-caminho li + li::before { content: "/"; margin: 0 var(--sp-2); color: var(--mt-cinza-texto); }
+.mt-caminho [aria-current] { font-weight: var(--peso-negrito); }
+.mt-link { background: none; border: 0; padding: 0; color: var(--mt-azul-texto); font: inherit; text-decoration: underline; cursor: pointer; min-height: 32px; }
+.mt-link:hover { text-decoration-thickness: 2px; }
+
+/* Perguntas e botões-opção grandes com borda */
+.mt-pergunta { font-size: var(--texto-lg); font-weight: var(--peso-negrito); margin: var(--sp-3) 0 var(--sp-3); }
+.mt-opcoes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: var(--sp-3); }
+.mt-opcoes-curtas { grid-template-columns: minmax(0, 240px); }
+.mt-opcoes-series { grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)); }
+.mt-opcao { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; min-height: 56px; padding: var(--sp-3) var(--sp-4); border: 1px solid var(--mt-azul-borda); border-left: 4px solid var(--cor-primaria); border-radius: var(--raio); background: var(--mt-cartao); color: var(--mt-texto); font: inherit; font-weight: var(--peso-forte); text-align: left; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; }
+.mt-opcao small { color: var(--mt-cinza-texto); font-size: var(--texto-sm); font-weight: var(--peso-normal); }
+.mt-opcao:hover { background: var(--mt-azul-claro); border-color: var(--mt-azul-texto); }
+.mt-opcao:focus-visible, .mt-turno:focus-visible, .mt-link:focus-visible { outline: 3px solid var(--foco, #1769b5); outline-offset: 2px; }
+.mt-opcao-linha { width: 100%; min-height: 44px; align-items: flex-start; text-align: left; }
+.mt-lista-cidades { list-style: none; margin: 0 0 var(--sp-3); padding: 0; display: grid; gap: var(--sp-2); max-height: 50vh; overflow: auto; }
+
+/* Tabela de escolas e turnos */
+.mt-busca { max-width: 420px; margin: var(--sp-3) 0 var(--sp-2); }
+.mt-contagem { color: var(--mt-cinza-texto); font-size: var(--texto-sm); margin: 0 0 var(--sp-3); }
+.mt-turnos { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.mt-turno { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 150px; padding: var(--sp-2) var(--sp-3); border-radius: var(--raio); font: inherit; font-size: var(--texto-sm); text-align: left; }
+.mt-turno.com-vaga { background: var(--sucesso-fundo); color: var(--texto); border: 1px solid var(--sucesso-borda); border-left: 4px solid var(--sucesso); cursor: pointer; }
+.mt-turno.com-vaga span:not(.sr-only) { color: var(--sucesso); font-weight: var(--peso-forte); }
+.mt-turno.com-vaga:hover { border-color: var(--sucesso); }
+.mt-turno.sem-vaga { background: var(--mt-cinza-claro); color: var(--mt-cinza-texto); border: 1px dashed var(--mt-borda-campo); }
+.mt-link-espera { color: var(--mt-rosa-texto); font-weight: 600; font-size: var(--texto-sm); text-align: left; }
+.mt-vazio { padding: var(--sp-4); border: 1px dashed var(--mt-borda-campo); border-radius: var(--raio); color: var(--mt-cinza-texto); }
+
+/* Vaga escolhida (segue junto em todas as etapas) */
+.mt-vaga-escolhida { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-3); margin: 0 0 var(--sp-4); padding: var(--sp-3) var(--sp-4); border: 1px solid var(--sucesso-borda); border-left: 5px solid var(--sucesso); border-radius: var(--raio-lg); background: var(--superficie); }
+.mt-vaga-escolhida > div { display: flex; flex-direction: column; gap: 2px; }
+.mt-vaga-escolhida span { font-size: var(--texto-sm); color: var(--texto-suave); }
+.mt-rotulo-pequeno { font-weight: var(--peso-negrito); color: var(--sucesso) !important; }
+
+/* Formulários em 12 colunas no computador; empilhados no celular */
+.mt-aviso-obrig { color: var(--mt-rosa-texto); font-size: var(--texto-sm); margin: 0 0 var(--sp-3); }
+.mt-obrig { color: var(--mt-rosa-texto); font-weight: 700; }
+.mt-grade { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0 var(--sp-4); }
+.mt-grade > * { grid-column: 1 / -1; }
+@media (min-width: 760px) {
+  .mt-grade > .mt-col-3 { grid-column: span 3; } .mt-grade > .mt-col-4 { grid-column: span 4; } .mt-grade > .mt-col-6 { grid-column: span 6; }
+  .mt-grade > .mt-col-7 { grid-column: span 7; } .mt-grade > .mt-col-2 { grid-column: span 2; }
+  .mt-grade > .mt-col-8 { grid-column: span 8; } .mt-grade > .mt-col-9 { grid-column: span 9; } .mt-grade > .mt-col-12 { grid-column: 1 / -1; }
+}
+
+body.portal-matricula .mt-form .entrada:focus { border-color: var(--mt-azul-texto); }
+body.portal-matricula .mt-form .entrada[aria-invalid="true"] { border-color: var(--mt-rosa-texto); }
+.mt-subtitulo { font-size: var(--texto-base); font-weight: var(--peso-negrito); margin: var(--sp-3) 0 var(--sp-3); padding-bottom: var(--sp-1); border-bottom: 1px solid var(--mt-borda); }
+.mt-radios { border: 0; padding: 0; margin: 0 0 var(--sp-4); }
+.mt-radios legend { font-size: var(--texto-sm); margin-bottom: var(--sp-1); }
+.mt-radios-lista { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.campo label.mt-radio, .mt-radio { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: 44px; padding: 0 var(--sp-3); border: 1px solid var(--mt-borda-campo); border-radius: var(--raio); cursor: pointer; background: var(--mt-cartao); }
+.mt-radio:has(input:checked) { border-color: var(--mt-azul-texto); background: var(--mt-azul-claro); color: var(--mt-azul-claro-texto); font-weight: 600; }
+.mt-radio input, .mt-check input { position: static; flex: none; width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; accent-color: var(--mt-azul-texto); }
+.mt-check input { margin-top: 2px; }
+.campo label.mt-check, .mt-check { display: flex; font-size: 1rem; align-items: flex-start; gap: var(--sp-3); font-weight: 500; cursor: pointer; }
+.mt-termo { max-height: 220px; overflow: auto; padding: var(--sp-3) var(--sp-4); margin: 0 0 var(--sp-4); border: 1px solid var(--mt-borda); border-radius: var(--raio); background: var(--mt-cinza-claro); font-size: var(--texto-sm); }
+.mt-termo p:last-child { margin-bottom: 0; }
+.mt-botoes { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-3); margin-top: var(--sp-4); }
+.mt-botoes .botao-grande { width: auto; min-width: 200px; }
+.mt-botoes-linha { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+@media (max-width: 599px) { .mt-botoes { flex-direction: column-reverse; } .mt-botoes .botao-grande, .mt-botoes .botao { width: 100%; } .mt-cartao-corpo { padding: var(--sp-3) var(--sp-4) var(--sp-4); } }
+
+/* Duplicidade, conferência, comprovante e lista de espera */
+.mt-escolhas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--sp-4); margin: var(--sp-4) 0; }
+.mt-escolhas > div { padding: var(--sp-3) var(--sp-4); border: 1px solid var(--mt-borda); border-radius: var(--raio-lg); }
+.mt-escolhas h3 { font-size: 1rem; font-weight: 600; margin: 0 0 var(--sp-2); }
+.mt-confere { display: inline-block; margin-left: var(--sp-1); padding: 0 var(--sp-2); border-radius: 4px; background: var(--mt-azul-claro); color: var(--mt-azul-claro-texto); font-size: .8rem; font-weight: 600; }
+.mt-conferir-bloco { padding: var(--sp-3) 0; border-bottom: 1px solid var(--mt-borda); }
+.mt-conferir-topo { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+.mt-conferir-topo h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+.mt-conferir-bloco dl, .mt-comprovante dl { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: var(--sp-1) var(--sp-4); margin: var(--sp-2) 0 0; }
+.mt-conferir-bloco dt, .mt-comprovante dt { color: var(--mt-cinza-texto); font-size: var(--texto-sm); }
+.mt-conferir-bloco dd, .mt-comprovante dd { margin: 0; }
+@media (max-width: 599px) { .mt-conferir-bloco dl, .mt-comprovante dl, .mt-cartao-corpo > .dados-comprovante { grid-template-columns: 1fr; } .mt-conferir-bloco dd, .mt-comprovante dd { margin-bottom: var(--sp-2); } }
+.mt-docs { margin: 0 0 var(--sp-2); padding-left: 1.2em; }
+.mt-docs li { margin-bottom: var(--sp-1); }
+.mt-sucesso { margin-bottom: var(--sp-4); }
+.mt-sucesso .mt-titulo { color: var(--mt-verde); }
+.mt-protocolo { font-size: 1.25rem; letter-spacing: .03em; }
+.mt-comprovante { display: flex; flex-wrap: wrap; gap: var(--sp-4); align-items: flex-start; justify-content: space-between; }
+.mt-comprovante > dl { flex: 1 1 360px; }
+.mt-qr { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); }
+.mt-qr [data-qr] { background: #fff; padding: 6px; border-radius: 4px; }
+.mt-regras { margin: 0 0 var(--sp-4); padding-left: 1.2em; font-size: var(--texto-sm); }
+.mt-regras li { margin-bottom: var(--sp-1); }
+body.portal-matricula .dados-comprovante { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: var(--sp-1) var(--sp-4); }
+body.portal-matricula .dados-comprovante dd { margin: 0; }
+@media print { body.portal-matricula .mt-cartao { border-top-width: 1px; } }
+body.portal-matricula #pagina { max-width: 1100px; }
+body.portal-matricula #pagina .mt-cartao-titulo { padding: var(--sp-4) var(--sp-5) 0; }
+@media (max-width: 599px) { body.portal-matricula #pagina .mt-cartao-titulo { padding: var(--sp-3) var(--sp-4) 0; } }

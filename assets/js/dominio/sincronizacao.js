@@ -35,11 +35,11 @@ export function aplicarPendentes(registros, servidor) {
       if (ja && ja.quando > r.criadoEm) { saida.conflitos.push({ nome: `Chamada de ${r.data.split('-').reverse().join('/')}`, assunto: 'chamada', resultado: 'mantido', servidorEm: ja.quando, localEm: r.criadoEm }); continue; }
       if (ja) {
         // a chamada do servidor é mais antiga e será substituída: desfaz as faltas que ela tinha lançado
-        alunos.forEach((a) => { if (ja.ausentes.includes(a.id)) a.faltas = Math.max(0, a.faltas - 1); });
+        alunos.forEach((a) => { if (ja.ausentes.includes(a.id)) a.faltas = Math.max(0, a.faltas - (Number(ja.aulas) || 1)); });
         saida.conflitos.push({ nome: `Chamada de ${r.data.split('-').reverse().join('/')}`, assunto: 'chamada', resultado: 'sobrescrito', servidorEm: ja.quando, localEm: r.criadoEm });
       }
-      alunos.forEach((a) => { if (r.ausentes.includes(a.id)) a.faltas += 1; });
-      chamadas[r.turmaId] = { ...(chamadas[r.turmaId] || {}), [r.data]: { ausentes: r.ausentes, quando: r.criadoEm } };
+      alunos.forEach((a) => { if (r.ausentes.includes(a.id)) a.faltas += Number(r.aulas) || 1; });
+      chamadas[r.turmaId] = { ...(chamadas[r.turmaId] || {}), [r.data]: { ausentes: r.ausentes, quando: r.criadoEm, aulas: Number(r.aulas) || 1, ...(r.componente ? { componente: r.componente } : {}) } };
       saida.enviados += 1;
     }
   }
@@ -52,8 +52,8 @@ export function sobreporPendentes(registros, { dados, chamadas }) {
     const alunos = dados[r.turmaId] || [];
     if (r.tipo === 'notas') Object.assign(alunos.find((a) => a.id === r.alunoId) || {}, r.valores);
     if (r.tipo === 'chamada' && !chamadas[r.turmaId]?.[r.data]) {
-      alunos.forEach((a) => { if (r.ausentes.includes(a.id)) a.faltas += 1; });
-      chamadas[r.turmaId] = { ...(chamadas[r.turmaId] || {}), [r.data]: { ausentes: r.ausentes, quando: r.criadoEm, pendente: true } };
+      alunos.forEach((a) => { if (r.ausentes.includes(a.id)) a.faltas += Number(r.aulas) || 1; });
+      chamadas[r.turmaId] = { ...(chamadas[r.turmaId] || {}), [r.data]: { ausentes: r.ausentes, quando: r.criadoEm, aulas: Number(r.aulas) || 1, pendente: true } };
     }
   }
 }

@@ -2429,5 +2429,174 @@
       "3ª série EM"
     ],
     "exemplo": true
+  },
+  {
+    "escolaId": "e2",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Resolução CEE nº 094/2021",
+    "validade": "2028-06-30",
+    "tipo": "Autorização de funcionamento",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "historico": []
+  },
+  {
+    "escolaId": "ee004",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 004/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee009",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 009/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais em Tempo Integral",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee010",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 010/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee014",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 014/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee022",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 022/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais em Tempo Integral",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee026",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 026/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee059",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 059/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee071",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 071/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee079",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 079/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
+  },
+  {
+    "escolaId": "ee096",
+    "etapa": "Ensino Fundamental — Anos Iniciais",
+    "numero": "Ato de exemplo nº 096/2023",
+    "validade": "2029-12-31",
+    "tipo": "Autorização (exemplo)",
+    "curso": "Ensino Fundamental — Anos Iniciais",
+    "series": [
+      "1º ano",
+      "2º ano",
+      "3º ano",
+      "4º ano",
+      "5º ano"
+    ],
+    "exemplo": true
   }
 ]

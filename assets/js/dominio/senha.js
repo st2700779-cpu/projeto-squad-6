@@ -22,6 +22,7 @@ export function validarTrocaDeSenha(f, { atualCorreta, login }) {
   else if (!atualCorreta) e.atual = 'A senha atual não confere.';
   const nova = String(f.nova ?? '');
   if (nova.length < TAMANHO_MINIMO_DA_SENHA) e.nova = `A nova senha precisa de pelo menos ${TAMANHO_MINIMO_DA_SENHA} caracteres.`;
+  else if (nova.length > 64) e.nova = 'A nova senha pode ter no máximo 64 caracteres.';
   else if (!/[a-z]/i.test(nova) || !/\d/.test(nova)) e.nova = 'Misture letras e números na nova senha.';
   else if (nova === f.atual) e.nova = 'A nova senha tem de ser diferente da atual.';
   else if (String(login ?? '').trim() && nova.toLowerCase().includes(String(login).trim().toLowerCase())) e.nova = 'A nova senha não pode conter o seu usuário.';

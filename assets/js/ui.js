@@ -137,7 +137,7 @@ export function pedirTexto({ titulo, rotulo, minimo = 5 }) {
     <h2 id="janela-titulo" class="esp-t-0">${esc(titulo)}</h2>
     <div class="campo">
       <label for="janela-texto">${esc(rotulo)}</label>
-      <textarea id="janela-texto" class="entrada" aria-describedby="janela-erro"></textarea>
+      <textarea id="janela-texto" class="entrada" maxlength="300" aria-describedby="janela-erro"></textarea>
       <p id="janela-erro" class="erro" role="alert"></p>
     </div>
     <div class="linha-botoes fim">

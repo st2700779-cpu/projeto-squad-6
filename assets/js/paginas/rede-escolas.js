@@ -9,7 +9,7 @@ import { sessao } from '../auth.js';
 import { esc, etiqueta, icone, avisar, vazio, combina, debounce, comEspera, dataBR, plural, confirmar } from '../ui.js';
 import { carregar, conjunto, salvar, registrarAcao, dataDeReferencia, vagasDetalhadas } from '../dados.js';
 import { situacaoAto } from '../regras.js';
-import { ETAPAS, TIPOS_DE_ATO, validarEscola, montarEscola, validarEdicaoDeEscola, aplicarEdicaoDeEscola, validarRenovacaoDeAto, aplicarRenovacaoDeAto, seriesEscolhidas, atosDoNivel, somenteDigitos } from '../dominio/cadastros.js';
+import { ETAPAS, TIPOS_DE_ATO, MODALIDADES, validarCurso, montarCurso, validarEscola, montarEscola, validarEdicaoDeEscola, aplicarEdicaoDeEscola, validarRenovacaoDeAto, aplicarRenovacaoDeAto, seriesEscolhidas, atosDoNivel, somenteDigitos } from '../dominio/cadastros.js';
 import { textoPorTurno } from '../dominio/vagas.js';
 import { NOMENCLATURAS } from '../dominio/niveis.js';
 import { campo, marcas, lerFormulario, mostrarErros } from '../componentes/formulario.js';
@@ -18,6 +18,7 @@ import { conferirPdf, guardarPdf, abrirPdf, tamanhoLegivel } from '../arquivos.j
 
 const main = await iniciar({ perfil: 'rede', pagina: 'rede/escolas.html', assistente: true });
 let escolas, atos, detalhe, localidades, dres, cursos, hoje;
+const OUTRO = '__outro'; // opção "Outros" do nível que o ato libera: cria um curso novo na hora
 let busca = '';
 let dreFiltro = '';
 let municipio = '';
@@ -220,7 +221,14 @@ function formulario() {
       ${campo({ nome: 'atoVencimento', rotulo: 'Data de vencimento', tipo: 'date', obrigatorio: true })}
       ${campoPdf('f')}
       <div class="largo" id="campo-origem" hidden>${campo({ nome: 'origemId', rotulo: 'Escola que foi dividida', dica: 'A escola de origem continua cadastrada', opcoes: [['', 'Escolha a escola de origem'], ...minhas().map((e) => [e.id, `${e.nome} (${e.municipio})`])] })}</div>
-      <div class="largo">${marcas({ nome: 'etapas', rotulo: 'Nível de ensino que o ato libera', obrigatorio: true, dica: 'A lista de níveis (com EJA e educação profissional) é mantida em Rede › Cadastros. Depois de marcar, escolha o curso de cada nível.', itens: ETAPAS.filter((t) => t.ativo !== false).map((t) => [t.etapa, t.curto, `${t.resumo}`]) })}</div>
+      <div class="largo">${marcas({ nome: 'etapas', rotulo: 'Nível de ensino que o ato libera', obrigatorio: true, dica: 'A lista de níveis (com EJA e educação profissional) é mantida em Rede › Cadastros. Depois de marcar, escolha o curso de cada nível.', itens: [...ETAPAS.filter((t) => t.ativo !== false).map((t) => [t.etapa, t.curto, `${t.resumo}`]), [OUTRO, 'Outros', 'Curso que ainda não está na lista: crie aqui']] })}</div>
+      <fieldset class="largo form-bloco" id="bloco-curso-novo" hidden><legend>Curso novo</legend>
+        <p class="texto-suave esp-t-0">O curso fica salvo também em Rede › Cursos e pode ser usado por outras escolas.</p>
+        ${campo({ nome: 'novoCursoNome', rotulo: 'Nome do curso', obrigatorio: true, dica: 'Exemplo: Técnico em Agropecuária', atributos: 'maxlength="120" autocomplete="off"' })}
+        ${campo({ nome: 'novoCursoEtapa', rotulo: 'Nível de ensino do curso', obrigatorio: true, opcoes: [['', 'Escolha o nível'], ...ETAPAS.filter((t) => t.ativo !== false).map((t) => [t.etapa, t.etapa])] })}
+        ${campo({ nome: 'novoCursoModalidade', rotulo: 'Modalidade', obrigatorio: true, opcoes: [['', 'Escolha a modalidade'], ...MODALIDADES.map((m) => [m, m])] })}
+        ${campo({ nome: 'novoCursoDescricao', rotulo: 'Descrição', dica: 'Opcional, até 300 letras', atributos: 'maxlength="300" autocomplete="off"' })}
+      </fieldset>
       <div class="largo" id="series-niveis">${blocoCursosNovos([], {})}</div>
       <p class="previa-series largo" id="previa" aria-live="polite">Nenhuma série liberada ainda.</p>
     </fieldset>
@@ -257,7 +265,7 @@ const redesenharTabela = () => { main.querySelector('#tabela-escolas').innerHTML
 // ---------------- Interação ----------------
 function estadoDoCadastro() {
   const form = main.querySelector('#form-escola');
-  const etapas = [...form.querySelectorAll('[name="etapas"]:checked')].map((i) => i.value);
+  const etapas = [...form.querySelectorAll('[name="etapas"]:checked')].map((i) => i.value).filter((v) => v !== OUTRO);
   const cursosEscolhidos = Object.fromEntries(ETAPAS.map((t, i) => [t.etapa, form.querySelector(`#f-curso-${i}`)?.value]).filter(([, v]) => v));
   return { etapas, cursosEscolhidos };
 }
@@ -276,6 +284,12 @@ main.addEventListener('change', (e) => {
   if (t.id === 'filtro-dre') { dreFiltro = t.value; if (municipio && !municipiosDa(dres, dreFiltro, extrasDeMunicipio()).includes(municipio)) municipio = ''; main.querySelector('#ferramentas').innerHTML = ferramentas(); redesenharTabela(); main.querySelector('#filtro-dre').focus(); }
   if (t.id === 'filtro-municipio') { municipio = t.value; redesenharTabela(); }
   if (t.id === 'f-atoTipo') main.querySelector('#campo-origem').hidden = t.value !== 'Divisão de escola';
+  if (t.name === 'etapas' && t.value === OUTRO && t.closest('#form-escola')) {
+    const bloco = main.querySelector('#bloco-curso-novo');
+    bloco.hidden = !t.checked;
+    if (t.checked) bloco.querySelector('#f-novoCursoNome').focus();
+    return;
+  }
   if (t.name === 'etapas' && t.closest('#form-escola')) {
     const { etapas, cursosEscolhidos } = estadoDoCadastro();
     main.querySelector('#series-niveis').innerHTML = blocoCursosNovos(etapas, cursosEscolhidos);
@@ -342,8 +356,20 @@ main.addEventListener('submit', async (e) => {
   if (form.id === 'form-escola') {
     const dados = lerFormulario(form);
     const { cursosEscolhidos } = estadoDoCadastro();
-    const f = { ...dados, dre: dreDaSessao() || dados.dre, etapas: dados.etapas || [], cursos: cursosEscolhidos };
-    const { erros } = validarEscola(f, { escolas, hoje, dres, cursos });
+    const etapasMarcadas = (dados.etapas || []).filter((v) => v !== OUTRO);
+    // "Outros": o curso novo é conferido como em Rede › Cursos e entra no ato no nível escolhido para ele.
+    let cursoNovo = null;
+    const errosCurso = {};
+    if ((dados.etapas || []).includes(OUTRO)) {
+      const fc = { nome: dados.novoCursoNome, etapa: dados.novoCursoEtapa, modalidade: dados.novoCursoModalidade, descricao: dados.novoCursoDescricao };
+      const r = validarCurso(fc, { cursos });
+      for (const [k, v] of Object.entries(r.erros)) errosCurso[`novoCurso${k[0].toUpperCase()}${k.slice(1)}`] = v;
+      if (!errosCurso.novoCursoEtapa && etapasMarcadas.includes(fc.etapa)) errosCurso.novoCursoEtapa = 'Esse nível já está marcado acima com outro curso. Desmarque o nível acima ou escolha outro nível para o curso novo.';
+      if (!Object.keys(errosCurso).length) { cursoNovo = montarCurso(fc, { cursos, hoje }); etapasMarcadas.push(fc.etapa); cursosEscolhidos[fc.etapa] = cursoNovo.nome; }
+    }
+    const f = { ...dados, dre: dreDaSessao() || dados.dre, etapas: etapasMarcadas, cursos: cursosEscolhidos };
+    const { erros } = validarEscola(f, { escolas, hoje, dres, cursos: cursoNovo ? [...cursos, cursoNovo] : cursos });
+    if ((dados.etapas || []).includes(OUTRO)) { delete erros.etapas; Object.assign(erros, errosCurso); }
     if (erros.cursos) { const i = ETAPAS.findIndex((t) => (f.etapas || []).includes(t.etapa) && !cursosEscolhidos[t.etapa]); erros[`curso-${i >= 0 ? i : 0}`] = erros.cursos; delete erros.cursos; }
     const pdf = erroDoPdf(form, 'f');
     if (pdf.erro) erros.pdf = pdf.erro;
@@ -353,6 +379,11 @@ main.addEventListener('submit', async (e) => {
         const anexo = pdf.arquivo ? await guardarPdf(pdf.arquivo) : null;
         const novo = montarEscola({ ...f, pdf: anexo }, { escolas, coordenadas: coordenadasDe(f.municipio), hoje });
         const [escolasNovas, atosNovos] = await Promise.all([conjunto('escolas-novas'), conjunto('atos-novos')]);
+        if (cursoNovo) {
+          const todosCursos = await conjunto('cursos');
+          await salvar('cursos', [...todosCursos, cursoNovo]);
+          await registrarAcao(sessao().nome, 'Cadastrou curso no cadastro de escola', cursoNovo.nome);
+        }
         escolasNovas.push(novo.escola); atosNovos.push(...novo.atos);
         await salvar('escolas-novas', escolasNovas); await salvar('atos-novos', atosNovos);
         await registrarAcao(sessao().nome, `Cadastrou a escola e o ${novo.atos[0].numero}`, novo.escola.nome);

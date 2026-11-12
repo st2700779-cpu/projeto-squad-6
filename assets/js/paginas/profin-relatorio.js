@@ -27,7 +27,7 @@ async function mostrar() {
         <div class="campo"><label for="escopo">Escolas</label><select id="escopo" class="entrada"><option value="">Todas as escolas</option>${escolas.map((e) => `<option value="${e.id}">${esc(e.nome)}</option>`).join('')}</select></div>
         <fieldset class="campo"><legend>Categorias</legend><div class="linha-botoes">${dados.categorias.map((c) => `<label class="chave-simples"><input type="checkbox" class="caixa-grande" data-categoria="${esc(c)}" checked><span>${esc(c)}</span></label>`).join('')}</div></fieldset>
         <button type="submit" class="botao">${icone('documento', 20)}Gerar rascunho</button></form>
-      <div class="campo esp-t-4"><label for="rascunho">Rascunho (pode editar)</label><textarea id="rascunho" class="entrada rascunho nao-imprimir" spellcheck="true"></textarea></div>
+      <div class="campo esp-t-4"><label for="rascunho">Rascunho (pode editar)</label><textarea id="rascunho" class="entrada rascunho nao-imprimir" spellcheck="true" data-formato="livre" maxlength="20000"></textarea></div>
       <pre id="impressao" class="so-impressao" aria-hidden="true"></pre>
       <div class="linha-botoes nao-imprimir"><button type="button" class="botao botao-secundario" id="copiar">Copiar texto</button><button type="button" class="botao botao-secundario" id="baixar">${icone('baixar', 20)}Baixar (.txt)</button><button type="button" class="botao botao-secundario" id="imprimir">${icone('imprimir', 20)}Imprimir</button></div>`;
     gerado = montar();

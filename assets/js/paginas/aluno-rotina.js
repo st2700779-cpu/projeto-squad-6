@@ -37,8 +37,8 @@ function formCalculadora() {
   return `<form id="calc" novalidate>
     <div class="campo"><label for="calc-materia">Matéria</label><select id="calc-materia" class="entrada">${p.d.linhas.map((l) => `<option>${esc(l.materia)}</option>`).join('')}</select></div>
     <div class="calculadora">
-      ${[1, 2, 3, 4].map((b, k) => `<div class="campo"><label for="calc-n${b}">${b}º bimestre</label><input id="calc-n${b}" class="entrada" inputmode="decimal" autocomplete="off" aria-describedby="calc-ajuda" value="${notas[k] === null ? '' : numeroBR(notas[k])}"><p class="erro" id="calc-erro${b}" role="alert"></p></div>`).join('')}
-      <div class="campo"><label for="calc-meta">Média que quero</label><input id="calc-meta" class="entrada" inputmode="decimal" autocomplete="off" value="${numeroBR(MEDIA_APROVACAO)}"><p class="erro" id="calc-erro-meta" role="alert"></p></div>
+      ${[1, 2, 3, 4].map((b, k) => `<div class="campo"><label for="calc-n${b}">${b}º bimestre</label><input id="calc-n${b}" class="entrada" inputmode="decimal" data-formato="nota" maxlength="5" autocomplete="off" aria-describedby="calc-ajuda" value="${notas[k] === null ? '' : numeroBR(notas[k])}"><p class="erro" id="calc-erro${b}" role="alert"></p></div>`).join('')}
+      <div class="campo"><label for="calc-meta">Média que quero</label><input id="calc-meta" class="entrada" inputmode="decimal" data-formato="nota" maxlength="5" autocomplete="off" value="${numeroBR(MEDIA_APROVACAO)}"><p class="erro" id="calc-erro-meta" role="alert"></p></div>
     </div>
     <p class="dica texto-suave texto-pequeno" id="calc-ajuda">Deixe em branco a nota que ainda não saiu. A média do ano é a média dos 4 bimestres.</p>
     <div id="resultado-calc" class="resultado-calc" role="status" aria-live="polite"></div></form>`;

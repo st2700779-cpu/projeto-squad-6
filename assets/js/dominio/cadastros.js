@@ -32,8 +32,19 @@ export function cpfValido(valor) {
 }
 export const cepValido = (v) => somenteDigitos(v).length === 8;
 export const inepValido = (v) => somenteDigitos(v).length === 8;
-export const emailValido = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v ?? '').trim());
-export const telefoneValido = (v) => [10, 11].includes(somenteDigitos(v).length);
+/** E-mail: até 80 letras, sem espaço, um @, domínio com ponto e sem pontos seguidos ou nas pontas. */
+export const emailValido = (v) => {
+  const t = String(v ?? '').trim();
+  return t.length <= 80 && /^[a-z0-9](?:[a-z0-9._%+-]*[a-z0-9_%+-])?@[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}$/i.test(t) && !t.includes('..');
+};
+/** DDDs em uso no Brasil (Anatel). */
+export const DDDS = [11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, 24, 27, 28, 31, 32, 33, 34, 35, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 51, 53, 54, 55, 61, 62, 63, 64, 65, 66, 67, 68, 69, 71, 73, 74, 75, 77, 79, 81, 82, 83, 84, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99];
+/** Telefone: DDD válido + 8 números (fixo, começa de 2 a 5) ou 9 números (celular, começa com 9). */
+export const telefoneValido = (v) => {
+  const n = somenteDigitos(v);
+  if (!DDDS.includes(Number(n.slice(0, 2)))) return false;
+  return (n.length === 11 && n[2] === '9') || (n.length === 10 && /[2-5]/.test(n[2]));
+};
 export const dataValida = (iso) => /^\d{4}-\d{2}-\d{2}$/.test(String(iso ?? '')) && !Number.isNaN(Date.parse(`${iso}T12:00:00Z`)) && new Date(`${iso}T12:00:00Z`).toISOString().slice(0, 10) === iso;
 export const mascararCpf = (v) => { const c = somenteDigitos(v); return c.length === 11 ? `***.${c.slice(3, 6)}.${c.slice(6, 9)}-**` : ''; };
 
@@ -61,7 +72,7 @@ export function validarEscola(f, { escolas, hoje, dres = null, cursos = null }) 
   if (String(f.referencia ?? '').trim().length > 120) e.referencia = 'O ponto de referência tem no máximo 120 letras.';
   if (String(f.bairro ?? '').trim().length < 2) e.bairro = 'Escreva o bairro ou povoado.';
   if (!cepValido(f.cep)) e.cep = 'O CEP tem 8 números.';
-  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
+  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD válido: (79) 99999-9999 (celular) ou (79) 3222-1234 (fixo).';
   if (String(f.email ?? '').trim() && !emailValido(f.email)) e.email = 'Escreva um e-mail válido, como secretaria@escola.se.gov.br.';
   if (!TIPOS_DE_ATO.includes(f.atoTipo)) e.atoTipo = 'Escolha o tipo do ato autorizativo.';
   if (String(f.atoNumero ?? '').trim().length < 3) e.atoNumero = 'Escreva o número do ato, como Resolução CEE nº 100/2026.';
@@ -133,7 +144,7 @@ export function validarProfessor(f, { professores, escolas, componentes }) {
   if (![10, 20, 30, 40].includes(ch)) e.cargaHorariaSemanal = 'Escolha a carga horária semanal: 10, 20, 30 ou 40 horas.';
   if (!escolas.some((x) => x.id === f.escolaId)) e.escolaId = 'Escolha a escola de lotação.';
   if (String(f.email ?? '').trim() && !emailValido(f.email)) e.email = 'Escreva um e-mail válido.';
-  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
+  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD válido: (79) 99999-9999 (celular) ou (79) 3222-1234 (fixo).';
   return resultado(e);
 }
 
@@ -159,7 +170,7 @@ export function validarMembroProfin(f, { equipe }) {
   else if (equipe.some((m) => String(m.matricula).toUpperCase() === mat)) e.matricula = 'Essa matrícula já está na equipe.';
   if (!emailValido(f.email)) e.email = 'Escreva o e-mail institucional, como nome@seed.se.gov.br.';
   else if (equipe.some((m) => normalizar(m.email) === normalizar(f.email))) e.email = 'Esse e-mail já está na equipe.';
-  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
+  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD válido: (79) 99999-9999 (celular) ou (79) 3222-1234 (fixo).';
   if (!String(f.atende ?? '').trim()) e.atende = 'Diga quais escolas ou DREs a pessoa atende.';
   return resultado(e);
 }
@@ -215,7 +226,7 @@ export function validarEdicaoDeEscola(f, { escolas, id, dres = null }) {
   if (String(f.endereco ?? '').trim().length < 5) e.endereco = 'Escreva o endereço completo.';
   if (String(f.referencia ?? '').trim().length > 120) e.referencia = 'O ponto de referência tem no máximo 120 letras.';
   if (String(f.bairro ?? '').trim().length < 2) e.bairro = 'Escreva o bairro ou povoado.';
-  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
+  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD válido: (79) 99999-9999 (celular) ou (79) 3222-1234 (fixo).';
   if (String(f.email ?? '').trim() && !emailValido(f.email)) e.email = 'Escreva um e-mail válido.';
   return resultado(e);
 }
@@ -290,7 +301,7 @@ export function validarEdicaoDeProfessor(f, { escolas, componentes, escolaAtual,
   if (!escolas.some((x) => x.id === f.escolaId)) e.escolaId = 'Escolha a escola de lotação.';
   else if (escolaAtual && f.escolaId !== escolaAtual && String(f.motivoLotacao ?? '').trim().length < 5) e.motivoLotacao = 'Explique a mudança de escola (pelo menos 5 letras): fica no histórico de lotação.';
   if (String(f.email ?? '').trim() && !emailValido(f.email)) e.email = 'Escreva um e-mail válido.';
-  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD, de 10 ou 11 números.';
+  if (String(f.telefone ?? '').trim() && !telefoneValido(f.telefone)) e.telefone = 'Telefone com DDD válido: (79) 99999-9999 (celular) ou (79) 3222-1234 (fixo).';
   return resultado(e);
 }
 /**

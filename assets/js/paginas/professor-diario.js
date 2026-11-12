@@ -1,25 +1,30 @@
-// Diário de classe (HU11; wireframe W13): turmas vindas da alocação da escola, estudantes vindos da enturmação,
-// validação no próprio campo e gravação pela API. No celular, cada estudante vira um cartão (classe tabela-cartoes).
-// Sem conexão (real ou simulada pelo botão Ficar offline), notas e chamada ficam em IndexedDB como "pendentes"
+// Diário de classe (HU11; wireframe W13): frequência e observações da turma, por bimestre. As notas ficam na aba Notas.
+// As faltas não são digitadas: vêm da chamada feita no Registro de aula, que é a trilha da frequência.
+// Uma falta só sai com um motivo escolhido na lista (sem digitação); a data, o motivo e quem retirou ficam na chamada.
+// Só o bimestre em andamento aceita retirada; os anteriores ficam só para consulta (dominio/diario-bimestral.js).
+// Sem conexão (real ou simulada pelo botão Ficar offline), as observações ficam em IndexedDB como "pendentes"
 // (offline.js) e seguem para o "servidor" quando a conexão volta (dominio/sincronizacao.js).
 import { iniciar, falhaDados, link } from '../app.js';
-import { esc, avisar, icone, numeroBR, confirmar, dataHoraBR, dataBR, vazio, etiqueta, comEspera } from '../ui.js';
+import { esc, avisar, icone, numeroBR, dataBR, vazio, etiqueta, comEspera, abrirJanela, plural } from '../ui.js';
 import { carregar, diario, letivo, matriculas, turmasEscola, salvar as salvarDados, conjunto, registrarAcao, recarregarDoServidor } from '../dados.js';
 import { estaOnline, montarIndicador, guardarPendente, pendentes, baixarPendente, pendentePorChave } from '../offline.js';
 import { aplicarPendentes, sobreporPendentes } from '../dominio/sincronizacao.js';
 import { hojeISO } from '../dominio/hoje.js';
 import { abonosPorEstudante } from '../dominio/vida-escolar.js';
 import { estudantesInativos, situacaoDoEstudante } from '../dominio/movimentacao.js';
-import { presenca, media, situacao, nomeCurto, turmasDoProfessor, sincronizarDiario, codigoDaTurma } from '../regras.js';
+import { nomeCurto, turmasDoProfessor, sincronizarDiario, codigoDaTurma, semaforoFrequencia } from '../regras.js';
+import { bimestreAtual, estadoDoBimestre, periodoDoBimestre, frequenciaNoPeriodo, faltasDoEstudante, retirarFalta, atualizarMedias, MOTIVOS_RETIRADA, textoDoMotivo } from '../dominio/diario-bimestral.js';
+import { abasDeBimestre } from '../componentes/abas-bimestre.js';
 
 const main = await iniciar({ perfil: 'professor', pagina: 'professor/diario.html', assistente: true });
 let turmaId = new URLSearchParams(location.search).get('turma');
-let dados, prof, escolas, chamadas, minhas, aulasDadas, bimestres, meta, abonos = {}, movs = [];
-let baseline = {};          // valores de cada estudante no último carregamento ou gravação (para achar o que mudou)
-let pendentesIds = new Set(); // estudantes com nota pendente de envio ('turma|aluno')
+let dados, prof, escolas, chamadas, minhas, meta, abonos = {}, movs = [];
+let bimVer = null;
+let letivoAtual = null; // bimestre aberto na tela (padrão: o em andamento)
+let baseline = {};          // observação de cada estudante no último carregamento ou gravação (para achar o que mudou)
+let pendentesIds = new Set(); // estudantes com observação pendente de envio ('turma|aluno')
 let resultadoSync = '';     // aviso do último resultado de sincronização, mostrado na tela
 let indicador = null;
-const ausentes = new Set(); // chamada rápida: todos começam presentes; o professor toca em quem faltou
 const hoje = hojeISO();
 // Observações rápidas: um painel flutuante sob o campo em foco (sem mexer na altura das linhas e sem ser cortado pela rolagem da tabela).
 const flutuante = document.createElement('div');
@@ -29,7 +34,6 @@ flutuante.setAttribute('role', 'group');
 flutuante.setAttribute('aria-label', 'Observações rápidas');
 let campoObs = null;
 
-const CAMPOS = { n1: 'Nota do 1º bimestre', n2: 'Nota do 2º bimestre', faltas: 'Faltas' };
 // Observações rápidas: o clique (ou Alt+1 a Alt+6 no campo) preenche a observação do estudante sem digitar.
 const CHIPS = ['Não entregou', 'Entregou incompleto', 'Participou bem', 'Faltou à prova', 'Precisa de apoio', 'Evoluiu'];
 const obsCelula = (a) => `<td class="obs-celula" data-rotulo="Observação"><label class="sr-only" for="${a.id}-obs">Observação sobre ${esc(a.nome)}</label><input id="${a.id}-obs" class="entrada" type="text" maxlength="140" autocomplete="off" aria-keyshortcuts="Alt+1 Alt+2 Alt+3 Alt+4 Alt+5 Alt+6" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="obs" value="${esc(a.obs ?? '')}"></td>`;
@@ -68,10 +72,9 @@ async function mostrar() {
     abonos = abonosPorEstudante(chamadas, await conjunto('justificativas'));
     movs = await conjunto('movimentacoes');
     prof = professores.find((p) => p.id === logado.professorId);
-    aulasDadas = lv.aulasDadas;
-    bimestres = lv.bimestresLancados;
+    letivoAtual = lv;
     minhas = turmasDoProfessor(prof.id, { alocacoes, turmas, matriz: matrizes });
-    // Estudantes enturmados pela secretaria entram no diário, com notas em branco.
+    // Estudantes enturmados pela secretaria entram no diário.
     const novos = minhas.map(({ turma }) => sincronizarDiario(dados, turma.id, { pedidos, enturmacao })).some(Boolean);
     if (novos) await salvarDados('diario', dados);
     // Registros pendentes aparecem na tela, mas só na memória: quem grava no servidor é a sincronização.
@@ -85,10 +88,11 @@ async function mostrar() {
 }
 function tirarFoto() {
   baseline = {};
-  Object.entries(dados).forEach(([t, alunos]) => alunos.forEach((a) => { baseline[`${t}|${a.id}`] = { n1: a.n1, n2: a.n2, faltas: a.faltas, obs: a.obs ?? '' }; }));
+  Object.entries(dados).forEach(([t, alunos]) => alunos.forEach((a) => { baseline[`${t}|${a.id}`] = a.obs ?? ''; }));
 }
-// Estudantes da turma aberta cujas notas ou faltas mudaram desde a última foto.
-const alterados = () => dados[turmaId].filter((a) => { const b = baseline[`${turmaId}|${a.id}`]; return !b || b.n1 !== a.n1 || b.n2 !== a.n2 || b.faltas !== a.faltas || b.obs !== (a.obs ?? ''); });
+// Estudantes da turma aberta cuja observação mudou desde a última foto.
+const alterados = () => dados[turmaId].filter((a) => baseline[`${turmaId}|${a.id}`] !== (a.obs ?? ''));
+const lerObservacoes = () => main.querySelectorAll('[data-campo="obs"]').forEach((c) => { const a = dados[turmaId].find((x) => x.id === c.dataset.aluno); if (a) a.obs = c.value.trim(); });
 
 // Envia o que ficou pendente: relê o "servidor", aplica pela regra do registro mais recente e limpa a fila.
 async function sincronizarAgora() {
@@ -112,6 +116,37 @@ async function sincronizarAgora() {
   }
 }
 
+const atual = () => bimestreAtual(letivoAtual);
+const periodo = (b) => periodoDoBimestre(letivoAtual, b);
+/** Frequência do estudante no bimestre, pelas chamadas (a trilha do registro de aula). */
+const freqDoBimestre = (a, b) => frequenciaNoPeriodo(chamadas, turmaId, a.id, periodo(b));
+
+/** Faltas (quantas aulas perdeu) e frequência (porcentagem de presença): coisas diferentes, mostradas de jeitos diferentes. */
+const celulaFaltas = (n, rot) => `<td class="num celula-faltas" data-rotulo="${rot}"><div><strong>${n}</strong> <span class="texto-suave texto-pequeno">${n === 1 ? 'aula' : 'aulas'}</span></div></td>`;
+const celulaFrequencia = (pct, rot) => (pct === null
+  ? `<td data-rotulo="${rot}"><div class="texto-suave texto-pequeno">sem chamada</div></td>`
+  : `<td data-rotulo="${rot}"><div class="barra-frequencia" title="${numeroBR(pct, 0)}% de presença"><span style="width:${Math.max(0, Math.min(100, pct))}%" class="nivel-${semaforoFrequencia(pct).chave}"></span></div><small class="valor-frequencia">${numeroBR(pct, 0)}%</small></td>`);
+
+function linha(a, b, aberto) {
+  const fr = freqDoBimestre(a, b);
+  if (!aberto) return `<tr><td>${esc(a.nome)}</td>${fr.aulas ? `${celulaFaltas(fr.faltas, 'Faltas no bimestre')}${celulaFrequencia(fr.percentual, 'Frequência no bimestre')}` : '<td class="texto-suave" data-rotulo="Faltas no bimestre"><div>—</div></td><td class="texto-suave" data-rotulo="Frequência no bimestre"><div>—</div></td>'}</tr>`;
+  return `<tr><td>${esc(a.nome)}${pendentesIds.has(`${turmaId}|${a.id}`) ? `<span class="pendente-marca">${etiqueta('pendente de envio', 'atencao')}</span>` : ''}</td>
+    ${celulaFaltas(fr.faltas, 'Faltas no bimestre')}${celulaFrequencia(fr.percentual, 'Frequência no bimestre')}
+    <td data-rotulo="Retirar falta">${fr.faltas ? `<button type="button" class="botao botao-secundario botao-mini" data-retirar="${a.id}">Retirar falta</button>` : '<span class="texto-suave texto-pequeno">sem faltas</span>'}</td>
+    ${obsCelula(a)}</tr>`;
+}
+/** Trilha da frequência: as últimas chamadas da turma, que vêm do registro de aula, com as faltas retiradas e o motivo. */
+function trilha(alunos) {
+  const lista = Object.entries(chamadas[turmaId] || {}).sort(([x], [y]) => y.localeCompare(x)).slice(0, 5);
+  const feitaHoje = chamadas[turmaId]?.[hoje];
+  const primeiro = (id) => (alunos.find((a) => a.id === id)?.nome || '').split(' ')[0];
+  return `<section class="trilha-frequencia" aria-labelledby="trilha-titulo"><div class="linha-entre"><h2 id="trilha-titulo" class="esp-t-0">Frequência: trilha das chamadas</h2>
+      <a class="botao ${feitaHoje ? 'botao-secundario' : ''} botao-mini" href="${link('professor/registro-aula.html')}?turma=${turmaId}">${feitaHoje ? 'Ver o registro de hoje' : 'Registrar aula e chamada de hoje'}</a></div>
+    <p class="texto-suave texto-pequeno esp-t-0">As faltas não são digitadas aqui: cada aula registrada com chamada soma, para quem faltou, as aulas do dia pela grade.</p>
+    ${lista.length ? `<ul class="lista-trilha">${lista.map(([d, c]) => { const nomes = c.ausentes.map(primeiro).filter(Boolean); const ret = (c.retiradas || []).map((r) => `${esc(primeiro(r.alunoId))} (${esc(textoDoMotivo(r.motivo).toLowerCase())})`); return `<li><strong>${dataBR(d).slice(0, 5)}</strong> · ${Number(c.aulas) || 1} ${Number(c.aulas) > 1 ? 'aulas' : 'aula'} · ${nomes.length ? `${nomes.length} ${nomes.length > 1 ? 'faltaram' : 'faltou'}: ${esc(nomes.join(', '))}` : 'todos presentes'}${ret.length ? `<span class="trilha-retirada"> · falta retirada: ${ret.join(', ')}</span>` : ''}${c.pendente ? ` ${etiqueta('pendente de envio', 'atencao')}` : ''}</li>`; }).join('')}</ul>` : '<p class="texto-suave">Nenhuma chamada registrada nesta turma ainda.</p>'}
+  </section>`;
+}
+
 function desenhar() {
   esconderChips();
   if (!minhas.length) {
@@ -119,201 +154,159 @@ function desenhar() {
     return;
   }
   if (!minhas.some((m) => m.turma.id === turmaId)) turmaId = minhas[0].turma.id;
+  const at = atual();
+  if (!bimVer || estadoDoBimestre(bimVer, at) === 'bloqueado') bimVer = at;
+  const aberto = estadoDoBimestre(bimVer, at) === 'aberto';
   const { turma: t, componente } = minhas.find((m) => m.turma.id === turmaId);
   const escola = escolas.find((e) => e.id === t.escolaId);
   const inativos = estudantesInativos(movs);
-  const alunos = dados[turmaId].filter((a) => !inativos.has(a.id)); // transferidos e cancelados saem da chamada e do lançamento
+  const alunos = dados[turmaId].filter((a) => !inativos.has(a.id)); // transferidos e cancelados saem da chamada
   const fora = dados[turmaId].filter((a) => inativos.has(a.id));
-  const campo = (a, c, max) => `<td data-rotulo="${CAMPOS[c]}"><label class="sr-only" for="${a.id}-${c}">${CAMPOS[c]} de ${esc(a.nome)}</label><input id="${a.id}-${c}" class="entrada" inputmode="decimal" data-aluno="${a.id}" data-nome="${esc(a.nome)}" data-campo="${c}" data-max="${max}" data-vazio="${c !== 'faltas' && a[c] === null}" value="${c === 'faltas' ? a[c] : (a[c] === null ? '' : numeroBR(a[c]))}"></td>`;
+  const per = periodo(bimVer);
   main.innerHTML = `
     <div class="barra-turma">
       <div class="campo campo-turma"><label for="turma">Turma e componente</label><select id="turma" class="entrada">${minhas.map((m) => `<option value="${m.turma.id}" ${m.turma.id === turmaId ? 'selected' : ''}>${esc(m.turma.nome)} — ${esc(m.componente)}</option>`).join('')}</select></div>
-      <p class="info-turma esp-b-0">${esc(nomeCurto(escola.nome))} · turma ${esc(codigoDaTurma(t))} · ${bimestres}º bimestre lançado · ${aulasDadas} aulas dadas</p>
-      <a class="botao botao-secundario botao-mini" href="${link('professor/mapa.html')}?turma=${turmaId}">Mapa de calor da turma</a>
+      <p class="info-turma esp-b-0">${esc(nomeCurto(escola.nome))} · turma ${esc(codigoDaTurma(t))} · ${at}º bimestre em andamento</p>
+      <div class="linha-botoes"><a class="botao botao-secundario botao-mini" href="${link('professor/notas.html')}?turma=${turmaId}">Notas da turma</a><a class="botao botao-secundario botao-mini" href="${link('professor/mapa.html')}?turma=${turmaId}">Mapa de calor</a></div>
     </div>
     <h1 class="esp-b-3">Diário de classe · ${esc(t.nome)} · ${esc(componente)}</h1>
     <div id="resultado-sync" class="esp-b-3">${resultadoSync}</div>
     ${fora.length ? `<p class="texto-suave texto-pequeno esp-b-3">Fora da lista (saíram da escola): ${fora.map((a) => `${esc(a.nome)} (${esc(situacaoDoEstudante(a.id, movs).texto.toLowerCase())})`).join(', ')}.</p>` : ''}
-    ${alunos.length ? `${painelChamada(alunos)}
-    <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-notas"><caption class="sr-only">Chamada, notas e faltas de ${esc(t.nome)}, ${esc(componente)}</caption>
-      <thead><tr><th scope="col">Estudante</th><th scope="col">Faltou hoje</th><th scope="col">Nota do 1º bimestre</th><th scope="col">Nota do 2º bimestre</th><th scope="col" class="num">Faltas</th><th scope="col" class="num">Presença</th><th scope="col">Situação</th><th scope="col">Observação</th></tr></thead>
-      <tbody>${alunos.map((a) => { const freq = presenca(a.faltas, aulasDadas); const p = `${freq.toFixed(0)}%`; const sit = situacao(media(a.n1, a.n2), freq); return `<tr><td>${esc(a.nome)}${pendentesIds.has(`${turmaId}|${a.id}`) ? `<span class="pendente-marca">${etiqueta('pendente de envio', 'atencao')}</span>` : ''}<span class="presenca-inline texto-suave">Presença ${p}</span></td>${celulaHoje(a)}${campo(a, 'n1', 10)}${campo(a, 'n2', 10)}${campo(a, 'faltas', aulasDadas)}<td class="presenca-celula num">${p}${abonos[a.id] ? `<small class="abono-marca">${abonos[a.id]} ${abonos[a.id] > 1 ? 'abonadas' : 'abonada'}</small>` : ''}</td><td class="situacao-celula" data-rotulo="Situação">${etiqueta(sit.texto, sit.tipo)}</td>${obsCelula(a)}</tr>`; }).join('')}</tbody>
+    ${alunos.length ? `${trilha(alunos)}
+    ${abasDeBimestre(letivoAtual, at, bimVer)}
+    <p class="esp-t-2 esp-b-2"><strong>${bimVer}º bimestre</strong>${per ? ` · ${dataBR(per.inicio)} a ${dataBR(per.fim)}` : ''} · ${aberto ? 'para retirar uma falta, escolha a data e o motivo. A retirada fica registrada.' : 'fechado: só consulta.'}</p>
+    <div class="tabela-rolagem"><table class="tabela tabela-cartoes tabela-frequencia"><caption class="sr-only">${bimVer}º bimestre de ${esc(t.nome)}, ${esc(componente)}: faltas e frequência</caption>
+      <thead><tr><th scope="col">Estudante</th><th scope="col" class="num">Faltas <span class="sr-only">no bimestre, em aulas</span><small class="th-apoio">aulas perdidas</small></th><th scope="col">Frequência <small class="th-apoio">% de presença</small></th>${aberto ? '<th scope="col"><span class="sr-only">Retirar falta</span></th><th scope="col">Observação</th>' : ''}</tr></thead>
+      <tbody>${alunos.map((a) => linha(a, bimVer, aberto)).join('')}</tbody>
     </table></div>
-    <p class="contagem">${alunos.length} ${alunos.length === 1 ? 'estudante' : 'estudantes'} · Enter desce para o próximo estudante · Shift+Enter sobe · Tab vai para o campo seguinte · Alt+1 a Alt+6 inserem uma observação rápida</p>
-    ${alunos.some((a) => abonos[a.id]) ? '<p class="contagem">Faltas abonadas (justificativa aceita pela secretaria) continuam no diário, mas não contam na frequência que o estudante e a família veem.</p>' : ''}
-    <div class="barra-acoes compacta"><button type="button" class="botao" id="salvar">Salvar notas e faltas</button><span class="texto-suave" id="estado-diario">As notas salvas aparecem para a família.</span></div>
+    <p class="contagem">${alunos.length} ${alunos.length === 1 ? 'estudante' : 'estudantes'}${aberto ? ' · Alt+1 a Alt+6 inserem uma observação rápida' : ''}</p>
+    ${alunos.some((a) => abonos[a.id]) ? '<p class="contagem">Faltas abonadas (atestado aceito pela secretaria) continuam na trilha, mas não contam na frequência que o estudante e a família veem.</p>' : ''}
+    ${aberto ? `<div class="barra-acoes compacta"><button type="button" class="botao" id="salvar">Salvar observações</button><span class="texto-suave" id="estado-diario">As observações ficam no diário da turma.</span></div>` : ''}
     <div id="erro-diario" role="alert"></div>` : vazio('Nenhum estudante enturmado', 'Quando a secretaria colocar estudantes nesta turma, eles aparecem aqui.')}`;
 }
-// Coluna "Faltou hoje": caixa de marcação enquanto a chamada não foi registrada; depois, o resultado.
-function celulaHoje(a) {
-  const feita = chamadas[turmaId]?.[hoje];
-  if (feita) return `<td data-rotulo="Chamada de hoje">${feita.ausentes.includes(a.id) ? etiqueta('Faltou', 'erro') : '<span class="texto-suave">Presente</span>'}</td>`;
-  return `<td data-rotulo="Faltou hoje"><input type="checkbox" class="caixa-grande" data-faltou="${a.id}" aria-label="Faltou hoje: ${esc(a.nome)}" ${ausentes.has(a.id) ? 'checked' : ''}></td>`;
-}
-// Chamada: todos começam presentes; marque só quem faltou. Registrar soma 1 falta a cada ausente.
-function painelChamada(alunos) {
-  const feita = chamadas[turmaId]?.[hoje];
-  const dataHoje = dataBR(hoje);
-  if (feita) {
-    const nomes = alunos.filter((a) => feita.ausentes.includes(a.id)).map((a) => a.nome);
-    return `<p class="esp-b-3"><strong>Chamada de ${dataHoje} registrada</strong> ${etiqueta('Registrada', 'ok')} ${nomes.length ? `${nomes.length} ${nomes.length > 1 ? 'faltas' : 'falta'}: ${esc(nomes.join(', '))}.` : 'Todos presentes.'} <span class="registro">Registrada em ${dataHoraBR(feita.quando)}</span>${feita.pendente ? ` ${etiqueta('pendente de envio', 'atencao')}` : ''}</p>`;
-  }
-  return `<div class="linha-botoes entre esp-b-3">
-    <p class="esp-t-0 esp-b-0" id="chamada-titulo"><strong>Chamada de ${dataHoje}</strong> · todos começam presentes; marque só quem faltou. <span id="chamada-resumo">${alunos.length - ausentes.size} ${alunos.length - ausentes.size === 1 ? 'presente' : 'presentes'} · ${ausentes.size} ${ausentes.size === 1 ? 'falta' : 'faltas'}</span></p>
-    <button type="button" class="botao" id="registrar-chamada">${ausentes.size ? `Registrar chamada com ${ausentes.size} ${ausentes.size > 1 ? 'faltas' : 'falta'}` : 'Registrar chamada: todos presentes'}</button>
-  </div>`;
-}
-async function registrarChamada() {
-  const t = minhas.find((x) => x.turma.id === turmaId).turma;
-  const alunos = dados[turmaId];
-  if (ausentes.size) {
-    const nomes = alunos.filter((a) => ausentes.has(a.id)).map((a) => a.nome);
-    const ok = await confirmar({ titulo: 'Registrar a chamada de hoje?', texto: `Vai somar 1 falta para: ${nomes.join(', ')}. Depois de registrada, a chamada de hoje não pode ser refeita.`, botao: 'Registrar chamada' });
-    if (!ok) return;
-  }
-  try {
-    const agora = new Date().toISOString();
-    alunos.forEach((a) => { if (ausentes.has(a.id)) a.faltas += 1; });
-    chamadas[turmaId] = { ...(chamadas[turmaId] || {}), [hoje]: { ausentes: [...ausentes], quando: agora } };
-    if (!estaOnline()) {
-      // Sem conexão: a chamada fica na fila do aparelho e só vai ao servidor na sincronização.
-      chamadas[turmaId][hoje].pendente = true;
-      await guardarPendente({ chave: `chamada|${turmaId}|${hoje}`, tipo: 'chamada', turmaId, data: hoje, ausentes: [...ausentes], criadoEm: agora });
-      const n = ausentes.size;
-      ausentes.clear();
-      tirarFoto();
-      desenhar();
-      avisar(`Sem conexão: a chamada de ${t.nome} ficou guardada neste aparelho (${n === 0 ? 'todos presentes' : `${n} ${n === 1 ? 'falta' : 'faltas'}`}) e segue quando a conexão voltar.`);
-      return;
-    }
-    await comEspera(main.querySelector('#registrar-chamada'), async () => {
-      await salvarDados('diario', dados);
-      await salvarDados('chamadas', chamadas);
-      ausentes.forEach((id) => { meta[`${turmaId}|${id}`] = { em: agora }; });
-      if (ausentes.size) await salvarDados('diario-meta', meta);
-    });
-    tirarFoto();
-    await registrarAcao(prof.nome, `Registrou chamada (${ausentes.size} falta${ausentes.size === 1 ? '' : 's'})`, t.nome);
-    const faltas = ausentes.size;
-    ausentes.clear();
-    desenhar();
-    avisar(`Chamada registrada em ${t.nome}: ${faltas === 0 ? 'todos presentes' : `${faltas} ${faltas === 1 ? 'falta lançada' : 'faltas lançadas'}`}.`);
-  } catch {
-    avisar('A chamada não foi registrada e nenhuma falta foi lançada. Confira a conexão e clique em Registrar chamada de novo.');
-    mostrar();
-  }
-}
-// Regra de um campo do diário: devolve a mensagem de erro ou '' se está certo.
-// Nota: 0 a 10 (vírgula ou ponto); faltas: inteiro de 0 ao total de aulas dadas. Nota em branco só vale se ainda não foi lançada.
-function erroDoCampo(c) {
-  if (c.dataset.campo === 'obs') return '';
-  const texto = c.value.trim();
-  if (texto === '' && c.dataset.vazio === 'true') return '';
-  const v = Number(texto.replace(',', '.'));
-  const max = Number(c.dataset.max);
-  if (c.dataset.campo === 'faltas') {
-    return texto === '' || !Number.isInteger(v) || v < 0 || v > max ? `Faltas inválidas em ${c.dataset.nome}: use um número inteiro de 0 a ${max}.` : '';
-  }
-  return texto === '' || Number.isNaN(v) || v < 0 || v > max ? `Nota inválida em ${c.dataset.nome}, ${c.dataset.campo === 'n1' ? '1º' : '2º'} bimestre: use um valor de 0 a ${max}.` : '';
-}
-function mostrarErro(c, texto) {
-  const caixa = main.querySelector('#erro-diario');
-  if (texto) {
-    c.setAttribute('aria-invalid', 'true');
-    c.setAttribute('aria-describedby', 'erro-diario');
-    caixa.dataset.campo = c.id;
-    caixa.innerHTML = `<p class="alerta-erro esp-t-2">${icone('alerta', 20)}<span>${esc(texto)}</span></p>`;
-  } else {
-    c.removeAttribute('aria-invalid');
-    if (caixa.dataset.campo === c.id) { caixa.innerHTML = ''; caixa.dataset.campo = ''; }
-  }
-}
+
 async function salvar() {
-  const campos = [...main.querySelectorAll('[data-aluno]')];
-  campos.forEach((c) => c.removeAttribute('aria-invalid'));
+  if (estadoDoBimestre(bimVer, atual()) !== 'aberto') return;
+  lerObservacoes();
+  const mudaram = alterados();
   const caixa = main.querySelector('#erro-diario');
   caixa.innerHTML = '';
-  for (const c of campos) {
-    const texto = erroDoCampo(c);
-    if (texto) { mostrarErro(c, texto); c.focus(); return; }
-  }
-  for (const c of campos) {
-    const a = dados[turmaId].find((x) => x.id === c.dataset.aluno);
-    if (c.dataset.campo === 'obs') { a.obs = c.value.trim(); continue; }
-    if (c.value.trim() === '') continue; // nota ainda não lançada: continua em branco
-    const v = Number(c.value.replace(',', '.'));
-    a[c.dataset.campo] = c.dataset.campo === 'faltas' ? v : Math.round(v * 10) / 10;
-  }
-  const mudaram = alterados();
+  if (!mudaram.length) { avisar('Nenhuma observação nova para salvar.'); return; }
   try {
     if (!estaOnline()) {
       // Sem conexão: cada estudante alterado vira um registro pendente (um por estudante; salvar de novo substitui).
       for (const a of mudaram) {
         const chave = `notas|${turmaId}|${a.id}`;
         const anterior = await pendentePorChave(chave);
-        await guardarPendente({ chave, tipo: 'notas', turmaId, alunoId: a.id, valores: { n1: a.n1, n2: a.n2, faltas: a.faltas, obs: a.obs ?? '' }, baseEm: anterior ? anterior.baseEm : (meta[`${turmaId}|${a.id}`]?.em ?? null), criadoEm: new Date().toISOString() });
+        await guardarPendente({ chave, tipo: 'notas', turmaId, alunoId: a.id, valores: { obs: a.obs ?? '' }, baseEm: anterior ? anterior.baseEm : (meta[`${turmaId}|${a.id}`]?.em ?? null), criadoEm: new Date().toISOString() });
         pendentesIds.add(`${turmaId}|${a.id}`);
       }
       tirarFoto();
       desenhar();
-      avisar(mudaram.length ? `Sem conexão: ${mudaram.length} ${mudaram.length === 1 ? 'estudante salvo' : 'estudantes salvos'} neste aparelho, pendentes de envio. Seguem quando a conexão voltar.` : 'Sem conexão e sem alterações novas para guardar.');
+      avisar(`Sem conexão: ${mudaram.length} ${plural(mudaram.length, 'observação salva', 'observações salvas')} neste aparelho, pendentes de envio.`);
       return;
     }
     const agora = new Date().toISOString();
     await comEspera(main.querySelector('#salvar'), async () => {
-      await salvarDados('diario', dados);
-      if (mudaram.length) { mudaram.forEach((a) => { meta[`${turmaId}|${a.id}`] = { em: agora }; }); await salvarDados('diario-meta', meta); }
+      recarregarDoServidor();
+      const servidor = await diario();
+      const obs = Object.fromEntries(mudaram.map((a) => [a.id, a.obs ?? '']));
+      servidor[turmaId] = servidor[turmaId].map((a) => (a.id in obs ? { ...a, obs: obs[a.id] } : a));
+      await salvarDados('diario', servidor);
+      mudaram.forEach((a) => { meta[`${turmaId}|${a.id}`] = { em: agora }; });
+      await salvarDados('diario-meta', meta);
+      dados = servidor;
     });
     tirarFoto();
     desenhar();
-    avisar(`Notas e faltas salvas: ${dados[turmaId].length} estudantes, turma ${minhas.find((m) => m.turma.id === turmaId).turma.nome}.`);
+    avisar(`${mudaram.length} ${plural(mudaram.length, 'observação salva', 'observações salvas')}.`);
   } catch {
-    caixa.innerHTML = `<p class="alerta-erro">${icone('alerta', 20)}<span>As notas e faltas não foram salvas. Confira a conexão e clique em Salvar notas e faltas de novo.</span></p>`;
+    caixa.innerHTML = `<p class="alerta-erro">${icone('alerta', 20)}<span>As observações não foram salvas. Confira a conexão e tente de novo.</span></p>`;
   }
 }
+
+/** Janela de retirada: a data da falta e o motivo são escolhidos na lista, sem digitação. */
+function pedirRetirada(aluno, faltas) {
+  const html = `
+    <h2 id="retirar-titulo" class="esp-t-0">Retirar falta de ${esc(aluno.nome)}</h2>
+    <fieldset class="campo"><legend>Data da falta</legend>
+      <div class="lista-opcoes">${faltas.map((f, i) => `<label class="opcao-radio"><input type="radio" name="ret-data" value="${f.data}" ${i === 0 ? 'checked' : ''}><span>${dataBR(f.data)} <small class="texto-suave">· ${f.aulas} ${plural(f.aulas, 'aula', 'aulas')}</small></span></label>`).join('')}</div>
+    </fieldset>
+    <fieldset class="campo"><legend>Motivo</legend>
+      <div class="lista-opcoes">${MOTIVOS_RETIRADA.map(([k, t]) => `<label class="opcao-radio"><input type="radio" name="ret-motivo" value="${k}"><span>${esc(t)}</span></label>`).join('')}</div>
+      <p class="texto-suave texto-pequeno esp-t-1">Atestado médico não é retirada: é abono, e quem registra é a secretaria.</p>
+      <p id="ret-erro" class="erro" role="alert"></p>
+    </fieldset>
+    <div class="linha-botoes fim">
+      <button type="button" class="botao botao-secundario" data-acao="cancelar">Cancelar</button>
+      <button type="button" class="botao" data-acao="retirar">Retirar falta</button>
+    </div>`;
+  return abrirJanela(html, {
+    foco: 'input[name="ret-data"]:checked',
+    aoClicar(e, fechar) {
+      const acao = e.target.closest('[data-acao]')?.dataset.acao;
+      if (acao === 'cancelar') fechar(null);
+      if (acao !== 'retirar') return;
+      const j = e.currentTarget;
+      const data = j.querySelector('input[name="ret-data"]:checked')?.value;
+      const motivo = j.querySelector('input[name="ret-motivo"]:checked')?.value;
+      if (!motivo) { j.querySelector('#ret-erro').textContent = 'Escolha o motivo da retirada.'; j.querySelector('input[name="ret-motivo"]').focus(); return; }
+      fechar({ data, motivo });
+    }
+  });
+}
+async function retirar(alunoId) {
+  if (estadoDoBimestre(bimVer, atual()) !== 'aberto') return;
+  const aluno = dados[turmaId].find((a) => a.id === alunoId);
+  const faltas = faltasDoEstudante(chamadas, turmaId, alunoId, periodo(bimVer));
+  if (!faltas.length) return;
+  if (!estaOnline()) { avisar('Sem conexão: para retirar uma falta é preciso estar conectado.', 'erro'); return; }
+  const escolha = await pedirRetirada(aluno, faltas);
+  if (!escolha) return;
+  lerObservacoes();
+  try {
+    recarregarDoServidor();
+    const [cham, servidor] = await Promise.all([conjunto('chamadas'), diario()]);
+    const r = retirarFalta({ chamadas: cham, alunos: servidor[turmaId], turmaId, data: escolha.data, alunoId, motivo: escolha.motivo, quando: new Date().toISOString(), por: prof.id });
+    if (r.erro) { avisar(r.erro, 'erro'); return; }
+    // A presença entra na média do bimestre: a média de quem já tem prova e atividade lançadas é refeita.
+    servidor[turmaId] = atualizarMedias(r.diario, r.chamadas, turmaId, letivoAtual).map((a) => ({ ...a, obs: dados[turmaId].find((x) => x.id === a.id)?.obs ?? a.obs }));
+    await salvarDados('chamadas', r.chamadas);
+    await salvarDados('diario', servidor);
+    await registrarAcao(prof.nome, `Retirou falta de ${aluno.nome} (${textoDoMotivo(escolha.motivo)})`, `${minhas.find((m) => m.turma.id === turmaId).turma.nome} · ${dataBR(escolha.data)}`);
+    chamadas = r.chamadas; dados = servidor;
+    desenhar();
+    avisar(`Falta de ${dataBR(escolha.data)} retirada: ${textoDoMotivo(escolha.motivo).toLowerCase()}.`, 'ok');
+  } catch {
+    avisar('A falta não foi retirada. Confira a conexão e tente de novo.', 'erro');
+  }
+}
+
 main.addEventListener('click', async (e) => {
   if (e.target.closest('#salvar')) { salvar(); return; }
-  const aluno = e.target.closest('[data-faltou]');
-  if (aluno) {
-    // Só atualiza o resumo da chamada: redesenhar a tabela apagaria as notas digitadas e ainda não salvas.
-    const id = aluno.dataset.faltou;
-    if (aluno.checked) ausentes.add(id); else ausentes.delete(id);
-    const total = dados[turmaId].length;
-    const n = ausentes.size;
-    const resumo = main.querySelector('#chamada-resumo');
-    if (resumo) resumo.textContent = `${total - n} ${total - n === 1 ? 'presente' : 'presentes'} · ${n} ${n === 1 ? 'falta' : 'faltas'}`;
-    const registrar = main.querySelector('#registrar-chamada');
-    if (registrar) registrar.textContent = n ? `Registrar chamada com ${n} ${n > 1 ? 'faltas' : 'falta'}` : 'Registrar chamada: todos presentes';
-    return;
+  const ret = e.target.closest('[data-retirar]');
+  if (ret) { retirar(ret.dataset.retirar); return; }
+  const aba = e.target.closest('[data-bim]');
+  if (aba && !aba.disabled) {
+    lerObservacoes(); // a observação é do estudante, não do bimestre: continua na tela até ser salva
+    bimVer = Number(aba.dataset.bim); desenhar(); main.querySelector(`[data-bim="${bimVer}"]`)?.focus();
   }
-  if (e.target.closest('#registrar-chamada')) registrarChamada();
 });
-// Validação em tempo real: erro ao digitar/sair do campo; a nota é normalizada para o formato brasileiro (8,5).
 main.addEventListener('input', (e) => {
-  if (!e.target.dataset?.aluno) return;
-  if (e.target.getAttribute('aria-invalid')) mostrarErro(e.target, erroDoCampo(e.target));
+  if (e.target.dataset?.campo !== 'obs') return;
   const estado = main.querySelector('#estado-diario');
-  if (estado) { estado.textContent = 'Há alterações não salvas.'; estado.classList.add('cor-atencao'); }
+  if (estado) { estado.textContent = 'Há observações não salvas.'; estado.classList.add('cor-atencao'); }
 });
-// Menos esforço no lançamento: o texto do campo já vem selecionado e Enter desce para o mesmo campo do estudante seguinte.
-main.addEventListener('focusin', (e) => { if (e.target.dataset?.aluno) e.target.select(); });
 main.addEventListener('keydown', (e) => {
   const c = e.target;
-  if (!c.dataset?.aluno) return;
+  if (c.dataset?.campo !== 'obs') return;
   const alt = /^Digit([1-6])$/.exec(e.code);
-  if (e.altKey && alt && c.dataset.campo === 'obs') { e.preventDefault(); aplicarChip(c, CHIPS[Number(alt[1]) - 1]); return; }
-  const passo = e.key === 'Enter' ? (e.shiftKey ? -1 : 1) : e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+  if (e.altKey && alt) { e.preventDefault(); aplicarChip(c, CHIPS[Number(alt[1]) - 1]); return; }
+  const passo = e.key === 'Enter' ? (e.shiftKey ? -1 : 1) : 0;
   if (!passo) return;
   e.preventDefault();
-  const mesmos = [...main.querySelectorAll(`[data-campo="${c.dataset.campo}"]`)];
+  const mesmos = [...main.querySelectorAll('[data-campo="obs"]')];
   mesmos[(mesmos.indexOf(c) + passo + mesmos.length) % mesmos.length]?.focus();
 });
-main.addEventListener('focusout', (e) => {
-  const c = e.target;
-  if (!c.dataset?.aluno) return;
-  const texto = erroDoCampo(c);
-  mostrarErro(c, texto);
-  if (!texto && c.dataset.campo !== 'faltas' && c.dataset.campo !== 'obs' && c.value.trim() !== '') c.value = numeroBR(Number(c.value.replace(',', '.')));
-});
-main.addEventListener('change', (e) => { if (e.target.id === 'turma') { turmaId = e.target.value; ausentes.clear(); desenhar(); } });
+main.addEventListener('change', (e) => { if (e.target.id === 'turma') { lerObservacoes(); turmaId = e.target.value; desenhar(); } });
 mostrar();

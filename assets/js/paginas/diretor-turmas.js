@@ -10,6 +10,7 @@ import { carregar, conjunto, salvar, registrarAcao, turmasEscola, dataDeReferenc
 import { situacaoAto, codigoDaTurma } from '../regras.js';
 import { ETAPAS, ordemDaSerie } from '../dominio/niveis.js';
 import { seriesEscolhidas } from '../dominio/cadastros.js';
+import { TURNOS } from '../dominio/vagas.js';
 import { atosDaEscola, turnosDaEscola, nomeSugerido, conflitoDeSala, validarTurma, montarTurma, aplicarEdicaoDeTurma, ocupadosDaTurma, podeApagarTurma, situacoesAbertas } from '../dominio/estrutura.js';
 import { campo, lerFormulario, mostrarErros } from '../componentes/formulario.js';
 
@@ -122,7 +123,7 @@ function desenhar() {
     ${salas.length ? '' : `<p class="alerta-atencao">${icone('alerta', 20)}<span>A escola não tem sala cadastrada. Cadastre as salas em <a href="${link('diretor/escola.html')}">Estrutura da escola</a> antes de criar turmas.</span></p>`}
     <div class="ferramentas-tabela">
       <div class="campo"><label for="filtro-serie">Série</label><select id="filtro-serie" class="entrada"><option value="">Todas as séries</option>${[...new Set(turmas.map((t) => t.serie))].map((s) => `<option ${s === filtroSerie ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select></div>
-      <div class="campo"><label for="filtro-turno">Turno</label><select id="filtro-turno" class="entrada"><option value="">Todos os turnos</option>${[...new Set(turmas.map((t) => t.turno))].map((s) => `<option ${s === filtroTurno ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select></div>
+      <div class="campo"><label for="filtro-turno">Turno</label><select id="filtro-turno" class="entrada"><option value="">Todos os turnos</option>${TURNOS.filter((x) => turnosDaEscola(escola, turmas).includes(x) || turmas.some((t) => t.turno === x)).map((s) => `<option ${s === filtroTurno ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select></div>
       <button type="button" class="botao" data-nova ${salas.length ? '' : 'disabled'}>${icone('mais', 20)}Criar turma</button>
     </div>
     ${formulario()}

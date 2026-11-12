@@ -24,7 +24,7 @@ function formulario() {
       ${campo({ nome: 'data', rotulo: 'Data prevista', tipo: 'date', valor: v.data, obrigatorio: true })}
       ${campo({ nome: 'aulas', rotulo: 'Quantas aulas', tipo: 'number', valor: v.aulas, obrigatorio: true, atributos: `min="1" max="${PLANO.aulasMax}" inputmode="numeric"` })}
     </div>
-    ${campo({ nome: 'habilidades', rotulo: 'Habilidades da BNCC (códigos)', valor: v.habilidades, obrigatorio: true, dica: 'Separe por vírgula. Exemplo: EF06MA01, EF06MA02. A leitura do código: EF06MA01 = Ensino Fundamental, 6º ano, Matemática, habilidade 01. Confira o texto da habilidade na BNCC.', atributos: 'autocomplete="off" autocapitalize="characters" spellcheck="false"' })}
+    ${campo({ nome: 'habilidades', rotulo: 'Habilidades da BNCC (códigos)', valor: v.habilidades, obrigatorio: true, dica: 'Separe por vírgula. Exemplo: EF06MA01, EF06MA02. A leitura do código: EF06MA01 = Ensino Fundamental, 6º ano, Matemática, habilidade 01. Confira o texto da habilidade na BNCC.', atributos: 'autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="200"' })}
     <p class="texto-pequeno esp-b-2" id="exemplos-codigos">Exemplos de Matemática: ${EXEMPLOS_DE_CODIGOS.map(([c, t]) => `<button type="button" class="botao botao-secundario botao-mini" data-codigo="${c}" title="${esc(t)}" aria-label="Acrescentar ${c}: ${esc(t)}">${c}</button>`).join(' ')}</p>
     ${area('objetivos', 'Objetivos de aprendizagem', v.objetivos, { obrigatorio: true, dica: 'O que o estudante deve ser capaz de fazer ao fim da aula.' })}
     ${area('atividades', 'Atividades e metodologia', v.atividades, { obrigatorio: true, dica: 'Como a aula acontece, passo a passo.', linhas: 4 })}

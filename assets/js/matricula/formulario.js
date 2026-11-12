@@ -20,7 +20,7 @@ import { carregar, matriculas, vagas as lerVagas, salvar, novoProtocolo, estudan
 import { SERIES, etapaDaSerie, serieCompleta, nomeCurto, motivoBloqueio, proximaSerie, atoDaEtapa, situacaoAto } from '../regras.js';
 import { hojeISO } from '../dominio/hoje.js';
 import { documentosDaMatricula, erroDoCpfDoEstudante, mascaraCpf, faseDaMatricula } from '../dominio/matricula-online.js';
-import { mascararCpf, somenteDigitos } from '../dominio/cadastros.js';
+import { mascararCpf, somenteDigitos, telefoneValido } from '../dominio/cadastros.js';
 import '../componentes/data-br.js'; // data de nascimento sempre em dd/mm/aaaa
 
 const MODO = document.body.dataset.modo === 'presencial' ? 'presencial' : 'online';
@@ -267,11 +267,11 @@ const mascararTelefone = (texto) => {
 // Regras de cada campo do passo 1. Devolvem a mensagem de erro ou ''.
 const hoje = new Date().toISOString().slice(0, 10);
 const REGRAS = {
-  'f-estudante': (v) => (!v || v.length < 3 ? 'Escreva o nome do estudante.' : ''),
+  'f-estudante': (v) => (!v || v.length < 3 ? 'Escreva o nome do estudante.' : v.length > 120 ? 'O nome pode ter no máximo 120 letras.' : ''),
   'f-nascimento': (v) => (!v ? 'Informe a data de nascimento.' : !/^\d{4}-\d{2}-\d{2}$/.test(v) ? 'Escreva a data de nascimento como dd/mm/aaaa, por exemplo 15/03/2012.' : v > hoje ? 'A data de nascimento não pode ser no futuro.' : v < '1990-01-01' ? 'Confira a data de nascimento.' : ''),
   'f-cpf': (v) => erroDoCpfDoEstudante(v, { pedidos: base?.pedidos || [] }),
   'f-responsavel': (v) => (!v ? 'Escreva o seu nome.' : ''),
-  'f-telefone': (v) => ((v || '').replace(/\D/g, '').length < 10 ? 'Escreva um telefone com DDD, por exemplo (79) 99999-9999.' : '')
+  'f-telefone': (v) => (!telefoneValido(v) ? 'Escreva um telefone com DDD válido, por exemplo (79) 99999-9999 (celular) ou (79) 3222-1234 (fixo).' : '')
 };
 const mostrarErroCampo = (campo, mensagem) => {
   const erro = main.querySelector('#erro-passo');

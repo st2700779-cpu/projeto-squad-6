@@ -30,6 +30,11 @@ import { totaisDaEscola, comprovacaoPorCategoria, pendenciasDaEscola, gastosDaEs
 import { aplicarDeclaracoes as somarDeclaracoes } from '../assets/js/dominio/prestacao.js';
 import { TIPOS_DE_NOTA, GERAL, normalizarNota, notasDaEscola, pendenciasAbertas, contextos, validarNota, acrescentarNota, alternarResolvida } from '../assets/js/dominio/notas-profin.js';
 import { rascunhoDoRelatorio } from '../assets/js/dominio/profin.js';
+import { PESOS, bimestreAtual, estadoDoBimestre, periodoDoBimestre, aulasNaGrade, frequenciaNoPeriodo, notaDePresenca, mediaDoBimestre, lerNota, lancarBimestre, aplicarChamada, diaDaSemana, lancarNotas, parteLancada, atualizarMedias, MOTIVOS_RETIRADA, faltasDoEstudante, retirarFalta } from '../assets/js/dominio/diario-bimestral.js';
+import { aplicarPendentes } from '../assets/js/dominio/sincronizacao.js';
+import { MASCARAS, FORMATOS, numeroDoDinheiro, dinheiroParaCampo } from '../assets/js/componentes/formatos.js';
+import { emailValido as emailOk, telefoneValido as telefoneOk } from '../assets/js/dominio/cadastros.js';
+import { rgValido, ocultarNome, ofertasDaSerie, buscarDuplicados, validarPrimeiroAcesso, validarCadastroBasico, validarResponsavelEndereco, validarTermos, tipoPelaOrigem, ORIGENS, CORES_RACA, posicaoNaEspera, esperaAtivaDoCpf, consultarEspera, cancelarEspera, mascaraCep } from '../assets/js/dominio/portal-matricula.js';
 import { periodoDaRematricula, faseDaMatricula, idadeEm, documentosDaMatricula, erroDoCpfDoEstudante, mascaraCpf, acompanharPedido } from '../assets/js/dominio/matricula-online.js';
 const DIAS_DA_GRADE = ['seg', 'ter', 'qua', 'qui', 'sex'];
 const dado = (n) => JSON.parse(readFileSync(new URL(`../data/${n}.json`, import.meta.url), 'utf8'));
@@ -642,7 +647,7 @@ t('níveis de ensino: dados = padrão, séries únicas, matrícula só nos níve
   assert.deepEqual(dado('niveis'), NIVEIS_PADRAO, 'data/niveis.json é igual ao padrão');
   const todas = NIVEIS.flatMap((n) => n.series);
   assert.equal(new Set(todas).size, todas.length, 'nenhuma série repetida entre níveis');
-  assert.deepEqual(SERIES_DOS_NIVEIS, ['6º ano', '7º ano', '8º ano', '9º ano', '1ª série EM', '2ª série EM', '3ª série EM']);
+  assert.deepEqual(SERIES_DOS_NIVEIS, ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano', '6º ano', '7º ano', '8º ano', '9º ano', '1ª série EM', '2ª série EM', '3ª série EM'], 'Anos Iniciais, Anos Finais e Médio na matrícula');
   assert.ok(NIVEIS.some((n) => n.etapa === 'EJA — Ensino Médio') && NIVEIS.some((n) => n.nomenclatura === 'modulo'));
   assert.equal(nivelDaSerie('EJA EM — Etapa II').etapa, 'EJA — Ensino Médio');
   assert.equal(etapaDe('EJA EM — Etapa I'), 'EJA — Ensino Médio', 'EJA EM não é confundida com o Ensino Médio regular');
@@ -684,7 +689,7 @@ t('níveis: cadastro, nova série sem repetir nome, série e nível em uso não 
   aplicarNiveis(lista.map((n) => (n.id === 'n-ai' ? { ...n, matricula: true } : n.id === 'n-em' ? { ...n, ativo: false } : n)));
   assert.equal(ref, SERIES_DOS_NIVEIS); assert.deepEqual(ref, ['1º ano', '2º ano', '3º ano', '4º ano', '5º ano', '6º ano', '7º ano', '8º ano', '9º ano']);
   assert.equal(validarEscola({ ...base, etapas: ['Ensino Médio'] }, { escolas, hoje: HOJE }).erros.etapas !== undefined, true, 'nível desativado não entra em escola nova');
-  aplicarNiveis([]); assert.equal(SERIES_DOS_NIVEIS.length, 7, 'lista vazia volta ao padrão');
+  aplicarNiveis([]); assert.equal(SERIES_DOS_NIVEIS.length, 12, 'lista vazia volta ao padrão');
   aplicarNiveis(NIVEIS_PADRAO);
 });
 
@@ -734,7 +739,8 @@ t('estrutura da escola: séries dentro do ato, salas, turnos e as turmas da esco
   const salaTt1 = salasE1.find((s) => s.id === turmasE1[0].salaId);
   assert.equal(podeRemoverSala(salaTt1, turmasE1).ok, false); assert.equal(podeRemoverSala(salasE1.find((s) => s.id === 's12'), turmasE1).ok, true);
   assert.ok(validarEdicaoDeSala({ nome: salaTt1.nome, capacidade: '20' }, salaTt1, { salas: salasE1, turmas: turmasE1 }).erros.capacidade, 'sala não fica menor que a turma');
-  assert.deepEqual(turnosDaEscola(escolaE1, turmasE1), ['Manhã', 'Tarde', 'Noite']);
+  assert.deepEqual(turnosDaEscola(escolaE1, turmasE1), ['Manhã', 'Tarde', 'Noite', 'Integral'], 'a escola e1 já funciona em tempo integral');
+  assert.deepEqual(turnosDaEscola({ ...escolaE1, turnos: undefined }, turmasE1), ['Manhã', 'Tarde', 'Noite'], 'sem escolha da direção, valem os turnos das turmas');
   assert.deepEqual(turnosDaEscola({ ...escolaE1, turnos: ['Integral', 'Manhã'] }, turmasE1), ['Manhã', 'Integral'], 'escolha da direção, na ordem dos turnos');
   assert.equal(podeTirarTurno('Manhã', { turnos: ['Manhã', 'Tarde', 'Noite'], turmasDaEscola: turmasE1 }).ok, false);
   assert.equal(podeTirarTurno('Integral', { turnos: ['Manhã', 'Integral'], turmasDaEscola: turmasE1 }).ok, true);
@@ -756,7 +762,7 @@ t('turma da direção: série com ato vigente, turno da escola, sala livre (inte
   assert.ok(validarTurma({ ...f, salaId: 's4' }, ctx).erros.salaId, 's4 é da 1ª série A de manhã');
   assert.ok(validarTurma({ ...f, turno: 'Integral', salaId: 's1', nome: 'x integral' }, ctx).erros.salaId, 'integral bate com a turma da tarde da sala s1');
   assert.equal(validarTurma({ ...f, turno: 'Integral', salaId: 's3', nome: '3ª série A — integral' }, ctx).ok, true);
-  assert.ok(validarTurma({ ...f, turno: 'Integral' }, { ...ctx, escola: escolaE1 }).erros.turno, 'a escola precisa ter o turno integral');
+  assert.ok(validarTurma({ ...f, turno: 'Integral' }, { ...ctx, escola: { ...escolaE1, turnos: ['Manhã', 'Tarde', 'Noite'] } }).erros.turno, 'a escola precisa ter o turno integral');
   assert.ok(validarTurma({ ...f, serie: 'EJA EM — Etapa I' }, ctx).erros.serie, 'série que a escola não oferece');
   assert.ok(validarTurma({ ...f, nome: '1ª série A' }, ctx).erros.nome, 'nome repetido no mesmo turno');
   const vencido = atosBase.map((a) => (a.escolaId === 'e1' && a.etapa === 'Ensino Médio' ? { ...a, validade: '2026-01-01' } : a));
@@ -912,6 +918,158 @@ t('anotações do PROFIN: pendência ou contexto, interna ou compartilhada, reso
   const texto = rascunhoDoRelatorio({ escolas: escolas.filter((e) => e.id === 'e2'), repasses: p.repasses.filter((r) => r.escolaId === 'e2'), notas: resolvida, hoje: HOJE });
   assert.match(texto, /Pendência resolvida NF 101 \(Ana, 07\/10\/2026\): Nota fiscal sem carimbo/); assert.match(texto, /Contexto geral \(Ana, 07\/10\/2026\): Escola em reforma/);
   assert.match(rascunhoDoRelatorio({ escolas: escolas.filter((e) => e.id === 'e2'), repasses: p.repasses.filter((r) => r.escolaId === 'e2'), notas, hoje: HOJE }), /Pendência NF 101 \(Ana/);
+});
+
+t('matrícula no modelo do Portal da Matrícula: ofertas por turno, duplicidade, cadastro, responsável, termos e lista de espera', () => {
+  const H = '2026-10-07';
+  assert.equal(ocultarNome('Maria Souza de Jesus'), 'Maria S**** d* J****');
+  assert.equal(ocultarNome(''), '');
+  // Ofertas: vagas por turno sem passar do total; escola sem autorização ou sem turma fica fora
+  const escolasT = [{ id: 'x1', nome: 'Escola B', municipio: 'Aracaju' }, { id: 'x2', nome: 'Escola A', municipio: 'Aracaju' }, { id: 'x3', nome: 'Escola C', municipio: 'Aracaju' }, { id: 'x4', nome: 'Escola D', municipio: 'Lagarto' }];
+  const det = { x1: { '6º ano': { porTurno: { Manhã: 5, Tarde: 2 }, vagas: 3, bloqueada: false } }, x2: { '6º ano': { porTurno: { Integral: 0 }, vagas: 0, bloqueada: false } }, x3: { '6º ano': { porTurno: { Manhã: 9 }, vagas: 0, bloqueada: true } }, x4: { '6º ano': { porTurno: { Manhã: 4 }, vagas: 4 } } };
+  const of = ofertasDaSerie({ escolas: escolasT, vagasDetalhe: det, cidade: 'Aracaju', serie: '6º ano' });
+  assert.deepEqual(of.map((o) => o.escola.id), ['x1', 'x2'], 'com vaga primeiro; sem autorização fica fora; outra cidade fica fora');
+  assert.deepEqual(of[0].turnos, [{ turno: 'Manhã', vagas: 3 }, { turno: 'Tarde', vagas: 2 }]);
+  assert.equal(of[0].tipo, 'Tempo parcial'); assert.equal(of[1].tipo, 'Tempo integral');
+  // Duplicidade: mesmo nome e nascimento; dados ocultos; filiação que confere vem primeiro
+  const ests = [{ id: 'a', nome: 'Ana Clara Lima', nascimento: '2012-01-02', responsavel: 'Rosa Lima', escolaId: 'x1', serie: '9º ano', codigoAluno: 'ALU-1' }, { id: 'b', nome: 'ANA CLARA LIMA', nascimento: '2012-01-02', responsavel: 'Outra Pessoa', escolaId: 'x1', serie: '8º ano' }];
+  const dup = buscarDuplicados({ nome: 'ana clara  lima', filiacao: 'Outra Pessoa', nascimento: '2012-01-02' }, { estudantes: ests, escolas: escolasT });
+  assert.equal(dup.length, 2); assert.equal(dup[0].confere, true); assert.equal(dup[0].nome, 'ANA C**** L***'); assert.ok(!dup.some((x) => x.filiacao.includes('Lima') && x.filiacao.length > 6 && !x.filiacao.includes('*')));
+  assert.equal(buscarDuplicados({ nome: 'Ana Clara Lima', filiacao: '', nascimento: '2012-01-03' }, { estudantes: ests }).length, 0);
+  assert.equal(buscarDuplicados({ nome: 'Ana Clara Lima', nascimento: '2012-01-02' }, { pedidos: [{ protocolo: 'MAT-2026-0099', estudante: 'Ana Clara Lima', nascimento: '2012-01-02', situacao: 'Recusada' }] }).length, 0, 'pedido recusado não conta');
+  // Primeiro acesso
+  assert.deepEqual(validarPrimeiroAcesso({ nome: 'Ana Clara Lima', filiacao: 'Rosa Maria Lima', nascimento: '2012-01-02' }, { hoje: H }), {});
+  const pa = validarPrimeiroAcesso({ nome: 'Ana', filiacao: 'Rosa M. Lima', nascimento: '2030-01-01' }, { hoje: H });
+  assert.match(pa.nome, /sobrenome/); assert.match(pa.filiacao, /abrevia/); assert.match(pa.nascimento, /futuro/);
+  // Cadastro básico
+  const ok = { nome: 'Ana Clara Lima', filiacao1: 'Rosa Maria Lima', nascimento: '2012-01-02', sexo: 'Feminino', cpf: '529.982.247-25', corRaca: 'Não declarada', bolsaFamilia: 'Não', origem: ORIGENS[0], email: 'rosa@email.com' };
+  assert.deepEqual(validarCadastroBasico(ok, { hoje: H }), {});
+  assert.ok(CORES_RACA.includes('Não declarada'));
+  const cb = validarCadastroBasico({ ...ok, cpf: '111.111.111-11', nis: '123', sus: '1', email: 'rosa@', corRaca: '', rgEmissao: '2030-01-01' }, { hoje: H });
+  assert.deepEqual(Object.keys(cb).sort(), ['corRaca', 'cpf', 'email', 'nis', 'rgEmissao', 'sus']);
+  assert.match(validarCadastroBasico(ok, { hoje: H, pedidos: [{ protocolo: 'MAT-2026-0001', cpf: '52998224725', situacao: 'Aguardando confirmação' }] }).cpf, /MAT-2026-0001/);
+  assert.equal(tipoPelaOrigem(ORIGENS[0]), 'nova'); assert.equal(tipoPelaOrigem('Escola particular'), 'transferencia');
+  // Responsável: obrigatório para menor; maior de idade pode deixar em branco
+  const end = { telefone: '(79) 99999-1234', logradouro: 'Rua A', numero: '10', bairro: 'Centro', municipio: 'Aracaju' };
+  assert.deepEqual(Object.keys(validarResponsavelEndereco(end, { nascimento: '2012-01-02', hoje: H })).sort(), ['parentesco', 'respCpf', 'respNascimento', 'respNome']);
+  assert.deepEqual(validarResponsavelEndereco(end, { nascimento: '2000-01-02', hoje: H }), {});
+  const resp = { ...end, respNome: 'Rosa Maria Lima', respCpf: '529.982.247-25', parentesco: 'Mãe', respNascimento: '1985-03-10' };
+  assert.deepEqual(validarResponsavelEndereco({ ...resp, cep: '49000' }, { nascimento: '2012-01-02', hoje: H }), { cep: 'O CEP tem 8 números. Deixe em branco se não souber.' });
+  assert.match(validarResponsavelEndereco({ ...resp, respNascimento: '2009-01-01' }, { nascimento: '2012-01-02', hoje: H }).respNascimento, /17 anos.*18 anos ou mais/, 'responsável menor de idade');
+  assert.deepEqual(validarResponsavelEndereco({ ...resp, respNascimento: '2008-10-07' }, { nascimento: '2012-01-02', hoje: H }), {}, '18 anos no dia');
+  assert.ok(validarResponsavelEndereco({ ...resp, respNascimento: '2030-01-01' }, { nascimento: '2012-01-02', hoje: H }).respNascimento);
+  assert.ok(rgValido('1.234.567-8') && rgValido('12345678X') && !rgValido('123') && !rgValido('12.345.678.901'));
+  assert.equal(MASCARAS.rg('12345678'), '1.234.567-8'); assert.equal(MASCARAS.rg('1234567x'), '123.456.7-X'.replace('123.456.7-X', '1.234.567-X')); assert.equal(MASCARAS.rg('123456789012'), '123.456.789-0');
+  assert.match(validarCadastroBasico({ ...ok, rg: '12' }, { hoje: H }).rg, /RG inválido/);
+  assert.equal(mascaraCep('49000123'), '49000-123');
+  // Termos
+  assert.deepEqual(Object.keys(validarTermos({})).sort(), ['usoDeDados', 'vacinacao']);
+  assert.deepEqual(validarTermos({ vacinacao: 'Não autorizo', usoDeDados: true }), {}, '"Não autorizo" também é resposta');
+  // Lista de espera: posição por oferta, uma ativa por CPF, consulta e cancelamento
+  const lista = [{ id: 'LE-001', municipio: 'Aracaju', serie: '6º ano', quantidade: 9 },
+    { id: 'ESP-2026-0002', escolaId: 'x1', serie: '6º ano', turno: 'Manhã', desde: '2026-10-02', cpf: '111', nascimento: '2012-01-01', situacao: 'Aguardando' },
+    { id: 'ESP-2026-0001', escolaId: 'x1', serie: '6º ano', turno: 'Manhã', desde: '2026-10-01', cpf: '222', nascimento: '2012-01-01', situacao: 'Aguardando' },
+    { id: 'ESP-2026-0003', escolaId: 'x1', serie: '6º ano', turno: 'Tarde', desde: '2026-09-01', cpf: '333', nascimento: '2012-02-02', situacao: 'Aguardando' }];
+  assert.equal(posicaoNaEspera(lista, 'ESP-2026-0002'), 2); assert.equal(posicaoNaEspera(lista, 'ESP-2026-0003'), 1); assert.equal(posicaoNaEspera(lista, 'LE-001'), null);
+  assert.equal(esperaAtivaDoCpf(lista, '111').id, 'ESP-2026-0002');
+  assert.equal(consultarEspera({ protocolo: 'esp-2026-0002', nascimento: '2012-01-01' }, lista).posicao, 2);
+  assert.equal(consultarEspera({ protocolo: 'ESP-2026-0002', nascimento: '2012-01-02' }, lista).ok, false);
+  const sem = cancelarEspera(lista, 'ESP-2026-0001', { hoje: H });
+  assert.equal(sem.find((x) => x.id === 'ESP-2026-0001').situacao, 'Cancelada'); assert.equal(lista[2].situacao, 'Aguardando', 'não altera a original');
+  assert.equal(posicaoNaEspera(sem, 'ESP-2026-0002'), 1, 'quem cancela sai da fila'); assert.equal(esperaAtivaDoCpf(sem, '222'), null);
+});
+
+t('limites e pontuação dos campos: máscaras brasileiras, dinheiro, nota, e-mail e telefone com DDD', () => {
+  assert.equal(MASCARAS.cpf('52998224725'), '529.982.247-25'); assert.equal(MASCARAS.cpf('529.982.247-25999'), '529.982.247-25', 'não passa de 11 números');
+  assert.equal(MASCARAS.telefone('79999991234'), '(79) 99999-1234'); assert.equal(MASCARAS.telefone('7932221234'), '(79) 3222-1234');
+  assert.equal(MASCARAS.cep('49000123'), '49000-123'); assert.equal(MASCARAS.inep('28a003104x9'), '28003104');
+  assert.equal(MASCARAS.nis('12345678901'), '123.45678.90-1'); assert.equal(MASCARAS.sus('123456789012345'), '123 4567 8901 2345');
+  assert.equal(MASCARAS.cnpj('12345678000195'), '12.345.678/0001-95');
+  assert.equal(MASCARAS.dinheiro('150000'), '1.500,00'); assert.equal(MASCARAS.dinheiro('5'), '0,05'); assert.equal(MASCARAS.dinheiro('1.234,56'), '1.234,56', 'aplicar de novo não muda');
+  assert.equal(numeroDoDinheiro('1.234,56'), 1234.56); assert.ok(Number.isNaN(numeroDoDinheiro(''))); assert.equal(dinheiroParaCampo(15000.5), '15.000,50'); assert.equal(dinheiroParaCampo(''), '');
+  assert.equal(MASCARAS.nota('7.5'), '7,5'); assert.equal(MASCARAS.nota('8,256'), '8,25'); assert.equal(MASCARAS.nota('10'), '10'); assert.equal(MASCARAS.nota('a9'), '9');
+  assert.equal(MASCARAS.protocolo('mat-2026-0007 '), 'MAT-2026-0007'); assert.equal(MASCARAS.funcional('pf30999'), 'PF-30999'); assert.equal(MASCARAS.funcional('PF-30999'), 'PF-30999'); assert.equal(MASCARAS.matricula('2026-10317x9'), '202610317');
+  for (const f of ['cpf', 'telefone', 'cep', 'inep', 'nis', 'sus', 'dinheiro']) for (const exemplo of ['52998224725', '79999991234', '49000123']) assert.equal(MASCARAS[f](MASCARAS[f](exemplo)), MASCARAS[f](exemplo), `${f} é estável`);
+  assert.equal(FORMATOS.email.maxlength, 80); assert.equal(FORMATOS.cpf.maxlength, 14); assert.equal(FORMATOS.telefone.maxlength, 15);
+  assert.ok(emailOk('secretaria@escola.se.gov.br') && emailOk('Ana.Lima+seed@gmail.com'));
+  for (const ruim of ['ana@', 'ana@gmail', 'ana lima@gmail.com', 'ana..lima@gmail.com', '.ana@gmail.com', 'ana@gmail..com', `${'a'.repeat(75)}@x.com`]) assert.equal(emailOk(ruim), false, ruim);
+  assert.ok(telefoneOk('(79) 99999-1234') && telefoneOk('7932221234'));
+  for (const ruim of ['(79) 89999-1234', '(20) 99999-1234', '(79) 1222-1234', '799999912', '(79) 99999-12345']) assert.equal(telefoneOk(ruim), false, ruim);
+});
+
+t('diário por bimestre: prova 60%, atividade 30%, presença 10%, bimestres fechados e bloqueados, faltas pela chamada e aulas pela grade', () => {
+  const lv = dado('letivo');
+  assert.deepEqual(PESOS, { prova: 0.6, atividade: 0.3, presenca: 0.1 });
+  assert.equal(bimestreAtual(lv), 3, 'com 2 lançados, o 3º está em andamento');
+  assert.deepEqual([1, 2, 3, 4].map((b) => estadoDoBimestre(b, 3)), ['fechado', 'fechado', 'aberto', 'bloqueado']);
+  assert.deepEqual([1, 2, 3, 4].map((b) => estadoDoBimestre(b, 2)), ['fechado', 'aberto', 'bloqueado', 'bloqueado'], 'no 2º bimestre, o 3º e o 4º ficam bloqueados');
+  const p3 = periodoDoBimestre(lv, 3); assert.ok(p3.inicio <= lv.dataReferencia && lv.dataReferencia <= p3.fim, 'a data de referência cai no 3º bimestre');
+  for (let b = 1; b < 4; b++) assert.ok(periodoDoBimestre(lv, b).fim < periodoDoBimestre(lv, b + 1).inicio, 'bimestres em ordem, sem sobrepor');
+  // média do bimestre
+  assert.equal(mediaDoBimestre({ prova: 8, atividade: 7, presenca: 9 }), 7.8, '8×0,6 + 7×0,3 + 9×0,1');
+  assert.equal(mediaDoBimestre({ prova: 10, atividade: 10, presenca: 10 }), 10);
+  assert.equal(mediaDoBimestre({ prova: 8, atividade: null, presenca: 10 }), null, 'sem atividade, sem média');
+  assert.equal(notaDePresenca(92), 9.2); assert.equal(notaDePresenca(null), 10, 'sem chamada, presença conta 10'); assert.equal(notaDePresenca(75.5), 7.6);
+  assert.deepEqual(lerNota('7,5'), { valor: 7.5, erro: '' }); assert.deepEqual(lerNota(''), { valor: null, erro: '' }); assert.ok(lerNota('11').erro); assert.ok(lerNota('abc').erro);
+  const a = { id: 'x', nome: 'X', n1: 7, n2: 8, faltas: 2 };
+  const lan = lancarBimestre(a, 3, { prova: 6, atividade: 9 }, 10);
+  assert.equal(lan.n3, 7.3); assert.deepEqual(lan.partes, { 3: { prova: 6, atividade: 9 } }); assert.equal(a.n3, undefined, 'não altera o original'); assert.equal(lan.n1, 7, 'bimestres fechados não mudam');
+  // aulas pela grade (tt1: Matemática 1 aula na terça, 4ª aula)
+  const hor = dado('horarios');
+  assert.equal(diaDaSemana('2026-10-06'), 'ter');
+  assert.deepEqual(aulasNaGrade(hor, 'tt1', 'Matemática', '2026-10-06'), { quantas: 1, posicoes: [4] });
+  assert.equal(aulasNaGrade(hor, 'tt1', 'Matemática', '2026-10-05').quantas, 0, 'segunda não tem Matemática na tt1');
+  assert.equal(aulasNaGrade(hor, 'tt1', 'Matemática', '2026-10-10').quantas, 0, 'sábado');
+  // chamada: soma as aulas do dia e não lança duas vezes
+  const alunos = [{ id: 'a1', faltas: 3 }, { id: 'a2', faltas: 0 }];
+  const r1 = aplicarChamada({ chamadas: {}, alunos, turmaId: 't', data: '2026-10-06', ausentes: ['a1'], aulas: 2, componente: 'Matemática', quando: 'q' });
+  assert.equal(r1.nova, true); assert.equal(r1.diario[0].faltas, 5); assert.equal(r1.diario[1].faltas, 0); assert.equal(alunos[0].faltas, 3, 'não altera o original');
+  assert.equal(r1.chamadas.t['2026-10-06'].aulas, 2);
+  const r2 = aplicarChamada({ chamadas: r1.chamadas, alunos: r1.diario, turmaId: 't', data: '2026-10-06', ausentes: ['a1', 'a2'], aulas: 2, quando: 'q2' });
+  assert.equal(r2.nova, false); assert.equal(r2.diario[0].faltas, 5, 'mesma data: não soma de novo');
+  // frequência do bimestre pela trilha: chamadas antigas valem 1 aula
+  const ch = { t: { '2026-09-22': { ausentes: [] }, '2026-09-23': { ausentes: ['a1'] }, '2026-10-06': { ausentes: ['a1'], aulas: 2 }, '2026-05-02': { ausentes: ['a1'] } } };
+  assert.deepEqual(frequenciaNoPeriodo(ch, 't', 'a1', p3), { aulas: 4, faltas: 3, percentual: 25 });
+  assert.deepEqual(frequenciaNoPeriodo(ch, 't', 'a2', p3), { aulas: 4, faltas: 0, percentual: 100 });
+  assert.equal(frequenciaNoPeriodo({}, 't', 'a1', p3).percentual, null);
+  // abono devolve as aulas do dia; a sincronização offline soma as aulas da chamada
+  assert.deepEqual(abonosPorEstudante(ch, [{ situacao: 'Aceita', turmaId: 't', estudanteId: 'a1', de: '2026-10-06', ate: '2026-10-06' }]), { a1: 2 });
+  const servidor = { dados: { t: [{ id: 'a1', nome: 'A', faltas: 0 }] }, chamadas: {}, meta: {} };
+  aplicarPendentes([{ tipo: 'chamada', turmaId: 't', data: '2026-10-06', ausentes: ['a1'], aulas: 2, criadoEm: '2026-10-06T10:00:00Z' }], servidor);
+  assert.equal(servidor.dados.t[0].faltas, 2); assert.equal(servidor.chamadas.t['2026-10-06'].aulas, 2);
+});
+
+t('notas lançadas uma vez (travadas) e falta retirada só com motivo da lista', () => {
+  const lv = dado('letivo');
+  const a = { id: 'a1', nome: 'Ana', n1: 7, n2: 8, faltas: 3 };
+  // lança só a prova: fica travada, sem média ainda
+  const r1 = lancarNotas(a, 3, { prova: 8 }, 10, '2026-10-07T10:00:00Z');
+  assert.equal(r1.erro, ''); assert.deepEqual(r1.lancou, ['prova']);
+  assert.ok(parteLancada(r1.aluno, 3, 'prova')); assert.ok(!parteLancada(r1.aluno, 3, 'atividade'));
+  assert.equal(r1.aluno.n3, null, 'sem atividade, sem média'); assert.equal(r1.aluno.partes[3].em.prova, '2026-10-07T10:00:00Z');
+  // tentar mudar a prova lançada é recusado; repetir o mesmo valor não muda nada
+  const r2 = lancarNotas(r1.aluno, 3, { prova: 10 }, 10, 'q2');
+  assert.ok(r2.erro.includes('não pode ser alterada')); assert.equal(r2.aluno.partes[3].prova, 8);
+  const r3 = lancarNotas(r1.aluno, 3, { prova: 8, atividade: 7 }, 9, 'q3');
+  assert.equal(r3.erro, ''); assert.deepEqual(r3.lancou, ['atividade']); assert.equal(r3.aluno.n3, 7.8, '8×0,6 + 7×0,3 + 9×0,1');
+  assert.equal(r3.aluno.partes[3].em.prova, '2026-10-07T10:00:00Z', 'a data da prova não muda');
+  assert.equal(lancarNotas(r3.aluno, 3, { atividade: 5 }, 9, 'q4').erro !== '', true, 'atividade lançada também trava');
+  assert.equal(lancarNotas(a, 3, {}, 10, 'q').lancou.length, 0, 'nada preenchido, nada lançado');
+  // falta retirada: só com motivo da lista; registra quem, quando e por quê; a média acompanha a presença
+  assert.ok(MOTIVOS_RETIRADA.length >= 3 && MOTIVOS_RETIRADA.every(([k, t]) => k && t));
+  const ch = { t: { '2026-09-22': { ausentes: [], aulas: 1 }, '2026-10-06': { ausentes: ['a1'], aulas: 2 }, '2026-05-02': { ausentes: ['a1'] } } };
+  const p3 = periodoDoBimestre(lv, 3);
+  assert.deepEqual(faltasDoEstudante(ch, 't', 'a1', p3), [{ data: '2026-10-06', aulas: 2 }], 'só as faltas do bimestre');
+  const alunos = [r3.aluno, { id: 'a2', nome: 'B', faltas: 0 }];
+  assert.ok(retirarFalta({ chamadas: ch, alunos, turmaId: 't', data: '2026-10-06', alunoId: 'a1', motivo: 'qualquer texto', quando: 'q', por: 'p' }).erro, 'motivo fora da lista é recusado');
+  assert.ok(retirarFalta({ chamadas: ch, alunos, turmaId: 't', data: '2026-09-22', alunoId: 'a1', motivo: 'atraso', quando: 'q', por: 'p' }).erro, 'sem falta nessa data');
+  const ret = retirarFalta({ chamadas: ch, alunos, turmaId: 't', data: '2026-10-06', alunoId: 'a1', motivo: 'erro-chamada', quando: 'q', por: 'PF-1' });
+  assert.equal(ret.erro, ''); assert.deepEqual(ret.chamadas.t['2026-10-06'].ausentes, []);
+  assert.deepEqual(ret.chamadas.t['2026-10-06'].retiradas, [{ alunoId: 'a1', motivo: 'erro-chamada', quando: 'q', por: 'PF-1' }]);
+  assert.equal(ret.diario[0].faltas, 1, '3 − 2 aulas'); assert.deepEqual(ch.t['2026-10-06'].ausentes, ['a1'], 'não altera o original');
+  const antes = atualizarMedias(alunos, ch, 't', lv, 3)[0].n3; // 2 de 3 aulas: 33% → presença 3,3
+  const depois = atualizarMedias(ret.diario, ret.chamadas, 't', lv, 3)[0].n3; // 100% → 10
+  assert.equal(antes, 7.2); assert.equal(depois, 7.9, 'a média sobe quando a falta sai');
 });
 
 console.log(`\n${n} grupos de testes passaram.`);

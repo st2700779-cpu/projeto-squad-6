@@ -20,7 +20,7 @@ let mapa = null;
 const extras = () => [...new Set(escolas.map((e) => e.municipio))];
 const municipiosVisiveis = () => (municipio ? [municipio] : municipiosDa(dres, dreFiltro, extras()));
 function linhas() {
-  return procuraPorBairro({ listaEspera: espera, pedidos, escolas, vagas: detalhe, series: serie ? [serie] : SERIES, municipios: municipiosVisiveis() });
+  return procuraPorBairro({ listaEspera: espera.filter((x) => x.situacao !== 'Cancelada'), pedidos, escolas, vagas: detalhe, series: serie ? [serie] : SERIES, municipios: municipiosVisiveis() });
 }
 const razaoTexto = (r) => (r === Infinity ? 'sem vagas' : numeroBR(r, 2));
 const coordenadas = (l) => {

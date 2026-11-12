@@ -154,7 +154,7 @@ export function faixaDaSerie(serie) {
  * @returns {Array<{id: string, nome: string, conquistado: boolean, como: string}>}
  */
 export function selosDoEstudante({ linhas, presenca: pct, tentativasDoQuiz = [] }) {
-  const notas = linhas.flatMap((l) => [l.n1, l.n2]).filter(preenchida).map(Number);
+  const notas = linhas.flatMap((l) => [l.n1, l.n2, l.n3, l.n4]).filter(preenchida).map(Number);
   const comMedia = linhas.filter((l) => l.media !== null);
   return [
     { id: 'nota-10', nome: 'Primeira nota 10', conquistado: notas.some((n) => n >= 10), como: 'Tirar 10 em qualquer prova.' },
@@ -174,7 +174,7 @@ export function selosDoEstudante({ linhas, presenca: pct, tentativasDoQuiz = [] 
  */
 export function resumoDoDiario(alunos, aulasDadas) {
   if (!alunos.length) return { alunos: 0, frequenciaMedia: 100, abaixo75: 0, emRisco: 0, mediaMatematica: null };
-  const linhas = alunos.map((a) => { const f = presenca(a.faltas, aulasDadas); const m = media(a.n1, a.n2); return { f, m, s: situacao(m, f) }; });
+  const linhas = alunos.map((a) => { const f = presenca(a.faltas, aulasDadas); const m = media(a.n1, a.n2, a.n3, a.n4); return { f, m, s: situacao(m, f) }; });
   const comNota = linhas.filter((l) => l.m !== null);
   return {
     alunos: alunos.length,

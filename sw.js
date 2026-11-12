@@ -4,7 +4,7 @@
 // - Uso: arquivos do próprio site vão "rede primeiro" (a versão nova aparece quando há internet e a guardada serve quando não há);
 //   arquivos de CDN vão "cache primeiro". A API local (/api/) nunca passa pelo cache.
 // Só funciona em https ou localhost.
-const VERSAO = 'portal-e34fc795';
+const VERSAO = 'portal-d77d0185';
 const NUCLEO = [
   "index.html",
   "login.html",
@@ -31,6 +31,7 @@ const NUCLEO = [
   "professor/index.html",
   "professor/mapa.html",
   "professor/materiais.html",
+  "professor/notas.html",
   "professor/plano-aula.html",
   "professor/registro-aula.html",
   "assets/css/acesso.css",
@@ -40,6 +41,7 @@ const NUCLEO = [
   "assets/css/documento.css",
   "assets/css/layout.css",
   "assets/css/mapa.css",
+  "assets/css/matricula-seduc.css",
   "assets/css/painel.css",
   "assets/css/tema.css",
   "assets/css/tour.css",
@@ -51,12 +53,14 @@ const NUCLEO = [
   "assets/js/arquivos.js",
   "assets/js/auth.js",
   "assets/js/avisos-dados.js",
+  "assets/js/componentes/abas-bimestre.js",
   "assets/js/componentes/avisos.js",
   "assets/js/componentes/comparativo.js",
   "assets/js/componentes/data-br.js",
   "assets/js/componentes/declaracao.js",
   "assets/js/componentes/equipe-profin.js",
   "assets/js/componentes/ficha-profin.js",
+  "assets/js/componentes/formatos.js",
   "assets/js/componentes/formulario.js",
   "assets/js/componentes/indicadores.js",
   "assets/js/componentes/linha-do-tempo.js",
@@ -70,6 +74,7 @@ const NUCLEO = [
   "assets/js/dominio/cadastros.js",
   "assets/js/dominio/codigos.js",
   "assets/js/dominio/demanda.js",
+  "assets/js/dominio/diario-bimestral.js",
   "assets/js/dominio/equivalencias.js",
   "assets/js/dominio/estrutura.js",
   "assets/js/dominio/ficha-profin.js",
@@ -85,6 +90,7 @@ const NUCLEO = [
   "assets/js/dominio/notas.js",
   "assets/js/dominio/painel.js",
   "assets/js/dominio/plano-aula.js",
+  "assets/js/dominio/portal-matricula.js",
   "assets/js/dominio/prestacao.js",
   "assets/js/dominio/profin.js",
   "assets/js/dominio/senha.js",
@@ -102,6 +108,7 @@ const NUCLEO = [
   "assets/js/mapa/distancia.js",
   "assets/js/mapa/leaflet.js",
   "assets/js/matricula/formulario.js",
+  "assets/js/matricula/portal-matricula.js",
   "assets/js/matricula/rascunho-link.js",
   "assets/js/movimentacoes-dados.js",
   "assets/js/offline.js",
@@ -128,6 +135,7 @@ const NUCLEO = [
   "assets/js/paginas/professor-horario.js",
   "assets/js/paginas/professor-mapa.js",
   "assets/js/paginas/professor-materiais.js",
+  "assets/js/paginas/professor-notas.js",
   "assets/js/paginas/professor-plano-aula.js",
   "assets/js/paginas/professor-registro-aula.js",
   "assets/js/paginas/professor-turmas.js",

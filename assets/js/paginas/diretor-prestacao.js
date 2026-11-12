@@ -9,6 +9,7 @@ import { adimplenciaDaEscola, situacaoDaPrestacao, reais, saldo, percentualExecu
 import { NATUREZAS, PENDENTES_DE_ANALISE, APROVADAS, validarDeclaracao, totalDosLancamentos, situacaoDaDeclaracao } from '../dominio/prestacao.js';
 import { semaforo } from '../componentes/indicadores.js';
 import { campo, mostrarErros, limparErros } from '../componentes/formulario.js';
+import { numeroDoDinheiro, dinheiroParaCampo } from '../componentes/formatos.js';
 import { tabelaLancamentos, blocoRetorno, historico, etiquetaDaDeclaracao, mesAno, kb } from '../componentes/declaracao.js';
 import { profinComDeclaracoes } from '../prestacao-dados.js';
 
@@ -82,7 +83,7 @@ function bloco(l, i) {
   const n = `l${i}`;
   return `<fieldset class="lancamento" data-i="${i}"><header><span>Gasto ${i + 1}</span>${rascunho.lancamentos.length > 1 ? `<button type="button" class="botao botao-texto botao-mini" data-remover="${i}">Remover</button>` : ''}</header>
     ${campo({ nome: `${n}-data`, rotulo: 'Data do gasto', tipo: 'date', valor: l.data, obrigatorio: true, atributos: `max="${hoje}" min="${hoje.slice(0, 4)}-01-01"` })}
-    ${campo({ nome: `${n}-valor`, rotulo: 'Valor (R$)', tipo: 'number', valor: l.valor ? String(l.valor) : '', obrigatorio: true, atributos: 'min="0.01" step="0.01" inputmode="decimal"' })}
+    ${campo({ nome: `${n}-valor`, rotulo: 'Valor (R$)', valor: dinheiroParaCampo(l.valor), obrigatorio: true, dica: 'Digite só os números: 15000 vira 150,00', atributos: 'data-formato="dinheiro"' })}
     <div class="largo">${campo({ nome: `${n}-descricao`, rotulo: 'O que foi comprado ou pago', valor: l.descricao, obrigatorio: true, atributos: 'maxlength="140" autocomplete="off"' })}</div>
     ${campo({ nome: `${n}-fornecedor`, rotulo: 'Fornecedor', valor: l.fornecedor, obrigatorio: true, atributos: 'maxlength="100" autocomplete="off"' })}
     ${campo({ nome: `${n}-documento`, rotulo: 'Nº da nota fiscal ou recibo', valor: l.documento, obrigatorio: true, atributos: 'maxlength="40" autocomplete="off"' })}
@@ -114,6 +115,7 @@ function lerDoFormulario() {
   rascunho.competencia = form.querySelector('#f-competencia').value;
   rascunho.lancamentos.forEach((l, i) => {
     for (const c of ['data', 'valor', 'descricao', 'fornecedor', 'documento', 'natureza']) l[c] = form.querySelector(`#f-l${i}-${c}`).value;
+    { const n = numeroDoDinheiro(l.valor); l.valor = Number.isFinite(n) ? n : ''; } // "1.234,56" → 1234.56
   });
 }
 const atualizarTotal = () => { const t = totalDosLancamentos(rascunho.lancamentos.map((l) => ({ valor: Number(l.valor) || 0 }))); const el = main.querySelector('#total-decl'); if (el) el.textContent = reais(t); };

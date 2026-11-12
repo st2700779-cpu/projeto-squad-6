@@ -32,7 +32,7 @@ function painelRecusa(p) {
     <h2 id="recusa-titulo">Recusar matrícula de ${esc(p.estudante)}</h2>
     <div class="campo esp-t-0 esp-b-0">
       <label for="motivo">Motivo <span class="dica">(obrigatório; a família verá este texto)</span></label>
-      <textarea id="motivo" class="entrada" aria-describedby="motivo-erro" ${erroRecusa ? 'aria-invalid="true"' : ''}></textarea>
+      <textarea id="motivo" class="entrada" maxlength="300" aria-describedby="motivo-erro" ${erroRecusa ? 'aria-invalid="true"' : ''}></textarea>
       <p id="motivo-erro" class="erro">${esc(erroRecusa)}</p>
     </div>
     <div class="linha-botoes fim esp-t-3">

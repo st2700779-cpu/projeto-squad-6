@@ -7,7 +7,13 @@
     "dre": "DEA — Aracaju",
     "bairro": "Grageru",
     "lat": -10.9445,
-    "lng": -37.0577
+    "lng": -37.0577,
+    "turnos": [
+      "Manhã",
+      "Tarde",
+      "Noite",
+      "Integral"
+    ]
   },
   {
     "id": "e2",

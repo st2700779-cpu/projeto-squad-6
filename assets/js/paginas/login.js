@@ -29,20 +29,21 @@ async function desenhar() {
   try { contas = (await carregar('usuarios')).filter((u) => u.perfil === perfil); } catch { /* o login mostra o erro ao enviar */ }
   document.title = `Entrar como ${P.rotulo} · Portal Acadêmico`;
   main.innerHTML = `
+    <p class="selo-portal">${esc(P.portal)}</p>
     <h1 tabindex="-1">Entrar como ${esc(P.rotulo)}</h1>
     <p class="pagina-descricao">Acesso simulado. Não use uma senha real.</p>
     ${atual && params.get('motivo') === 'outro-perfil' ? `<div class="sessao-atual" role="status">${icone('info', 20)}<span>Você entrou como ${esc(atual.nome)} (${esc(PERFIS[atual.perfil]?.rotulo || atual.perfil)}). Esta área é de ${esc(P.rotulo)}: entre com uma conta desse perfil.</span></div>` : params.get('voltar') ? `<div class="sessao-atual" role="status">${icone('info', 20)}<span>Entre para abrir a página pedida.</span></div>` : ''}
     <form id="form-login" class="form-login" novalidate>
       <div class="campo">
         <label for="login">${esc(P.campo)}</label>
-        <input id="login" name="login" class="entrada" type="text" autocomplete="username" ${perfil === 'aluno' ? 'inputmode="numeric"' : ''} autocapitalize="none" spellcheck="false" aria-describedby="login-dica login-erro" required>
+        <input id="login" name="login" class="entrada" type="text" autocomplete="username" ${perfil === 'aluno' ? 'inputmode="numeric" data-formato="matricula" maxlength="9" placeholder="9 números"' : 'data-formato="login" maxlength="40"'} autocapitalize="none" spellcheck="false" aria-describedby="login-dica login-erro" required>
         <span class="dica" id="login-dica">${esc(P.dica)}</span>
         <p class="erro" id="login-erro" role="alert"></p>
       </div>
       <div class="campo">
         <label for="senha">Senha</label>
         <div class="campo-senha">
-          <input id="senha" name="senha" class="entrada" type="password" autocomplete="current-password" aria-describedby="caps senha-erro" required>
+          <input id="senha" name="senha" class="entrada" type="password" maxlength="64" autocomplete="current-password" aria-describedby="caps senha-erro" required>
           <button type="button" class="botao botao-secundario" id="ver-senha" aria-controls="senha" aria-label="Mostrar senha">Mostrar</button>
         </div>
         <p class="aviso-caps" id="caps" role="status" hidden>${icone('alerta', 18)}<span>A tecla Caps Lock está ligada. A senha diferencia maiúsculas de minúsculas.</span></p>
@@ -61,7 +62,7 @@ async function desenhar() {
       ${contas.map((c) => `<div class="demo-conta"><dl><dt>${esc(P.campo)}</dt><dd>${esc(c.login)}</dd><dt>Senha</dt><dd>${esc(c.senha)}</dd><dt>Perfil</dt><dd>${esc(c.nome)}</dd></dl><button type="button" class="botao botao-secundario botao-mini" data-preencher="${esc(c.login)}" aria-label="Preencher com a conta de ${esc(c.nome)}">Preencher</button></div>`).join('') || '<p class="demo-nota">As contas de demonstração não carregaram.</p>'}
       <p class="demo-nota">Contas fictícias, só para testar o protótipo. Se você trocou a senha, use a nova.</p>
     </details>
-    <p><a href="${link('index.html')}">Voltar e escolher outro perfil</a></p>`;
+    <p><a href="${link('index.html')}">Voltar e escolher outro portal</a></p>`;
   main.querySelector('h1').focus();
 }
 
